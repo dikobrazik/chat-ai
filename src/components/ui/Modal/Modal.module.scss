@@ -1,0 +1,184 @@
+@use "../../../styles/variables" as *;
+
+// Modal Variables
+$modal-z-index: z-index(modal);
+$modal-backdrop-blur: 4px;
+$modal-border-radius: border-radius(xl);
+$modal-border-radius-mobile: border-radius(lg);
+
+$modal-sizes: (
+  small: 400px,
+  medium: 600px,
+  large: 800px,
+);
+
+// Mixins
+@mixin modal-size($max-width) {
+  width: 100%;
+  max-width: $max-width;
+}
+
+@mixin hover-background($light-color, $dark-color) {
+  &:hover {
+    background: $light-color;
+
+    @media (prefers-color-scheme: dark) {
+      background: $dark-color;
+    }
+  }
+}
+
+// Modal Overlay
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur($modal-backdrop-blur);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: $modal-z-index;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+// Modal Container
+.modal {
+  background: var(--background, #ffffff);
+  border-radius: $modal-border-radius;
+  box-shadow: shadow(xl);
+  max-height: 90vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  animation: modalEnter 0.2s ease-out;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+
+  &:focus {
+    outline: none;
+  }
+}
+
+@keyframes modalEnter {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+// Modal Sizes
+@each $size, $width in $modal-sizes {
+  .#{$size} {
+    @include modal-size($width);
+  }
+}
+
+.fullscreen {
+  width: 95vw;
+  height: 95vh;
+  max-width: none;
+  max-height: none;
+}
+
+// Modal Header
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem 1.5rem 0 1.5rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  background: var(--background, #ffffff);
+  flex-shrink: 0;
+
+  @media (prefers-color-scheme: dark) {
+    border-bottom-color: rgba(255, 255, 255, 0.1);
+  }
+}
+
+.title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--foreground, #171717);
+  line-height: 1.4;
+}
+
+// Close Button
+.closeButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 6px;
+  color: var(--foreground, #171717);
+  opacity: 0.7;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: -0.5rem -0.5rem -0.5rem 1rem;
+
+  &:hover {
+    opacity: 1;
+    @include hover-background(rgba(0, 0, 0, 0.05), rgba(255, 255, 255, 0.1));
+  }
+
+  &:focus {
+    outline: 2px solid #0066cc;
+    outline-offset: 2px;
+  }
+}
+
+// Modal Content
+.content {
+  padding: 1.5rem;
+  overflow-y: auto;
+  flex: 1;
+  color: var(--foreground, #171717);
+}
+
+// Responsive Design
+@media (max-width: 640px) {
+  .overlay {
+    padding: 0.5rem;
+  }
+
+  .modal {
+    border-radius: $modal-border-radius-mobile;
+    max-height: 95vh;
+  }
+
+  .small,
+  .medium,
+  .large {
+    width: 100%;
+    max-width: none;
+  }
+
+  .header {
+    padding: 1rem 1rem 0 1rem;
+  }
+
+  .content {
+    padding: 1rem;
+  }
+
+  .title {
+    font-size: 1.125rem;
+  }
+}
+
+// Accessibility
+@media (prefers-reduced-motion: reduce) {
+  .modal {
+    animation: none;
+  }
+}

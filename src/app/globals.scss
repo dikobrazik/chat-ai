@@ -1,15 +1,28 @@
+@use "../styles/variables" as *;
+@use "sass:map";
+
+// Theme Colors
+$theme-colors: (
+  background-light: #ffffff,
+  foreground-light: #171717,
+  background-dark: #0a0a0a,
+  foreground-dark: #ededed,
+);
+
+// CSS Custom Properties
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #{map.get($theme-colors, background-light)};
+  --foreground: #{map.get($theme-colors, foreground-light)};
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #{map.get($theme-colors, background-dark)};
+    --foreground: #{map.get($theme-colors, foreground-dark)};
   }
 }
 
+// Base styles
 html,
 body {
   max-width: 100vw;

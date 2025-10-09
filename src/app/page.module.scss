@@ -1,0 +1,7 @@
+@use "../styles/variables" as *;
+
+.page {
+  // Page styles will go here
+  min-height: 100vh;
+  padding: spacing(4);
+}

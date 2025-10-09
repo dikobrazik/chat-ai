@@ -1,0 +1,311 @@
+@use "../../../styles/variables" as *;
+@use "sass:map";
+
+// Button-specific variables
+$button-colors: (
+  primary: (
+    base: color(primary, 500),
+    hover: color(primary, 600),
+    shadow: rgba(59, 130, 246, 0.3),
+    shadow-light: rgba(59, 130, 246, 0.2),
+  ),
+  secondary: (
+    base: color(gray, 500),
+    hover: color(gray, 600),
+    shadow: rgba(107, 114, 128, 0.3),
+  ),
+  danger: (
+    base: color(danger, base),
+    hover: color(danger, hover),
+    shadow: color(danger, light),
+  ),
+  success: (
+    base: color(success, base),
+    hover: color(success, hover),
+    shadow: color(success, light),
+  ),
+  warning: (
+    base: color(warning, base),
+    hover: color(warning, hover),
+    shadow: color(warning, light),
+  ),
+);
+
+$button-sizes: (
+  xs: (
+    padding: spacing(1.5) spacing(3),
+    font-size: font-size(xs),
+    line-height: 1rem,
+    min-height: 1.75rem,
+    icon-size: 0.875rem,
+  ),
+  sm: (
+    padding: spacing(2) spacing(4),
+    font-size: font-size(sm),
+    line-height: 1.25rem,
+    min-height: 2rem,
+    icon-size: 1rem,
+  ),
+  md: (
+    padding: spacing(2.5) spacing(5),
+    font-size: font-size(sm),
+    line-height: 1.25rem,
+    min-height: 2.5rem,
+    icon-size: 1.125rem,
+  ),
+  lg: (
+    padding: spacing(3) spacing(6),
+    font-size: font-size(base),
+    line-height: 1.5rem,
+    min-height: 3rem,
+    icon-size: 1.25rem,
+  ),
+  xl: (
+    padding: spacing(4) spacing(8),
+    font-size: font-size(lg),
+    line-height: 1.75rem,
+    min-height: 3.5rem,
+    icon-size: 1.5rem,
+  ),
+);
+
+// Mixins
+@mixin button-variant($color-map) {
+  $base: map.get($color-map, base);
+  $hover: map.get($color-map, hover);
+  $shadow: map.get($color-map, shadow);
+
+  background: $base;
+  color: white;
+  border-color: $base;
+
+  &:hover:not(.disabled):not(.loading) {
+    background: $hover;
+    border-color: $hover;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px $shadow;
+  }
+
+  &:active:not(.disabled):not(.loading) {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px $shadow;
+  }
+}
+
+@mixin button-size($size-map) {
+  padding: map.get($size-map, padding);
+  font-size: map.get($size-map, font-size);
+  line-height: map.get($size-map, line-height);
+  min-height: map.get($size-map, min-height);
+
+  .leftIcon,
+  .rightIcon {
+    width: map.get($size-map, icon-size);
+    height: map.get($size-map, icon-size);
+  }
+}
+
+// Base Button Styles
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-family: inherit;
+  font-weight: 500;
+  text-decoration: none;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  white-space: nowrap;
+  user-select: none;
+  position: relative;
+  overflow: hidden;
+
+  &:focus {
+    outline: 2px solid #0066cc;
+    outline-offset: 2px;
+
+    &:not(:focus-visible) {
+      outline: none;
+    }
+  }
+}
+
+// Button Content
+.content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.leftIcon,
+.rightIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.leftIcon {
+  margin-left: -0.125rem;
+}
+
+.rightIcon {
+  margin-right: -0.125rem;
+}
+
+// Loading State
+.loading {
+  .content {
+    opacity: 0.7;
+  }
+}
+
+.spinner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.spinnerSvg {
+  width: 1rem;
+  height: 1rem;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// Sizes
+@each $size, $props in $button-sizes {
+  .#{$size} {
+    @include button-size($props);
+  }
+}
+
+// Full Width
+.fullWidth {
+  width: 100%;
+}
+
+// Variants
+@each $variant, $colors in $button-colors {
+  .#{$variant} {
+    @include button-variant($colors);
+  }
+}
+
+// Special variants
+.outline {
+  background: transparent;
+  color: #3b82f6;
+  border-color: #3b82f6;
+
+  &:hover:not(.disabled):not(.loading) {
+    background: #3b82f6;
+    color: white;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+  }
+
+  &:active:not(.disabled):not(.loading) {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
+  }
+}
+
+.ghost {
+  background: transparent;
+  color: #374151;
+  border-color: transparent;
+
+  &:hover:not(.disabled):not(.loading) {
+    background: #f3f4f6;
+    color: #111827;
+  }
+
+  &:active:not(.disabled):not(.loading) {
+    background: #e5e7eb;
+  }
+}
+
+// Disabled State
+.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+
+  &:hover {
+    transform: none;
+    box-shadow: none;
+  }
+}
+
+// Dark Mode Support
+@media (prefers-color-scheme: dark) {
+  .ghost {
+    color: #d1d5db;
+
+    &:hover:not(.disabled):not(.loading) {
+      background: #374151;
+      color: #f9fafb;
+    }
+
+    &:active:not(.disabled):not(.loading) {
+      background: #4b5563;
+    }
+  }
+
+  .outline {
+    color: #60a5fa;
+    border-color: #60a5fa;
+
+    &:hover:not(.disabled):not(.loading) {
+      background: #60a5fa;
+      color: #1e293b;
+    }
+  }
+}
+
+// Accessibility
+@media (prefers-reduced-motion: reduce) {
+  .button {
+    transition: none;
+
+    &:hover:not(.disabled):not(.loading) {
+      transform: none;
+    }
+
+    &:active:not(.disabled):not(.loading) {
+      transform: none;
+    }
+  }
+
+  .spinnerSvg {
+    animation: none;
+  }
+}
+
+// High contrast mode
+@media (prefers-contrast: high) {
+  .button {
+    border-width: 2px;
+  }
+
+  .outline {
+    border-width: 2px;
+  }
+}

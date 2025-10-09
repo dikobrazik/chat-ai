@@ -1,0 +1,1 @@
+export const IS_DEV = process.env.IS_DEV === 'true' || process.env.NEXT_PUBLIC_IS_DEV === 'true'
