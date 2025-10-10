@@ -1,0 +1,8 @@
+@use "variables" as *;
+
+.content {
+  display: flex;
+  flex-direction: column;
+
+  gap: spacing(2);
+}

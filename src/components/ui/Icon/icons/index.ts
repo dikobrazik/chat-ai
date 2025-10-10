@@ -17,6 +17,7 @@ import { ShareIcon } from './ShareIcon';
 import { SpinnerIcon } from './SpinnerIcon';
 import { TrashIcon } from './TrashIcon';
 import { XCircleIcon } from './XCircleIcon';
+import { GoogleIcon } from './GoogleIcon';
 
 // Re-export all icons
 export {
@@ -38,6 +39,7 @@ export {
   SpinnerIcon,
   TrashIcon,
   XCircleIcon,
+  GoogleIcon,
 };
 
 // Icon registry for dynamic loading
@@ -60,6 +62,7 @@ export const iconComponents = {
   'spinner': SpinnerIcon,
   'trash': TrashIcon,
   'x-circle': XCircleIcon,
+  'google': GoogleIcon,
 } as const;
 
 export type IconName = keyof typeof iconComponents;

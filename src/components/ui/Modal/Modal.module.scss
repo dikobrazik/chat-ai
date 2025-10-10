@@ -111,32 +111,6 @@ $modal-sizes: (
   line-height: 1.4;
 }
 
-// Close Button
-.closeButton {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0.5rem;
-  border-radius: 6px;
-  color: var(--foreground, #171717);
-  opacity: 0.7;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: -0.5rem -0.5rem -0.5rem 1rem;
-
-  &:hover {
-    opacity: 1;
-    @include hover-background(rgba(0, 0, 0, 0.05), rgba(255, 255, 255, 0.1));
-  }
-
-  &:focus {
-    outline: 2px solid #0066cc;
-    outline-offset: 2px;
-  }
-}
-
 // Modal Content
 .content {
   padding: 1.5rem;

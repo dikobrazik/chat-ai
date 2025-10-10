@@ -1,19 +1,18 @@
-import { IS_DEV } from "@/config";
+import { AUTH_REDIRECT_URI, BASE_URL } from "@/config";
 import React, { useEffect, useRef } from "react";
 
 export const YandexSignInButton = () => {
   const buttonRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Убедитесь, что библиотека загружена и элемент существует
     if (window.YaAuthSuggest && buttonRef.current) {
       window.YaAuthSuggest.init(
         {
           client_id: process.env.NEXT_PUBLIC_YANDEX_CLIENT_ID!,
           response_type: "code",
-          redirect_uri: "http://localhost/api/auth",
+          redirect_uri: `${AUTH_REDIRECT_URI}/ya`,
         },
-        IS_DEV ? "http://localhost" : "https://tridva.store",
+        BASE_URL!,
         {
           target: buttonRef.current,
           view: "button",
@@ -30,10 +29,13 @@ export const YandexSignInButton = () => {
             result.handler();
           }
         })
-        .then((data) => console.log("Message with a token", data))
-        .catch((error) => console.log("Error handling", error));
+        .catch(console.error);
     }
   }, []);
 
-  return <div ref={buttonRef} style={{ width: "200px", height: "40px" }}></div>;
+  return (
+    <div id="buttonContainerId">
+      <div ref={buttonRef} style={{ width: "200px", height: "40px" }}></div>
+    </div>
+  );
 };

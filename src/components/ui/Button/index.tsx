@@ -9,7 +9,7 @@ import { Icon } from "../Icon";
 import styles from "./Button.module.scss";
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  children: ReactNode;
+  children?: ReactNode;
   variant?:
     | "primary"
     | "secondary"
@@ -83,7 +83,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         {!loading && leftIcon && (
           <span className={styles.leftIcon}>{leftIcon}</span>
         )}
-        <span className={styles.content}>{children}</span>
+        {children && <span className={styles.content}>{children}</span>}
         {!loading && rightIcon && (
           <span className={styles.rightIcon}>{rightIcon}</span>
         )}
