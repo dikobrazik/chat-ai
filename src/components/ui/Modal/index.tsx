@@ -4,6 +4,7 @@ import React, { useEffect, useRef, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { Icon } from "../Icon";
 import styles from "./Modal.module.scss";
+import Button from "../Button";
 
 export interface ModalProps {
   isOpen: boolean;
@@ -116,14 +117,15 @@ export const Modal: React.FC<ModalProps> = ({
               </h2>
             )}
             {showCloseButton && (
-              <button
+              <Button
+                leftIcon={<Icon name="close" />}
                 type="button"
                 className={styles.closeButton}
                 onClick={onClose}
                 aria-label="Close modal"
-              >
-                <Icon name="close" />
-              </button>
+                variant="ghost"
+                size="sm"
+              ></Button>
             )}
           </div>
         )}

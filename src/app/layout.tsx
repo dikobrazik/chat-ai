@@ -26,11 +26,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <Script
-          src="https://yastatic.net/s3/passport-sdk/autofill/v1/sdk-suggest-with-polyfills-latest.js"
-          async
-        ></Script>
-        <Script src="https://accounts.google.com/gsi/client" async></Script>
+        <Script src="https://yastatic.net/s3/passport-sdk/autofill/v1/sdk-suggest-with-polyfills-latest.js"></Script>
+        <Script src="https://accounts.google.com/gsi/client"></Script>
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         {children}

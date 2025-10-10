@@ -5,7 +5,6 @@ export const YandexSignInButton = () => {
   const buttonRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Убедитесь, что библиотека загружена и элемент существует
     if (window.YaAuthSuggest && buttonRef.current) {
       window.YaAuthSuggest.init(
         {
@@ -35,5 +34,9 @@ export const YandexSignInButton = () => {
     }
   }, []);
 
-  return <div ref={buttonRef} style={{ width: "200px", height: "40px" }}></div>;
+  return (
+    <div id="buttonContainerId">
+      <div ref={buttonRef} style={{ width: "200px", height: "40px" }}></div>
+    </div>
+  );
 };
