@@ -1,0 +1,62 @@
+import { setAuthToken, createGuest } from "@/api";
+import {
+  ACCESS_TOKEN_LOCAL_STORAGE_KEY,
+  ACCESS_TOKEN_SOURCE_LOCAL_STORAGE_KEY,
+} from "@/constants/auth";
+import { useMutation } from "@tanstack/react-query";
+import { useCallback, useContext, useEffect, useState } from "react";
+import { AuthContext } from "./context";
+
+export const useAuth = () => {
+  const [isReady, setIsReady] = useState<boolean>(false);
+  const [isGuest, setIsGuest] = useState<boolean>(true);
+
+  const { mutate: mutateCreateGuest } = useMutation({
+    mutationFn: createGuest,
+    onSuccess: (token) => {
+      setAuthToken(token);
+      localStorage.setItem(ACCESS_TOKEN_LOCAL_STORAGE_KEY, token);
+      localStorage.setItem(ACCESS_TOKEN_SOURCE_LOCAL_STORAGE_KEY, "local");
+
+      setIsGuest(true);
+      setIsReady(true)
+    },
+  });
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const hasAccessToken = Boolean(
+        localStorage.getItem(ACCESS_TOKEN_LOCAL_STORAGE_KEY),
+      );
+
+      const isSourceLocal =
+        localStorage.getItem(ACCESS_TOKEN_SOURCE_LOCAL_STORAGE_KEY) === "local";
+
+      if (!hasAccessToken) {
+        mutateCreateGuest();
+      } else {
+        setAuthToken(
+          localStorage.getItem(ACCESS_TOKEN_LOCAL_STORAGE_KEY) as string,
+        );
+        setIsGuest(isSourceLocal);
+
+        setIsReady(true);
+      }
+    }
+  }, [mutateCreateGuest]);
+
+  const onLogoutClick = useCallback(() => {
+    localStorage.removeItem(ACCESS_TOKEN_LOCAL_STORAGE_KEY);
+    localStorage.removeItem(ACCESS_TOKEN_SOURCE_LOCAL_STORAGE_KEY);
+
+    mutateCreateGuest();
+  }, [mutateCreateGuest]);
+
+  return { isGuest, isReady, onLogoutClick };
+};
+
+export const useAuthContext = () => {
+  const { isGuest, isReady, isSubscribed } = useContext(AuthContext);
+
+  return { isGuest, isReady, isSubscribed };
+};

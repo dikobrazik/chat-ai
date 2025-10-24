@@ -3,7 +3,7 @@ import styles from "./page.module.scss";
 import { Chat } from "@/components/business/Chat";
 import { Sidebar } from "@/components/business/Sidebar";
 
-export default function Home() {
+export default function ChatPage() {
   return (
     <div className={styles.page}>
       <div className={styles.sidebar}>

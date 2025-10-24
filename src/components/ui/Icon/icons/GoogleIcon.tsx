@@ -1,6 +1,8 @@
-export const GoogleIcon = () => {
+import { BaseIcon, IconComponentProps } from "..";
+
+export const GoogleIcon: React.FC<IconComponentProps> = (props) => {
   return (
-    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+    <BaseIcon viewBox="0 0 48 48" {...props}>
       <g>
         <path
           fill="#EA4335"
@@ -20,6 +22,6 @@ export const GoogleIcon = () => {
         ></path>
         <path fill="none" d="M0 0h48v48H0z"></path>
       </g>
-    </svg>
+    </BaseIcon>
   );
 };

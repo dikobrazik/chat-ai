@@ -201,9 +201,74 @@ $transitions: (
 
 @use "sass:map";
 
+$colors-dark: (
+  gray: (
+    50: #1f2937,
+    100: #374151,
+    200: #4b5563,
+    300: #6b7280,
+    400: #9ca3af,
+    500: #d1d5db,
+    600: #e5e7eb,
+    700: #f3f4f6,
+    800: #f9fafb,
+    900: #ffffff,
+  ),
+  primary: (
+    50: #1e3a8a,
+    100: #1e40af,
+    200: #1d4ed8,
+    300: #2563eb,
+    400: #3b82f6,
+    500: #60a5fa,
+    600: #93c5fd,
+    700: #bfdbfe,
+    800: #dbeafe,
+    900: #eff6ff,
+  ),
+  success: (
+    base: #16a34a,
+    hover: #22c55e,
+    light: rgba(16, 185, 129, 0.1),
+  ),
+  danger: (
+    base: #dc2626,
+    hover: #ef4444,
+    light: rgba(239, 68, 68, 0.1),
+  ),
+  warning: (
+    base: #d97706,
+    hover: #f59e0b,
+    light: rgba(245, 158, 11, 0.1),
+  ),
+  info: (
+    base: #2563eb,
+    hover: #3b82f6,
+    light: rgba(59, 130, 246, 0.1),
+  ),
+);
+
+:root {
+  @each $color-name, $variants in $colors {
+    @each $variant-name, $value in $variants {
+      --color-#{"" + $color-name}-#{$variant-name}: #{$value};
+    }
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    @each $color-name, $variants in $colors-dark {
+      @each $variant-name, $value in $variants {
+        --color-#{"" + $color-name}-#{$variant-name}: #{$value};
+      }
+    }
+  }
+}
+
 // Helper Functions
 @function color($color-name, $variant: base) {
-  @return map.get(map.get($colors, $color-name), $variant);
+  @return var(--color-#{$color-name}-#{$variant});
 }
 
 @function spacing($size) {

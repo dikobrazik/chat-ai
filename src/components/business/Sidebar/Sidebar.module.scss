@@ -1,0 +1,18 @@
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: spacing(2);
+  height: 100%;
+  overflow-y: auto;
+  padding: spacing(2);
+
+  & .chatItem {
+    padding: spacing(2) spacing(3);
+    background-color: color(gray, 50);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    max-height: 50px;
+  }
+}
