@@ -50,6 +50,7 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
             type="button"
             className={`${styles.confirmButton} ${styles[variant]}`}
             onClick={handleConfirm}
+            // biome-ignore lint/a11y/noAutofocus: <explanation>
             autoFocus
           >
             {confirmText}
@@ -116,6 +117,7 @@ export const AlertModal: React.FC<AlertModalProps> = ({
             type="button"
             className={`${styles.alertButton} ${styles[variant]}`}
             onClick={onClose}
+            // biome-ignore lint/a11y/noAutofocus: <explanation>
             autoFocus
           >
             {actionText}

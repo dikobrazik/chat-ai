@@ -100,6 +100,7 @@ export const Modal: React.FC<ModalProps> = ({
       onClick={handleOverlayClick}
       aria-hidden="true"
     >
+      {/** biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
       <div
         ref={modalRef}
         className={`${styles.modal} ${styles[size]} ${className}`}

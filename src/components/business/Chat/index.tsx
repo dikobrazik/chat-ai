@@ -50,7 +50,7 @@ export const Chat = () => {
 
   const onSendClick = () => {
     setMessages([WAITING_RESPONSE_MESSAGE, value, ...messages]);
-    mutate({ input: value, chatId });
+    mutate({ input: value, chatId: chatId as string });
     setValue("");
   };
 

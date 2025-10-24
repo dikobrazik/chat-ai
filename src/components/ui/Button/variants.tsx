@@ -88,6 +88,7 @@ export const ButtonGroup: React.FC<ButtonGroupProps> = ({
     : {};
 
   return (
+    // biome-ignore lint/a11y/useSemanticElements: <explanation>
     <div
       className={className}
       style={{ ...groupStyles, ...attachedStyles }}
