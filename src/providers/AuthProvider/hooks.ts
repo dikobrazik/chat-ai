@@ -56,7 +56,7 @@ export const useAuth = () => {
 };
 
 export const useAuthContext = () => {
-  const { isGuest, isReady, isSubscribed } = useContext(AuthContext);
+  const { isGuest, isReady, isSubscribed, onLogoutClick } = useContext(AuthContext);
 
-  return { isGuest, isReady, isSubscribed };
+  return { isGuest, isReady, isSubscribed, onLogoutClick };
 };

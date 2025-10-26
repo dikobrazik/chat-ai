@@ -5,8 +5,21 @@ import styles from "./Sidebar.module.scss";
 import { getChats } from "@/api";
 import Link from "next/link";
 import Button from "@/components/ui/Button";
+import { useIsMobile } from "@/hooks/useMobile";
+import Icon from "@/components/ui/Icon";
+import { useToggle } from "@/hooks/useToggle";
+import cn from "classnames";
+import { useEffect } from "react";
 
-export const Sidebar = () => {
+const SidebarContent = ({
+  isOpen,
+  toggle,
+}: {
+  isOpen: boolean;
+  toggle: () => void;
+}) => {
+  const isMobile = useIsMobile();
+
   const { data: chats } = useQuery({
     refetchInterval: false,
     queryKey: ["chats"],
@@ -14,8 +27,20 @@ export const Sidebar = () => {
   });
 
   return (
-    <div className={styles.sidebar}>
-      <Button as="a" href="/">
+    <div
+      className={cn(styles.sidebar, {
+        [styles.mobile]: isMobile,
+        [styles.open]: isOpen,
+      })}
+    >
+      {!isMobile && (
+        <Button
+          className={styles.toggleButton}
+          leftIcon={<Icon name="menu" />}
+          onClick={toggle}
+        />
+      )}
+      <Button size="sm" className={styles.newChatButton} as="a" href="/">
         Новый чат
       </Button>
       {chats?.map((chat) => (
@@ -29,4 +54,39 @@ export const Sidebar = () => {
       ))}
     </div>
   );
+};
+
+export const Sidebar = () => {
+  const isMobile = useIsMobile();
+
+  const { active: isOpen, toggle, toggleOn, toggleOff } = useToggle();
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      if (!isMobile) {
+        toggleOn();
+      } else {
+        toggleOff();
+      }
+    }
+  }, [isMobile]);
+
+  if (isMobile) {
+    return (
+      <>
+        <Button leftIcon={<Icon name="menu" />} onClick={toggle}></Button>
+        {/** biome-ignore lint/a11y/noStaticElementInteractions: <explanation> */}
+        {/** biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
+        <div
+          className={cn(styles.layover, { [styles.open]: isOpen })}
+          onClick={toggle}
+        >
+          <SidebarContent isOpen={isOpen} toggle={toggle} />
+        </div>
+      </>
+    );
+  }
+
+  return <SidebarContent isOpen={isOpen} toggle={toggle} />;
 };

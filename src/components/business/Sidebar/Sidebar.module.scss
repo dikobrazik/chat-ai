@@ -1,18 +1,72 @@
+.newChatButton {
+  align-self: stretch;
+}
+
+.chatItem {
+  padding: spacing(2) spacing(3);
+  background-color: color(gray, 50);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  max-height: 50px;
+  width: 100%;
+}
+
 .sidebar {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   gap: spacing(2);
   height: 100%;
   overflow-y: auto;
   padding: spacing(2);
+  background-color: var(--background);
+  flex: 0 0 auto;
+  border-right: 1px solid color(gray, 200);
 
-  & .chatItem {
-    padding: spacing(2) spacing(3);
-    background-color: color(gray, 50);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+  &:not(.open) > :not(.toggleButton) {
+    width: 0;
+    visibility: hidden;
+  }
 
-    max-height: 50px;
+  &.open {
+    flex: 0 0 200px;
+  }
+}
+
+.layover {
+  position: fixed;
+  opacity: 0;
+
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: z-index(overlay);
+  transition: opacity 0.3s ease-in-out;
+  pointer-events: none;
+
+  &.open {
+    opacity: 1;
+    pointer-events: all;
+  }
+}
+
+.mobile {
+  position: fixed;
+  z-index: z-index(modal);
+  box-shadow: shadow(md);
+  width: 75%;
+  height: 100%;
+  left: 0;
+  top: 0;
+
+  transform: translateX(-100%);
+  transition: transform 0.3s ease-in-out;
+
+  &.open {
+    transform: translateX(0);
   }
 }

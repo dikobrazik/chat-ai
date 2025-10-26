@@ -1,4 +1,5 @@
 // Import all icons
+import { MenuIcon } from './MenuIcon';
 import { AlertTriangleIcon } from './AlertTriangleIcon';
 import { ArrowRightIcon } from './ArrowRightIcon';
 import { CheckCircleIcon } from './CheckCircleIcon';
@@ -22,6 +23,7 @@ import { YandexIcon } from './YandexIcon';
 
 // Re-export all icons
 export {
+  MenuIcon,
   AlertTriangleIcon,
   ArrowRightIcon,
   CheckCircleIcon,
@@ -46,6 +48,7 @@ export {
 
 // Icon registry for dynamic loading
 export const iconComponents = {
+  'menu': MenuIcon,
   'alert-triangle': AlertTriangleIcon,
   'arrow-right': ArrowRightIcon,
   'check-circle': CheckCircleIcon,

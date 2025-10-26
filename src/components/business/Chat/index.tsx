@@ -38,6 +38,8 @@ export const Chat = () => {
       getChat(chatId as string).catch((error) => {
         if (error.status === 401) {
           window.history.replaceState({}, "", `/`);
+        } else if (error.status === 403) {
+          window.history.replaceState({}, "", `/`);
         }
 
         return [];
@@ -81,7 +83,13 @@ export const Chat = () => {
     <div className={css.container}>
       <div className={css.messages}>
         {messages.map((message, index) => (
-          <div key={`${message}-${index}`} className={css.message}>
+          <div
+            key={`${message}-${
+              // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+              index
+            }`}
+            className={css.message}
+          >
             {message === WAITING_RESPONSE_MESSAGE ? (
               <span className={css.typingIndicator}>
                 &nbsp;
@@ -115,14 +123,16 @@ export const Chat = () => {
             ))}
           </select>
 
-          <Button
-            className={css.button}
-            size="xs"
-            variant="outline"
-            onClick={onSendClick}
-          >
-            Отправить
-          </Button>
+          {value && (
+            <Button
+              className={css.button}
+              size="xs"
+              variant="outline"
+              onClick={onSendClick}
+            >
+              Отправить
+            </Button>
+          )}
         </div>
       </label>
     </div>
