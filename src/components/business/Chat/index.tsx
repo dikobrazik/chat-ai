@@ -1,37 +1,71 @@
 "use client";
 
-import { getChat, getModels, sendPrompt } from "@/api";
+import { createChat, getChat, Model, Prompt, sendPrompt } from "@/api";
 import Button from "@/components/ui/Button";
+import { useModelContext } from "@/providers/ModelProvider/hooks";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import css from "./Chat.module.scss";
-import { useParams } from "next/navigation";
-
-const WAITING_RESPONSE_MESSAGE = "AI is typing...";
+import {
+  Message,
+  TOO_MANY_REQUESTS_MESSAGE_ID,
+  WAITING_RESPONSE_MESSAGE_ID,
+} from "./components/Message/message";
 
 export const Chat = () => {
   const queryClient = useQueryClient();
   const { id: chatId } = useParams();
 
-  const [messages, setMessages] = useState<string[]>([]);
+  const [messages, setMessages] = useState<Prompt[]>([]);
   const [value, setValue] = useState("");
+  const { model, setModel } = useModelContext();
 
-  const { mutate } = useMutation({
-    mutationFn: sendPrompt,
-    onSuccess: (response) => {
-      if (!chatId) {
-        queryClient.invalidateQueries({ queryKey: ["chats"] });
-        window.history.replaceState({}, "", `/chat/${response.chatId}`);
+  const { mutateAsync: createChatMutation } = useMutation({
+    mutationFn: () => createChat({ model_id: model?.id ?? 1 }),
+    onError: (error) => {
+      if (axios.isAxiosError(error)) {
       }
+    },
+    onSuccess: (chatId) => {
+      queryClient.invalidateQueries({ queryKey: ["chats"] });
+      window.history.replaceState({}, "", `/chat/${chatId}`);
+    },
+  });
+
+  const { mutate: sendPromptMutation } = useMutation({
+    mutationFn: (payload: { input: string; newChatId?: string }) =>
+      sendPrompt({
+        input: payload.input,
+        chat_id: payload.newChatId ?? (chatId as string),
+        model_id: model?.id,
+      }),
+    onError: (error) => {
+      if (axios.isAxiosError(error)) {
+        if (error.status === 429) {
+          setMessages((prevMessages) => [
+            { id: TOO_MANY_REQUESTS_MESSAGE_ID, text: "", role: "model" },
+            ...prevMessages.slice(1),
+          ]);
+        }
+      }
+    },
+    onSuccess: ({ response }) => {
       setMessages((prevMessages) => [
-        response.response.text,
-        ...prevMessages.slice(1),
+        response,
+        {
+          id: `user-${response.id}`,
+          text: prevMessages[1].text,
+          role: "user",
+        },
+        ...prevMessages.slice(2),
       ]);
     },
   });
 
-  const { data: chatMessagesHistory } = useQuery({
-    queryKey: ["chatMessages", chatId],
+  const { data: chat } = useQuery({
+    queryKey: ["chat", chatId],
     enabled: !!chatId,
     refetchInterval: false,
     queryFn: () =>
@@ -42,25 +76,37 @@ export const Chat = () => {
           window.history.replaceState({}, "", `/`);
         }
 
-        return [];
+        return {
+          prompts: [],
+          chat: {
+            id: "",
+            model: {} as Model,
+          },
+        };
       }),
   });
 
   useEffect(() => {
-    setMessages(chatMessagesHistory || []);
-  }, [chatMessagesHistory]);
+    if (chat) {
+      setMessages(chat.prompts);
+      setModel(chat.chat.model);
+    }
+  }, [chat]);
 
-  const onSendClick = () => {
-    setMessages([WAITING_RESPONSE_MESSAGE, value, ...messages]);
-    mutate({ input: value, chatId: chatId as string });
+  const onSendClick = async () => {
+    let newChatId: string | undefined = undefined;
+    console.log("chatId", chatId);
+    if (!chatId) {
+      newChatId = await createChatMutation();
+    }
+    setMessages([
+      { id: WAITING_RESPONSE_MESSAGE_ID, text: "", role: "model" },
+      { id: "", text: value, role: "user" },
+      ...messages,
+    ]);
+    sendPromptMutation({ input: value, newChatId });
     setValue("");
   };
-
-  const { data: models } = useQuery({
-    queryKey: ["models"],
-    queryFn: getModels,
-    refetchInterval: false,
-  });
 
   const onInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setValue(e.target.value);
@@ -82,29 +128,17 @@ export const Chat = () => {
   return (
     <div className={css.container}>
       <div className={css.messages}>
-        {messages.map((message, index) => (
-          <div
-            key={`${message}-${
-              // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-              index
-            }`}
+        {messages.map((message) => (
+          <Message
+            key={`${message.id}`}
+            id={message.id}
+            message={message.text}
             className={css.message}
-          >
-            {message === WAITING_RESPONSE_MESSAGE ? (
-              <span className={css.typingIndicator}>
-                &nbsp;
-                <span className={css.dot}></span>
-                <span className={css.dot}></span>
-                <span className={css.dot}></span>
-              </span>
-            ) : (
-              message
-            )}
-          </div>
+          />
         ))}
       </div>
 
-      <label htmlFor="prompt" className={css.controlsContainer}>
+      <div className={css.controlsContainer}>
         <textarea
           id="prompt"
           name="prompt"
@@ -115,14 +149,7 @@ export const Chat = () => {
         />
 
         <div className={css.controls}>
-          <select>
-            {models?.map((model) => (
-              <option key={model.id} value={model.id}>
-                {model.id}
-              </option>
-            ))}
-          </select>
-
+          <div></div>
           {value && (
             <Button
               className={css.button}
@@ -134,7 +161,7 @@ export const Chat = () => {
             </Button>
           )}
         </div>
-      </label>
+      </div>
     </div>
   );
 };

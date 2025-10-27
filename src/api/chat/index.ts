@@ -1,23 +1,16 @@
 import axios from "axios";
+import { Model } from "../model";
 
 type SendPromptResponse = {
   chatId: string;
-  response: {
-    id: string;
-    text: string;
-  };
+  response: Prompt;
 }
 
-export const sendPrompt = (payload: {input: string, chatId?: string}) =>
-  axios.post<SendPromptResponse>("chat/prompt", payload).then((response) => response.data);
+export const sendPrompt = ({chat_id, ...payload}: {input: string, chat_id?: string, model_id?: number}) =>
+  axios.post<SendPromptResponse>(`chat/${chat_id}/prompt`, payload).then((response) => response.data);
 
-type Model = {
-  id: string;
-  description: string;
-}
-
-export const getModels = () =>
-  axios.get<Model[]>("chat/models").then((response) => response.data);
+export const createChat = (payload: {model_id: number}) =>
+  axios.post<string>(`chat`, payload).then((response) => response.data);
 
 type Chat = {
   id: string;
@@ -30,5 +23,22 @@ type Chat = {
 export const getChats = () =>
   axios.get<Chat[]>(`chat`).then((response) => response.data);
 
+export type ChatResponse = {
+  prompts: Prompt[];
+  chat: ChatInfo;
+}
+
+export type ChatInfo = {
+  id: string;
+  model: Model;
+}
+
+export type Prompt = {
+  id: string;
+  text: string;
+  role: string;
+}
+
+
 export const getChat = (chatId: string) =>
-  axios.get<string[]>(`chat/${chatId}`).then((response) => response.data);
+  axios.get<ChatResponse>(`chat/${chatId}`).then((response) => response.data);

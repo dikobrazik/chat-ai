@@ -40,7 +40,7 @@ const SidebarContent = ({
           onClick={toggle}
         />
       )}
-      <Button size="sm" className={styles.newChatButton} as="a" href="/">
+      <Button size="sm" className={styles.newChatButton} as="a" href="/chat">
         Новый чат
       </Button>
       {chats?.map((chat) => (

@@ -1,23 +1,15 @@
-import { AuthorizationButton } from "@/components/business/Authorization";
-import styles from "./page.module.scss";
-import { Chat } from "@/components/business/Chat";
-import { Sidebar } from "@/components/business/Sidebar";
+"use client";
 
-export default function Home() {
+import Button from "@/components/ui/Button";
+import styles from "./page.module.scss";
+
+export default function Page() {
   return (
     <div className={styles.page}>
-      <div className={styles.sidebar}>
-        <Sidebar />
-      </div>
-      <div className={styles.mainContent}>
-        <header className={styles.header}>
-          <AuthorizationButton />
-        </header>
-
-        <main className={styles.main}>
-          <Chat />
-        </main>
-      </div>
+      Здесь будет лендинг
+      <Button size="sm" className={styles.newChatButton} as="a" href="/chat">
+        Новый чат
+      </Button>
     </div>
   );
 }

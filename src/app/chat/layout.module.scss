@@ -1,0 +1,39 @@
+@use "sass:map";
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  & .leftContent {
+    display: flex;
+    align-items: center;
+
+    @include media-max(md) {
+      flex-direction: column;
+    }
+
+    gap: spacing(2);
+  }
+}
+
+.page {
+  display: flex;
+  height: 100%;
+
+  & .mainContent {
+    padding: spacing(4);
+
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+}
+
+.main {
+  margin: 0 auto;
+  flex-grow: 1;
+  overflow-y: auto;
+  max-width: map.get($breakpoints, md);
+  width: 100%;
+}

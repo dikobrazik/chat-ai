@@ -4,6 +4,7 @@ import "./globals.scss";
 import Script from "next/script";
 import { QueryProvider } from "@/providers/QueryProvider/Provider";
 import { AuthProvider } from "@/providers/AuthProvider/Provider";
+import { ModelProvider } from "@/providers/ModelProvider/Provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,7 +34,9 @@ export default function RootLayout({
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <QueryProvider>
-          <AuthProvider>{children}</AuthProvider>
+          <AuthProvider>
+            <ModelProvider>{children}</ModelProvider>
+          </AuthProvider>
         </QueryProvider>
       </body>
     </html>

@@ -9,3 +9,4 @@ export function setAuthToken(token: string) {
 
 export * from "./auth";
 export * from "./chat";
+export * from "./model";
