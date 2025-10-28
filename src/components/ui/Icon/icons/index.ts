@@ -1,4 +1,5 @@
 // Import all icons
+import { LogoutIcon } from './LogoutIcon';
 import { MenuIcon } from './MenuIcon';
 import { AlertTriangleIcon } from './AlertTriangleIcon';
 import { ArrowRightIcon } from './ArrowRightIcon';
@@ -23,6 +24,7 @@ import { YandexIcon } from './YandexIcon';
 
 // Re-export all icons
 export {
+  LogoutIcon,
   MenuIcon,
   AlertTriangleIcon,
   ArrowRightIcon,
@@ -48,6 +50,7 @@ export {
 
 // Icon registry for dynamic loading
 export const iconComponents = {
+  'logout': LogoutIcon,
   'menu': MenuIcon,
   'alert-triangle': AlertTriangleIcon,
   'arrow-right': ArrowRightIcon,

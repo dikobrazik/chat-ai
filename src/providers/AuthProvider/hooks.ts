@@ -3,15 +3,18 @@ import {
   ACCESS_TOKEN_LOCAL_STORAGE_KEY,
   ACCESS_TOKEN_SOURCE_LOCAL_STORAGE_KEY,
 } from "@/constants/auth";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useCallback, useContext, useEffect, useState } from "react";
 import { AuthContext } from "./context";
+import { useRouter } from "next/navigation";
 
 export const useAuth = () => {
+  const router = useRouter()
+  const queryClient = useQueryClient();
   const [isReady, setIsReady] = useState<boolean>(false);
   const [isGuest, setIsGuest] = useState<boolean>(true);
 
-  const { mutate: mutateCreateGuest } = useMutation({
+  const { mutateAsync: mutateCreateGuest } = useMutation({
     mutationFn: createGuest,
     onSuccess: (token) => {
       setAuthToken(token);
@@ -49,7 +52,9 @@ export const useAuth = () => {
     localStorage.removeItem(ACCESS_TOKEN_LOCAL_STORAGE_KEY);
     localStorage.removeItem(ACCESS_TOKEN_SOURCE_LOCAL_STORAGE_KEY);
 
-    mutateCreateGuest();
+    queryClient.invalidateQueries();
+
+    mutateCreateGuest().then(() => router.push('/chat'));
   }, [mutateCreateGuest]);
 
   return { isGuest, isReady, onLogoutClick };

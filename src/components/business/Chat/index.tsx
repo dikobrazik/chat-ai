@@ -5,7 +5,7 @@ import Button from "@/components/ui/Button";
 import { useModelContext } from "@/providers/ModelProvider/hooks";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import css from "./Chat.module.scss";
 import {
@@ -15,6 +15,7 @@ import {
 } from "./components/Message/message";
 
 export const Chat = () => {
+  const router = useRouter();
   const queryClient = useQueryClient();
   const { id: chatId } = useParams();
 
@@ -70,10 +71,8 @@ export const Chat = () => {
     refetchInterval: false,
     queryFn: () =>
       getChat(chatId as string).catch((error) => {
-        if (error.status === 401) {
-          window.history.replaceState({}, "", `/`);
-        } else if (error.status === 403) {
-          window.history.replaceState({}, "", `/`);
+        if (error.status === 401 || error.status === 403) {
+          router.replace("/chat");
         }
 
         return {
