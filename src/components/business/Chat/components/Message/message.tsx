@@ -1,11 +1,14 @@
+import classNames from "classnames";
 import styles from "./Message.module.scss";
 
 type Props = {
   id: string;
   message: string;
   className?: string;
+  role: string;
 };
 
+export const ERROR_MESSAGE_ID = "this-is-error-message";
 export const WAITING_RESPONSE_MESSAGE_ID = "AI is typing...";
 export const TOO_MANY_REQUESTS_MESSAGE_ID =
   "Too many requests. Please try again later.";
@@ -21,9 +24,13 @@ const Typing = () => {
   );
 };
 
-export const Message = ({ id, message, className }: Props) => {
+export const Message = ({ id, role, message, className }: Props) => {
   return (
-    <div className={className}>
+    <div
+      className={classNames(styles.message, className, styles[`${role}`], {
+        [styles.error]: id === ERROR_MESSAGE_ID,
+      })}
+    >
       {id === WAITING_RESPONSE_MESSAGE_ID ? (
         <Typing />
       ) : id === TOO_MANY_REQUESTS_MESSAGE_ID ? (

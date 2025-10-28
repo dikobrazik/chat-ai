@@ -33,19 +33,34 @@
   }
 }
 
-.model {
-  display: flex;
-  flex-direction: column;
-  gap: spacing(1);
+.option {
+  .model {
+    display: flex;
+    flex-direction: column;
+    gap: spacing(1);
 
-  &.selected {
-    & .modelDescription {
-      color: invert(color(gray, 500));
+    &.selected {
+      & .modelDescription {
+        color: invert(color(gray, 500));
+      }
     }
-  }
 
-  & .modelDescription {
-    font-size: font-size(sm);
-    color: color(gray, 500);
+    & .heading {
+      display: flex;
+      justify-content: space-between;
+
+      & .subscription {
+        font-size: 0.7rem;
+        border-radius: 4px;
+        padding: spacing(1);
+        color: color(primary, 50);
+        background-color: color(info);
+      }
+    }
+
+    & .modelDescription {
+      font-size: font-size(sm);
+      color: color(gray, 500);
+    }
   }
 }

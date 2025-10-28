@@ -9,6 +9,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import css from "./Chat.module.scss";
 import {
+  ERROR_MESSAGE_ID,
   Message,
   TOO_MANY_REQUESTS_MESSAGE_ID,
   WAITING_RESPONSE_MESSAGE_ID,
@@ -27,6 +28,17 @@ export const Chat = () => {
     mutationFn: () => createChat({ model_id: model?.id ?? 1 }),
     onError: (error) => {
       if (axios.isAxiosError(error)) {
+        if (error.status === 403) {
+          const response = error.response;
+          setMessages((prevMessages) => [
+            {
+              id: ERROR_MESSAGE_ID,
+              text: response?.data.message ?? error.message,
+              role: "model",
+            },
+            ...prevMessages.slice(1),
+          ]);
+        }
       }
     },
     onSuccess: (chatId) => {
@@ -94,7 +106,7 @@ export const Chat = () => {
 
   const onSendClick = async () => {
     let newChatId: string | undefined = undefined;
-    console.log("chatId", chatId);
+
     if (!chatId) {
       newChatId = await createChatMutation();
     }
@@ -132,7 +144,7 @@ export const Chat = () => {
             key={`${message.id}`}
             id={message.id}
             message={message.text}
-            className={css.message}
+            role={message.role}
           />
         ))}
       </div>

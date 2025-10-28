@@ -1,3 +1,29 @@
+.message {
+  border-radius: border-radius(base);
+  background-color: color(gray, 50);
+  padding: spacing(2);
+  margin-bottom: spacing(2);
+
+  max-width: 80%;
+
+  &.error {
+    background-color: color(warning);
+  }
+
+  &.model {
+    align-self: flex-start;
+  }
+  &.user {
+    align-self: flex-end;
+  }
+  // &:nth-child(odd) {
+  //   align-self: flex-start;
+  // }
+  // &:nth-child(even) {
+  //   align-self: flex-end;
+  // }
+}
+
 .typingIndicator {
   display: flex;
   align-items: center;

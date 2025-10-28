@@ -13,22 +13,6 @@
   flex: 1;
   overflow-y: auto;
   margin-bottom: spacing(2);
-
-  & > .message {
-    border-radius: border-radius(base);
-    background-color: color(gray, 50);
-    padding: spacing(2);
-    margin-bottom: spacing(2);
-
-    max-width: 80%;
-
-    &:nth-child(odd) {
-      align-self: flex-start;
-    }
-    &:nth-child(even) {
-      align-self: flex-end;
-    }
-  }
 }
 
 .controlsContainer {

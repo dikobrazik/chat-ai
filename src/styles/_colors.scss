@@ -2,16 +2,16 @@
 $colors: (
   // Primary colors
   primary: (
-      50: #eff6ff,
-      100: #dbeafe,
-      200: #bfdbfe,
-      300: #845ec2,
-      400: #9b61f9,
-      500: #843cf9,
-      600: #6e25e4,
-      700: #611cd0,
-      800: #5624a6,
-      900: #441b85,
+      50: #f6f6f7,
+      100: #ebebec,
+      200: #ddddde,
+      300: #c9c9c9,
+      400: #a3a3a4,
+      500: #828182,
+      600: #5b5b5c,
+      700: #494849,
+      800: #2b2b2c,
+      900: #09090a,
     ),
 
   // Gray colors
@@ -36,14 +36,14 @@ $colors: (
     ),
 
   danger: (
-    base: #ef4444,
-    hover: #dc2626,
+    base: #ffa0a0,
+    hover: #fd6969,
     light: rgba(239, 68, 68, 0.1),
   ),
 
   warning: (
-    base: #f59e0b,
-    hover: #d97706,
+    base: #fff5dc,
+    hover: #fff0c9,
     light: rgba(245, 158, 11, 0.1),
   ),
 
