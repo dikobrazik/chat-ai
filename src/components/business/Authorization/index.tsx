@@ -36,10 +36,10 @@ export const AuthorizationButton = () => {
           popoverClassName={styles.profilePopover}
           Trigger={(props) => (
             <Button {...props}>
-              {Boolean(profile) && (
+              {Boolean(profile?.photo) && (
                 <Image
                   className={styles.profilePhoto}
-                  src={profile?.photo}
+                  src={profile?.photo as string}
                   fetchPriority="low"
                   alt="Profile Photo"
                   width={200}
