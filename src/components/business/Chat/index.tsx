@@ -24,58 +24,60 @@ export const Chat = () => {
   const [value, setValue] = useState("");
   const { model, setModel } = useModelContext();
 
-  const { mutateAsync: createChatMutation } = useMutation({
-    mutationFn: () => createChat({ model_id: model?.id ?? 1 }),
-    onError: (error) => {
-      if (axios.isAxiosError(error)) {
-        if (error.status === 403) {
-          const response = error.response;
-          setMessages((prevMessages) => [
-            {
-              id: ERROR_MESSAGE_ID,
-              text: response?.data.message ?? error.message,
-              role: "model",
-            },
-            ...prevMessages.slice(1),
-          ]);
+  const { mutateAsync: createChatMutation, isPending: isCreateChatPending } =
+    useMutation({
+      mutationFn: () => createChat({ model_id: model?.id ?? 1 }),
+      onError: (error) => {
+        if (axios.isAxiosError(error)) {
+          if (error.status === 403) {
+            const response = error.response;
+            setMessages((prevMessages) => [
+              {
+                id: ERROR_MESSAGE_ID,
+                text: response?.data.message ?? error.message,
+                role: "model",
+              },
+              ...prevMessages.slice(1),
+            ]);
+          }
         }
-      }
-    },
-    onSuccess: (chatId) => {
-      queryClient.invalidateQueries({ queryKey: ["chats"] });
-      window.history.replaceState({}, "", `/chat/${chatId}`);
-    },
-  });
+      },
+      onSuccess: (chatId) => {
+        queryClient.invalidateQueries({ queryKey: ["chats"] });
+        window.history.replaceState({}, "", `/chat/${chatId}`);
+      },
+    });
 
-  const { mutate: sendPromptMutation } = useMutation({
-    mutationFn: (payload: { input: string; newChatId?: string }) =>
-      sendPrompt({
-        input: payload.input,
-        chat_id: payload.newChatId ?? (chatId as string),
-        model_id: model?.id,
-      }),
-    onError: (error) => {
-      if (axios.isAxiosError(error)) {
-        if (error.status === 429) {
-          setMessages((prevMessages) => [
-            { id: TOO_MANY_REQUESTS_MESSAGE_ID, text: "", role: "model" },
-            ...prevMessages.slice(1),
-          ]);
+  const { mutate: sendPromptMutation, isPending: isSendPromptPending } =
+    useMutation({
+      mutationFn: (payload: { input: string; newChatId?: string }) =>
+        sendPrompt({
+          input: payload.input,
+          chat_id: payload.newChatId ?? (chatId as string),
+          model_id: model?.id,
+        }),
+      onError: (error) => {
+        if (axios.isAxiosError(error)) {
+          if (error.status === 429) {
+            setMessages((prevMessages) => [
+              { id: TOO_MANY_REQUESTS_MESSAGE_ID, text: "", role: "model" },
+              ...prevMessages.slice(1),
+            ]);
+          }
         }
-      }
-    },
-    onSuccess: ({ response }) => {
-      setMessages((prevMessages) => [
-        response,
-        {
-          id: `user-${response.id}`,
-          text: prevMessages[1].text,
-          role: "user",
-        },
-        ...prevMessages.slice(2),
-      ]);
-    },
-  });
+      },
+      onSuccess: ({ response }) => {
+        setMessages((prevMessages) => [
+          response,
+          {
+            id: `user-${response.id}`,
+            text: prevMessages[1].text,
+            role: "user",
+          },
+          ...prevMessages.slice(2),
+        ]);
+      },
+    });
 
   const { data: chat } = useQuery({
     queryKey: ["chat", chatId],
@@ -105,6 +107,8 @@ export const Chat = () => {
   }, [chat]);
 
   const onSendClick = async () => {
+    if (isCreateChatPending || isSendPromptPending) return;
+
     let newChatId: string | undefined = undefined;
 
     if (!chatId) {
