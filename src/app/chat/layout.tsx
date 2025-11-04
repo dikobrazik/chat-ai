@@ -5,6 +5,7 @@ import styles from "./layout.module.scss";
 import { Sidebar } from "@/components/business/Sidebar";
 import { useIsMobile } from "@/hooks/useMobile";
 import { ModelSelect } from "@/components/business/ModelSelect";
+import { Subscription } from "@/components/business/Subscription";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const isMobile = useIsMobile();
@@ -20,7 +21,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <ModelSelect />
           </div>
 
-          <AuthorizationButton />
+          <div className={styles.rightContent}>
+            <Subscription />
+            <AuthorizationButton />
+          </div>
         </header>
 
         <main className={styles.main}>{children}</main>

@@ -5,6 +5,7 @@ import Script from "next/script";
 import { QueryProvider } from "@/providers/QueryProvider/Provider";
 import { AuthProvider } from "@/providers/AuthProvider/Provider";
 import { ModelProvider } from "@/providers/ModelProvider/Provider";
+import Link from "next/link";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,8 +24,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
+  modal,
 }: Readonly<{
   children: React.ReactNode;
+  modal: React.ReactNode;
 }>) {
   return (
     <html lang="en">
@@ -35,7 +38,10 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <QueryProvider>
           <AuthProvider>
-            <ModelProvider>{children}</ModelProvider>
+            <ModelProvider>
+              {children}
+              {modal}
+            </ModelProvider>
           </AuthProvider>
         </QueryProvider>
       </body>

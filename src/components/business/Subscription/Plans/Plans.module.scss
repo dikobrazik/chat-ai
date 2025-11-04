@@ -1,0 +1,52 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: spacing(3);
+}
+
+.plansContainer {
+  display: flex;
+  gap: spacing(1);
+  width: 100%;
+
+  overflow-x: auto;
+  // scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+
+  .plan {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #e0e0e0;
+    border-radius: border-radius(xl);
+    padding: 16px;
+    flex: 1;
+    scroll-snap-align: center;
+
+    @include media-max(md) {
+      flex: 1 0 90%;
+    }
+
+    & ul {
+      list-style: none;
+      padding: 0;
+      margin: spacing(2) 0 0 0;
+
+      & li {
+        margin-bottom: spacing(1);
+
+        &:first-of-type {
+          font-size: larger;
+          font-weight: bold;
+        }
+      }
+    }
+
+    & .selectButton {
+      margin-top: auto;
+    }
+  }
+}
+
+.paymentHidden {
+  visibility: hidden;
+}

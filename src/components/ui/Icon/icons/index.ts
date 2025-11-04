@@ -21,9 +21,11 @@ import { TrashIcon } from './TrashIcon';
 import { XCircleIcon } from './XCircleIcon';
 import { GoogleIcon } from './GoogleIcon';
 import { YandexIcon } from './YandexIcon';
+import { FeatureIcon } from './FeatureIcon';
 
 // Re-export all icons
 export {
+  FeatureIcon,
   LogoutIcon,
   MenuIcon,
   AlertTriangleIcon,
@@ -50,6 +52,7 @@ export {
 
 // Icon registry for dynamic loading
 export const iconComponents = {
+  'feature': FeatureIcon,
   'logout': LogoutIcon,
   'menu': MenuIcon,
   'alert-triangle': AlertTriangleIcon,

@@ -11,3 +11,4 @@ export * from "./auth";
 export * from "./chat";
 export * from "./model";
 export * from "./user";
+export * from "./subscription";

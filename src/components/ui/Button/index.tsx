@@ -7,6 +7,7 @@ import React, {
 } from "react";
 import { Icon } from "../Icon";
 import styles from "./Button.module.scss";
+import Link from "next/link";
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children?: ReactNode;
@@ -59,6 +60,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       styles.button,
       styles[variant],
       styles[size],
+      !children && styles.iconOnly,
       fullWidth && styles.fullWidth,
       loading && styles.loading,
       isDisabled && styles.disabled,
@@ -95,7 +97,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 
     if (as === "a" && href) {
       return (
-        <a
+        <Link
           href={href}
           target={target}
           rel={rel}
@@ -103,7 +105,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           {...(props as any)}
         >
           {buttonContent}
-        </a>
+        </Link>
       );
     }
 

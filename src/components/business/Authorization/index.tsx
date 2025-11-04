@@ -10,6 +10,7 @@ import Image from "next/image";
 import styles from "./Authorization.module.scss";
 import Popover from "@/components/ui/Popover";
 import Icon from "@/components/ui/Icon";
+import classNames from "classnames";
 
 export const AuthorizationButton = () => {
   const { isReady, isGuest, onLogoutClick } = useAuthContext();
@@ -35,7 +36,10 @@ export const AuthorizationButton = () => {
         <Popover
           popoverClassName={styles.profilePopover}
           Trigger={(props) => (
-            <Button {...props}>
+            <Button
+              {...props}
+              className={classNames(props.className, styles.profileButton)}
+            >
               {Boolean(profile?.photo) && (
                 <Image
                   className={styles.profilePhoto}

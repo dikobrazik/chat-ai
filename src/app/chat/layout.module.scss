@@ -15,6 +15,17 @@
 
     gap: spacing(2);
   }
+
+  & .rightContent {
+    display: flex;
+    align-items: center;
+
+    // @include media-max(md) {
+    //   flex-direction: column;
+    // }
+
+    gap: spacing(2);
+  }
 }
 
 .page {

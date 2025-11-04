@@ -105,6 +105,13 @@ $button-sizes: (
   line-height: map.get($size-map, line-height);
   min-height: map.get($size-map, min-height);
 
+  &.iconOnly {
+    padding-top: map.get($size-map, padding-horizontal);
+    padding-bottom: map.get($size-map, padding-horizontal);
+    // padding-top: #{map.get($size-map, padding-vertical)};
+    // padding-bottom: #{map.get($size-map, padding-vertical)};
+  }
+
   .leftIcon,
   .rightIcon {
     width: map.get($size-map, icon-size);
@@ -220,11 +227,11 @@ $button-sizes: (
 // Special variants
 .outline {
   background: transparent;
-  color: #3b82f6;
-  border-color: #3b82f6;
+  color: color(primary, 700);
+  border-color: color(primary, 700);
 
   &:hover:not(.disabled):not(.loading) {
-    background: #3b82f6;
+    background: color(primary, 700);
     color: white;
     transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
