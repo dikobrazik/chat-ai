@@ -1,6 +1,6 @@
 import Button from "@/components/ui/Button";
 import Icon from "@/components/ui/Icon";
-import React from "react";
+import { BASE_URL } from "@/config";
 
 export const YandexSignInButton = () => {
   return (
@@ -11,7 +11,7 @@ export const YandexSignInButton = () => {
         size="sm"
         fullWidth
         leftIcon={<Icon name="yandex" />}
-        href={`http://localhost/api/auth/ya`}
+        href={`${BASE_URL}/api/auth/ya`}
       >
         Yandex
       </Button>

@@ -1,5 +1,6 @@
 import Button from "@/components/ui/Button";
 import Icon from "@/components/ui/Icon";
+import { BASE_URL } from "@/config";
 
 export const GoogleSignInButton = () => {
   return (
@@ -10,7 +11,7 @@ export const GoogleSignInButton = () => {
         size="sm"
         fullWidth
         leftIcon={<Icon name="google" />}
-        href={`http://localhost/api/auth/g`}
+        href={`${BASE_URL}/api/auth/g`}
       >
         Google
       </Button>
