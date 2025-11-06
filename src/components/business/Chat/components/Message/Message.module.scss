@@ -16,12 +16,11 @@
   &.user {
     align-self: flex-end;
   }
-  // &:nth-child(odd) {
-  //   align-self: flex-start;
-  // }
-  // &:nth-child(even) {
-  //   align-self: flex-end;
-  // }
+
+  & .messageContent {
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
 }
 
 .typingIndicator {

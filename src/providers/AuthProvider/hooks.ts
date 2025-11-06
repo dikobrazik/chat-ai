@@ -57,11 +57,11 @@ export const useAuth = () => {
     mutateCreateGuest().then(() => router.push('/chat'));
   }, [mutateCreateGuest]);
 
-  return { isGuest, isReady, onLogoutClick };
+  return { isGuest, isReady, setIsGuest, onLogoutClick };
 };
 
 export const useAuthContext = () => {
-  const { isGuest, isReady, isSubscribed, onLogoutClick } = useContext(AuthContext);
+  const { isGuest, isReady, isSubscribed, setIsGuest, onLogoutClick } = useContext(AuthContext);
 
-  return { isGuest, isReady, isSubscribed, onLogoutClick };
+  return { isGuest, isReady, isSubscribed, setIsGuest, onLogoutClick };
 };

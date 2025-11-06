@@ -38,7 +38,7 @@ export const Message = ({ id, role, message, className }: Props) => {
           Вы достигли лимита запросов. Зарегистрируйтесь, чтобы продолжить.
         </span>
       ) : (
-        message
+        <pre className={styles.messageContent}>{message}</pre>
       )}
     </div>
   );

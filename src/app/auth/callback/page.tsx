@@ -7,10 +7,12 @@ import {
   ACCESS_TOKEN_SOURCE_LOCAL_STORAGE_KEY,
 } from "@/constants/auth";
 import axios from "axios";
+import { useAuthContext } from "@/providers/AuthProvider/hooks";
 
 export default function AuthCallbackPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { setIsGuest } = useAuthContext();
 
   useEffect(() => {
     const accessToken = searchParams.get("token");
@@ -19,6 +21,7 @@ export default function AuthCallbackPage() {
       try {
         localStorage.setItem(ACCESS_TOKEN_LOCAL_STORAGE_KEY, accessToken);
         localStorage.removeItem(ACCESS_TOKEN_SOURCE_LOCAL_STORAGE_KEY);
+        setIsGuest(false);
 
         axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
       } catch (error) {
