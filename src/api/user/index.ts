@@ -7,6 +7,7 @@ export type Profile = {
   photo: string;
   status: string;
   created_at: string;
-}
+};
 
-export const getProfile = () => axios.get<Profile>("user/profile").then(response => response.data);
+export const getProfile = () =>
+  axios.get<Profile>("user/profile").then((response) => response.data);

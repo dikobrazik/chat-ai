@@ -24,7 +24,9 @@ export const Plans = () => {
     queryFn: getPlans,
   });
 
-  const onPaymentIntegrationLoad = () => {
+  const onPlanSelect = (planId: string) => {
+    setSelectedPlanId(planId);
+
     const initConfig = {
       terminalKey: process.env.NEXT_PUBLIC_KASSA_TERMINAL_KEY, // Значение terminalKey из личного кабинета
       product: "eacq",
@@ -34,7 +36,10 @@ export const Plans = () => {
           container: document.getElementById("paymentContainer"), // На странице должен существовать элемент с id="paymentContainer"
           paymentStartCallback: async (paymentType: string) => {
             // paymentType может использоваться для сбора аналитики
-            const res = await initPayment({ paymentType }); // URL — это URL вашего бэкенд-сервиса, который вызовет метод «Инициировать платеж»
+            const res = await initPayment({
+              paymentType,
+              plan: planId,
+            }); // URL — это URL вашего бэкенд-сервиса, который вызовет метод «Инициировать платеж»
             return res.PaymentURL;
           },
           config: {},
@@ -59,7 +64,7 @@ export const Plans = () => {
           <div key={plan.id} className={styles.plan}>
             <h3>{plan.name}</h3>
 
-            <h4>{plan.amount} / месяц</h4>
+            <h4>{plan.price} / месяц</h4>
 
             <div className={styles.divider} />
 
@@ -73,7 +78,7 @@ export const Plans = () => {
             <Button
               variant="primary"
               className={styles.selectButton}
-              onClick={() => setSelectedPlanId(plan.id)}
+              onClick={() => onPlanSelect(plan.id)}
             >
               {SUBSCRIPTION_BUTTON_TEXT[plan.id]}
             </Button>
@@ -97,7 +102,7 @@ export const Plans = () => {
 
       <Script
         src="https://integrationjs.tbank.ru/integration.js"
-        onLoad={onPaymentIntegrationLoad}
+        // onLoad={onPaymentIntegrationLoad}
         async
       ></Script>
     </div>
