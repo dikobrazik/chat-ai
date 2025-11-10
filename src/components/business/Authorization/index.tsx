@@ -53,10 +53,10 @@ export const AuthorizationButton = () => {
             </Button>
           )}
         >
-          <Button rounded={false} size="sm" href="/profile">
+          <Button rounded={false} size="sm" as="a" href="/profile">
             Профиль
           </Button>
-          <Button rounded={false} size="sm" href="/subscriptions">
+          <Button rounded={false} size="sm" as="a" href="/subscription">
             Подписки
           </Button>
           <Button
