@@ -1,125 +1,46 @@
 "use client";
 
-import { createChat, getChat, Model, Prompt, sendPrompt } from "@/api";
 import Button from "@/components/ui/Button";
-import { useModelContext } from "@/providers/ModelProvider/hooks";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
-import { useParams, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
+import { useState } from "react";
 import css from "./Chat.module.scss";
 import {
-  ERROR_MESSAGE_ID,
   Message,
-  TOO_MANY_REQUESTS_MESSAGE_ID,
   WAITING_RESPONSE_MESSAGE_ID,
 } from "./components/Message/message";
+import { useChat } from "./hooks/useChat";
+import { useSendPrompt } from "./hooks/useSendPrompt";
+import { useSendPromptStream } from "./hooks/useSendPromptStream";
+import { randomUUID } from "crypto";
 
 export const Chat = () => {
-  const router = useRouter();
-  const queryClient = useQueryClient();
   const { id: chatId } = useParams();
 
-  const [messages, setMessages] = useState<Prompt[]>([]);
   const [value, setValue] = useState("");
-  const { model, setModel } = useModelContext();
 
-  const { mutateAsync: createChatMutation, isPending: isCreateChatPending } =
-    useMutation({
-      mutationFn: () => createChat({ model_id: model?.id ?? 1 }),
-      onError: (error) => {
-        if (axios.isAxiosError(error)) {
-          if (error.status === 403) {
-            const response = error.response;
-            setMessages((prevMessages) => [
-              {
-                id: ERROR_MESSAGE_ID,
-                text: response?.data.message ?? error.message,
-                role: "model",
-              },
-              ...prevMessages.slice(1),
-            ]);
-          }
-        }
-      },
-      onSuccess: (chatId) => {
-        queryClient.invalidateQueries({ queryKey: ["chats"] });
-        window.history.replaceState({}, "", `/chat/${chatId}`);
-      },
-    });
+  const { messages, isChatCreating, createChat, setMessages } = useChat(
+    chatId as string,
+  );
 
-  const { mutate: sendPromptMutation, isPending: isSendPromptPending } =
-    useMutation({
-      mutationFn: (payload: { input: string; newChatId?: string }) =>
-        sendPrompt({
-          input: payload.input,
-          chat_id: payload.newChatId ?? (chatId as string),
-          model_id: model?.id,
-        }),
-      onError: (error) => {
-        if (axios.isAxiosError(error)) {
-          if (error.status === 429) {
-            setMessages((prevMessages) => [
-              { id: TOO_MANY_REQUESTS_MESSAGE_ID, text: "", role: "model" },
-              ...prevMessages.slice(1),
-            ]);
-          }
-        }
-      },
-      onSuccess: ({ response }) => {
-        setMessages((prevMessages) => [
-          response,
-          {
-            id: `user-${response.id}`,
-            text: prevMessages[1].text,
-            role: "user",
-          },
-          ...prevMessages.slice(2),
-        ]);
-      },
-    });
-
-  const { data: chat } = useQuery({
-    queryKey: ["chat", chatId],
-    enabled: !!chatId,
-    refetchInterval: false,
-    queryFn: () =>
-      getChat(chatId as string).catch((error) => {
-        if (error.status === 401 || error.status === 403) {
-          router.replace("/chat");
-        }
-
-        return {
-          prompts: [],
-          chat: {
-            id: "",
-            model: {} as Model,
-          },
-        };
-      }),
-  });
-
-  useEffect(() => {
-    if (chat) {
-      setMessages(chat.prompts);
-      setModel(chat.chat.model);
-    }
-  }, [chat]);
+  const { sendPrompt, isPromptSending } = useSendPromptStream(
+    chatId as string,
+    setMessages,
+  );
 
   const onSendClick = async () => {
-    if (isCreateChatPending || isSendPromptPending) return;
+    if (isChatCreating || isPromptSending) return;
 
     let newChatId: string | undefined = undefined;
 
     if (!chatId) {
-      newChatId = await createChatMutation();
+      newChatId = await createChat();
     }
     setMessages([
       { id: WAITING_RESPONSE_MESSAGE_ID, text: "", role: "model" },
-      { id: "", text: value, role: "user" },
+      { id: crypto.randomUUID(), text: value, role: "user" },
       ...messages,
     ]);
-    sendPromptMutation({ input: value, newChatId });
+    sendPrompt({ input: value, newChatId });
     setValue("");
   };
 
