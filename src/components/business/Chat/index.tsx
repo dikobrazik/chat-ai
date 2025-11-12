@@ -9,9 +9,7 @@ import {
   WAITING_RESPONSE_MESSAGE_ID,
 } from "./components/Message/message";
 import { useChat } from "./hooks/useChat";
-import { useSendPrompt } from "./hooks/useSendPrompt";
 import { useSendPromptStream } from "./hooks/useSendPromptStream";
-import { randomUUID } from "crypto";
 
 export const Chat = () => {
   const { id: chatId } = useParams();
