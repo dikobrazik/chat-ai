@@ -1,6 +1,6 @@
 .message {
   border-radius: border-radius(base);
-  background-color: color(gray, 50);
+  background-color: color(gray, 200);
   padding: spacing(2);
   margin-bottom: spacing(2);
 
@@ -12,14 +12,16 @@
 
   &.model {
     align-self: flex-start;
+    max-width: 100%;
+    background-color: transparent;
   }
+
   &.user {
     align-self: flex-end;
   }
 
   & .messageContent {
-    white-space: pre-wrap;
-    word-break: break-word;
+    font-size: 16px;
   }
 }
 

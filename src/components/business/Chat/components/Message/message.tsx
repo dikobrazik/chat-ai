@@ -1,5 +1,7 @@
 import classNames from "classnames";
 import styles from "./Message.module.scss";
+import { Streamdown } from "streamdown";
+import { cn } from "@/lib/utils";
 
 type Props = {
   id: string;
@@ -38,7 +40,14 @@ export const Message = ({ id, role, message, className }: Props) => {
           Вы достигли лимита запросов. Зарегистрируйтесь, чтобы продолжить.
         </span>
       ) : (
-        <pre className={styles.messageContent}>{message}</pre>
+        <Streamdown
+          className={cn(
+            "size-full [&>*:first-child]:mt-0 [&>*:last-child]:mb-0",
+            styles.messageContent,
+          )}
+        >
+          {message}
+        </Streamdown>
       )}
     </div>
   );

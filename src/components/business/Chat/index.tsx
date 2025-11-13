@@ -2,7 +2,7 @@
 
 import Button from "@/components/ui/Button";
 import { useParams } from "next/navigation";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import css from "./Chat.module.scss";
 import {
   Message,
@@ -14,6 +14,7 @@ import { useSendPromptStream } from "./hooks/useSendPromptStream";
 export const Chat = () => {
   const { id: chatId } = useParams();
 
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
   const [value, setValue] = useState("");
 
   const { messages, isChatCreating, createChat, setMessages } = useChat(
@@ -40,6 +41,7 @@ export const Chat = () => {
     ]);
     sendPrompt({ input: value, newChatId });
     setValue("");
+    messagesContainerRef.current?.scrollTo(0, 0);
   };
 
   const onInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -61,7 +63,7 @@ export const Chat = () => {
 
   return (
     <div className={css.container}>
-      <div className={css.messages}>
+      <div ref={messagesContainerRef} className={css.messages}>
         {messages.map((message) => (
           <Message
             key={`${message.id}`}
