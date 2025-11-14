@@ -34,6 +34,7 @@ export const Chat = () => {
     if (!chatId) {
       newChatId = await createChat();
     }
+
     setMessages([
       { id: WAITING_RESPONSE_MESSAGE_ID, text: "", role: "model" },
       { id: crypto.randomUUID(), text: value, role: "user" },
@@ -52,6 +53,8 @@ export const Chat = () => {
   };
 
   const onKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (isChatCreating || isPromptSending || !value) return;
+
     if (
       event?.key === "Enter" &&
       (!event?.shiftKey || !event?.altKey || !event?.ctrlKey)
@@ -86,14 +89,15 @@ export const Chat = () => {
 
         <div className={css.controls}>
           <div></div>
-          {value && (
+          {Boolean(value || isPromptSending || isChatCreating) && (
             <Button
               className={css.button}
               size="xs"
               variant="outline"
+              loading={isPromptSending || isChatCreating}
               onClick={onSendClick}
             >
-              Отправить
+              {isPromptSending || isChatCreating ? "" : "Отправить"}
             </Button>
           )}
         </div>

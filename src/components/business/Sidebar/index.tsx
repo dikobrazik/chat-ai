@@ -54,8 +54,9 @@ const SidebarContent = ({
           key={chat.id}
           href={`/chat/${chat.id}`}
           className={styles.chatItem}
+          title={chat.title || chat.last_prompt || ""}
         >
-          {chat.last_prompt}
+          {chat.title || chat.last_prompt}
         </Link>
       ))}
     </div>
