@@ -30,7 +30,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head></head>
+      <head>
+        <meta
+          name="google-site-verification"
+          content="kOMBcuVi1F7zH0Rj3nyl0v3HiIyN2OUJwcvY99xFYpY"
+        />
+      </head>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <QueryProvider>
           <AuthProvider>
