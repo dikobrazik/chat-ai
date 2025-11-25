@@ -1,25 +1,13 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
-import styles from "./Sidebar.module.scss";
 import { getChats } from "@/api";
-import Link from "next/link";
 import Button from "@/components/ui/Button";
-import { useIsMobile } from "@/hooks/useMobile";
-import Icon from "@/components/ui/Icon";
-import { useToggle } from "@/hooks/useToggle";
-import cn from "classnames";
-import { useEffect } from "react";
+import { Sidebar } from "@/components/ui/Sidebar";
+import { useQuery } from "@tanstack/react-query";
+import Link from "next/link";
+import styles from "./Sidebar.module.scss";
 
-const SidebarContent = ({
-  isOpen,
-  toggle,
-}: {
-  isOpen: boolean;
-  toggle: () => void;
-}) => {
-  const isMobile = useIsMobile();
-
+export const ChatSidebar = () => {
   const { data: chats } = useQuery({
     refetchInterval: false,
     queryKey: ["chats"],
@@ -27,19 +15,7 @@ const SidebarContent = ({
   });
 
   return (
-    <div
-      className={cn(styles.sidebar, {
-        [styles.mobile]: isMobile,
-        [styles.open]: isOpen,
-      })}
-    >
-      {!isMobile && (
-        <Button
-          className={styles.toggleButton}
-          leftIcon={<Icon name="menu" />}
-          onClick={toggle}
-        />
-      )}
+    <Sidebar>
       <Button
         variant="primary"
         size="sm"
@@ -59,41 +35,6 @@ const SidebarContent = ({
           {chat.title || chat.last_prompt}
         </Link>
       ))}
-    </div>
+    </Sidebar>
   );
-};
-
-export const Sidebar = () => {
-  const isMobile = useIsMobile();
-
-  const { active: isOpen, toggle, toggleOn, toggleOff } = useToggle();
-
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      if (!isMobile) {
-        toggleOn();
-      } else {
-        toggleOff();
-      }
-    }
-  }, [isMobile]);
-
-  if (isMobile) {
-    return (
-      <>
-        <Button leftIcon={<Icon name="menu" />} onClick={toggle}></Button>
-        {/** biome-ignore lint/a11y/noStaticElementInteractions: <explanation> */}
-        {/** biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
-        <div
-          className={cn(styles.layover, { [styles.open]: isOpen })}
-          onClick={toggle}
-        >
-          <SidebarContent isOpen={isOpen} toggle={toggle} />
-        </div>
-      </>
-    );
-  }
-
-  return <SidebarContent isOpen={isOpen} toggle={toggle} />;
 };

@@ -40,23 +40,30 @@ export const AuthorizationButton = () => {
               {...props}
               className={classNames(props.className, styles.profileButton)}
             >
-              {Boolean(profile?.photo) && (
-                <Image
-                  className={styles.profilePhoto}
-                  src={profile?.photo as string}
-                  fetchPriority="low"
-                  alt="Profile Photo"
-                  width={200}
-                  height={200}
-                />
-              )}
+              <Image
+                className={styles.profilePhoto}
+                src={
+                  profile?.photo
+                    ? (profile?.photo as string)
+                    : "default-avatar.svg"
+                }
+                fetchPriority="low"
+                alt="Profile Photo"
+                width={200}
+                height={200}
+              />
             </Button>
           )}
         >
-          <Button rounded={false} size="sm" as="a" href="/profile">
+          <Button rounded={false} size="sm" as="a" href="/settings/profile">
             Профиль
           </Button>
-          <Button rounded={false} size="sm" as="a" href="/subscription">
+          <Button
+            rounded={false}
+            size="sm"
+            as="a"
+            href="/settings/subscription"
+          >
             Подписки
           </Button>
           <Button

@@ -2,12 +2,10 @@
 
 import { useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import {
-  ACCESS_TOKEN_LOCAL_STORAGE_KEY,
-  ACCESS_TOKEN_SOURCE_LOCAL_STORAGE_KEY,
-} from "@/constants/auth";
+import { ACCESS_TOKEN_SOURCE_LOCAL_STORAGE_KEY } from "@/constants/auth";
 import axios from "axios";
 import { useAuthContext } from "@/providers/AuthProvider/hooks";
+import { setAuthToken } from "@/api";
 
 export default function AuthCallbackPage() {
   const router = useRouter();
@@ -19,7 +17,7 @@ export default function AuthCallbackPage() {
 
     if (accessToken) {
       try {
-        localStorage.setItem(ACCESS_TOKEN_LOCAL_STORAGE_KEY, accessToken);
+        setAuthToken(accessToken);
         localStorage.removeItem(ACCESS_TOKEN_SOURCE_LOCAL_STORAGE_KEY);
         setIsGuest(false);
 
