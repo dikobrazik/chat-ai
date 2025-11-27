@@ -60,7 +60,7 @@ export const useAuth = () => {
         let isRefreshing = false;
         const failedQueue: Array<{
           resolve: (token: string) => void;
-          reject: () => void;
+          reject: (err: any) => void;
         }> = [];
 
         axios.interceptors.response.use(
@@ -85,16 +85,24 @@ export const useAuth = () => {
               }
 
               isRefreshing = true;
+              let newToken: string = "";
 
-              const newToken = await refreshAccessToken();
+              try {
+                newToken = await refreshAccessToken();
 
-              setAuthToken(newToken);
+                setAuthToken(newToken);
 
-              failedQueue.forEach((prom) => {
-                prom.resolve(newToken);
-              });
-
-              failedQueue.length = 0;
+                failedQueue.forEach((prom) => {
+                  prom.resolve(newToken);
+                });
+              } catch (err) {
+                failedQueue.forEach((prom) => {
+                  prom.reject(err);
+                });
+              } finally {
+                failedQueue.length = 0;
+                isRefreshing = false;
+              }
 
               return axios({
                 ...originalRequest,
