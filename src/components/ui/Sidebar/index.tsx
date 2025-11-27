@@ -27,7 +27,7 @@ export const Sidebar = ({
     }
   }, [isMobile]);
 
-  if (forMobile !== isMobile) return null;
+  if (Boolean(forMobile) !== isMobile) return null;
 
   if (isMobile) {
     return (
