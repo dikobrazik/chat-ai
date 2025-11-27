@@ -1,5 +1,6 @@
 @use "sass:map";
 @use "@/styles/_colors";
+@use "@/styles/_variables";
 
 // Theme Colors
 $theme-colors: (
@@ -73,5 +74,25 @@ h6 {
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
+  }
+}
+
+.mobile-only {
+  display: none;
+}
+
+.desktop-only {
+  display: none;
+}
+
+@include media-max(md) {
+  .mobile-only {
+    display: block;
+  }
+}
+
+@include media-min(md) {
+  .desktop-only {
+    display: block;
   }
 }

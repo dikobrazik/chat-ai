@@ -1,15 +1,12 @@
-"use client";
-
 import { AuthorizationButton } from "@/components/business/Authorization";
 import styles from "./layout.module.scss";
 import { PropsWithChildren } from "react";
 import Button from "@/components/ui/Button";
-import { useIsMobile } from "@/hooks/useMobile";
 import { Sidebar } from "@/components/ui/Sidebar";
 
-const NavigationSidebar = () => {
+const NavigationSidebar = ({ forMobile }: { forMobile?: boolean }) => {
   return (
-    <Sidebar>
+    <Sidebar forMobile={forMobile}>
       <Button size="sm" as="a" href="/settings/profile">
         Профиль
       </Button>
@@ -28,14 +25,12 @@ const NavigationSidebar = () => {
 };
 
 export default function Layout({ children }: PropsWithChildren) {
-  const isMobile = useIsMobile();
-
   return (
     <div className={styles.page}>
-      {!isMobile && <NavigationSidebar />}
+      <NavigationSidebar />
       <div className={styles.mainContent}>
         <header className={styles.header}>
-          {isMobile && <NavigationSidebar />}
+          <NavigationSidebar forMobile />
           <div className={styles.rightContent}>
             <Button as="a" href="/chat">
               Чат

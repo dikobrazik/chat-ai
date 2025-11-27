@@ -15,7 +15,7 @@ export const ChatSidebar = () => {
   });
 
   return (
-    <Sidebar>
+    <>
       <Button
         variant="primary"
         size="sm"
@@ -35,6 +35,6 @@ export const ChatSidebar = () => {
           {chat.title || chat.last_prompt}
         </Link>
       ))}
-    </Sidebar>
+    </>
   );
 };

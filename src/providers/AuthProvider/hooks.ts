@@ -53,8 +53,7 @@ export const useAuth = () => {
         queryClient.setDefaultOptions({
           queries: {
             retry: (failureCount, error) =>
-              // isTokenExpiredError(error) ? false :
-              failureCount < 3, // retry max 3 times
+              isTokenExpiredError(error) ? true : failureCount < 3, // retry max 3 times
           },
         });
 
@@ -67,6 +66,7 @@ export const useAuth = () => {
         axios.interceptors.response.use(
           (response) => response,
           async (error: AxiosError) => {
+            console.log(isRefreshing, error);
             if (isTokenExpiredError(error)) {
               const originalRequest = error.config;
 

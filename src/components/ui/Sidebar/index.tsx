@@ -1,3 +1,5 @@
+"use client";
+
 import { useIsMobile } from "@/hooks/useMobile";
 import { useToggle } from "@/hooks/useToggle";
 import { PropsWithChildren, useEffect } from "react";
@@ -6,7 +8,10 @@ import Icon from "../Icon";
 import { cn } from "@/lib/utils";
 import styles from "./Sidebar.module.scss";
 
-export const Sidebar = ({ children }: PropsWithChildren) => {
+export const Sidebar = ({
+  forMobile,
+  children,
+}: PropsWithChildren<{ forMobile?: boolean }>) => {
   const isMobile = useIsMobile();
 
   const { active: isOpen, toggle, toggleOn, toggleOff } = useToggle();
@@ -21,6 +26,8 @@ export const Sidebar = ({ children }: PropsWithChildren) => {
       }
     }
   }, [isMobile]);
+
+  if (forMobile !== isMobile) return null;
 
   if (isMobile) {
     return (
@@ -38,13 +45,6 @@ export const Sidebar = ({ children }: PropsWithChildren) => {
               [styles.open]: isOpen,
             })}
           >
-            {!isMobile && (
-              <Button
-                className={styles.toggleButton}
-                leftIcon={<Icon name="menu" />}
-                onClick={toggle}
-              />
-            )}
             {children}
           </div>
         </div>
@@ -59,13 +59,11 @@ export const Sidebar = ({ children }: PropsWithChildren) => {
         [styles.open]: isOpen,
       })}
     >
-      {!isMobile && (
-        <Button
-          className={styles.toggleButton}
-          leftIcon={<Icon name="menu" />}
-          onClick={toggle}
-        />
-      )}
+      <Button
+        className={styles.toggleButton}
+        leftIcon={<Icon name="menu" />}
+        onClick={toggle}
+      />
       {children}
     </div>
   );
