@@ -29,7 +29,7 @@ export const AuthorizationButton = () => {
   return (
     <>
       {isGuest ? (
-        <Button variant="primary" onClick={openModal}>
+        <Button as="a" variant="primary" href="/login">
           Войти
         </Button>
       ) : (
@@ -77,9 +77,9 @@ export const AuthorizationButton = () => {
         </Popover>
       )}
 
-      <Modal onClose={closeModal} isOpen={isOpen}>
+      {/* <Modal onClose={closeModal} isOpen={isOpen}>
         <AuthorizationModal />
-      </Modal>
+      </Modal> */}
     </>
   );
 };

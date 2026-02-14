@@ -53,7 +53,7 @@ export const useAuth = () => {
         queryClient.setDefaultOptions({
           queries: {
             retry: (failureCount, error) =>
-              isTokenExpiredError(error) ? true : failureCount < 3, // retry max 3 times
+              isTokenExpiredError(error) ? false : failureCount < 3, // retry max 3 times
           },
         });
 
