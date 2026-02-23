@@ -35,6 +35,8 @@ services:
         image: ghcr.io/dikobrazik/chat-ai-api:latest
         volumes:
             - shared-volume:/var/tmp/shared-docker
+        env_file:
+            - ./backend.env
         restart: always
 
 volumes:
