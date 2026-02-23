@@ -1,6 +1,6 @@
-import axios from "axios";
-import { Model } from "../model";
 import EventSourceStream from "@server-sent-stream/web";
+import axios from "axios";
+import type { Model } from "../model";
 
 type SendPromptResponse = {
   chatId: string;
@@ -28,7 +28,6 @@ export const sendStreamPrompt = ({ chat_id, input }: SendPromptRequest) =>
       adapter: "fetch", // <- this option can also be set in axios.create()
     })
     .then(async (response) => {
-      console.log("axios got a response", response.data);
       const stream = response.data as ReadableStream;
 
       const decoder = new EventSourceStream();
@@ -73,3 +72,14 @@ export type Prompt = {
 
 export const getChat = (chatId: string) =>
   axios.get<ChatResponse>(`chat/${chatId}`).then((response) => response.data);
+
+export const getImageUrl = ({
+  chatId,
+  promptId,
+}: {
+  chatId: string;
+  promptId: string;
+}) =>
+  axios
+    .get<string>(`chat/${chatId}/prompt/${promptId}/image`)
+    .then((response) => response.data);

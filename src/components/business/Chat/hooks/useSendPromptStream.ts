@@ -1,6 +1,5 @@
-import { Prompt, sendStreamPrompt } from "@/api";
-
-import { useState, type Dispatch, type SetStateAction } from "react";
+import { type Dispatch, type SetStateAction, useState } from "react";
+import { type Prompt, sendStreamPrompt } from "@/api";
 
 export const useSendPromptStream = (
   chatId: string,
@@ -39,7 +38,7 @@ export const useSendPromptStream = (
           if (value.type === "complete") {
             setMessages((prevMessages) => [
               {
-                id: randomId,
+                id: data.promptId || randomId,
                 text: data.content,
                 role: "model",
               },
@@ -48,7 +47,7 @@ export const useSendPromptStream = (
           } else if (value.type === "delta") {
             setMessages((prevMessages) => [
               {
-                id: randomId,
+                id: data.promptId || randomId,
                 text: prevMessages[0].text + data.content,
                 role: "model",
               },

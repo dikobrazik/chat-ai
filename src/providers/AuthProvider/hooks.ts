@@ -1,19 +1,19 @@
-import {
-  setAuthToken,
-  createGuest,
-  refreshAccessToken,
-  postLogout,
-} from "@/api";
-import { ACCESS_TOKEN_SOURCE_LOCAL_STORAGE_KEY } from "@/constants/auth";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useCallback, useContext, useEffect, useState } from "react";
-import { AuthContext } from "./context";
+import axios, { type AxiosError } from "axios";
 import { useRouter } from "next/navigation";
-import axios, { AxiosError } from "axios";
+import { useCallback, useContext, useEffect, useState } from "react";
+import {
+  createGuest,
+  postLogout,
+  refreshAccessToken,
+  setAuthToken,
+} from "@/api";
 import {
   isRefreshTokenExpiredError,
   isTokenExpiredError,
 } from "@/api/auth/utils";
+import { ACCESS_TOKEN_SOURCE_LOCAL_STORAGE_KEY } from "@/constants/auth";
+import { AuthContext } from "./context";
 
 export const useAuth = () => {
   const router = useRouter();
