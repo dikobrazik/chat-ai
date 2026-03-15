@@ -14,10 +14,7 @@ services:
             - '80:8080'
             - '443:8443'
         volumes:
-            - /etc/letsencrypt/live/tridva.store/fullchain.pem:/etc/letsencrypt/live/tridva.store/fullchain.pem
-            - /etc/letsencrypt/live/tridva.store/privkey.pem:/etc/letsencrypt/live/tridva.store/privkey.pem
-            - /etc/letsencrypt/live/default/fullchain.pem:/etc/letsencrypt/live/default/fullchain.pem
-            - /etc/letsencrypt/live/default/privkey.pem:/etc/letsencrypt/live/default/privkey.pem
+            - /etc/letsencrypt:/etc/letsencrypt
             - shared-volume:/var/tmp/shared-docker
             - ~/log/nginx:/var/log/nginx
             - ~/log/modsec:/var/log/modsec
