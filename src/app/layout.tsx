@@ -5,8 +5,12 @@ import { ModelProvider } from "@/providers/ModelProvider/Provider";
 import { QueryProvider } from "@/providers/QueryProvider/Provider";
 import "./globals.scss";
 import "./globals.css";
-// import { fetchDummy } from "@/api";
-// import { cookies } from "next/headers";
+import { AuthorizationButton } from "@/components/business/Authorization";
+import { ModelSelect } from "@/components/business/ModelSelect";
+import { ChatSidebar } from "@/components/business/Sidebar";
+import { Subscription } from "@/components/business/Subscription";
+import { Sidebar } from "@/components/ui/Sidebar";
+import styles from "./layout.module.scss";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,8 +34,6 @@ export default async function RootLayout({
   children: React.ReactNode;
   modal: React.ReactNode;
 }>) {
-  // await fetchDummy((await cookies()).toString());
-
   return (
     <html lang="en">
       <head>
@@ -70,6 +72,29 @@ export default async function RootLayout({
         <QueryProvider>
           <AuthProvider>
             <ModelProvider>
+              <div className={styles.page}>
+                <Sidebar>
+                  <ChatSidebar />
+                </Sidebar>
+                <div className={styles.mainContent}>
+                  <header className={styles.header}>
+                    <Sidebar forMobile>
+                      <ChatSidebar />
+                    </Sidebar>
+                    <div className={styles.leftContent}>
+                      <h1>Jonu</h1>
+                      <ModelSelect />
+                    </div>
+
+                    <div className={styles.rightContent}>
+                      <Subscription />
+                      <AuthorizationButton />
+                    </div>
+                  </header>
+
+                  <main className={styles.main}>{children}</main>
+                </div>
+              </div>
               {children}
               {modal}
             </ModelProvider>
