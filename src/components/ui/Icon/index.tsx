@@ -1,8 +1,8 @@
 "use client";
 
-import React from "react";
+import type React from "react";
 import styles from "./Icon.module.scss";
-import { iconComponents, type IconName } from "./icons";
+import { type IconName, iconComponents } from "./icons";
 
 export interface IconProps {
   name: IconName;
@@ -31,10 +31,10 @@ export type IconComponent = React.FC<IconComponentProps>;
 // Main Icon component
 export const Icon: React.FC<IconProps> = ({
   name,
-  size = 24,
+  size = 20,
   color = "currentColor",
   className = "",
-  strokeWidth = 2,
+  strokeWidth = 1,
   fill = "none",
   "aria-label": ariaLabel,
   "aria-hidden": ariaHidden,
@@ -74,14 +74,14 @@ export const BaseIcon: React.FC<{
   viewBox?: string;
 }> = ({
   children,
-  size = 24,
+  size = 20,
   color = "currentColor",
   className = "",
-  strokeWidth = 2,
+  strokeWidth = 1,
   fill = "none",
   "aria-label": ariaLabel,
   "aria-hidden": ariaHidden = !ariaLabel,
-  viewBox = "0 0 24 24",
+  viewBox = "0 0 20 20",
 }) => {
   return (
     <svg

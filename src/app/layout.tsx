@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Rubik } from "next/font/google";
 import { AuthProvider } from "@/providers/AuthProvider/Provider";
 import { ModelProvider } from "@/providers/ModelProvider/Provider";
 import { QueryProvider } from "@/providers/QueryProvider/Provider";
@@ -7,18 +7,13 @@ import "./globals.scss";
 import "./globals.css";
 import { AuthorizationButton } from "@/components/business/Authorization";
 import { ModelSelect } from "@/components/business/ModelSelect";
-import { ChatSidebar } from "@/components/business/Sidebar";
+import { Sidebar } from "@/components/business/Sidebar";
 import { Subscription } from "@/components/business/Subscription";
-import { Sidebar } from "@/components/ui/Sidebar";
 import styles from "./layout.module.scss";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const rubik = Rubik({
+  variable: "--font-rubik",
+  fallback: ["intl", "sans-serif"],
   subsets: ["latin"],
 });
 
@@ -68,19 +63,15 @@ export default async function RootLayout({
           content="kOMBcuVi1F7zH0Rj3nyl0v3HiIyN2OUJwcvY99xFYpY"
         />
       </head>
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body className={`${rubik.variable}`}>
         <QueryProvider>
           <AuthProvider>
             <ModelProvider>
               <div className={styles.page}>
-                <Sidebar>
-                  <ChatSidebar />
-                </Sidebar>
+                <Sidebar />
                 <div className={styles.mainContent}>
                   <header className={styles.header}>
-                    <Sidebar forMobile>
-                      <ChatSidebar />
-                    </Sidebar>
+                    <Sidebar forMobile />
                     <div className={styles.leftContent}>
                       <h1>Jonu</h1>
                       <ModelSelect />
