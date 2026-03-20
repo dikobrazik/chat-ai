@@ -15,9 +15,11 @@ import styles from "./Sidebar.module.scss";
 export const ChatSidebar = ({
   isOpen,
   toggleSidebar,
+  forMobile,
 }: {
   isOpen: boolean;
   toggleSidebar: () => void;
+  forMobile?: boolean;
 }) => {
   const { data: chats } = useQuery({
     refetchInterval: false,
@@ -57,9 +59,12 @@ export const ChatSidebar = ({
           </Text>
         </div>
 
-        <Button onClick={toggleSidebar}>
-          <Icon name="sidebar-toggle" />
-        </Button>
+        <Button
+          onClick={toggleSidebar}
+          leftIcon={
+            forMobile ? <Icon name="close" /> : <Icon name="sidebar-toggle" />
+          }
+        />
       </div>
 
       <div className="flex flex-col gap-5">
@@ -118,7 +123,11 @@ export const Sidebar = ({ forMobile }: { forMobile?: boolean }) => {
 
   return (
     <UISidebar isOpen={isOpen} toggle={toggle} forMobile={forMobile}>
-      <ChatSidebar isOpen={isOpen} toggleSidebar={toggle} />
+      <ChatSidebar
+        isOpen={isOpen}
+        toggleSidebar={toggle}
+        forMobile={forMobile}
+      />
     </UISidebar>
   );
 };

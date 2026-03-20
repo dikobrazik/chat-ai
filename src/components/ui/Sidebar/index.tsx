@@ -3,6 +3,8 @@
 import type { PropsWithChildren } from "react";
 import { useIsMobile } from "@/hooks/useMobile";
 import { cn } from "@/lib/utils";
+import Button from "../Button";
+import { Icon } from "../Icon";
 import styles from "./Sidebar.module.scss";
 
 export const Sidebar = ({
@@ -22,6 +24,8 @@ export const Sidebar = ({
   if (isMobile) {
     return (
       <>
+        <Button onClick={toggle} leftIcon={<Icon name="menu" />} />
+
         {/** biome-ignore lint/a11y/noStaticElementInteractions: <explanation> */}
         {/** biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
         <div
