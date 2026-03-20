@@ -8,7 +8,6 @@ export const GoogleSignInButton = () => {
       <Button
         as="a"
         variant="outline"
-        size="sm"
         fullWidth
         leftIcon={<Icon name="google" />}
         href={`${BASE_URL}/api/auth/g`}

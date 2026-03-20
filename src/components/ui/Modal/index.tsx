@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useEffect, useRef, type ReactNode } from "react";
+import React, { type ReactNode, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
+import Button from "../Button";
 import { Icon } from "../Icon";
 import styles from "./Modal.module.scss";
-import Button from "../Button";
 
 export interface ModalProps {
   isOpen: boolean;
@@ -125,7 +125,6 @@ export const Modal: React.FC<ModalProps> = ({
                 onClick={onClose}
                 aria-label="Close modal"
                 variant="ghost"
-                size="sm"
               ></Button>
             )}
           </div>

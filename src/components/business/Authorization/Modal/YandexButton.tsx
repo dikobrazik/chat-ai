@@ -8,7 +8,6 @@ export const YandexSignInButton = () => {
       <Button
         as="a"
         variant="outline"
-        size="sm"
         fullWidth
         leftIcon={<Icon name="yandex" />}
         href={`${BASE_URL}/api/auth/ya`}

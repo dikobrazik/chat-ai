@@ -1,8 +1,8 @@
 "use client";
 
-import Button from "@/components/ui/Button";
 import { useParams } from "next/navigation";
 import { useRef, useState } from "react";
+import Button from "@/components/ui/Button";
 import css from "./Chat.module.scss";
 import {
   Message,
@@ -29,7 +29,7 @@ export const Chat = () => {
   const onSendClick = async () => {
     if (isChatCreating || isPromptSending) return;
 
-    let newChatId: string | undefined = undefined;
+    let newChatId: string | undefined;
 
     if (!chatId) {
       newChatId = await createChat();
@@ -92,7 +92,6 @@ export const Chat = () => {
           {Boolean(value || isPromptSending || isChatCreating) && (
             <Button
               className={css.button}
-              size="xs"
               variant="outline"
               loading={isPromptSending || isChatCreating}
               onClick={onSendClick}

@@ -1,9 +1,9 @@
 "use client";
 
-import Button from "@/components/ui/Button";
-import Icon from "@/components/ui/Icon";
 import { usePrefetchQuery } from "@tanstack/react-query";
 import { getPlans } from "@/api";
+import Button from "@/components/ui/Button";
+import Icon from "@/components/ui/Icon";
 import { useAuthContext } from "@/providers/AuthProvider/hooks";
 
 export const Subscription = () => {
@@ -18,7 +18,6 @@ export const Subscription = () => {
 
   return (
     <Button
-      size="md"
       variant="outline"
       as="a"
       href="/plans"

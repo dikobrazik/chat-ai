@@ -1,16 +1,16 @@
 "use client";
 
+import { useQuery } from "@tanstack/react-query";
+import classNames from "classnames";
+import Image from "next/image";
+import { getProfile } from "@/api/user";
+import Icon from "@/components/ui/Icon";
+import Popover from "@/components/ui/Popover";
 import { useAuthContext } from "@/providers/AuthProvider/hooks";
 import Button from "@/ui/Button";
 import Modal, { useModal } from "@/ui/Modal";
-import { AuthorizationModal } from "./Modal";
-import { useQuery } from "@tanstack/react-query";
-import { getProfile } from "@/api/user";
-import Image from "next/image";
 import styles from "./Authorization.module.scss";
-import Popover from "@/components/ui/Popover";
-import Icon from "@/components/ui/Icon";
-import classNames from "classnames";
+import { AuthorizationModal } from "./Modal";
 
 export const AuthorizationButton = () => {
   const { isReady, isGuest, onLogoutClick } = useAuthContext();
@@ -55,21 +55,15 @@ export const AuthorizationButton = () => {
             </Button>
           )}
         >
-          <Button rounded={false} size="sm" as="a" href="/settings/profile">
+          <Button rounded={false} as="a" href="/settings/profile">
             Профиль
           </Button>
-          <Button
-            rounded={false}
-            size="sm"
-            as="a"
-            href="/settings/subscription"
-          >
+          <Button rounded={false} as="a" href="/settings/subscription">
             Подписки
           </Button>
           <Button
             rounded={false}
             leftIcon={<Icon size="12" name="logout" />}
-            size="sm"
             onClick={onLogoutClick}
           >
             Выйти
