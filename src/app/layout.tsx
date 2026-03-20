@@ -86,7 +86,6 @@ export default async function RootLayout({
                   <main className={styles.main}>{children}</main>
                 </div>
               </div>
-              {children}
               {modal}
             </ModelProvider>
           </AuthProvider>
