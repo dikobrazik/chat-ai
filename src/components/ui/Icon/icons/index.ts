@@ -5,11 +5,13 @@ import { ArrowRightIcon } from "./ArrowRightIcon";
 import { CheckCircleIcon } from "./CheckCircleIcon";
 import { CheckIcon } from "./CheckIcon";
 import { ChevronDownIcon } from "./ChevronDownIcon";
+import { ClipboardIcon } from "./ClipboardIcon";
 import { CloseIcon } from "./CloseIcon";
 import { CopyIcon } from "./CopyIcon";
 import { DownloadIcon } from "./DownloadIcon";
 import { ExternalLinkIcon } from "./ExternalLinkIcon";
 import { FeatureIcon } from "./FeatureIcon";
+import { FlashCircleIcon } from "./FlashCircleIcon";
 import { GalleryIcon } from "./GalleryIcon";
 import { GoogleIcon } from "./GoogleIcon";
 import { HeartIcon } from "./HeartIcon";
@@ -18,6 +20,7 @@ import { InfoIcon } from "./InfoIcon";
 import { LogoutIcon } from "./LogoutIcon";
 import { MenuIcon } from "./MenuIcon";
 import { MessageCreateIcon } from "./MessageCreateIcon";
+import { MessageQuestionIcon } from "./MessageQuestionIcon";
 import { PlusIcon } from "./PlusIcon";
 import { SettingsIcon } from "./SettingsIcon";
 import { ShareIcon } from "./ShareIcon";
@@ -40,6 +43,7 @@ export {
   CheckIcon,
   ChevronDownIcon,
   CloseIcon,
+  ClipboardIcon,
   CopyIcon,
   DownloadIcon,
   ExternalLinkIcon,
@@ -56,9 +60,11 @@ export {
   YandexIcon,
   SidebarToggleIcon,
   MessageCreateIcon,
+  MessageQuestionIcon,
   GalleryIcon,
   VideoPlayIcon,
   SidebarToggleOnIcon,
+  FlashCircleIcon,
 };
 
 // Icon registry for dynamic loading
@@ -91,6 +97,9 @@ export const iconComponents = {
   "message-create": MessageCreateIcon,
   "video-play": VideoPlayIcon,
   "sidebar-toggle-on": SidebarToggleOnIcon,
+  "message-question": MessageQuestionIcon,
+  "flash-circle": FlashCircleIcon,
+  clipboard: ClipboardIcon,
 } as const;
 
 export type IconName = keyof typeof iconComponents;

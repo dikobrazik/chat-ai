@@ -1,13 +1,16 @@
-import React, {
-  PropsWithChildren,
-  ReactNode,
+"use client";
+
+import classNames from "classnames";
+import type React from "react";
+import {
+  type PropsWithChildren,
+  type ReactNode,
   useEffect,
   useRef,
   useState,
 } from "react";
-import { ButtonProps } from "../Button";
+import type { ButtonProps } from "../Button";
 import styles from "./Popover.module.scss";
-import classNames from "classnames";
 
 type Props = {
   Trigger: (

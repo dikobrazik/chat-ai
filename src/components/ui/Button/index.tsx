@@ -60,7 +60,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 
     const buttonClasses = cn(
       styles.button,
-      styles[variant],
+      styles[`variant-${variant}`],
       styles[`size-${size}`],
       !children && styles.iconOnly,
       fullWidth && styles.fullWidth,

@@ -4,26 +4,24 @@ import { usePrefetchQuery } from "@tanstack/react-query";
 import { getPlans } from "@/api";
 import Button from "@/components/ui/Button";
 import Icon from "@/components/ui/Icon";
-import { useAuthContext } from "@/providers/AuthProvider/hooks";
+import { Text } from "@/components/ui/Text";
 
-export const Subscription = () => {
-  const { isGuest } = useAuthContext();
-
+export const SubscriptionButton = () => {
   usePrefetchQuery({
     queryKey: ["subscription", "plans"],
     queryFn: getPlans,
   });
 
-  if (isGuest) return null;
-
   return (
     <Button
-      variant="outline"
+      variant="primary"
       as="a"
       href="/plans"
-      leftIcon={<Icon size="18" name="feature" />}
+      leftIcon={<Icon name="flash-circle" />}
     >
-      Улучшить
+      <Text type="s" style="regular">
+        Улучшить
+      </Text>
     </Button>
   );
 };

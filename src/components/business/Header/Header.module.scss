@@ -1,0 +1,34 @@
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: spacing(4);
+
+  @include media-max(md) {
+    border-bottom: #EFEFEF 1px solid;
+  }
+
+  & .leftContent {
+    display: flex;
+    align-items: center;
+
+    @include media-max(md) {
+      flex-direction: column;
+    }
+
+    gap: spacing(2);
+  }
+
+  & .rightContent {
+    display: flex;
+    align-items: center;
+
+    gap: spacing(2);
+  }
+
+  .registerButton {
+    @include media-max(md) {
+      display: none;
+    }
+  }
+}

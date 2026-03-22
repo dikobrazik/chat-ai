@@ -34,7 +34,7 @@ export const Icon: React.FC<IconProps> = ({
   size = 20,
   color = "currentColor",
   className = "",
-  strokeWidth = 1,
+  strokeWidth = 0,
   fill = "none",
   "aria-label": ariaLabel,
   "aria-hidden": ariaHidden,

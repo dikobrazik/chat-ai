@@ -1,14 +1,12 @@
 import type { Metadata } from "next";
 import { Rubik } from "next/font/google";
+import { Header } from "@/components/business/Header";
+import { Sidebar } from "@/components/business/Sidebar";
 import { AuthProvider } from "@/providers/AuthProvider/Provider";
 import { ModelProvider } from "@/providers/ModelProvider/Provider";
 import { QueryProvider } from "@/providers/QueryProvider/Provider";
-import "./globals.scss";
 import "./globals.css";
-import { AuthorizationButton } from "@/components/business/Authorization";
-import { ModelSelect } from "@/components/business/ModelSelect";
-import { Sidebar } from "@/components/business/Sidebar";
-import { Subscription } from "@/components/business/Subscription";
+import "./globals.scss";
 import styles from "./layout.module.scss";
 
 const rubik = Rubik({
@@ -70,18 +68,7 @@ export default async function RootLayout({
               <div className={styles.page}>
                 <Sidebar />
                 <div className={styles.mainContent}>
-                  <header className={styles.header}>
-                    <Sidebar forMobile />
-                    <div className={styles.leftContent}>
-                      <h1>Jonu</h1>
-                      <ModelSelect />
-                    </div>
-
-                    <div className={styles.rightContent}>
-                      <Subscription />
-                      <AuthorizationButton />
-                    </div>
-                  </header>
+                  <Header />
 
                   <main className={styles.main}>{children}</main>
                 </div>
