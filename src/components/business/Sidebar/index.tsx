@@ -10,6 +10,7 @@ import { Sidebar as UISidebar } from "@/components/ui/Sidebar";
 import { useSidebarState } from "@/components/ui/Sidebar/useSidebarState";
 import { Text } from "@/components/ui/Text";
 import { cn } from "@/lib/utils";
+import { stopPropagation } from "@/utils";
 import styles from "./Sidebar.module.scss";
 
 export const ChatSidebar = ({
@@ -60,7 +61,7 @@ export const ChatSidebar = ({
         </div>
 
         <Button
-          onClick={toggleSidebar}
+          onClick={stopPropagation(toggleSidebar)}
           leftIcon={
             forMobile ? <Icon name="close" /> : <Icon name="sidebar-toggle" />
           }

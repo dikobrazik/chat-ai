@@ -25,12 +25,11 @@ export const Sidebar = ({
     return (
       <>
         <Button onClick={toggle} leftIcon={<Icon name="menu" />} />
-
-        {/** biome-ignore lint/a11y/noStaticElementInteractions: <explanation> */}
-        {/** biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
         <div
+          role="alertdialog"
           className={cn(styles.layover, { [styles.open]: isOpen })}
           onClick={toggle}
+          onKeyUp={toggle}
         >
           <div
             className={cn(styles.sidebar, {
