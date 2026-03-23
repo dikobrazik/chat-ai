@@ -7,6 +7,7 @@ type TextProps = {
   type?: "m" | "s" | "xs";
   style?: "medium" | "regular";
   as?: React.ElementType;
+  color?: string;
 };
 
 export const Text = ({
@@ -15,6 +16,7 @@ export const Text = ({
   as: Component = "span",
   className,
   style = "medium",
+  color,
 }: TextProps) => {
   return (
     <Component
@@ -24,6 +26,7 @@ export const Text = ({
         styles[style],
         className,
       )}
+      styles={{ color }}
     >
       {children}
     </Component>

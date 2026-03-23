@@ -1,20 +1,18 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import classNames from "classnames";
 import Image from "next/image";
 import { getProfile } from "@/api/user";
+import { Divider } from "@/components/ui/Divider";
 import Icon from "@/components/ui/Icon";
 import Popover from "@/components/ui/Popover";
+import { Text } from "@/components/ui/Text";
 import { useAuthContext } from "@/providers/AuthProvider/hooks";
 import Button from "@/ui/Button";
-import Modal, { useModal } from "@/ui/Modal";
 import styles from "./Authorization.module.scss";
-import { AuthorizationModal } from "./Modal";
 
-export const AuthorizationButton = () => {
-  const { isReady, isGuest, onLogoutClick } = useAuthContext();
-  const { isOpen, openModal, closeModal } = useModal();
+const ProfileInfo = () => {
+  const { isGuest } = useAuthContext();
 
   const { data: profile } = useQuery({
     queryKey: ["profile"],
@@ -22,58 +20,78 @@ export const AuthorizationButton = () => {
     enabled: !isGuest,
   });
 
+  return (
+    <div className="w-full flex items-center gap-3">
+      <Image
+        className={styles.profilePhoto}
+        src={profile?.photo ? (profile?.photo as string) : "default-avatar.svg"}
+        fetchPriority="low"
+        alt="Profile Photo"
+        width={200}
+        height={200}
+      />
+
+      <div className="flex flex-col w-[50%]">
+        <Text type="s" style="medium" className="truncate">
+          {profile?.name ?? profile?.email}
+        </Text>
+        <Text type="xs" style="regular" color="#9C9C9C">
+          Бесплатный
+        </Text>
+      </div>
+    </div>
+  );
+};
+
+export const AuthorizationButton = () => {
+  const { isReady, onLogoutClick } = useAuthContext();
+
   if (!isReady) {
     return <Button loading />;
   }
 
   return (
-    <>
-      {isGuest ? (
-        <Button as="a" variant="primary" href="/login">
-          Войти
-        </Button>
-      ) : (
-        <Popover
-          popoverClassName={styles.profilePopover}
-          Trigger={(props) => (
-            <Button
-              {...props}
-              className={classNames(props.className, styles.profileButton)}
-            >
-              <Image
-                className={styles.profilePhoto}
-                src={
-                  profile?.photo
-                    ? (profile?.photo as string)
-                    : "default-avatar.svg"
-                }
-                fetchPriority="low"
-                alt="Profile Photo"
-                width={200}
-                height={200}
-              />
-            </Button>
-          )}
-        >
-          <Button rounded={false} as="a" href="/settings/profile">
-            Профиль
-          </Button>
-          <Button rounded={false} as="a" href="/settings/subscription">
-            Подписки
+    <div className="flex gap-3 w-full items-center">
+      <ProfileInfo />
+
+      <Popover
+        popoverClassName={styles.profilePopover}
+        position="top"
+        Trigger={(props) => (
+          <Button {...props} leftIcon={<Icon name="more" />} />
+        )}
+      >
+        <ProfileInfo />
+        <div className="flex flex-col gap-2">
+          <Button align="center" variant="primary" as="a" href="/subscription">
+            <Text type="s" style="medium">
+              Открыть полный доступ
+            </Text>
           </Button>
           <Button
-            rounded={false}
-            leftIcon={<Icon size="12" name="logout" />}
-            onClick={onLogoutClick}
+            as="a"
+            href="/settings/profile"
+            leftIcon={<Icon name="setting" />}
           >
-            Выйти
+            Профиль
           </Button>
-        </Popover>
-      )}
-
-      {/* <Modal onClose={closeModal} isOpen={isOpen}>
-        <AuthorizationModal />
-      </Modal> */}
-    </>
+          <Button
+            as="a"
+            href="/settings/subscription"
+            leftIcon={<Icon name="message-question" />}
+          >
+            Подписки
+          </Button>
+        </div>
+        <Divider />
+        <Button
+          variant="danger"
+          leftIcon={<Icon name="logout" />}
+          onClick={onLogoutClick}
+        >
+          Выйти
+        </Button>
+      </Popover>
+    </div>
   );
 };

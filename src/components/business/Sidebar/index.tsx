@@ -2,6 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { getChats } from "@/api";
+import { Banner } from "@/components/ui/Banner";
 import Button from "@/components/ui/Button";
 import { Divider } from "@/components/ui/Divider";
 import Icon from "@/components/ui/Icon";
@@ -10,7 +11,9 @@ import { Sidebar as UISidebar } from "@/components/ui/Sidebar";
 import { useSidebarState } from "@/components/ui/Sidebar/useSidebarState";
 import { Text } from "@/components/ui/Text";
 import { cn } from "@/lib/utils";
+import { useAuthContext } from "@/providers/AuthProvider/hooks";
 import { stopPropagation } from "@/utils";
+import { AuthorizationButton } from "../Authorization";
 import styles from "./Sidebar.module.scss";
 
 export const ChatSidebar = ({
@@ -22,6 +25,8 @@ export const ChatSidebar = ({
   toggleSidebar: () => void;
   forMobile?: boolean;
 }) => {
+  const { isGuest } = useAuthContext();
+
   const { data: chats } = useQuery({
     refetchInterval: false,
     queryKey: ["chats"],
@@ -68,7 +73,7 @@ export const ChatSidebar = ({
         />
       </div>
 
-      <div className="flex flex-col gap-5">
+      <div className="flex flex-col gap-3">
         <Button
           className={styles.newChatButton}
           as="a"
@@ -101,7 +106,7 @@ export const ChatSidebar = ({
           Чаты
         </Text>
       </div>
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col h-full overflow-y-auto gap-1">
         {chats?.map((chat) => (
           <Button
             key={chat.id}
@@ -115,6 +120,19 @@ export const ChatSidebar = ({
           </Button>
         ))}
       </div>
+      {isGuest ? (
+        <Banner
+          title="Получайте персонализированные ответы"
+          description="Войдите в систему, чтобы использовать историю чатов, создавать изображения и загружать файлы."
+          action={
+            <Button as="a" variant="primary" href="/login">
+              <div className="w-full text-center">Войти</div>
+            </Button>
+          }
+        />
+      ) : (
+        <AuthorizationButton />
+      )}
     </>
   );
 };

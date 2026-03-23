@@ -21,7 +21,9 @@ import { LogoutIcon } from "./LogoutIcon";
 import { MenuIcon } from "./MenuIcon";
 import { MessageCreateIcon } from "./MessageCreateIcon";
 import { MessageQuestionIcon } from "./MessageQuestionIcon";
+import { MoreIcon } from "./MoreIcon";
 import { PlusIcon } from "./PlusIcon";
+import { SettingIcon } from "./SettingIcon";
 import { SettingsIcon } from "./SettingsIcon";
 import { ShareIcon } from "./ShareIcon";
 import { SidebarToggleIcon } from "./SidebarToggleIcon";
@@ -65,6 +67,8 @@ export {
   VideoPlayIcon,
   SidebarToggleOnIcon,
   FlashCircleIcon,
+  MoreIcon,
+  SettingIcon,
 };
 
 // Icon registry for dynamic loading
@@ -100,6 +104,8 @@ export const iconComponents = {
   "message-question": MessageQuestionIcon,
   "flash-circle": FlashCircleIcon,
   clipboard: ClipboardIcon,
+  more: MoreIcon,
+  setting: SettingIcon,
 } as const;
 
 export type IconName = keyof typeof iconComponents;

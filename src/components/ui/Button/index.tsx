@@ -22,6 +22,7 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     | "success"
     | "warning";
   size?: "x" | "m" | "l" | "xl";
+  align?: "left" | "center" | "right";
   loading?: boolean;
   disabled?: boolean;
   fullWidth?: boolean;
@@ -52,6 +53,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       target,
       rel,
       onClick,
+      align = "left",
       ...props
     },
     ref,
@@ -62,6 +64,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       styles.button,
       styles[`variant-${variant}`],
       styles[`size-${size}`],
+      styles[`align-${align}`],
       !children && styles.iconOnly,
       fullWidth && styles.fullWidth,
       loading && styles.loading,

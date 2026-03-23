@@ -7,6 +7,10 @@
 .profilePopover {
   display: flex;
   flex-direction: column;
+  gap: spacing(4);
+
+  width: 250px;
+  padding: spacing(4);
 }
 
 .profileButton {

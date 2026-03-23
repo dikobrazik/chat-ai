@@ -3,6 +3,7 @@
 import type { PropsWithChildren } from "react";
 import { useIsMobile } from "@/hooks/useMobile";
 import { cn } from "@/lib/utils";
+import { stopPropagation } from "@/utils";
 import Button from "../Button";
 import { Icon } from "../Icon";
 import styles from "./Sidebar.module.scss";
@@ -32,6 +33,9 @@ export const Sidebar = ({
           onKeyUp={toggle}
         >
           <div
+            role="alertdialog"
+            onClick={stopPropagation()}
+            onKeyUp={stopPropagation()}
             className={cn(styles.sidebar, {
               [styles.mobile]: isMobile,
               [styles.open]: isOpen,

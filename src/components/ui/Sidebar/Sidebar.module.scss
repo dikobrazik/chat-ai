@@ -1,4 +1,6 @@
 .sidebar {
+  overflow: hidden;
+
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
@@ -10,7 +12,6 @@
   border-right: 1px solid color(gray, 200);
 
   &.open {
-    overflow-y: auto;
     flex: 0 0 30%;
     min-width: 280px;
   }

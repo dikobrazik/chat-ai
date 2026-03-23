@@ -17,12 +17,14 @@ type Props = {
     props: ButtonProps & React.RefAttributes<HTMLButtonElement>,
   ) => ReactNode;
   popoverClassName?: string;
+  position?: "top" | "bottom" | "left" | "right";
 };
 
 const Popover = ({
   children,
   Trigger,
   popoverClassName,
+  position = "bottom",
 }: PropsWithChildren<Props>) => {
   const [isVisible, setIsVisible] = useState(false); // Manages the visibility state of the popover
   const popoverRef = useRef<HTMLDivElement>(null); // Reference to the popover element
@@ -64,7 +66,11 @@ const Popover = ({
         <div
           id="popover-content"
           ref={popoverRef}
-          className={classNames(popoverClassName, styles.popoverContent)}
+          className={classNames(
+            popoverClassName,
+            styles.popoverContent,
+            styles[`position-${position}`],
+          )}
           role="dialog"
           aria-modal="true"
         >
