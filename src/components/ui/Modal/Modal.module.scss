@@ -50,7 +50,7 @@ $modal-sizes: (
   background: var(--background, #ffffff);
   border-radius: $modal-border-radius;
   box-shadow: shadow(xl);
-  max-height: 90vh;
+  max-height: 90dvh;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -68,6 +68,7 @@ $modal-sizes: (
     opacity: 0;
     transform: scale(0.95) translateY(-20px);
   }
+
   to {
     opacity: 1;
     transform: scale(1) translateY(0);
@@ -82,8 +83,8 @@ $modal-sizes: (
 }
 
 .fullscreen {
-  width: 95vw;
-  height: 95vh;
+  width: 95dvw;
+  height: 95dvh;
   max-width: none;
   max-height: none;
 }
@@ -127,7 +128,7 @@ $modal-sizes: (
 
   .modal {
     border-radius: $modal-border-radius-mobile;
-    max-height: 95vh;
+    max-height: 95dvh;
   }
 
   .small,

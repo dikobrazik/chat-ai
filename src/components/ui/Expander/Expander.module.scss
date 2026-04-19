@@ -1,0 +1,26 @@
+.expander {
+  height: 0;
+  max-height: 100%;
+}
+
+.header {
+  .icon {
+    transition: transform 0.3s ease;
+  }
+
+  &.open {
+    .icon {
+      transform: rotate(180deg);
+    }
+  }
+}
+
+.content {
+  max-height: 0;
+  overflow-y: scroll;
+  transition: max-height 0.3s ease;
+
+  &.open {
+    max-height: 100%;
+  }
+}

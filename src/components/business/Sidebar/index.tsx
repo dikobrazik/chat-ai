@@ -5,6 +5,7 @@ import { getChats } from "@/api";
 import { Banner } from "@/components/ui/Banner";
 import Button from "@/components/ui/Button";
 import { Divider } from "@/components/ui/Divider";
+import { Expander } from "@/components/ui/Expander";
 import Icon from "@/components/ui/Icon";
 import { Logo } from "@/components/ui/Logo";
 import { Sidebar as UISidebar } from "@/components/ui/Sidebar";
@@ -100,26 +101,22 @@ export const ChatSidebar = ({
         </Button>
       </div>
       <Divider />
-      <div className="flex gap-3 items-center">
-        <Icon color="#9C9C9C" name="chevron-down" />
-        <Text className="text-[#9C9C9C]" style="regular">
-          Чаты
-        </Text>
-      </div>
-      <div className="flex flex-col h-full overflow-y-auto gap-1">
-        {chats?.map((chat) => (
-          <Button
-            key={chat.id}
-            href={`/chat/${chat.id}`}
-            className="flex-1 shrink-0 basis-9"
-            title={chat.title || chat.last_prompt || ""}
-          >
-            <Text className="truncate" style="regular">
-              {chat.title || chat.last_prompt}
-            </Text>
-          </Button>
-        ))}
-      </div>
+      <Expander title="Чаты" className={styles.chatsExpander}>
+        <div className="flex flex-col h-full overflow-y-auto gap-1">
+          {chats?.map((chat) => (
+            <Button
+              key={chat.id}
+              href={`/chat/${chat.id}`}
+              className="flex-1 shrink-0 basis-9"
+              title={chat.title || chat.last_prompt || ""}
+            >
+              <Text className="truncate" style="regular">
+                {chat.title || chat.last_prompt}
+              </Text>
+            </Button>
+          ))}
+        </div>
+      </Expander>
       {isGuest ? (
         <Banner
           title="Получайте персонализированные ответы"
