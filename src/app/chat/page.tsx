@@ -1,6 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { getProfile } from "@/api/user";
 import { PromptField } from "@/components/business/PromptField";
@@ -12,6 +13,7 @@ import { useAuth } from "@/providers/AuthProvider/hooks";
 import styles from "./ChatPage.module.scss";
 
 export default function Page() {
+  const router = useRouter();
   const [value, setValue] = useState("");
   const { isGuest } = useAuth();
 
@@ -22,6 +24,18 @@ export default function Page() {
   });
 
   const name = profile?.name;
+
+  const onKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (!value) return;
+
+    if (
+      event?.key === "Enter" &&
+      (!event?.shiftKey || !event?.altKey || !event?.ctrlKey)
+    ) {
+      event.preventDefault();
+      router.push(`/chat/new?query=${encodeURIComponent(value)}`);
+    }
+  };
 
   return (
     <div className="flex flex-col gap-6 justify-center  h-full">
@@ -44,9 +58,11 @@ export default function Page() {
         value={value}
         isPromptSending={false}
         isChatCreating={false}
-        onKeyDown={() => {}}
+        onKeyDown={onKeyDown}
         onInputChange={(e) => setValue(e.target.value)}
-        onSendClick={() => {}}
+        onSendClick={() => {
+          router.push(`/chat/new?query=${encodeURIComponent(value)}`);
+        }}
       />
 
       <div className="flex gap-2">

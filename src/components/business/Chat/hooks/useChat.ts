@@ -1,9 +1,9 @@
-import { createChat, getChat, Model, Prompt } from "@/api";
-import { useModelContext } from "@/providers/ModelProvider/hooks";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { createChat, getChat, type Model, type Prompt } from "@/api";
+import { useModelContext } from "@/providers/ModelProvider/hooks";
 import { ERROR_MESSAGE_ID } from "../components/Message/message";
 
 export const useChat = (chatId: string) => {
@@ -39,7 +39,7 @@ export const useChat = (chatId: string) => {
 
   const { data: chat } = useQuery({
     queryKey: ["chat", chatId],
-    enabled: !!chatId,
+    enabled: !!chatId && chatId !== "new",
     refetchInterval: false,
     queryFn: () =>
       getChat(chatId as string).catch((error) => {

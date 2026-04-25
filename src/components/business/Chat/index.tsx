@@ -1,9 +1,8 @@
 "use client";
 
-import { useParams } from "next/navigation";
-import { useRef, useState } from "react";
+import { useParams, useSearchParams } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 import { PromptField } from "@/components/business/PromptField";
-import Button from "@/components/ui/Button";
 import css from "./Chat.module.scss";
 import {
   Message,
@@ -14,6 +13,7 @@ import { useSendPromptStream } from "./hooks/useSendPromptStream";
 
 export const Chat = () => {
   const { id: chatId } = useParams();
+  const searchParams = useSearchParams();
 
   const messagesContainerRef = useRef<HTMLDivElement>(null);
   const [value, setValue] = useState("");
@@ -27,21 +27,32 @@ export const Chat = () => {
     setMessages,
   );
 
-  const onSendClick = async () => {
+  useEffect(() => {
+    const query = searchParams.get("query");
+    if (query && chatId === "new") {
+      setValue(decodeURIComponent(query));
+      setTimeout(() => {
+        messagesContainerRef.current?.scrollTo(0, 0);
+        onSendClick(decodeURIComponent(query));
+      }, 0);
+    }
+  }, []);
+
+  const onSendClick = async (input?: string) => {
     if (isChatCreating || isPromptSending) return;
 
     let newChatId: string | undefined;
 
-    if (!chatId) {
+    if (!chatId || chatId === "new") {
       newChatId = await createChat();
     }
 
     setMessages([
       { id: WAITING_RESPONSE_MESSAGE_ID, text: "", role: "model" },
-      { id: crypto.randomUUID(), text: value, role: "user" },
+      { id: crypto.randomUUID(), text: input || value, role: "user" },
       ...messages,
     ]);
-    sendPrompt({ input: value, newChatId });
+    sendPrompt({ input: input || value, newChatId });
     setValue("");
     messagesContainerRef.current?.scrollTo(0, 0);
   };
