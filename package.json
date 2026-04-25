@@ -7,6 +7,7 @@
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
     "start": "next start",
+    "import-icon": "node --experimental-strip-types tools/import-icon/index.ts",
     "lint": "biome check",
     "format": "biome format --write"
   },

@@ -64,6 +64,20 @@
   }
 }
 
+.variant-outline {
+  background-color: transparent;
+  border: 1px solid #EFEFEF;
+  border-radius: 100%;
+
+  &:hover:not(.disabled) {
+    background-color: #F7F7F7;
+  }
+
+  &:active:not(.disabled) {
+    background-color: #EFEFEF;
+  }
+}
+
 .size-x {
   border-radius: 0.75rem;
   padding: 0.5rem 0.75rem;

@@ -5,6 +5,7 @@ import { useState } from "react";
 import { getProfile } from "@/api/user";
 import { PromptField } from "@/components/business/PromptField";
 import Button from "@/components/ui/Button";
+import Icon from "@/components/ui/Icon";
 import { Logo } from "@/components/ui/Logo";
 import { Text } from "@/components/ui/Text";
 import { useAuth } from "@/providers/AuthProvider/hooks";
@@ -49,10 +50,18 @@ export default function Page() {
       />
 
       <div className="flex gap-2">
-        <Button variant="outline">Создать текст</Button>
-        <Button variant="outline">Для учёбы</Button>
-        <Button variant="outline">Придумать идею</Button>
-        <Button variant="outline">Создать картинку</Button>
+        <Button variant="outline" leftIcon={<Icon name="firstline" />}>
+          Создать текст
+        </Button>
+        <Button variant="outline" leftIcon={<Icon name="book-saved" />}>
+          Для учёбы
+        </Button>
+        <Button variant="outline" leftIcon={<Icon name="lamp-on" />}>
+          Придумать идею
+        </Button>
+        <Button variant="outline" leftIcon={<Icon name="image" />}>
+          Создать картинку
+        </Button>
       </div>
     </div>
   );

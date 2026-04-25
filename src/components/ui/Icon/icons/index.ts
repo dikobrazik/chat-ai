@@ -3,6 +3,7 @@
 import { AlertTriangleIcon } from "./AlertTriangleIcon";
 import { ArrowRightIcon } from "./ArrowRightIcon";
 import { ArrowUpIcon } from "./ArrowUpIcon";
+import { BookSavedIcon } from "./BookSavedIcon";
 import { CheckCircleIcon } from "./CheckCircleIcon";
 import { CheckIcon } from "./CheckIcon";
 import { ChevronDownIcon } from "./ChevronDownIcon";
@@ -12,12 +13,15 @@ import { CopyIcon } from "./CopyIcon";
 import { DownloadIcon } from "./DownloadIcon";
 import { ExternalLinkIcon } from "./ExternalLinkIcon";
 import { FeatureIcon } from "./FeatureIcon";
+import { FirstlineIcon } from "./FirstlineIcon";
 import { FlashCircleIcon } from "./FlashCircleIcon";
 import { GalleryIcon } from "./GalleryIcon";
 import { GoogleIcon } from "./GoogleIcon";
 import { HeartIcon } from "./HeartIcon";
 import { HelpCircleIcon } from "./HelpCircleIcon";
+import { ImageIcon } from "./ImageIcon";
 import { InfoIcon } from "./InfoIcon";
+import { LampOnIcon } from "./LampOnIcon";
 import { LogoutIcon } from "./LogoutIcon";
 import { MenuIcon } from "./MenuIcon";
 import { MessageCreateIcon } from "./MessageCreateIcon";
@@ -37,6 +41,10 @@ import { YandexIcon } from "./YandexIcon";
 
 // Re-export all icons
 export {
+  ImageIcon,
+  LampOnIcon,
+  BookSavedIcon,
+  FirstlineIcon,
   ArrowUpIcon,
   FeatureIcon,
   LogoutIcon,
@@ -75,6 +83,14 @@ export {
 
 // Icon registry for dynamic loading
 export const iconComponents = {
+  image: ImageIcon,
+
+  "lamp-on": LampOnIcon,
+
+  "book-saved": BookSavedIcon,
+
+  firstline: FirstlineIcon,
+
   "arrow-up": ArrowUpIcon,
   feature: FeatureIcon,
   logout: LogoutIcon,
