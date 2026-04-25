@@ -1,0 +1,30 @@
+.controlsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background-color: #F7F7F7;
+  height: 120px;
+  padding: 12px;
+  border-radius: 16px;
+
+  .textfield {
+    flex: 1;
+
+    transition: height 0.2s ease-in-out;
+
+    overflow-y: hidden;
+
+    resize: none;
+    border: none;
+    outline: none;
+  }
+
+  .controls {
+    display: flex;
+    justify-content: space-between;
+
+    & .button {
+      flex: none;
+    }
+  }
+}

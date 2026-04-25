@@ -2,6 +2,7 @@
 
 import { AlertTriangleIcon } from "./AlertTriangleIcon";
 import { ArrowRightIcon } from "./ArrowRightIcon";
+import { ArrowUpIcon } from "./ArrowUpIcon";
 import { CheckCircleIcon } from "./CheckCircleIcon";
 import { CheckIcon } from "./CheckIcon";
 import { ChevronDownIcon } from "./ChevronDownIcon";
@@ -36,6 +37,7 @@ import { YandexIcon } from "./YandexIcon";
 
 // Re-export all icons
 export {
+  ArrowUpIcon,
   FeatureIcon,
   LogoutIcon,
   MenuIcon,
@@ -73,6 +75,7 @@ export {
 
 // Icon registry for dynamic loading
 export const iconComponents = {
+  "arrow-up": ArrowUpIcon,
   feature: FeatureIcon,
   logout: LogoutIcon,
   menu: MenuIcon,

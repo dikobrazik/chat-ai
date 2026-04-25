@@ -1,13 +1,24 @@
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 
-export const Logo = ({ className }: { className?: string }) => {
+const SIZE_MAP = {
+  small: 20,
+  medium: 36,
+  large: 48,
+};
+
+type LogoProps = {
+  size?: "small" | "medium" | "large";
+  className?: string;
+};
+
+export const Logo = ({ size, className }: LogoProps) => {
   return (
     <Image
       src="/icons/common/logo.svg"
       alt="JonuAI Logo"
-      width={36}
-      height={36}
+      width={SIZE_MAP[size || "medium"]}
+      height={SIZE_MAP[size || "medium"]}
       className={cn(className)}
     />
   );

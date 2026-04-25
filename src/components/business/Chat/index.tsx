@@ -2,6 +2,7 @@
 
 import { useParams } from "next/navigation";
 import { useRef, useState } from "react";
+import { PromptField } from "@/components/business/PromptField";
 import Button from "@/components/ui/Button";
 import css from "./Chat.module.scss";
 import {
@@ -77,30 +78,14 @@ export const Chat = () => {
         ))}
       </div>
 
-      <div className={css.controlsContainer}>
-        <textarea
-          id="prompt"
-          name="prompt"
-          className={css.textfield}
-          value={value}
-          onKeyDown={onKeyDown}
-          onChange={onInputChange}
-        />
-
-        <div className={css.controls}>
-          <div></div>
-          {Boolean(value || isPromptSending || isChatCreating) && (
-            <Button
-              className={css.button}
-              variant="outline"
-              loading={isPromptSending || isChatCreating}
-              onClick={onSendClick}
-            >
-              {isPromptSending || isChatCreating ? "" : "Отправить"}
-            </Button>
-          )}
-        </div>
-      </div>
+      <PromptField
+        value={value}
+        isPromptSending={isPromptSending}
+        isChatCreating={isChatCreating}
+        onKeyDown={onKeyDown}
+        onInputChange={onInputChange}
+        onSendClick={onSendClick}
+      />
     </div>
   );
 };

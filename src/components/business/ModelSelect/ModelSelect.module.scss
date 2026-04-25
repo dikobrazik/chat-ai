@@ -1,8 +1,11 @@
 .select {
   min-height: auto;
+  margin: auto 0;
+  padding: 0 12px;
 
   & .control {
     border: none;
+    background: none;
     min-height: auto;
 
     & .indicatorSeparator {

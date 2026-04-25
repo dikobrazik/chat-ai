@@ -1,14 +1,14 @@
 "use client";
 
-import { getProfile, getProviders, Model, Profile } from "@/api";
 import { useQuery } from "@tanstack/react-query";
-import Image from "next/image";
-import Select from "react-select";
-import styles from "./ModelSelect.module.scss";
-import { useModelContext } from "@/providers/ModelProvider/hooks";
-import { useEffect } from "react";
 import cn from "classnames";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import Select from "react-select";
+import { getProfile, getProviders, type Model, type Profile } from "@/api";
+import { useModelContext } from "@/providers/ModelProvider/hooks";
+import styles from "./ModelSelect.module.scss";
 
 const USER_STATUSES = [
   "guest",
@@ -37,6 +37,17 @@ export const ModelSelect = () => {
     queryFn: getProfile,
     refetchInterval: false,
   });
+
+  const providersById = providers?.reduce(
+    (acc, provider) => {
+      provider.models.forEach((model) => {
+        acc[model.id] = provider.name;
+      });
+
+      return acc;
+    },
+    {} as Record<string, string>,
+  );
 
   useEffect(() => {
     if (providers) {
@@ -102,7 +113,17 @@ export const ModelSelect = () => {
           )}
         >
           <div className={styles.heading}>
-            <span>{data.name}</span>
+            <div className="flex gap-3 items-center">
+              {context === "value" && (
+                <Image
+                  src={`/icons/providers/${providersById?.[data.id]}.png`}
+                  width={16}
+                  height={16}
+                  alt={`Provider ${providersById?.[data.id]}`}
+                />
+              )}
+              <span>{data.name}</span>
+            </div>
 
             {isOptionDisabled(profile)(data) &&
               data.available_for_status.startsWith("subscription") && (
