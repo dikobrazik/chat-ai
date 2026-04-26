@@ -1,4 +1,4 @@
-import { BaseIcon, IconComponentProps } from "..";
+import { BaseIcon, type IconComponentProps } from "..";
 
 export const GoogleIcon: React.FC<IconComponentProps> = (props) => {
   return (

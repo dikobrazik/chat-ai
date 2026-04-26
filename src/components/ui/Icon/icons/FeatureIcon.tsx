@@ -1,4 +1,4 @@
-import { BaseIcon, IconComponentProps } from "..";
+import { BaseIcon, type IconComponentProps } from "..";
 
 export const FeatureIcon: React.FC<IconComponentProps> = (props) => (
   <BaseIcon {...props} viewBox="0 0 18 18" strokeWidth={0}>
@@ -17,7 +17,7 @@ export const FeatureIcon: React.FC<IconComponentProps> = (props) => (
         <rect
           width={props.size}
           height={props.size}
-          fill="white"
+          fill="currentColor"
           transform="translate(0 0.00195312)"
         ></rect>
       </clipPath>

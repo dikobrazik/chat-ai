@@ -27,14 +27,23 @@
 }
 
 .variant-empty {
-  background-color: transparent;
+  color: var(--foreground);
+  background-color: var(--background);
 
   &:hover:not(.disabled) {
     background-color: #F7F7F7;
+
+    @media (prefers-color-scheme: dark) {
+      background-color: color-mix(in srgb, var(--background), white 20%);
+    }
   }
 
   &:active:not(.disabled) {
     background-color: #EFEFEF;
+
+    @media (prefers-color-scheme: dark) {
+      background-color: color-mix(in srgb, var(--background), white 10%);
+    }
   }
 }
 

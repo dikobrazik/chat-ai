@@ -73,14 +73,14 @@ export const AuthorizationButton = () => {
             href="/settings/profile"
             leftIcon={<Icon name="setting" />}
           >
-            Профиль
+            Настройки
           </Button>
           <Button
             as="a"
-            href="/settings/subscription"
+            href="/settings/faq"
             leftIcon={<Icon name="message-question" />}
           >
-            Подписки
+            Справка
           </Button>
         </div>
         <Divider />
