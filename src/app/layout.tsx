@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
 import { Rubik } from "next/font/google";
+import { Bounce, ToastContainer } from "react-toastify/unstyled";
 import { Header } from "@/components/business/Header";
 import { Sidebar } from "@/components/business/Sidebar";
 import { AuthProvider } from "@/providers/AuthProvider/Provider";
 import { ModelProvider } from "@/providers/ModelProvider/Provider";
 import { QueryProvider } from "@/providers/QueryProvider/Provider";
+import styles from "./layout.module.scss";
+import "react-toastify/dist/ReactToastify.css";
 import "./globals.css";
 import "./globals.scss";
-import styles from "./layout.module.scss";
 
 const rubik = Rubik({
   variable: "--font-rubik",
@@ -70,7 +72,22 @@ export default async function RootLayout({
                 <div className={styles.mainContent}>
                   <Header />
 
-                  <main className={styles.main}>{children}</main>
+                  <main className={styles.main}>
+                    <ToastContainer
+                      position="top-center"
+                      autoClose={5000}
+                      hideProgressBar
+                      newestOnTop={false}
+                      closeOnClick={false}
+                      rtl={false}
+                      pauseOnFocusLoss
+                      draggable
+                      pauseOnHover
+                      theme="light"
+                      transition={Bounce}
+                    />
+                    {children}
+                  </main>
                 </div>
               </div>
               {modal}

@@ -83,3 +83,8 @@ export const getImageUrl = ({
   axios
     .get<string>(`chat/${chatId}/prompt/${promptId}/image`)
     .then((response) => response.data);
+
+export const patchChatPublic = ({ chatId }: { chatId: string }) =>
+  axios
+    .patch<string>(`chat/${chatId}/public`)
+    .then((response) => response.data);

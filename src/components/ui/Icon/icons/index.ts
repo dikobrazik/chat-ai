@@ -1,4 +1,5 @@
 // Import all icons
+import { ExportIcon } from "./ExportIcon";
 
 import { AlertTriangleIcon } from "./AlertTriangleIcon";
 import { ArrowRightIcon } from "./ArrowRightIcon";
@@ -41,6 +42,7 @@ import { YandexIcon } from "./YandexIcon";
 
 // Re-export all icons
 export {
+ExportIcon,
   ImageIcon,
   LampOnIcon,
   BookSavedIcon,
@@ -83,6 +85,8 @@ export {
 
 // Icon registry for dynamic loading
 export const iconComponents = {
+  "export": ExportIcon,
+
   image: ImageIcon,
 
   "lamp-on": LampOnIcon,

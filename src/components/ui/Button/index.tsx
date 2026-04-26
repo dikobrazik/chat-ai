@@ -16,6 +16,7 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     | "empty"
     | "primary"
     | "secondary"
+    | "base"
     | "outline"
     | "ghost"
     | "danger"

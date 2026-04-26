@@ -51,6 +51,19 @@
   }
 }
 
+.variant-base {
+  color: #000000;
+  background-color: #F7F7F7;
+
+  &:hover:not(.disabled) {
+    background-color: #EFEFEF;
+  }
+
+  &:active:not(.disabled) {
+    background-color: #EFEFEF;
+  }
+}
+
 .variant-danger {
   color: #FC3F1D;
   background-color: #FC3F1D14;

@@ -1,6 +1,7 @@
 @use "sass:map";
 @use "@/styles/_colors";
 @use "@/styles/_variables";
+@use "@/styles/toast";
 
 // Theme Colors
 $theme-colors: (
