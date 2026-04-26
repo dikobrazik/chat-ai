@@ -2,6 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import classNames from "classnames";
+import Link from "next/link";
 import Script from "next/script";
 import { useState } from "react";
 import { getPlans, initPayment } from "@/api";
@@ -249,6 +250,13 @@ export const Plans = () => {
           },
         ]}
       ></Tabs>
+
+      <Text color="#9C9C9C" style="regular" type="xs" className="text-center">
+        Нажимая кнопку «Оплатить», вы соглашаетесь с{" "}
+        <Link className="underline" target="_blank" href="/privacy">
+          офертой
+        </Link>
+      </Text>
 
       {selectedPlanId && (
         <div>
