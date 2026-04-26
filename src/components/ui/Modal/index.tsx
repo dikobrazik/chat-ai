@@ -112,11 +112,9 @@ export const Modal: React.FC<ModalProps> = ({
       >
         {(title || showCloseButton) && (
           <div className={styles.header}>
-            {title && (
-              <h2 id="modal-title" className={styles.title}>
-                {title}
-              </h2>
-            )}
+            <h2 id="modal-title" className={styles.title}>
+              {title}
+            </h2>
             {showCloseButton && (
               <Button
                 leftIcon={<Icon name="close" />}

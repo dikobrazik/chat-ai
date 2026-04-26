@@ -4,7 +4,7 @@ import styles from "./Text.module.scss";
 type TextProps = {
   className?: string;
   children: React.ReactNode;
-  type?: "m" | "s" | "xs";
+  type?: "xl" | "l" | "m" | "s" | "xs";
   style?: "medium" | "regular";
   as?: React.ElementType;
   color?: string;
@@ -26,7 +26,7 @@ export const Text = ({
         styles[style],
         className,
       )}
-      styles={{ color }}
+      style={{ color }}
     >
       {children}
     </Component>

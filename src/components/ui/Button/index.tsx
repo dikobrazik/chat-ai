@@ -10,18 +10,21 @@ import { cn } from "@/lib/utils";
 import { Icon } from "../Icon";
 import styles from "./Button.module.scss";
 
+export type ButtonVariant =
+  | "empty"
+  | "primary"
+  | "secondary"
+  | "base"
+  | "outline"
+  | "pro"
+  | "ghost"
+  | "danger"
+  | "success"
+  | "warning";
+
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children?: ReactNode;
-  variant?:
-    | "empty"
-    | "primary"
-    | "secondary"
-    | "base"
-    | "outline"
-    | "ghost"
-    | "danger"
-    | "success"
-    | "warning";
+  variant?: ButtonVariant;
   size?: "x" | "m" | "l" | "xl";
   align?: "left" | "center" | "right";
   loading?: boolean;
@@ -29,7 +32,7 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   fullWidth?: boolean;
   leftIcon?: ReactNode;
   rightIcon?: ReactNode;
-  rounded?: boolean;
+  borderRadius?: "full" | "rounded" | "none";
   as?: "button" | "a";
   href?: string;
   target?: string;
@@ -45,7 +48,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       loading = false,
       disabled = false,
       fullWidth = false,
-      rounded = true,
+      borderRadius = "rounded",
       leftIcon,
       rightIcon,
       className = "",
@@ -70,7 +73,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       fullWidth && styles.fullWidth,
       loading && styles.loading,
       isDisabled && styles.disabled,
-      rounded && styles.rounded,
+      styles[`borderRadius-${borderRadius}`],
       className,
     );
 

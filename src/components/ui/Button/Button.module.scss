@@ -38,6 +38,19 @@
   }
 }
 
+.variant-pro {
+  color: #fff;
+  background-color: #000000;
+
+  &:hover:not(.disabled) {
+    background-color: #000;
+  }
+
+  &:active:not(.disabled) {
+    background-color: #000;
+  }
+}
+
 .variant-primary {
   color: #FFFFFF;
   background-color: #0F8AFF;
@@ -54,6 +67,12 @@
 .variant-base {
   color: #000000;
   background-color: #F7F7F7;
+
+  &.disabled {
+    background-color: #F7F7F7;
+    color: #D7D7D7;
+    cursor: not-allowed;
+  }
 
   &:hover:not(.disabled) {
     background-color: #EFEFEF;
@@ -107,6 +126,16 @@
     padding: 1rem;
   }
 }
+
+
+.borderRadius-rounded {
+  border-radius: 0.75rem;
+}
+
+.borderRadius-full {
+  border-radius: 999px;
+}
+
 
 @keyframes spin {
   0% {

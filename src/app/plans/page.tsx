@@ -1,8 +1,8 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { Plans } from "@/components/business/Subscription/Plans";
 import Modal from "@/components/ui/Modal";
-import { useRouter } from "next/navigation";
 
 export default function PlansPage() {
   const router = useRouter();
@@ -11,8 +11,8 @@ export default function PlansPage() {
     <Modal
       size="fullscreen"
       isOpen
+      className="bg-[#F7F7F7]"
       onClose={() => router.back()}
-      title="Тарифы страница"
     >
       <Plans />
     </Modal>

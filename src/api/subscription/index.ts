@@ -3,7 +3,11 @@ import axios from "axios";
 export type Plan = {
   id: string;
   name: string;
+  description: string;
   price: number;
+  oldPrice?: number;
+  isPopular?: boolean;
+  isCurrentPlan?: boolean;
   features: string[];
 };
 
