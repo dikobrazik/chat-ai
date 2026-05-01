@@ -32,7 +32,7 @@ export type Payment = {
 export type Subscription = {
   id: string;
   user_id: string;
-  plan: string;
+  plan: "base" | "plus" | "pro";
   status: string;
   current_period_start: string;
   current_period_end: string;

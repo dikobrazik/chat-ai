@@ -123,6 +123,23 @@
   }
 }
 
+.variant-secondary {
+  background-color: #FFFFFF;
+  color: #000000;
+
+  &:hover:not(.disabled) {
+    background-color: #F7F7F7;
+  }
+
+  &:active:not(.disabled) {
+    background-color: #EFEFEF;
+  }
+
+  &.disabled {
+    color: #D7D7D7;
+  }
+}
+
 .size-x {
   border-radius: 0.75rem;
   padding: 0.5rem 0.75rem;

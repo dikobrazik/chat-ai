@@ -1,18 +1,17 @@
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { getProfile } from "@/api";
-import { getPlans } from "@/api/subscription";
 import { Badge } from "@/components/ui/Badge";
-import { Banner } from "@/components/ui/Banner";
 import Button from "@/components/ui/Button";
 import { Divider } from "@/components/ui/Divider";
 import Icon from "@/components/ui/Icon";
-import { List, ListItem } from "@/components/ui/List";
 import { Logo } from "@/components/ui/Logo";
 import { Modal } from "@/components/ui/Modal";
 import { Switch } from "@/components/ui/Switch";
 import { Text } from "@/components/ui/Text";
 import { TextField } from "@/components/ui/TextField";
+import { PlanDescription } from "./components/PlanDescription";
+import { SubscriptionBanner } from "./components/SubscriptionBanner";
 
 export const ProfileSettings = () => {
   const router = useRouter();
@@ -22,14 +21,9 @@ export const ProfileSettings = () => {
     queryFn: getProfile,
   });
 
-  const { data: plans = [] } = useQuery({
-    queryKey: ["subscription", "plans"],
-    queryFn: getPlans,
-  });
-
   return (
     <Modal size="large" isOpen onClose={() => router.back()} title="Аккаунт">
-      <Modal.Sidebar className="flex flex-col justify-between gap-6">
+      <Modal.Sidebar className="flex flex-col gap-6">
         <div className="flex flex-row items-center gap-3">
           <Logo />
 
@@ -61,34 +55,9 @@ export const ProfileSettings = () => {
         </div>
       </Modal.Sidebar>
       <div className="flex flex-col gap-6">
-        <Banner
-          title="Откройте полный доступ без ограничений"
-          description="Создавайте быстрее — без лимитов и ожиданий"
-          action={
-            <Button variant="primary">Открыть&nbsp;полный&nbsp;доступ</Button>
-          }
-          direction="row"
-        />
+        <SubscriptionBanner />
 
-        <div>
-          <Text type="s">Спасибо за использование на Jonu AI!</Text>
-
-          <List>
-            <ListItem>
-              <Text color="#6F6F6F" type="xs">
-                С базовым доступом вам доступно:
-              </Text>
-            </ListItem>
-
-            {plans[0]
-              ? plans[0].features
-                  .slice(1)
-                  .map((feature) => (
-                    <ListItem key={feature}>{feature}</ListItem>
-                  ))
-              : null}
-          </List>
-        </div>
+        <PlanDescription />
 
         <Divider />
 

@@ -126,7 +126,7 @@ export const Modal: ModalComponent = ({
         onClick={(e) => e.stopPropagation()}
       >
         {sidebarItem}
-        <main className="min-w-[70%] flex flex-col">
+        <main className="w-full min-w-[70%] flex flex-col">
           {(title || showCloseButton) && (
             <div className={styles.header}>
               <h2 id="modal-title" className={styles.title}>
@@ -139,7 +139,7 @@ export const Modal: ModalComponent = ({
                   className={styles.closeButton}
                   onClick={onClose}
                   aria-label="Close modal"
-                  variant="ghost"
+                  variant="base"
                 ></Button>
               )}
             </div>

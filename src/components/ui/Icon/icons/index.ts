@@ -1,4 +1,5 @@
 // Import all icons
+import { CloseSquareIcon } from "./CloseSquareIcon";
 
 import { AlertTriangleIcon } from "./AlertTriangleIcon";
 import { ArrowRightIcon } from "./ArrowRightIcon";
@@ -46,6 +47,7 @@ import { YandexIcon } from "./YandexIcon";
 
 // Re-export all icons
 export {
+CloseSquareIcon,
   EditIcon as Edit2Icon,
   InfoCircleIcon,
   CardIcon,
@@ -93,6 +95,8 @@ export {
 
 // Icon registry for dynamic loading
 export const iconComponents = {
+  "close-square": CloseSquareIcon,
+
   edit: EditIcon,
   "info-circle": InfoCircleIcon,
   card: CardIcon,
