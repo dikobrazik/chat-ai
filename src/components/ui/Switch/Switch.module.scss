@@ -1,0 +1,26 @@
+.input:checked {
+
+  &+.container {
+    background-color: #0F8AFF;
+  }
+
+  &+.container .knob {
+    transform: translateX(calc(100% - 4px));
+  }
+}
+
+.container {
+  padding: 2px;
+  width: 2rem;
+  height: 1.25rem;
+  background-color: #F7F7F7;
+  border-radius: 12px;
+}
+
+.knob {
+  width: 1rem;
+  height: 1rem;
+  background-color: white;
+  border-radius: 50%;
+  transition: transform 0.2s ease-in-out;
+}

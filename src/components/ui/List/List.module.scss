@@ -1,0 +1,13 @@
+.list {
+  list-style: disc;
+  list-style-position: inside;
+}
+
+.listItem {
+  margin-bottom: 4px;
+
+  &:first-child {
+    list-style: none;
+    margin-bottom: 12px;
+  }
+}

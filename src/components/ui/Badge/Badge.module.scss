@@ -13,6 +13,11 @@
   border-radius: 12px;
 }
 
+.size-s {
+  padding: 2px 8px;
+  border-radius: 8px;
+}
+
 .variant-danger {
   color: #FF6B34;
   background-color: #FF6B3429;
@@ -21,4 +26,9 @@
 .variant-success {
   color: #14C240;
   background-color: #14C24029;
+}
+
+.variant-secondary {
+  color: #9C9C9C;
+  background-color: #F7F7F7;
 }

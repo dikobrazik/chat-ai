@@ -1,0 +1,27 @@
+.input {
+  outline: none;
+  background-color: #F7F7F7;
+  border-radius: 12px;
+
+  font-size: 14px;
+  line-height: 20px;
+
+  &.size-m {
+    padding: 8px 16px;
+  }
+
+  &.size-l {
+    padding: 16px;
+  }
+
+
+  &:not(:read-only) {
+
+    &:active,
+    &:focus {
+      outline: 1px solid #239EFF;
+      box-shadow: 0 0 0 2px #0F8AFF29;
+    }
+  }
+
+}

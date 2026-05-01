@@ -45,6 +45,10 @@
       background-color: color-mix(in srgb, var(--background), white 10%);
     }
   }
+
+  &.disabled {
+    color: #D7D7D7;
+  }
 }
 
 .variant-pro {

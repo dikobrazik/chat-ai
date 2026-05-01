@@ -7,4 +7,9 @@
   padding: spacing(4);
   border-radius: spacing(3);
   gap: spacing(3);
+
+  &.row {
+    flex-direction: row;
+    align-items: center;
+  }
 }

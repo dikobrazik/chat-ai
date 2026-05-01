@@ -7,9 +7,9 @@ $modal-border-radius: border-radius(xl);
 $modal-border-radius-mobile: border-radius(lg);
 
 $modal-sizes: (
-  small: 400px,
-  medium: 600px,
-  large: 800px,
+  small: 40dvw,
+  medium: 60dvw,
+  large: 80dvw,
 );
 
 // Mixins
@@ -47,12 +47,12 @@ $modal-sizes: (
 
 // Modal Container
 .modal {
+  background: var(--background, #ffffff);
   border-radius: $modal-border-radius;
   box-shadow: shadow(xl);
   max-height: 90dvh;
   overflow: hidden;
   display: flex;
-  flex-direction: column;
   position: relative;
   animation: modalEnter 0.2s ease-out;
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -95,6 +95,7 @@ $modal-sizes: (
   justify-content: space-between;
   padding: 1.5rem 1.5rem 0.5rem;
   flex-shrink: 0;
+  border-bottom: 1px solid #F7F7F7;
 
   @media (prefers-color-scheme: dark) {
     border-bottom-color: rgba(255, 255, 255, 0.1);
@@ -115,6 +116,10 @@ $modal-sizes: (
   overflow-y: auto;
   flex: 1;
   color: var(--foreground, #171717);
+}
+
+.sidebar {
+  border-right: 1px solid #F7F7F7;
 }
 
 // Responsive Design

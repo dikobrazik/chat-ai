@@ -27,20 +27,6 @@
       flex: 1 0 90%;
     }
 
-    & ul {
-      list-style: disc;
-      list-style-position: inside;
-
-      & li {
-        margin-bottom: 4px;
-
-        &:first-child {
-          list-style: none;
-          margin-bottom: 12px;
-        }
-      }
-    }
-
     & .selectButton {
       margin-top: auto;
     }

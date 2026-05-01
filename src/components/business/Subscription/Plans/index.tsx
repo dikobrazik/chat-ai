@@ -9,6 +9,7 @@ import { getPlans, initPayment } from "@/api";
 import { Badge } from "@/components/ui/Badge";
 import Button, { type ButtonVariant } from "@/components/ui/Button";
 import { Divider } from "@/components/ui/Divider";
+import { List, ListItem } from "@/components/ui/List";
 import { Tabs } from "@/components/ui/Tabs";
 import { Text } from "@/components/ui/Text";
 import styles from "./Plans.module.scss";
@@ -143,15 +144,15 @@ export const Plans = () => {
 
                     <Divider />
 
-                    <ul>
-                      <li>
+                    <List>
+                      <ListItem>
                         <Text type="m">{plan.features[0]}</Text>
-                      </li>
+                      </ListItem>
                       {plan.features.slice(1).map((feature, index) => (
                         // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-                        <li key={index}>{feature}</li>
+                        <ListItem key={index}>{feature}</ListItem>
                       ))}
-                    </ul>
+                    </List>
                   </div>
                 ))}
               </div>

@@ -19,7 +19,11 @@ export interface ModalProps {
   size?: "small" | "medium" | "large" | "fullscreen";
 }
 
-export const Modal: React.FC<ModalProps> = ({
+type ModalComponent = React.FC<ModalProps> & {
+  Sidebar: React.FC<{ children: ReactNode; className?: string }>;
+};
+
+export const Modal: ModalComponent = ({
   isOpen,
   onClose,
   children,
@@ -94,6 +98,17 @@ export const Modal: React.FC<ModalProps> = ({
   // Create portal only on client side
   if (typeof window === "undefined") return null;
 
+  const childrenArray = React.Children.toArray(children);
+
+  // Filter for children that match a specific component type
+  const sidebarItem = childrenArray.filter(
+    (child) => React.isValidElement(child) && child.type === Modal.Sidebar,
+  );
+
+  const otherChildrenItems = childrenArray.filter((child) =>
+    React.isValidElement(child) ? child.type !== Modal.Sidebar : true,
+  );
+
   const modalContent = (
     <div
       className={`${styles.overlay} ${overlayClassName}`}
@@ -110,29 +125,46 @@ export const Modal: React.FC<ModalProps> = ({
         tabIndex={-1}
         onClick={(e) => e.stopPropagation()}
       >
-        {(title || showCloseButton) && (
-          <div className={styles.header}>
-            <h2 id="modal-title" className={styles.title}>
-              {title}
-            </h2>
-            {showCloseButton && (
-              <Button
-                leftIcon={<Icon name="close" />}
-                type="button"
-                className={styles.closeButton}
-                onClick={onClose}
-                aria-label="Close modal"
-                variant="ghost"
-              ></Button>
-            )}
-          </div>
-        )}
-        <div className={styles.content}>{children}</div>
+        {sidebarItem}
+        <main className="min-w-[70%] flex flex-col">
+          {(title || showCloseButton) && (
+            <div className={styles.header}>
+              <h2 id="modal-title" className={styles.title}>
+                {title}
+              </h2>
+              {showCloseButton && (
+                <Button
+                  leftIcon={<Icon name="close" />}
+                  type="button"
+                  className={styles.closeButton}
+                  onClick={onClose}
+                  aria-label="Close modal"
+                  variant="ghost"
+                ></Button>
+              )}
+            </div>
+          )}
+          <div className={styles.content}>{otherChildrenItems}</div>
+        </main>
       </div>
     </div>
   );
 
   return createPortal(modalContent, document.body);
+};
+
+Modal.Sidebar = ({
+  children,
+  className,
+}: {
+  children: ReactNode;
+  className?: string;
+}) => {
+  return (
+    <aside className={`w-[30%] p-6 ${styles.sidebar} ${className}`}>
+      {children}
+    </aside>
+  );
 };
 
 // Hook for managing modal state
