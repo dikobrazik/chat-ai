@@ -101,7 +101,18 @@ export const ChatSidebar = ({
         </Button>
       </div>
       <Divider />
-      <Expander title="Чаты" className={styles.chatsExpander}>
+      <Expander
+        className={styles.chatsExpander}
+        defaultOpen
+        Header={() => (
+          <>
+            <Icon className={styles.icon} color="#9C9C9C" name="chevron-down" />
+            <Text className="text-[#9C9C9C]" style="regular">
+              Чаты
+            </Text>
+          </>
+        )}
+      >
         <div className="flex flex-col h-full overflow-y-auto gap-1">
           {chats?.map((chat) => (
             <Button

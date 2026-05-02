@@ -1,18 +1,19 @@
+"use client";
+
 import type { PropsWithChildren } from "react";
 import { useToggle } from "@/hooks/useToggle";
 import { cn } from "@/lib/utils";
-import Icon from "../Icon";
-import { Text } from "../Text";
 import styles from "./Expander.module.scss";
 
 type ExpanderProps = {
-  title: string;
+  defaultOpen?: boolean;
   className?: string;
+  Header: (props: { iconClassname: string }) => React.ReactNode;
 };
 
 export const Expander = (props: PropsWithChildren<ExpanderProps>) => {
-  const { active: isOpen, toggle } = useToggle(true);
-  const { title, children, className } = props;
+  const { defaultOpen = false, children, className, Header } = props;
+  const { active: isOpen, toggle } = useToggle(defaultOpen);
 
   return (
     <div className={cn(styles.expander, className)}>
@@ -25,10 +26,7 @@ export const Expander = (props: PropsWithChildren<ExpanderProps>) => {
           [styles.open]: isOpen,
         })}
       >
-        <Icon className={styles.icon} color="#9C9C9C" name="chevron-down" />
-        <Text className="text-[#9C9C9C]" style="regular">
-          {title}
-        </Text>
+        {Header({ iconClassname: styles.icon })}
       </div>
       <div className={cn(styles.content, { [styles.open]: isOpen })}>
         {children}
