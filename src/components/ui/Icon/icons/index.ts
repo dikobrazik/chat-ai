@@ -1,5 +1,4 @@
 // Import all icons
-import { CloseSquareIcon } from "./CloseSquareIcon";
 
 import { AlertTriangleIcon } from "./AlertTriangleIcon";
 import { ArrowRightIcon } from "./ArrowRightIcon";
@@ -11,6 +10,7 @@ import { CheckIcon } from "./CheckIcon";
 import { ChevronDownIcon } from "./ChevronDownIcon";
 import { ClipboardIcon } from "./ClipboardIcon";
 import { CloseIcon } from "./CloseIcon";
+import { CloseSquareIcon } from "./CloseSquareIcon";
 import { CopyIcon } from "./CopyIcon";
 import { DownloadIcon } from "./DownloadIcon";
 import { EditIcon } from "./EditIcon";
@@ -47,7 +47,8 @@ import { YandexIcon } from "./YandexIcon";
 
 // Re-export all icons
 export {
-CloseSquareIcon,
+  TrashIcon,
+  CloseSquareIcon,
   EditIcon as Edit2Icon,
   InfoCircleIcon,
   CardIcon,
@@ -78,7 +79,6 @@ CloseSquareIcon,
   SettingsIcon,
   ShareIcon,
   SpinnerIcon,
-  TrashIcon,
   XCircleIcon,
   GoogleIcon,
   YandexIcon,

@@ -37,6 +37,7 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   href?: string;
   target?: string;
   rel?: string;
+  replace?: boolean;
 }
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
@@ -58,6 +59,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       rel,
       onClick,
       align = "left",
+      replace,
       ...props
     },
     ref,
@@ -107,6 +109,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           target={target}
           rel={rel}
           className={buttonClasses}
+          replace={replace}
           {...(props as any)}
         >
           {buttonContent}

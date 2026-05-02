@@ -49,7 +49,7 @@ export const SubscriptionBanner = () => {
                 variant="secondary"
                 rightIcon={<Icon name="chevron-down" />}
               >
-                Открыть&nbsp;полный&nbsp;доступ
+                Управление
               </Button>
             )}
           >
