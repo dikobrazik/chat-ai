@@ -46,7 +46,7 @@ export const ProfileSettings = () => {
               </Badge>
             }
           >
-            Оплата{" "}
+            Оплата
           </Button>
           <Button leftIcon={<Icon name="info-circle" />}>
             О&nbsp;программе
