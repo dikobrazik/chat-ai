@@ -77,7 +77,7 @@ export const AuthorizationButton = () => {
           </Button>
           <Button
             as="a"
-            href="/settings/faq"
+            href="/settings/help"
             leftIcon={<Icon name="message-question" />}
           >
             Справка
