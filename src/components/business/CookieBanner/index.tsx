@@ -8,7 +8,7 @@ import styles from "./CookieBanner.module.scss";
 const COOKIE_APPROVED_KEY = "cookie-approved";
 
 export const CookieBanner = () => {
-  const [isVisible, setIsVisible] = useState(true);
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
