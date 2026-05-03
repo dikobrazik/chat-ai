@@ -75,6 +75,8 @@ export const Header = () => {
           </Button>
         )}
         <Popover
+          position="bottom"
+          align="end"
           Trigger={(props) => (
             <Button variant="base" leftIcon={<Icon name="more" />} {...props} />
           )}

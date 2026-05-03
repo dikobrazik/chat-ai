@@ -8,12 +8,13 @@ import { Divider } from "@/components/ui/Divider";
 import { Expander } from "@/components/ui/Expander";
 import Icon from "@/components/ui/Icon";
 import { Logo } from "@/components/ui/Logo";
+import Popover from "@/components/ui/Popover";
 import { Sidebar as UISidebar } from "@/components/ui/Sidebar";
 import { useSidebarState } from "@/components/ui/Sidebar/useSidebarState";
 import { Text } from "@/components/ui/Text";
 import { cn } from "@/lib/utils";
 import { useAuthContext } from "@/providers/AuthProvider/hooks";
-import { stopPropagation } from "@/utils";
+import { preventDefault, stopPropagation } from "@/utils";
 import { AuthorizationButton } from "../Authorization";
 import styles from "./Sidebar.module.scss";
 
@@ -102,28 +103,87 @@ export const ChatSidebar = ({
       </div>
       <Divider />
       <Expander
-        className={styles.chatsExpander}
+        className="flex-1 pb-6"
         defaultOpen
         Header={() => (
           <>
             <Icon className={styles.icon} color="#9C9C9C" name="chevron-down" />
-            <Text className="text-[#9C9C9C]" style="regular">
+            <Text color="#9C9C9C" style="regular">
               Чаты
             </Text>
           </>
         )}
       >
-        <div className="flex flex-col h-full overflow-y-auto gap-1">
+        <div className="flex flex-col h-full gap-1">
           {chats?.map((chat) => (
             <Button
               key={chat.id}
               href={`/chat/${chat.id}`}
-              className="flex-1 shrink-0 basis-9"
+              className="flex-1 shrink-0 basis-9 justify-between"
               title={chat.title || chat.last_prompt || ""}
             >
               <Text className="truncate" style="regular">
                 {chat.title || chat.last_prompt}
               </Text>
+
+              <Popover
+                Trigger={(props) => (
+                  <Button
+                    {...props}
+                    onClick={
+                      props.onClick
+                        ? preventDefault(stopPropagation(props.onClick))
+                        : props.onClick
+                    }
+                    leftIcon={<Icon name="more" />}
+                  />
+                )}
+                position="right"
+                align="start"
+              >
+                <div className="flex flex-col gap-1">
+                  <Button
+                    leftIcon={<Icon name="export" />}
+                    onClick={preventDefault(() => {})}
+                  >
+                    Поделиться
+                  </Button>
+                  <Button
+                    leftIcon={<Icon name="pin" />}
+                    onClick={preventDefault(() => {})}
+                  >
+                    Закрепить
+                  </Button>
+                  <Button
+                    leftIcon={<Icon name="edit-square" />}
+                    onClick={preventDefault(() => {})}
+                  >
+                    Переименовать
+                  </Button>
+                  <Button
+                    leftIcon={<Icon name="add-square" />}
+                    rightIcon={<Icon name="arrow-right" />}
+                    onClick={preventDefault(() => {})}
+                  >
+                    Перенести в проект
+                  </Button>
+
+                  <Divider />
+                  <Button
+                    leftIcon={<Icon name="archive" />}
+                    onClick={preventDefault(() => {})}
+                  >
+                    Архивировать
+                  </Button>
+                  <Button
+                    variant="danger"
+                    leftIcon={<Icon name="trash" />}
+                    onClick={preventDefault(() => {})}
+                  >
+                    Удалить
+                  </Button>
+                </div>
+              </Popover>
             </Button>
           ))}
         </div>

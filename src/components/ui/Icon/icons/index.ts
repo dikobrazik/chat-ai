@@ -1,4 +1,8 @@
 // Import all icons
+import { ArchiveIcon } from "./ArchiveIcon";
+import { EditSquareIcon } from "./EditSquareIcon";
+import { AddSquareIcon } from "./AddSquareIcon";
+import { PinIcon } from "./PinIcon";
 
 import { AlertTriangleIcon } from "./AlertTriangleIcon";
 import { ArrowRightIcon } from "./ArrowRightIcon";
@@ -47,6 +51,10 @@ import { YandexIcon } from "./YandexIcon";
 
 // Re-export all icons
 export {
+ArchiveIcon,
+EditSquareIcon,
+AddSquareIcon,
+PinIcon,
   TrashIcon,
   CloseSquareIcon,
   EditIcon as Edit2Icon,
@@ -95,6 +103,14 @@ export {
 
 // Icon registry for dynamic loading
 export const iconComponents = {
+  "archive": ArchiveIcon,
+
+  "edit-square": EditSquareIcon,
+
+  "add-square": AddSquareIcon,
+
+  "pin": PinIcon,
+
   "close-square": CloseSquareIcon,
 
   edit: EditIcon,

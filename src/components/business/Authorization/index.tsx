@@ -57,6 +57,7 @@ export const AuthorizationButton = () => {
       <Popover
         popoverClassName={styles.profilePopover}
         position="top"
+        align="start"
         Trigger={(props) => (
           <Button {...props} leftIcon={<Icon name="more" />} />
         )}

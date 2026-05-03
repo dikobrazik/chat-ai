@@ -6,7 +6,6 @@
 .popoverTarget {}
 
 .popoverContent {
-  position: absolute;
   color: var(--foreground);
   background-color: var(--background);
 
@@ -20,16 +19,4 @@
   z-index: 1000;
   white-space: nowrap;
   border-radius: 1rem;
-
-  &.position-bottom {
-    top: 100%;
-    right: 0;
-    margin-top: spacing(4);
-  }
-
-  &.position-top {
-    bottom: 100%;
-    right: 0;
-    margin-bottom: spacing(4);
-  }
 }

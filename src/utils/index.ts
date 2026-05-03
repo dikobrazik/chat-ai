@@ -1,12 +1,17 @@
 export const preventDefault =
-  (cb: () => void) => (event: React.MouseEvent | React.TouchEvent) => {
+  <T extends React.MouseEvent | React.KeyboardEvent | React.TouchEvent>(
+    cb: (event: T) => void,
+  ) =>
+  (event: T) => {
     event.preventDefault();
-    cb();
+    cb(event);
   };
 
 export const stopPropagation =
-  (cb?: () => void) =>
-  (event: React.MouseEvent | React.KeyboardEvent | React.TouchEvent) => {
+  <T extends React.MouseEvent | React.KeyboardEvent | React.TouchEvent>(
+    cb?: (event: T) => void,
+  ) =>
+  (event: T) => {
     event.stopPropagation();
-    cb?.();
+    cb?.(event);
   };

@@ -2,13 +2,12 @@
 
 import classNames from "classnames";
 import type React from "react";
+import { type PropsWithChildren, type ReactNode, useState } from "react";
 import {
-  type PropsWithChildren,
-  type ReactNode,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+  type PopoverAlign,
+  type PopoverPosition,
+  Popover as TinyPopover,
+} from "react-tiny-popover";
 import type { ButtonProps } from "../Button";
 import styles from "./Popover.module.scss";
 
@@ -16,56 +15,37 @@ type Props = {
   Trigger: (
     props: ButtonProps & React.RefAttributes<HTMLButtonElement>,
   ) => ReactNode;
+  padding?: number;
   popoverClassName?: string;
-  position?: "top" | "bottom" | "left" | "right";
+  position?: PopoverPosition;
+  align?: PopoverAlign;
 };
 
 const Popover = ({
   children,
   Trigger,
   popoverClassName,
+  padding = 8,
   position = "bottom",
+  align,
 }: PropsWithChildren<Props>) => {
-  const [isVisible, setIsVisible] = useState(false); // Manages the visibility state of the popover
-  const popoverRef = useRef<HTMLDivElement>(null); // Reference to the popover element
-  const triggerRef = useRef<HTMLButtonElement>(null); // Reference to the button element that triggers the popover
+  const [isVisible, setIsVisible] = useState(false);
 
   const toggleVisibility = () => {
     setIsVisible(!isVisible);
   };
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        popoverRef.current &&
-        triggerRef.current &&
-        !popoverRef.current.contains(event.target as Node) &&
-        !triggerRef.current.contains(event.target as Node)
-      ) {
-        setIsVisible(false); // Close the popover if clicked outside
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
-
   return (
-    <div className={styles.popoverContainer}>
-      <Trigger
-        ref={triggerRef}
-        onClick={toggleVisibility}
-        className={styles.popoverTarget}
-        aria-haspopup="true"
-        aria-expanded={isVisible}
-        aria-controls="popover-content"
-      />
-      {isVisible && (
+    <TinyPopover
+      isOpen={isVisible}
+      onClickOutside={() => setIsVisible(false)}
+      positions={position}
+      align={align}
+      padding={padding}
+      content={
         <div
           id="popover-content"
-          ref={popoverRef}
+          // ref={popoverRef}
           className={classNames(
             popoverClassName,
             styles.popoverContent,
@@ -76,8 +56,17 @@ const Popover = ({
         >
           {children}
         </div>
-      )}
-    </div>
+      }
+    >
+      <Trigger
+        // ref={triggerRef}
+        onClick={toggleVisibility}
+        className={styles.popoverTarget}
+        aria-haspopup="true"
+        aria-expanded={isVisible}
+        aria-controls="popover-content"
+      />
+    </TinyPopover>
   );
 };
 
