@@ -1,0 +1,25 @@
+.container {
+  position: fixed;
+
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  background-color: #FFFFFF;
+
+  display: flex;
+  align-items: center;
+  padding: 24px;
+  gap: 12px;
+
+  @include for-mobile {
+    flex-direction: column;
+  }
+
+  & .description {
+    display: flex;
+    flex-direction: column;
+
+    gap: 2;
+  }
+}

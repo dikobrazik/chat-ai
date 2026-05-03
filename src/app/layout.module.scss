@@ -18,4 +18,5 @@
   overflow-y: auto;
   max-width: map.get($breakpoints, md);
   width: 100%;
+  padding: 0 16px;
 }

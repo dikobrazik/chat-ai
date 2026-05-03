@@ -10,6 +10,7 @@ import styles from "./layout.module.scss";
 import "react-toastify/dist/ReactToastify.css";
 import "./globals.css";
 import "./globals.scss";
+import { CookieBanner } from "@/components/business/CookieBanner";
 
 const rubik = Rubik({
   variable: "--font-rubik",
@@ -94,6 +95,8 @@ export default async function RootLayout({
             </ModelProvider>
           </AuthProvider>
         </QueryProvider>
+
+        <CookieBanner />
       </body>
     </html>
   );
