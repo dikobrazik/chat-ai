@@ -1,8 +1,6 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import { toast } from "react-toastify/unstyled";
-import { patchChatPublic } from "@/api";
 import Button from "@/components/ui/Button";
 import Icon from "@/components/ui/Icon";
 import { Logo } from "@/components/ui/Logo";
@@ -10,6 +8,8 @@ import Popover from "@/components/ui/Popover";
 import { Text } from "@/components/ui/Text";
 import { useIsMobile } from "@/hooks/useMobile";
 import { useAuthContext } from "@/providers/AuthProvider/hooks";
+import { ChatActions } from "../ChatActions";
+import { useShare } from "../ChatActions/hooks/useShare";
 import { Sidebar } from "../Sidebar";
 import { SubscriptionButton } from "../Subscription";
 import styles from "./Header.module.scss";
@@ -19,15 +19,7 @@ export const Header = () => {
   const isMobile = useIsMobile();
   const { isGuest } = useAuthContext();
 
-  const onShareClick = async () => {
-    if (chatId && !Array.isArray(chatId)) {
-      await patchChatPublic({ chatId });
-      toast.success(
-        "Ссылка скопирована — она доступна всем, у кого есть ссылка",
-      );
-      navigator.clipboard.writeText(window.location.href);
-    }
-  };
+  const onShareClick = useShare();
 
   return (
     <header className={styles.header}>
@@ -78,21 +70,29 @@ export const Header = () => {
           position="bottom"
           align="end"
           Trigger={(props) => (
-            <Button variant="base" leftIcon={<Icon name="more" />} {...props} />
+            <Button
+              variant="base"
+              leftIcon={<Icon name={isGuest ? "message-question" : "more"} />}
+              {...props}
+            />
           )}
         >
-          <div className="flex flex-col">
-            <Button leftIcon={<Icon name="clipboard" />}>
-              <Text type="s" style="regular">
-                Тарифы
-              </Text>
-            </Button>
-            <Button leftIcon={<Icon name="message-question" />}>
-              <Text type="s" style="regular">
-                Вопросы
-              </Text>
-            </Button>
-          </div>
+          {isGuest ? (
+            <div className="flex flex-col">
+              <Button leftIcon={<Icon name="clipboard" />}>
+                <Text type="s" style="regular">
+                  Тарифы
+                </Text>
+              </Button>
+              <Button leftIcon={<Icon name="message-question" />}>
+                <Text type="s" style="regular">
+                  Вопросы
+                </Text>
+              </Button>
+            </div>
+          ) : (
+            <ChatActions hiddenActions={["share"]} />
+          )}
         </Popover>
       </div>
     </header>
