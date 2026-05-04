@@ -1,7 +1,9 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
+import Link from "next/link";
 import { getChats } from "@/api";
+import { Badge } from "@/components/ui/Badge";
 import { Banner } from "@/components/ui/Banner";
 import Button from "@/components/ui/Button";
 import { Divider } from "@/components/ui/Divider";
@@ -49,9 +51,9 @@ export const ChatSidebar = ({
           </div>
         </div>
         <div className="flex flex-col gap-3">
-          <Button href="/chat" leftIcon={<Icon name="message-create" />} />
-          <Button href="/chat" leftIcon={<Icon name="gallery" />} />
-          <Button href="/chat" leftIcon={<Icon name="video-play" />} />
+          <Button href="/" leftIcon={<Icon name="message-create" />} />
+          <Button href="/image-chat" leftIcon={<Icon name="gallery" />} />
+          <Button href="/" leftIcon={<Icon name="video-play" />} />
         </div>
       </>
     );
@@ -59,13 +61,13 @@ export const ChatSidebar = ({
   return (
     <>
       <div className="flex flex-row justify-between items-center">
-        <div className="flex flex-row items-center gap-3">
+        <Link href="/" className="flex flex-row items-center gap-3">
           <Logo />
 
           <Text type="s" as="h1">
             Jonu AI
           </Text>
-        </div>
+        </Link>
 
         <Button
           onClick={stopPropagation(toggleSidebar)}
@@ -80,7 +82,7 @@ export const ChatSidebar = ({
           className={styles.newChatButton}
           as="a"
           leftIcon={<Icon name="message-create" />}
-          href="/chat"
+          href="/"
         >
           Новый чат
         </Button>
@@ -88,15 +90,21 @@ export const ChatSidebar = ({
           className={styles.newChatButton}
           as="a"
           leftIcon={<Icon name="gallery" />}
-          href="/chat"
+          href="/image-chat"
         >
           Изображения
         </Button>
         <Button
           className={styles.newChatButton}
           as="a"
+          disabled
           leftIcon={<Icon name="video-play" />}
-          href="/chat"
+          rightIcon={
+            <Badge variant="secondary" size="s">
+              Скоро
+            </Badge>
+          }
+          href="/"
         >
           Видео
         </Button>

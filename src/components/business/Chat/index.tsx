@@ -18,9 +18,7 @@ export const Chat = () => {
   const messagesContainerRef = useRef<HTMLDivElement>(null);
   const [value, setValue] = useState("");
 
-  const { messages, isChatCreating, createChat, setMessages } = useChat(
-    chatId as string,
-  );
+  const { messages, isChatCreating, setMessages } = useChat(chatId as string);
 
   const { sendPrompt, isPromptSending } = useSendPromptStream(
     chatId as string,
@@ -29,30 +27,22 @@ export const Chat = () => {
 
   useEffect(() => {
     const query = searchParams.get("query");
-    if (query && chatId === "new") {
-      setValue(decodeURIComponent(query));
-      setTimeout(() => {
-        messagesContainerRef.current?.scrollTo(0, 0);
-        onSendClick(decodeURIComponent(query));
-      }, 0);
+    window.history.replaceState({}, "", `/chat/${chatId}`);
+
+    if (query) {
+      onSendClick(decodeURIComponent(query));
     }
   }, []);
 
   const onSendClick = async (input?: string) => {
     if (isChatCreating || isPromptSending) return;
 
-    let newChatId: string | undefined;
-
-    if (!chatId || chatId === "new") {
-      newChatId = await createChat();
-    }
-
     setMessages([
       { id: WAITING_RESPONSE_MESSAGE_ID, text: "", role: "model" },
       { id: crypto.randomUUID(), text: input || value, role: "user" },
       ...messages,
     ]);
-    sendPrompt({ input: input || value, newChatId });
+    sendPrompt({ input: input || value });
     setValue("");
     messagesContainerRef.current?.scrollTo(0, 0);
   };

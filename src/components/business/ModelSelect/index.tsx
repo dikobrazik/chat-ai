@@ -3,12 +3,10 @@
 import { useQuery } from "@tanstack/react-query";
 import cn from "classnames";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
 import Select from "react-select";
-import { getProfile, getProviders, type Model, type Profile } from "@/api";
-import { useModelContext } from "@/providers/ModelProvider/hooks";
+import { getProfile, type Model, type Profile } from "@/api";
 import styles from "./ModelSelect.module.scss";
+import { useModel } from "./useModel";
 
 const USER_STATUSES = [
   "guest",
@@ -23,48 +21,13 @@ const isOptionDisabled = (profile?: Profile) => (option: Model) =>
   (profile?.status ? USER_STATUSES.indexOf(profile?.status) : -1);
 
 export const ModelSelect = () => {
-  const router = useRouter();
-  const { model, setModel } = useModelContext();
-
-  const { data: providers } = useQuery({
-    queryKey: ["providers"],
-    queryFn: getProviders,
-    refetchInterval: false,
-  });
-
   const { data: profile } = useQuery({
     queryKey: ["profile"],
     queryFn: getProfile,
     refetchInterval: false,
   });
 
-  const providersById = providers?.reduce(
-    (acc, provider) => {
-      provider.models.forEach((model) => {
-        acc[model.id] = provider.name;
-      });
-
-      return acc;
-    },
-    {} as Record<string, string>,
-  );
-
-  useEffect(() => {
-    if (providers) {
-      const firstProvider = providers[0];
-      const firstModel = firstProvider.models[0];
-
-      setModel(firstModel);
-    }
-  }, [providers]);
-
-  const onModelChange = (selectedOption: Model | null) => {
-    if (selectedOption) {
-      setModel(selectedOption);
-    }
-
-    router.push("/chat");
-  };
+  const { providers, providersById, selectedModel, onModelChange } = useModel();
 
   if (!providers) return null;
 
@@ -72,7 +35,7 @@ export const ModelSelect = () => {
     <Select<Model>
       isSearchable={false}
       isMulti={false}
-      value={model}
+      value={selectedModel}
       isOptionSelected={(option, selectedValue) =>
         option.id === selectedValue?.[0]?.id
       }

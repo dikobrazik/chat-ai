@@ -1,7 +1,90 @@
 "use client";
 
-import { Chat } from "@/components/business/Chat";
+import { useQuery } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { getProfile } from "@/api/user";
+import { useChat } from "@/components/business/Chat/hooks/useChat";
+import { PromptField } from "@/components/business/PromptField";
+import Button from "@/components/ui/Button";
+import Icon from "@/components/ui/Icon";
+import { Logo } from "@/components/ui/Logo";
+import { Text } from "@/components/ui/Text";
+import { useAuth } from "@/providers/AuthProvider/hooks";
 
 export default function Page() {
-  return <Chat />;
+  const router = useRouter();
+  const [value, setValue] = useState("");
+  const { isGuest } = useAuth();
+
+  const { createChat } = useChat(undefined);
+
+  const { data: profile } = useQuery({
+    queryKey: ["profile"],
+    queryFn: getProfile,
+    enabled: !isGuest,
+  });
+
+  const name = profile?.name;
+
+  const sendClick = async () => {
+    const chatId = await createChat();
+
+    router.push(`/chat/${chatId}?query=${encodeURIComponent(value)}`);
+  };
+
+  const onKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (!value) return;
+
+    if (
+      event?.key === "Enter" &&
+      (!event?.shiftKey || !event?.altKey || !event?.ctrlKey)
+    ) {
+      event.preventDefault();
+      sendClick();
+    }
+  };
+
+  return (
+    <div className="flex flex-col gap-6 justify-center  h-full">
+      {!isGuest && (
+        <div className="flex items-center gap-3">
+          <Logo size="small" />
+
+          <Text style="regular">Добрый день, {name}!</Text>
+        </div>
+      )}
+      <div className="flex flex-col gap-2">
+        <h1>Чем я могу помочь?</h1>
+        <Text as="h2" type="s" style="regular" color="#6F6F6F">
+          ChatGPT, Gemini, DeepSeek, Claude и другие нейросети для работы с
+          текстами, изображениями и видео
+        </Text>
+      </div>
+
+      <PromptField
+        value={value}
+        isPromptSending={false}
+        isChatCreating={false}
+        onKeyDown={onKeyDown}
+        onInputChange={(e) => setValue(e.target.value)}
+        onSendClick={sendClick}
+      />
+
+      <div className="flex gap-2">
+        <Button variant="outline" leftIcon={<Icon name="firstline" />}>
+          Создать текст
+        </Button>
+        <Button variant="outline" leftIcon={<Icon name="book-saved" />}>
+          Для учёбы
+        </Button>
+        <Button variant="outline" leftIcon={<Icon name="lamp-on" />}>
+          Придумать идею
+        </Button>
+        <Button variant="outline" leftIcon={<Icon name="image" />}>
+          Создать картинку
+        </Button>
+      </div>
+    </div>
+  );
 }

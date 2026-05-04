@@ -6,7 +6,7 @@ import { createChat, getChat, type Model, type Prompt } from "@/api";
 import { useModelContext } from "@/providers/ModelProvider/hooks";
 import { ERROR_MESSAGE_ID } from "../components/Message/message";
 
-export const useChat = (chatId: string) => {
+export const useChat = (chatId: string | undefined) => {
   const queryClient = useQueryClient();
   const router = useRouter();
 

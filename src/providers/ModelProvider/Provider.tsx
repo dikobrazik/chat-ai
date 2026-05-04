@@ -1,11 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import type { Model } from "@/api";
+import { usePersistentState } from "@/hooks/usePersistenState";
 import { ModelContext } from "./context";
-import { Model } from "@/api";
 
 export const ModelProvider = ({ children }: { children: React.ReactNode }) => {
-  const [model, setModel] = useState<Model | null>(null);
+  const [model, setModel] = usePersistentState<Pick<Model, "id"> | null>(
+    "model",
+    null,
+  );
 
   return (
     <ModelContext.Provider value={{ model, setModel }}>

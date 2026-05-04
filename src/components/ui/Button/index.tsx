@@ -105,7 +105,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     if (as === "a" || href) {
       return (
         <Link
-          href={href}
+          href={disabled ? "#" : href}
           target={target}
           rel={rel}
           className={buttonClasses}
