@@ -53,7 +53,21 @@ export const ChatSidebar = ({
         <div className="flex flex-col gap-3">
           <Button href="/" leftIcon={<Icon name="message-create" />} />
           <Button href="/image-chat" leftIcon={<Icon name="gallery" />} />
-          <Button href="/" leftIcon={<Icon name="video-play" />} />
+          <Button
+            className={styles.newChatButton}
+            disabled
+            leftIcon={<Icon name="video-play" />}
+            rightIcon={
+              <Badge variant="secondary" size="s">
+                <Text type="xs" style="regular">
+                  Скоро
+                </Text>
+              </Badge>
+            }
+            href="/"
+          >
+            Видео
+          </Button>
         </div>
       </>
     );
@@ -80,7 +94,6 @@ export const ChatSidebar = ({
       <div className="flex flex-col gap-3">
         <Button
           className={styles.newChatButton}
-          as="a"
           leftIcon={<Icon name="message-create" />}
           href="/"
         >
@@ -88,7 +101,6 @@ export const ChatSidebar = ({
         </Button>
         <Button
           className={styles.newChatButton}
-          as="a"
           leftIcon={<Icon name="gallery" />}
           href="/image-chat"
         >
@@ -96,12 +108,13 @@ export const ChatSidebar = ({
         </Button>
         <Button
           className={styles.newChatButton}
-          as="a"
           disabled
           leftIcon={<Icon name="video-play" />}
           rightIcon={
             <Badge variant="secondary" size="s">
-              Скоро
+              <Text type="xs" style="regular">
+                Скоро
+              </Text>
             </Badge>
           }
           href="/"

@@ -11,6 +11,7 @@ export interface ModalProps {
   onClose: () => void;
   children: ReactNode;
   title?: string;
+  headerBorder?: boolean;
   className?: string;
   overlayClassName?: string;
   closeOnOverlayClick?: boolean;
@@ -28,6 +29,7 @@ export const Modal: ModalComponent = ({
   onClose,
   children,
   title,
+  headerBorder = true,
   className = "",
   overlayClassName = "",
   closeOnOverlayClick = true,
@@ -128,7 +130,9 @@ export const Modal: ModalComponent = ({
         {sidebarItem}
         <main className="w-full min-w-[70%] flex flex-col">
           {(title || showCloseButton) && (
-            <div className={styles.header}>
+            <div
+              className={`${styles.header} ${!headerBorder ? styles.withoutBorder : ""}`}
+            >
               <h2 id="modal-title" className={styles.title}>
                 {title}
               </h2>
