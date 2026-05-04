@@ -1,4 +1,6 @@
 // Import all icons
+import { GalleryEditIcon } from "./GalleryEditIcon";
+import { PaperclipIcon } from "./PaperclipIcon";
 import { ArchiveIcon } from "./ArchiveIcon";
 import { EditSquareIcon } from "./EditSquareIcon";
 import { AddSquareIcon } from "./AddSquareIcon";
@@ -51,6 +53,8 @@ import { YandexIcon } from "./YandexIcon";
 
 // Re-export all icons
 export {
+GalleryEditIcon,
+PaperclipIcon,
 ArchiveIcon,
 EditSquareIcon,
 AddSquareIcon,
@@ -103,6 +107,10 @@ PinIcon,
 
 // Icon registry for dynamic loading
 export const iconComponents = {
+  "gallery-edit": GalleryEditIcon,
+
+  "paperclip": PaperclipIcon,
+
   "archive": ArchiveIcon,
 
   "edit-square": EditSquareIcon,

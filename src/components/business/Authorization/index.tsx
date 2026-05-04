@@ -64,7 +64,7 @@ export const AuthorizationButton = () => {
       >
         <ProfileInfo />
         <div className="flex flex-col gap-2">
-          <Button align="center" variant="primary" as="a" href="/subscription">
+          <Button align="center" variant="primary" as="a" href="/plans">
             <Text type="s" style="medium">
               Открыть полный доступ
             </Text>

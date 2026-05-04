@@ -1,8 +1,8 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { useRef, useState } from "react";
 import { getProfile } from "@/api/user";
 import { useChat } from "@/components/business/Chat/hooks/useChat";
 import { PromptField } from "@/components/business/PromptField";
@@ -13,7 +13,9 @@ import { Text } from "@/components/ui/Text";
 import { useAuth } from "@/providers/AuthProvider/hooks";
 
 export default function Page() {
+  const pathname = usePathname();
   const router = useRouter();
+  const promptRef = useRef<HTMLTextAreaElement>(null);
   const [value, setValue] = useState("");
   const { isGuest } = useAuth();
 
@@ -24,6 +26,8 @@ export default function Page() {
     queryFn: getProfile,
     enabled: !isGuest,
   });
+
+  const isImageChat = pathname === "/image-chat";
 
   const name = profile?.name;
 
@@ -57,13 +61,20 @@ export default function Page() {
       <div className="flex flex-col gap-2">
         <h1>Чем я могу помочь?</h1>
         <Text as="h2" type="s" style="regular" color="#6F6F6F">
-          ChatGPT, Gemini, DeepSeek, Claude и другие нейросети для работы с
-          текстами, изображениями и видео
+          {isImageChat
+            ? "Здесь можно создавать крутые изображения"
+            : `ChatGPT, Gemini, DeepSeek, Claude и другие нейросети для работы с текстами, изображениями и видео`}
         </Text>
       </div>
 
       <PromptField
+        ref={promptRef}
         value={value}
+        placeholder={
+          isImageChat
+            ? "Опишите или придумайте изображение"
+            : "Например, 'Напиши стихотворение в стиле Пушкина о весне'"
+        }
         isPromptSending={false}
         isChatCreating={false}
         onKeyDown={onKeyDown}
@@ -71,20 +82,47 @@ export default function Page() {
         onSendClick={sendClick}
       />
 
-      <div className="flex gap-2">
-        <Button variant="outline" leftIcon={<Icon name="firstline" />}>
-          Создать текст
-        </Button>
-        <Button variant="outline" leftIcon={<Icon name="book-saved" />}>
-          Для учёбы
-        </Button>
-        <Button variant="outline" leftIcon={<Icon name="lamp-on" />}>
-          Придумать идею
-        </Button>
-        <Button variant="outline" leftIcon={<Icon name="image" />}>
-          Создать картинку
-        </Button>
-      </div>
+      {!isImageChat && (
+        <div className="flex gap-2">
+          <Button
+            onClick={() => {
+              setValue("Создай текст ");
+              promptRef.current?.focus();
+            }}
+            variant="outline"
+            leftIcon={<Icon name="firstline" />}
+          >
+            Создать текст
+          </Button>
+          <Button
+            onClick={() => {
+              setValue("Помоги с домашним заданием ");
+              promptRef.current?.focus();
+            }}
+            variant="outline"
+            leftIcon={<Icon name="book-saved" />}
+          >
+            Для учёбы
+          </Button>
+          <Button
+            onClick={() => {
+              setValue("Придумай идею ");
+              promptRef.current?.focus();
+            }}
+            variant="outline"
+            leftIcon={<Icon name="lamp-on" />}
+          >
+            Придумать идею
+          </Button>
+          <Button
+            href="/image-chat"
+            variant="outline"
+            leftIcon={<Icon name="image" />}
+          >
+            Создать картинку
+          </Button>
+        </div>
+      )}
     </div>
   );
 }

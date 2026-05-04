@@ -53,9 +53,22 @@ export const ChatSidebar = ({
         </div>
         <div className="flex flex-col gap-3">
           <Button href="/" leftIcon={<Icon name="message-create" />} />
+          <Button
+            disabled
+            leftIcon={<Icon name="video-play" />}
+            rightIcon={
+              <Badge variant="secondary" size="s">
+                <Text type="xs" style="regular">
+                  Скоро
+                </Text>
+              </Badge>
+            }
+            href="/search"
+          >
+            Поиск в чатах
+          </Button>
           <Button href="/image-chat" leftIcon={<Icon name="gallery" />} />
           <Button
-            className={styles.newChatButton}
             disabled
             leftIcon={<Icon name="video-play" />}
             rightIcon={
@@ -93,22 +106,27 @@ export const ChatSidebar = ({
       </div>
 
       <div className="flex flex-col gap-3">
-        <Button
-          className={styles.newChatButton}
-          leftIcon={<Icon name="message-create" />}
-          href="/"
-        >
+        <Button leftIcon={<Icon name="message-create" />} href="/">
           Новый чат
         </Button>
         <Button
-          className={styles.newChatButton}
-          leftIcon={<Icon name="gallery" />}
-          href="/image-chat"
+          disabled
+          leftIcon={<Icon name="video-play" />}
+          rightIcon={
+            <Badge variant="secondary" size="s">
+              <Text type="xs" style="regular">
+                Скоро
+              </Text>
+            </Badge>
+          }
+          href="/search"
         >
+          Поиск в чатах
+        </Button>
+        <Button leftIcon={<Icon name="gallery" />} href="/image-chat">
           Изображения
         </Button>
         <Button
-          className={styles.newChatButton}
           disabled
           leftIcon={<Icon name="video-play" />}
           rightIcon={
