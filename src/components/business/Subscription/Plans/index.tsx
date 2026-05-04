@@ -1,11 +1,9 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import classNames from "classnames";
 import Link from "next/link";
-import Script from "next/script";
-import { useState } from "react";
-import { getPlans, initPayment } from "@/api";
+import { useRouter } from "next/navigation";
+import { getPlans } from "@/api";
 import { Badge } from "@/components/ui/Badge";
 import Button, { type ButtonVariant } from "@/components/ui/Button";
 import { Divider } from "@/components/ui/Divider";
@@ -27,9 +25,7 @@ const SUBSCRIPTION_BUTTON_VARIANT = {
 } as Record<string, ButtonVariant>;
 
 export const Plans = () => {
-  const [selectedPlanId, setSelectedPlanId] = useState<string | undefined>(
-    undefined,
-  );
+  const router = useRouter();
 
   const { data: plans = [] } = useQuery({
     queryKey: ["subscription", "plans"],
@@ -37,36 +33,7 @@ export const Plans = () => {
   });
 
   const onPlanSelect = (planId: string) => {
-    setSelectedPlanId(planId);
-
-    const initConfig = {
-      terminalKey: process.env.NEXT_PUBLIC_KASSA_TERMINAL_KEY, // Значение terminalKey из личного кабинета
-      product: "eacq",
-      features: {
-        payment: {
-          payMethods: ["tpay"],
-          container: document.getElementById("paymentContainer"), // На странице должен существовать элемент с id="paymentContainer"
-          paymentStartCallback: async (paymentType: string) => {
-            // paymentType может использоваться для сбора аналитики
-            const res = await initPayment({
-              paymentType,
-              plan: planId,
-            }); // URL — это URL вашего бэкенд-сервиса, который вызовет метод «Инициировать платеж»
-            return res.PaymentURL;
-          },
-          config: {},
-        }, // Добавьте, если нужны кнопки оплаты
-        // iframe: {}, // Добавьте, если нужно встроить платежную форму в iframe
-        // addcardIframe: {}, // Добавьте, если нужно встроить приложение привязки карты в iframe
-      },
-    };
-
-    window.PaymentIntegration.init(initConfig)
-      .then(async (integration: any) => {
-        console.log(integration);
-        // Место для кода взаимодействия с объектом integration
-      })
-      .catch();
+    router.push(`/plans/${planId}`);
   };
 
   return (
@@ -258,26 +225,6 @@ export const Plans = () => {
           офертой
         </Link>
       </Text>
-
-      {selectedPlanId && (
-        <div>
-          Выберите способ оплаты для плана: "
-          {plans.find((p) => p.id === selectedPlanId)?.name}"
-        </div>
-      )}
-
-      <div
-        id="paymentContainer"
-        className={classNames({
-          [styles.paymentHidden]: selectedPlanId === undefined,
-        })}
-      ></div>
-
-      <Script
-        src="https://integrationjs.tbank.ru/integration.js"
-        // onLoad={onPaymentIntegrationLoad}
-        async
-      ></Script>
     </div>
   );
 };
