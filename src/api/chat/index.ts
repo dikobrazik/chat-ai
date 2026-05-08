@@ -88,3 +88,5 @@ export const patchChatPublic = ({ chatId }: { chatId: string }) =>
   axios
     .patch<string>(`chat/${chatId}/public`)
     .then((response) => response.data);
+
+export * from "./hooks";

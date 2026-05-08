@@ -11,6 +11,8 @@ import "react-toastify/dist/ReactToastify.css";
 import "./globals.css";
 import "./globals.scss";
 import { CookieBanner } from "@/components/business/CookieBanner";
+import { DialogModal } from "@/components/business/DialogModal";
+import { DialogModalProvider } from "@/components/business/DialogModal/context";
 
 const rubik = Rubik({
   variable: "--font-rubik",
@@ -68,30 +70,33 @@ export default async function RootLayout({
         <QueryProvider>
           <AuthProvider>
             <ModelProvider>
-              <div className={styles.page}>
-                <Sidebar />
-                <div className={styles.mainContent}>
-                  <Header />
+              <DialogModalProvider>
+                <div className={styles.page}>
+                  <Sidebar />
+                  <div className={styles.mainContent}>
+                    <Header />
 
-                  <main className={styles.main}>
-                    <ToastContainer
-                      position="top-center"
-                      autoClose={5000}
-                      hideProgressBar
-                      newestOnTop={false}
-                      closeOnClick={false}
-                      rtl={false}
-                      pauseOnFocusLoss
-                      draggable
-                      pauseOnHover
-                      theme="light"
-                      transition={Bounce}
-                    />
-                    {children}
-                  </main>
+                    <main className={styles.main}>
+                      <ToastContainer
+                        position="top-center"
+                        autoClose={5000}
+                        hideProgressBar
+                        newestOnTop={false}
+                        closeOnClick={false}
+                        rtl={false}
+                        pauseOnFocusLoss
+                        draggable
+                        pauseOnHover
+                        theme="light"
+                        transition={Bounce}
+                      />
+                      {children}
+                    </main>
+                  </div>
                 </div>
-              </div>
-              {modal}
+                {modal}
+                <DialogModal />
+              </DialogModalProvider>
             </ModelProvider>
           </AuthProvider>
         </QueryProvider>

@@ -4,16 +4,19 @@ import { Divider } from "@/components/ui/Divider";
 import Icon from "@/components/ui/Icon";
 import { Text } from "@/components/ui/Text";
 import { preventDefault } from "@/utils";
+import { useDelete } from "./hooks/useDelete";
 import { useShare } from "./hooks/useShare";
 
 type Actions = "share" | "pin" | "rename" | "move" | "archive" | "delete";
 
 type Props = {
   hiddenActions?: Actions[];
+  chatId: string;
 };
 
-export const ChatActions = ({ hiddenActions }: Props) => {
+export const ChatActions = ({ chatId, hiddenActions }: Props) => {
   const onShareClick = useShare();
+  const onDeleteClick = useDelete(chatId);
 
   return (
     <div className="flex flex-col gap-1">
@@ -87,7 +90,7 @@ export const ChatActions = ({ hiddenActions }: Props) => {
       <Button
         variant="danger"
         leftIcon={<Icon name="trash" />}
-        onClick={preventDefault(() => {})}
+        onClick={preventDefault(onDeleteClick)}
       >
         Удалить
       </Button>

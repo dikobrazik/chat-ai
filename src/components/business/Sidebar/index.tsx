@@ -181,7 +181,7 @@ export const ChatSidebar = ({
                 position="right"
                 align="start"
               >
-                <ChatActions />
+                <ChatActions chatId={chat.id} />
               </Popover>
             </Button>
           ))}

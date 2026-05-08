@@ -91,7 +91,7 @@ export const Header = () => {
               </Button>
             </div>
           ) : (
-            <ChatActions hiddenActions={["share"]} />
+            <ChatActions chatId={chatId as string} hiddenActions={["share"]} />
           )}
         </Popover>
       </div>
