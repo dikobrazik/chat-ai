@@ -3,9 +3,13 @@
   flex-direction: column;
   gap: 8px;
   background-color: #F7F7F7;
-  height: 120px;
+  min-height: 120px;
   padding: 12px;
   border-radius: 16px;
+
+  &.withFiles {
+    height: auto;
+  }
 
   .textfield {
     flex: 1;

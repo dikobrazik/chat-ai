@@ -44,7 +44,7 @@ export const useChat = (chatId: string | undefined) => {
     queryFn: () =>
       getChat(chatId as string).catch((error) => {
         if (error.status === 401 || error.status === 403) {
-          router.replace("/chat");
+          router.replace("/");
         }
 
         return {
