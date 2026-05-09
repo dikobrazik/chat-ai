@@ -41,7 +41,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: ./configs/deploy/Dockerfile
+          file: ./configs/deploy/Dockerfile.front
           push: true
           tags: ${{ env.FRONTEND_IMAGE }}
 
