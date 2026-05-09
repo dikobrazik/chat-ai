@@ -6,11 +6,6 @@ on:
     paths-ignore:
       - "configs/nginx/**"
   workflow_dispatch:
-    inputs:
-      reason:
-        description: "why"
-        required: false
-        default: "just for fun"
 
 env:
   FRONTEND_IMAGE: ghcr.io/dikobrazik/chat-ai-front
