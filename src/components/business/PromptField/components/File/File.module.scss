@@ -1,0 +1,43 @@
+.progress {
+  background-color: #F7F7F7;
+  border-radius: 8px;
+  height: 32px;
+  width: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+
+  .progressCircle {
+    --value: 75;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+
+    background:
+      conic-gradient(#9C9C9C calc(var(--value) * 1%),
+        #F7F7F7 0);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    position: relative;
+
+    &::before {
+      content: "";
+      position: absolute;
+      width: 26px;
+      height: 26px;
+      background: #F7F7F7;
+      border-radius: 50%;
+    }
+
+    & .iconWrapper {
+      position: relative;
+      z-index: 1;
+      display: flex;
+    }
+  }
+
+}

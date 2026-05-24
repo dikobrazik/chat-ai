@@ -2,7 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
-import { getChats } from "@/api";
+import { getChats, useChats } from "@/api";
 import { Badge } from "@/components/ui/Badge";
 import { Banner } from "@/components/ui/Banner";
 import Button from "@/components/ui/Button";
@@ -32,11 +32,7 @@ export const ChatSidebar = ({
 }) => {
   const { isGuest } = useAuthContext();
 
-  const { data: chats } = useQuery({
-    refetchInterval: false,
-    queryKey: ["chats"],
-    queryFn: getChats,
-  });
+  const chats = useChats();
 
   if (!isOpen)
     return (

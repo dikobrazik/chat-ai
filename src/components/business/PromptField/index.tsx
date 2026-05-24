@@ -1,10 +1,10 @@
 import { forwardRef, useRef } from "react";
 import { ModelSelect } from "@/components/business/ModelSelect";
 import Popover from "@/components/ui/Popover";
-import { Text } from "@/components/ui/Text";
 import { cn } from "@/lib/utils";
 import Button from "../../ui/Button";
 import Icon from "../../ui/Icon";
+import { File } from "./components/File";
 import { useFiles } from "./hooks/useAddFiles";
 import styles from "./PromptField.module.scss";
 
@@ -32,7 +32,7 @@ export const PromptField = forwardRef<HTMLTextAreaElement, PromptFieldProps>(
     ref,
   ) => {
     const addFilesRef = useRef<HTMLInputElement>(null);
-    const { files, onAddFiles, removeFile } = useFiles();
+    const { files, onAddFiles, onUploadFile, removeFile } = useFiles();
 
     return (
       <div
@@ -51,25 +51,12 @@ export const PromptField = forwardRef<HTMLTextAreaElement, PromptFieldProps>(
 
         <div>
           {(files ?? []).map((file) => (
-            <Button
+            <File
               key={file.name}
-              rightIcon={
-                <div onClick={() => removeFile(file.name)}>
-                  <Icon name="close" />
-                </div>
-              }
-              variant="secondary"
-            >
-              <Icon name="paperclip" />
-              <div className="flex flex-col items-start gap-1">
-                <Text type="xs" style="regular">
-                  {file.name}
-                </Text>
-                <Text type="xs" style="regular" color="#9C9C9C">
-                  {file.type}&nbsp;•&nbsp;{(file.size / 1024).toFixed(2)} КБ
-                </Text>
-              </div>
-            </Button>
+              file={file}
+              removeFile={removeFile}
+              onUploaded={onUploadFile}
+            />
           ))}
         </div>
 

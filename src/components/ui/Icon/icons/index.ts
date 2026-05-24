@@ -1,4 +1,5 @@
 // Import all icons
+import { DocumentIcon } from "./DocumentIcon";
 import { GalleryEditIcon } from "./GalleryEditIcon";
 import { PaperclipIcon } from "./PaperclipIcon";
 import { ArchiveIcon } from "./ArchiveIcon";
@@ -53,6 +54,7 @@ import { YandexIcon } from "./YandexIcon";
 
 // Re-export all icons
 export {
+DocumentIcon,
 GalleryEditIcon,
 PaperclipIcon,
 ArchiveIcon,
@@ -107,6 +109,8 @@ PinIcon,
 
 // Icon registry for dynamic loading
 export const iconComponents = {
+  "document": DocumentIcon,
+
   "gallery-edit": GalleryEditIcon,
 
   "paperclip": PaperclipIcon,

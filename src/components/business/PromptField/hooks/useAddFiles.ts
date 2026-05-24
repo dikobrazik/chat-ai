@@ -19,5 +19,11 @@ export const useFiles = () => {
     );
   };
 
-  return { files, onAddFiles: handleAddFiles, removeFile };
+  const onUploadFile = (fileName: string, id: string) => {
+    setFiles((files) =>
+      files.map((file) => (file.name === fileName ? { ...file, id } : file)),
+    );
+  };
+
+  return { files, onAddFiles: handleAddFiles, onUploadFile, removeFile };
 };
