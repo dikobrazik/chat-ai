@@ -1,4 +1,4 @@
-import { type Dispatch, type SetStateAction, useState } from "react";
+import { type Dispatch, type SetStateAction, useRef, useState } from "react";
 import { type Prompt, sendStreamPrompt } from "@/api";
 import { useFiles } from "@/providers/FilesProvider/useFiles";
 
@@ -6,6 +6,7 @@ export const useSendPromptStream = (
   chatId: string,
   setMessages: Dispatch<SetStateAction<Prompt[]>>,
 ) => {
+  const isSendingRef = useRef(false);
   const [isPromptSending, setIsPromptSending] = useState(false);
   const { clearFiles } = useFiles();
 
@@ -14,6 +15,9 @@ export const useSendPromptStream = (
     filesIds?: string[];
     newChatId?: string;
   }) => {
+    if (isPromptSending || isSendingRef.current) return;
+
+    isSendingRef.current = true;
     setIsPromptSending(true);
 
     sendStreamPrompt({
@@ -69,6 +73,7 @@ export const useSendPromptStream = (
         }
       })
       .finally(() => {
+        isSendingRef.current = false;
         setIsPromptSending(false);
       });
   };
