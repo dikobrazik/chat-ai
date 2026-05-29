@@ -45,7 +45,12 @@ export const Chat = () => {
         id: crypto.randomUUID(),
         text: input || value,
         role: "user",
-        files: [],
+        files: attachments.map((attachment) => ({
+          id: attachment.id,
+          name: attachment.name,
+          type: attachment.type,
+          size: attachment.size,
+        })),
       },
       ...messages,
     ]);

@@ -29,6 +29,7 @@ export const useSendPromptStream = (
             id: randomId,
             text: "",
             role: "model",
+            files: [],
           },
           ...prevMessages.slice(1),
         ]);
@@ -48,6 +49,7 @@ export const useSendPromptStream = (
                 id: data.promptId || randomId,
                 text: data.content,
                 role: "model",
+                files: [],
               },
               ...prevMessages.slice(1),
             ]);
@@ -59,6 +61,7 @@ export const useSendPromptStream = (
                 id: data.promptId || randomId,
                 text: prevMessages[0].text + data.content,
                 role: "model",
+                files: [],
               },
               ...prevMessages.slice(1),
             ]);

@@ -17,6 +17,7 @@ export const FilesContext = createContext<{
 type Attachment = {
   id: string;
   name: string;
+  type: string;
   size: number;
   isUploaded: boolean;
 };
@@ -38,6 +39,7 @@ export const FilesProvider = ({ children }: { children: React.ReactNode }) => {
         id,
         name: file.name,
         size: file.size,
+        type: file.type,
         isUploaded: false,
       };
     });
