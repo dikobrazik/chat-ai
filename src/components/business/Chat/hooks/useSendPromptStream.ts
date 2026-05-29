@@ -1,18 +1,25 @@
 import { type Dispatch, type SetStateAction, useState } from "react";
 import { type Prompt, sendStreamPrompt } from "@/api";
+import { useFiles } from "@/providers/FilesProvider/useFiles";
 
 export const useSendPromptStream = (
   chatId: string,
   setMessages: Dispatch<SetStateAction<Prompt[]>>,
 ) => {
   const [isPromptSending, setIsPromptSending] = useState(false);
+  const { clearFiles } = useFiles();
 
-  const sendPrompt = (payload: { input: string; newChatId?: string }) => {
+  const sendPrompt = (payload: {
+    input: string;
+    filesIds?: string[];
+    newChatId?: string;
+  }) => {
     setIsPromptSending(true);
 
     sendStreamPrompt({
       chat_id: payload.newChatId ?? (chatId as string),
       input: payload.input,
+      filesIds: payload.filesIds,
     })
       .then(async (reader) => {
         const randomId = crypto.randomUUID();
@@ -44,6 +51,8 @@ export const useSendPromptStream = (
               },
               ...prevMessages.slice(1),
             ]);
+
+            clearFiles();
           } else if (value.type === "delta") {
             setMessages((prevMessages) => [
               {

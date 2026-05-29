@@ -3,6 +3,7 @@
 import { useParams, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { PromptField } from "@/components/business/PromptField";
+import { useFiles } from "@/providers/FilesProvider/useFiles";
 import css from "./Chat.module.scss";
 import {
   Message,
@@ -14,6 +15,7 @@ import { useSendPromptStream } from "./hooks/useSendPromptStream";
 export const Chat = () => {
   const { id: chatId } = useParams();
   const searchParams = useSearchParams();
+  const { attachments } = useFiles();
 
   const messagesContainerRef = useRef<HTMLDivElement>(null);
   const [value, setValue] = useState("");
@@ -42,28 +44,12 @@ export const Chat = () => {
       { id: crypto.randomUUID(), text: input || value, role: "user" },
       ...messages,
     ]);
-    sendPrompt({ input: input || value });
+    sendPrompt({
+      input: input || value,
+      filesIds: attachments.map((attachment) => attachment.id),
+    });
     setValue("");
     messagesContainerRef.current?.scrollTo(0, 0);
-  };
-
-  const onInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setValue(e.target.value);
-
-    e.target.style.height = "auto";
-    e.target.style.height = `${e.target.scrollHeight}px`;
-  };
-
-  const onKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (isChatCreating || isPromptSending || !value) return;
-
-    if (
-      event?.key === "Enter" &&
-      (!event?.shiftKey || !event?.altKey || !event?.ctrlKey)
-    ) {
-      event.preventDefault();
-      onSendClick();
-    }
   };
 
   return (
@@ -83,8 +69,7 @@ export const Chat = () => {
         value={value}
         isPromptSending={isPromptSending}
         isChatCreating={isChatCreating}
-        onKeyDown={onKeyDown}
-        onInputChange={onInputChange}
+        onInputChange={setValue}
         onSendClick={onSendClick}
       />
     </div>

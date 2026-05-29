@@ -37,18 +37,6 @@ export default function Page() {
     router.push(`/chat/${chatId}?query=${encodeURIComponent(value)}`);
   };
 
-  const onKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (!value) return;
-
-    if (
-      event?.key === "Enter" &&
-      (!event?.shiftKey || !event?.altKey || !event?.ctrlKey)
-    ) {
-      event.preventDefault();
-      sendClick();
-    }
-  };
-
   return (
     <div className="flex flex-col gap-6 justify-center  h-full">
       {!isGuest && (
@@ -77,8 +65,7 @@ export default function Page() {
         }
         isPromptSending={false}
         isChatCreating={false}
-        onKeyDown={onKeyDown}
-        onInputChange={(e) => setValue(e.target.value)}
+        onInputChange={setValue}
         onSendClick={sendClick}
       />
 

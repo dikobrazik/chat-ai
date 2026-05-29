@@ -4,12 +4,11 @@ import Button from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import { Text } from "@/components/ui/Text";
 import { cn } from "@/lib/utils";
+import { useFiles } from "@/providers/FilesProvider/useFiles";
 import styles from "./File.module.scss";
 
 type Props = {
-  file: File;
-  removeFile: (fileName: string) => void;
-  onUploaded?: (fileName: string, id: string) => void;
+  fileId: string;
 };
 
 const UPLOADING_TEXTS = [
@@ -18,7 +17,9 @@ const UPLOADING_TEXTS = [
   "Файл почти загружен ...",
 ];
 
-export const File = ({ file, removeFile, onUploaded }: Props) => {
+export const File = ({ fileId }: Props) => {
+  const { getFile, removeFile, onUploaded } = useFiles();
+
   const uploadingIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const [isUploaded, setIsUploaded] = useState(false);
   const [uploadingTextIndex, setUploadingTextIndex] = useState(0);
@@ -30,17 +31,19 @@ export const File = ({ file, removeFile, onUploaded }: Props) => {
       }
     },
     onSuccess: (ids: string[]) => {
-      onUploaded?.(file.name, ids[0]);
+      onUploaded?.(fileId, ids[0]);
       setIsUploaded(true);
     },
   });
 
+  const file = getFile(fileId);
+
   useEffect(() => {
-    if (!isUploaded && !isPending) {
+    if (!isUploaded && !isPending && file) {
       mutate([file]);
       uploadingIntervalRef.current = setInterval(() => {
         setUploadingTextIndex((prev) => (prev + 1) % UPLOADING_TEXTS.length);
-      }, 5000);
+      }, 1000);
     }
 
     return () => {
@@ -52,15 +55,9 @@ export const File = ({ file, removeFile, onUploaded }: Props) => {
 
   return (
     <Button
-      key={file.name}
+      key={file?.name}
       rightIcon={
-        // biome-ignore lint/a11y/useSemanticElements: <explanation>
-        <div
-          role="button"
-          tabIndex={0}
-          onKeyUp={() => removeFile(file.name)}
-          onClick={() => removeFile(file.name)}
-        >
+        <div onClick={() => removeFile(fileId)}>
           <Icon name="close" />
         </div>
       }
@@ -84,11 +81,11 @@ export const File = ({ file, removeFile, onUploaded }: Props) => {
       </div>
       <div className="flex flex-col items-start gap-1">
         <Text type="xs" style="regular">
-          {file.name}
+          {file?.name}
         </Text>
         {isUploaded ? (
           <Text type="xs" style="regular" color="#9C9C9C">
-            {file.type}&nbsp;•&nbsp;{(file.size / 1024).toFixed(2)} КБ
+            {file?.type}&nbsp;•&nbsp;{((file?.size ?? 0) / 1024).toFixed(2)} КБ
           </Text>
         ) : (
           <Text type="xs" style="regular" color="#9C9C9C">

@@ -2,28 +2,23 @@ import EventSourceStream from "@server-sent-stream/web";
 import axios from "axios";
 import type { Model } from "../model";
 
-type SendPromptResponse = {
-  chatId: string;
-  response: Prompt;
-};
-
 type SendPromptRequest = {
   input: string;
   chat_id?: string;
+  filesIds?: string[];
 };
 
-export const sendPrompt = ({ chat_id, ...payload }: SendPromptRequest) =>
-  axios
-    .post<SendPromptResponse>(`chat/${chat_id}/prompt`, payload)
-    .then((response) => response.data);
-
-export const sendStreamPrompt = ({ chat_id, input }: SendPromptRequest) =>
+export const sendStreamPrompt = ({
+  chat_id,
+  input,
+  filesIds,
+}: SendPromptRequest) =>
   axios
     .get(`chat/${chat_id}/prompt-stream`, {
       headers: {
         Accept: "text/event-stream",
       },
-      params: { input },
+      params: { input, files_ids: filesIds },
       responseType: "stream",
       adapter: "fetch", // <- this option can also be set in axios.create()
     })

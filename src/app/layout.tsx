@@ -1,18 +1,15 @@
 import type { Metadata } from "next";
 import { Rubik } from "next/font/google";
-import { Bounce, ToastContainer } from "react-toastify/unstyled";
-import { Header } from "@/components/business/Header";
-import { Sidebar } from "@/components/business/Sidebar";
-import { AuthProvider } from "@/providers/AuthProvider/Provider";
-import { ModelProvider } from "@/providers/ModelProvider/Provider";
-import { QueryProvider } from "@/providers/QueryProvider/Provider";
-import styles from "./layout.module.scss";
-import "react-toastify/dist/ReactToastify.css";
-import "./globals.css";
-import "./globals.scss";
 import { CookieBanner } from "@/components/business/CookieBanner";
 import { DialogModal } from "@/components/business/DialogModal";
-import { DialogModalProvider } from "@/components/business/DialogModal/context";
+import { Header } from "@/components/business/Header";
+import { Sidebar } from "@/components/business/Sidebar";
+import { Providers } from "@/providers";
+import "react-toastify/dist/ReactToastify.css";
+import { Bounce, ToastContainer } from "react-toastify/unstyled";
+import "./globals.css";
+import "./globals.scss";
+import styles from "./layout.module.scss";
 
 const rubik = Rubik({
   variable: "--font-rubik",
@@ -67,39 +64,33 @@ export default async function RootLayout({
         />
       </head>
       <body className={`${rubik.variable}`}>
-        <QueryProvider>
-          <AuthProvider>
-            <ModelProvider>
-              <DialogModalProvider>
-                <div className={styles.page}>
-                  <Sidebar />
-                  <div className={styles.mainContent}>
-                    <Header />
+        <Providers>
+          <div className={styles.page}>
+            <Sidebar />
+            <div className={styles.mainContent}>
+              <Header />
 
-                    <main className={styles.main}>
-                      <ToastContainer
-                        position="top-center"
-                        autoClose={5000}
-                        hideProgressBar
-                        newestOnTop={false}
-                        closeOnClick={false}
-                        rtl={false}
-                        pauseOnFocusLoss
-                        draggable
-                        pauseOnHover
-                        theme="light"
-                        transition={Bounce}
-                      />
-                      {children}
-                    </main>
-                  </div>
-                </div>
-                {modal}
-                <DialogModal />
-              </DialogModalProvider>
-            </ModelProvider>
-          </AuthProvider>
-        </QueryProvider>
+              <main className={styles.main}>
+                <ToastContainer
+                  position="top-center"
+                  autoClose={5000}
+                  hideProgressBar
+                  newestOnTop={false}
+                  closeOnClick={false}
+                  rtl={false}
+                  pauseOnFocusLoss
+                  draggable
+                  pauseOnHover
+                  theme="light"
+                  transition={Bounce}
+                />
+                {children}
+              </main>
+            </div>
+          </div>
+          {modal}
+          <DialogModal />
+        </Providers>
 
         <CookieBanner />
       </body>

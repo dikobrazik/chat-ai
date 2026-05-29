@@ -1,11 +1,12 @@
 import { forwardRef, useRef } from "react";
+import { mergeRefs } from "react-merge-refs";
 import { ModelSelect } from "@/components/business/ModelSelect";
 import Popover from "@/components/ui/Popover";
 import { cn } from "@/lib/utils";
+import { useFiles } from "@/providers/FilesProvider/useFiles";
 import Button from "../../ui/Button";
 import Icon from "../../ui/Icon";
 import { File } from "./components/File";
-import { useFiles } from "./hooks/useAddFiles";
 import styles from "./PromptField.module.scss";
 
 type PromptFieldProps = {
@@ -13,8 +14,7 @@ type PromptFieldProps = {
   placeholder?: string;
   isPromptSending: boolean;
   isChatCreating: boolean;
-  onKeyDown: (event: React.KeyboardEvent<HTMLTextAreaElement>) => void;
-  onInputChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  onInputChange: (value: string) => void;
   onSendClick: () => void;
 };
 
@@ -24,39 +24,58 @@ export const PromptField = forwardRef<HTMLTextAreaElement, PromptFieldProps>(
       value,
       isPromptSending,
       isChatCreating,
-      onKeyDown,
       onInputChange,
       onSendClick,
       placeholder,
     },
     ref,
   ) => {
+    const inputRef = useRef<HTMLTextAreaElement>(null);
     const addFilesRef = useRef<HTMLInputElement>(null);
-    const { files, onAddFiles, onUploadFile, removeFile } = useFiles();
+    const { attachments, areAllFilesUploaded, addFiles } = useFiles();
+
+    const onChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+      onInputChange(e.target.value);
+
+      e.target.style.height = "auto";
+      e.target.style.height = `${e.target.scrollHeight}px`;
+    };
+
+    const onKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+      if (!value || !areAllFilesUploaded) return;
+
+      if (
+        event?.key === "Enter" &&
+        (!event?.shiftKey || !event?.altKey || !event?.ctrlKey)
+      ) {
+        event.preventDefault();
+        onSendClick();
+      }
+    };
 
     return (
       <div
         className={cn(styles.controlsContainer, {
-          [styles.withFiles]: Boolean(files?.length),
+          [styles.withFiles]: Boolean(attachments?.length),
         })}
       >
         <input
           hidden
           type="file"
           id="fileInput"
-          onChange={onAddFiles}
+          accept="image/*,application/pdf,.doc,.docx,.txt,.md"
+          onChange={(e) => {
+            addFiles(e.target.files);
+
+            inputRef.current?.focus();
+          }}
           multiple
           ref={addFilesRef}
         ></input>
 
         <div>
-          {(files ?? []).map((file) => (
-            <File
-              key={file.name}
-              file={file}
-              removeFile={removeFile}
-              onUploaded={onUploadFile}
-            />
+          {(attachments ?? []).map((file) => (
+            <File key={file.name} fileId={file.id} />
           ))}
         </div>
 
@@ -64,11 +83,11 @@ export const PromptField = forwardRef<HTMLTextAreaElement, PromptFieldProps>(
           id="prompt"
           name="prompt"
           placeholder={placeholder}
-          ref={ref}
+          ref={mergeRefs([inputRef, ref])}
           className={styles.textfield}
           value={value}
           onKeyDown={onKeyDown}
-          onChange={onInputChange}
+          onChange={onChange}
         />
 
         <div className={styles.controls}>
@@ -105,7 +124,7 @@ export const PromptField = forwardRef<HTMLTextAreaElement, PromptFieldProps>(
             variant="primary"
             className={styles.button}
             leftIcon={<Icon name="arrow-up" color="white" />}
-            disabled={!value}
+            disabled={!value || !areAllFilesUploaded}
             loading={isPromptSending || isChatCreating}
             onClick={onSendClick}
           />
