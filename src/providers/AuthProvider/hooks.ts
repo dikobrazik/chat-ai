@@ -116,7 +116,7 @@ export const useAuth = () => {
             if (isRefreshTokenExpiredError(error)) {
               setIsGuest(true);
               await mutateCreateGuest();
-              router.push("/chat");
+              router.push("/");
             }
 
             return Promise.reject(error);
@@ -132,7 +132,7 @@ export const useAuth = () => {
 
     queryClient.invalidateQueries();
 
-    mutateCreateGuest().then(() => router.push("/chat"));
+    mutateCreateGuest().then(() => router.push("/"));
   }, [mutateCreateGuest]);
 
   return { isGuest, isReady, setIsGuest, onLogoutClick };

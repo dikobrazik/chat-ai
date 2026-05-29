@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { ACCESS_TOKEN_SOURCE_LOCAL_STORAGE_KEY } from "@/constants/auth";
 import axios from "axios";
-import { useAuthContext } from "@/providers/AuthProvider/hooks";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect } from "react";
 import { setAuthToken } from "@/api";
+import { ACCESS_TOKEN_SOURCE_LOCAL_STORAGE_KEY } from "@/constants/auth";
+import { useAuthContext } from "@/providers/AuthProvider/hooks";
 
 export default function AuthCallbackPage() {
   const router = useRouter();
@@ -27,7 +27,7 @@ export default function AuthCallbackPage() {
         router.replace("/error?message=storage_failed");
       }
 
-      router.replace("/chat");
+      router.replace("/");
     } else {
       router.replace("/login?error=no_token");
     }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useParams } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 import Button from "@/components/ui/Button";
 import Icon from "@/components/ui/Icon";
 import { Logo } from "@/components/ui/Logo";
@@ -20,6 +20,7 @@ export const Header = () => {
   const { isGuest } = useAuthContext();
 
   const onShareClick = useShare();
+  const isChatScreen = usePathname().startsWith("/chat/");
 
   return (
     <header className={styles.header}>
@@ -72,12 +73,14 @@ export const Header = () => {
           Trigger={(props) => (
             <Button
               variant="base"
-              leftIcon={<Icon name={isGuest ? "message-question" : "more"} />}
+              leftIcon={
+                <Icon name={!isChatScreen ? "message-question" : "more"} />
+              }
               {...props}
             />
           )}
         >
-          {isGuest ? (
+          {!isChatScreen ? (
             <div className="flex flex-col">
               <Button leftIcon={<Icon name="clipboard" />}>
                 <Text type="s" style="regular">

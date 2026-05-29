@@ -8,7 +8,7 @@ export default function FailSubscriptionPage() {
       <Button as="a" href="/plans">
         Попробовать еще раз
       </Button>
-      <Button as="a" href="/chat">
+      <Button as="a" href="/">
         В чат
       </Button>
     </div>
