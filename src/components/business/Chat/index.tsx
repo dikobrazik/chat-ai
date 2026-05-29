@@ -40,8 +40,13 @@ export const Chat = () => {
     if (isChatCreating || isPromptSending) return;
 
     setMessages([
-      { id: WAITING_RESPONSE_MESSAGE_ID, text: "", role: "model" },
-      { id: crypto.randomUUID(), text: input || value, role: "user" },
+      { id: WAITING_RESPONSE_MESSAGE_ID, text: "", role: "model", files: [] },
+      {
+        id: crypto.randomUUID(),
+        text: input || value,
+        role: "user",
+        files: [],
+      },
       ...messages,
     ]);
     sendPrompt({
@@ -60,6 +65,7 @@ export const Chat = () => {
             key={`${message.id}`}
             id={message.id}
             message={message.text}
+            files={message.files}
             role={message.role}
           />
         ))}

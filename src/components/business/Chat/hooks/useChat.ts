@@ -23,6 +23,7 @@ export const useChat = (chatId: string | undefined) => {
             setMessages((prevMessages) => [
               {
                 id: ERROR_MESSAGE_ID,
+                files: response?.data.files ?? [],
                 text: response?.data.message ?? error.message,
                 role: "model",
               },

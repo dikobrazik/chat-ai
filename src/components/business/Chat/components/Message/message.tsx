@@ -2,13 +2,16 @@ import { useQuery } from "@tanstack/react-query";
 import classNames from "classnames";
 import { useParams } from "next/navigation";
 import { Streamdown } from "streamdown";
-import { getImageUrl } from "@/api";
+import { getImageUrl, type Prompt } from "@/api";
+import { FileComponent } from "@/components/ui/File";
+import Icon from "@/components/ui/Icon";
 import { cn } from "@/lib/utils";
 import styles from "./Message.module.scss";
 
 type Props = {
   id: string;
   message: string;
+  files: Prompt["files"];
   className?: string;
   role: string;
 };
@@ -79,14 +82,35 @@ const MessageContent = ({ id, message }: { id: string; message: string }) => {
   );
 };
 
-export const Message = ({ id, role, message, className }: Props) => {
+export const Message = ({ id, role, files, message, className }: Props) => {
   return (
-    <div
-      className={classNames(styles.message, className, styles[`${role}`], {
-        [styles.error]: id === ERROR_MESSAGE_ID,
-      })}
-    >
-      <MessageContent id={id} message={message} />
-    </div>
+    <>
+      <div
+        className={classNames(styles.message, className, styles[`${role}`], {
+          [styles.error]: id === ERROR_MESSAGE_ID,
+        })}
+      >
+        <MessageContent id={id} message={message} />
+      </div>
+      {files?.map((file) => (
+        <div
+          key={file.id}
+          className={classNames(
+            styles.message,
+            styles[`${role}`],
+            styles.attachment,
+          )}
+        >
+          <div className={styles.file}>
+            <FileComponent
+              isUploaded
+              name={file.name}
+              type={file.type}
+              size={file.size}
+            />
+          </div>
+        </div>
+      ))}
+    </>
   );
 };

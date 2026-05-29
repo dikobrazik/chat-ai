@@ -59,9 +59,17 @@ export type ChatInfo = {
   model: Model;
 };
 
+type PromptFile = {
+  id: string;
+  name: string;
+  size: number;
+  type: string;
+};
+
 export type Prompt = {
   id: string;
   text: string;
+  files: PromptFile[];
   role: string;
 };
 
