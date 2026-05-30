@@ -4,6 +4,7 @@ import { useParams, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { PromptField } from "@/components/business/PromptField";
 import { useFiles } from "@/providers/FilesProvider/useFiles";
+import { Footer } from "../Footer";
 import css from "./Chat.module.scss";
 import { Message } from "./components/Message";
 import { WAITING_RESPONSE_MESSAGE_ID } from "./components/Message/constants";
@@ -83,6 +84,8 @@ export const Chat = () => {
         onInputChange={setValue}
         onSendClick={onSendClick}
       />
+
+      <Footer />
     </div>
   );
 };

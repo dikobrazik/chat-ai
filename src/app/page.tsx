@@ -6,6 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { getProfile } from "@/api/user";
 import { useChat } from "@/components/business/Chat/hooks/useChat";
+import { Footer } from "@/components/business/Footer";
 import { PromptField } from "@/components/business/PromptField";
 import Button from "@/components/ui/Button";
 import Icon from "@/components/ui/Icon";
@@ -39,7 +40,7 @@ export default function Page() {
   };
 
   return (
-    <div className="flex flex-col justify-between h-full py-6">
+    <div className="flex flex-col justify-between h-full">
       <div></div>
       <div className="flex flex-col gap-6">
         {!isGuest && (
@@ -115,11 +116,7 @@ export default function Page() {
         )}
       </div>
 
-      <Text color="#9C9C9C" style="regular" type="xs">
-        Jonu AI может допускать ошибки. Ознакомьтесь с{" "}
-        <Link href="/terms">Условиями использования</Link> и{" "}
-        <Link href="/privacy">Политикой конфиденциальности</Link>
-      </Text>
+      <Footer />
     </div>
   );
 }
