@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { createChat, getChat, type Model, type Prompt } from "@/api";
 import { useModelContext } from "@/providers/ModelProvider/hooks";
-import { ERROR_MESSAGE_ID } from "../components/Message/message";
+import { ERROR_MESSAGE_ID } from "../components/Message/constants";
 
 export const useChat = (chatId: string | undefined) => {
   const queryClient = useQueryClient();

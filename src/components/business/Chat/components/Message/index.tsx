@@ -6,40 +6,16 @@ import { getImageUrl, type Prompt } from "@/api";
 import { Banner } from "@/components/ui/Banner";
 import Button from "@/components/ui/Button";
 import { FileComponent } from "@/components/ui/File";
-import Icon from "@/components/ui/Icon";
-import { useCopy } from "@/hooks/useCopy";
 import { cn } from "@/lib/utils";
-import styles from "./Message.module.scss";
-
-type Props = {
-  id: string;
-  message: string;
-  files: Prompt["files"];
-  className?: string;
-  role: string;
-};
-
-export const ERROR_MESSAGE_ID = "this-is-error-message";
-export const WAITING_RESPONSE_MESSAGE_ID = "AI is typing...";
-export const TOO_MANY_REQUESTS_MESSAGE_ID =
-  "Too many requests. Please try again later.";
-
-const SYSTEM_MESSAGES = [
+import {
   ERROR_MESSAGE_ID,
-  WAITING_RESPONSE_MESSAGE_ID,
+  SYSTEM_MESSAGES,
   TOO_MANY_REQUESTS_MESSAGE_ID,
-];
-
-const Typing = () => {
-  return (
-    <span className={styles.typingIndicator}>
-      &nbsp;
-      <span className={styles.dot}></span>
-      <span className={styles.dot}></span>
-      <span className={styles.dot}></span>
-    </span>
-  );
-};
+  WAITING_RESPONSE_MESSAGE_ID,
+} from "./constants";
+import styles from "./Message.module.scss";
+import { MessageActions } from "./MessageActions";
+import { ModelTyping } from "./ModelTyping";
 
 const ImageContent = ({
   chatId,
@@ -54,9 +30,10 @@ const ImageContent = ({
   });
 
   if (isLoading) {
-    return <Typing />;
+    return <ModelTyping />;
   }
 
+  // biome-ignore lint/performance/noImgElement: <explanation>
   return <img src={data} alt="AI response" width="20%" />;
 };
 
@@ -78,7 +55,7 @@ const MessageContent = ({ id, message }: { id: string; message: string }) => {
       />
     );
   } else if (id === WAITING_RESPONSE_MESSAGE_ID) {
-    return <Typing />;
+    return <ModelTyping />;
   }
 
   if (message === "[Image response]") {
@@ -97,46 +74,14 @@ const MessageContent = ({ id, message }: { id: string; message: string }) => {
   );
 };
 
-export const Message = ({ id, role, files, message, className }: Props) => {
-  const copyToClipboard = useCopy();
-
+export const Message = ({ id, role, files, text: message }: Prompt) => {
   return (
     <>
       {!SYSTEM_MESSAGES.includes(id) && (
-        <div className={styles[role]}>
-          <Button
-            size="x"
-            leftIcon={<Icon name="copy" size="16" />}
-            onClick={() => copyToClipboard(message)}
-          />
-          {role === "model" && (
-            <>
-              <Button
-                size="x"
-                leftIcon={<Icon name="refresh" size="16" />}
-                onClick={() => copyToClipboard(message)}
-              />
-              <Button
-                size="x"
-                leftIcon={<Icon name="like" size="16" />}
-                onClick={() => copyToClipboard(message)}
-              />
-              <Button
-                size="x"
-                leftIcon={<Icon name="dislike" size="16" />}
-                onClick={() => copyToClipboard(message)}
-              />
-              <Button
-                size="x"
-                leftIcon={<Icon name="export" size="16" />}
-                onClick={() => copyToClipboard(message)}
-              />
-            </>
-          )}
-        </div>
+        <MessageActions text={message} role={role} />
       )}
       <div
-        className={classNames(styles.message, className, styles[`${role}`], {
+        className={classNames(styles.message, styles[`${role}`], {
           [styles.error]: id === ERROR_MESSAGE_ID,
         })}
       >

@@ -80,6 +80,12 @@
   &:active:not(.disabled) {
     background-color: #0076EB;
   }
+
+  &.disabled {
+    background-color: #0F8AFF3D;
+    color: #FFFFFF;
+    cursor: not-allowed;
+  }
 }
 
 .variant-base {

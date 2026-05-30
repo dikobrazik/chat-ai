@@ -5,10 +5,8 @@ import { useEffect, useRef, useState } from "react";
 import { PromptField } from "@/components/business/PromptField";
 import { useFiles } from "@/providers/FilesProvider/useFiles";
 import css from "./Chat.module.scss";
-import {
-  Message,
-  WAITING_RESPONSE_MESSAGE_ID,
-} from "./components/Message/message";
+import { Message } from "./components/Message";
+import { WAITING_RESPONSE_MESSAGE_ID } from "./components/Message/constants";
 import { useChat } from "./hooks/useChat";
 import { useSendPromptStream } from "./hooks/useSendPromptStream";
 
@@ -71,7 +69,7 @@ export const Chat = () => {
           <Message
             key={`${message.id}`}
             id={message.id}
-            message={message.text}
+            text={message.text}
             files={message.files}
             role={message.role}
           />
