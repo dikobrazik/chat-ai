@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getSubscription } from "@/api";
+import { getPlans, getSubscription } from "@/api";
 import { Banner } from "@/components/ui/Banner";
 import Button from "@/components/ui/Button";
 import Icon from "@/components/ui/Icon";
@@ -12,8 +12,13 @@ export const SubscriptionBanner = () => {
     queryKey: ["subscription"],
     queryFn: getSubscription,
   });
+  const { data: plansData } = useQuery({
+    queryKey: ["plans"],
+    queryFn: getPlans,
+  });
 
   const subscription = data?.subscription;
+  const activePlan = plansData?.find((plan) => plan.id === subscription?.plan);
 
   const { active, toggle } = useToggle();
 
@@ -39,10 +44,12 @@ export const SubscriptionBanner = () => {
   return (
     <>
       <Banner
-        title="Jonu AI Плюс"
-        description={`Ваш план будет автоматически продлён 30.12.2026 г.`}
+        title={`Jonu AI ${activePlan?.name ?? ""}`}
+        description={`Ваш план будет автоматически продлён ${new Date(subscription?.current_period_end).toLocaleDateString() ?? ""}`}
         action={
           <Popover
+            position="bottom"
+            align="end"
             Trigger={(props) => (
               <Button
                 {...props}

@@ -42,21 +42,8 @@ const Popover = ({
       positions={position}
       align={align}
       padding={padding}
-      content={
-        <div
-          id="popover-content"
-          // ref={popoverRef}
-          className={classNames(
-            popoverClassName,
-            styles.popoverContent,
-            styles[`position-${position}`],
-          )}
-          role="dialog"
-          aria-modal="true"
-        >
-          {children}
-        </div>
-      }
+      containerClassName={classNames(popoverClassName, styles.popoverContent)}
+      content={children}
     >
       <Trigger
         // ref={triggerRef}

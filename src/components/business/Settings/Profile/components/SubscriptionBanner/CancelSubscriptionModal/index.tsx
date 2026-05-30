@@ -1,3 +1,5 @@
+import { useQuery } from "@tanstack/react-query";
+import { getSubscription } from "@/api/subscription";
 import Button from "@/components/ui/Button";
 import Modal from "@/components/ui/Modal";
 import { Text } from "@/components/ui/Text";
@@ -8,6 +10,10 @@ type Props = {
 };
 
 export const CancelSubscriptionModal = ({ isOpen, onClose }: Props) => {
+  const { data } = useQuery({
+    queryKey: ["subscription"],
+    queryFn: getSubscription,
+  });
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <div className="flex flex-col items-center">
@@ -15,7 +21,10 @@ export const CancelSubscriptionModal = ({ isOpen, onClose }: Props) => {
         <div className="text-center">
           <Text type="s" color="#6F6F6F" style="regular">
             Ваша подписка Plus будет отменена, но останется активной до конца
-            расчётного периода — 29 ноября 2025 г.
+            расчётного периода —{" "}
+            {new Date(
+              data?.subscription?.current_period_end ?? 0,
+            ).toLocaleDateString() ?? ""}
           </Text>
         </div>
 
