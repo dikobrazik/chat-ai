@@ -5,6 +5,7 @@ export type Plan = {
   name: string;
   description: string;
   price: number;
+  sixMonthsPrice: number;
   oldPrice?: number;
   isPopular?: boolean;
   isCurrentPlan?: boolean;

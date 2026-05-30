@@ -4,6 +4,7 @@ import Button, { type ButtonVariant } from "@/components/ui/Button";
 import { Divider } from "@/components/ui/Divider";
 import { List, ListItem } from "@/components/ui/List";
 import { Text } from "@/components/ui/Text";
+import { formatCurrency } from "@/utils/format-currency";
 import styles from "./Plan.module.scss";
 
 const SUBSCRIPTION_BUTTON_TEXT = {
@@ -19,9 +20,11 @@ const SUBSCRIPTION_BUTTON_VARIANT = {
 } as Record<string, ButtonVariant>;
 
 export const Plan = ({
+  isSixMonths,
   plan,
   onPlanSelect,
 }: {
+  isSixMonths?: boolean;
   plan: PlanType;
   onPlanSelect: (planId: string) => void;
 }) => {
@@ -41,7 +44,7 @@ export const Plan = ({
 
       <div className="gap-1 h-14">
         <div>
-          {plan.oldPrice && (
+          {(isSixMonths || plan.oldPrice) && (
             <>
               <Text
                 color="#0F8AFF3D"
@@ -50,12 +53,14 @@ export const Plan = ({
                 style="regular"
                 type="xl"
               >
-                {plan.oldPrice}&nbsp;₽
+                {formatCurrency(
+                  isSixMonths ? plan.price : (plan.oldPrice ?? 0),
+                )}
               </Text>{" "}
             </>
           )}
           <Text className="inline" as="h4" style="regular" type="xl">
-            {plan.price}&nbsp;₽
+            {formatCurrency(isSixMonths ? plan.sixMonthsPrice : plan.price)}
           </Text>
           <Text color="#9C9C9C" as="span" style="regular" type="m">
             {" "}
@@ -63,7 +68,16 @@ export const Plan = ({
           </Text>
         </div>
         <Text color="#6F6F6F" style="regular" type="s">
-          {plan.description}
+          {isSixMonths ? (
+            <>
+              <Text color="black">
+                {formatCurrency(plan.sixMonthsPrice * 6)}
+              </Text>{" "}
+              за 6 месяцев
+            </>
+          ) : (
+            plan.description
+          )}
         </Text>
       </div>
 

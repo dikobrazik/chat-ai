@@ -55,7 +55,12 @@ export const Plans = () => {
             content: (
               <div className={styles.plansContainer}>
                 {plans.map((plan) => (
-                  <Plan key={plan.id} plan={plan} onPlanSelect={onPlanSelect} />
+                  <Plan
+                    isSixMonths
+                    key={plan.id}
+                    plan={plan}
+                    onPlanSelect={onPlanSelect}
+                  />
                 ))}
               </div>
             ),
