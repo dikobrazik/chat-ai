@@ -1,6 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
+import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { getProfile } from "@/api/user";
@@ -38,78 +39,87 @@ export default function Page() {
   };
 
   return (
-    <div className="flex flex-col gap-6 justify-center  h-full">
-      {!isGuest && (
-        <div className="flex items-center gap-3">
-          <Logo size="small" />
+    <div className="flex flex-col justify-between h-full py-6">
+      <div></div>
+      <div className="flex flex-col gap-6">
+        {!isGuest && (
+          <div className="flex items-center gap-3">
+            <Logo size="small" />
 
-          <Text style="regular">Добрый день, {name}!</Text>
+            <Text style="regular">Добрый день, {name}!</Text>
+          </div>
+        )}
+        <div className="flex flex-col gap-2">
+          <h1>Чем я могу помочь?</h1>
+          <Text as="h2" type="s" style="regular" color="#6F6F6F">
+            {isImageChat
+              ? "Здесь можно создавать крутые изображения"
+              : `ChatGPT, Gemini, DeepSeek, Claude и другие нейросети для работы с текстами, изображениями и видео`}
+          </Text>
         </div>
-      )}
-      <div className="flex flex-col gap-2">
-        <h1>Чем я могу помочь?</h1>
-        <Text as="h2" type="s" style="regular" color="#6F6F6F">
-          {isImageChat
-            ? "Здесь можно создавать крутые изображения"
-            : `ChatGPT, Gemini, DeepSeek, Claude и другие нейросети для работы с текстами, изображениями и видео`}
-        </Text>
+
+        <PromptField
+          ref={promptRef}
+          value={value}
+          placeholder={
+            isImageChat
+              ? "Опишите или придумайте изображение"
+              : "Например, 'Напиши стихотворение в стиле Пушкина о весне'"
+          }
+          isPromptSending={false}
+          isChatCreating={false}
+          onInputChange={setValue}
+          onSendClick={sendClick}
+        />
+
+        {!isImageChat && (
+          <div className="flex gap-2">
+            <Button
+              onClick={() => {
+                setValue("Создай текст ");
+                promptRef.current?.focus();
+              }}
+              variant="outline"
+              leftIcon={<Icon name="firstline" />}
+            >
+              Создать текст
+            </Button>
+            <Button
+              onClick={() => {
+                setValue("Помоги с домашним заданием ");
+                promptRef.current?.focus();
+              }}
+              variant="outline"
+              leftIcon={<Icon name="book-saved" />}
+            >
+              Для учёбы
+            </Button>
+            <Button
+              onClick={() => {
+                setValue("Придумай идею ");
+                promptRef.current?.focus();
+              }}
+              variant="outline"
+              leftIcon={<Icon name="lamp-on" />}
+            >
+              Придумать идею
+            </Button>
+            <Button
+              href="/image-chat"
+              variant="outline"
+              leftIcon={<Icon name="image" />}
+            >
+              Создать картинку
+            </Button>
+          </div>
+        )}
       </div>
 
-      <PromptField
-        ref={promptRef}
-        value={value}
-        placeholder={
-          isImageChat
-            ? "Опишите или придумайте изображение"
-            : "Например, 'Напиши стихотворение в стиле Пушкина о весне'"
-        }
-        isPromptSending={false}
-        isChatCreating={false}
-        onInputChange={setValue}
-        onSendClick={sendClick}
-      />
-
-      {!isImageChat && (
-        <div className="flex gap-2">
-          <Button
-            onClick={() => {
-              setValue("Создай текст ");
-              promptRef.current?.focus();
-            }}
-            variant="outline"
-            leftIcon={<Icon name="firstline" />}
-          >
-            Создать текст
-          </Button>
-          <Button
-            onClick={() => {
-              setValue("Помоги с домашним заданием ");
-              promptRef.current?.focus();
-            }}
-            variant="outline"
-            leftIcon={<Icon name="book-saved" />}
-          >
-            Для учёбы
-          </Button>
-          <Button
-            onClick={() => {
-              setValue("Придумай идею ");
-              promptRef.current?.focus();
-            }}
-            variant="outline"
-            leftIcon={<Icon name="lamp-on" />}
-          >
-            Придумать идею
-          </Button>
-          <Button
-            href="/image-chat"
-            variant="outline"
-            leftIcon={<Icon name="image" />}
-          >
-            Создать картинку
-          </Button>
-        </div>
-      )}
+      <Text color="#9C9C9C" style="regular" type="xs">
+        Jonu AI может допускать ошибки. Ознакомьтесь с{" "}
+        <Link href="/terms">Условиями использования</Link> и{" "}
+        <Link href="/privacy">Политикой конфиденциальности</Link>
+      </Text>
     </div>
   );
 }
