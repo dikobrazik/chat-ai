@@ -61,8 +61,6 @@ export const Chat = () => {
     messagesContainerRef.current?.scrollTo(0, 0);
   };
 
-  console.log(messages);
-
   return (
     <div className={css.container}>
       <div ref={messagesContainerRef} className={css.messages}>

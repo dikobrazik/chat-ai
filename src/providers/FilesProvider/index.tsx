@@ -3,12 +3,14 @@ import { createContext, useRef, useState } from "react";
 export const FilesContext = createContext<{
   attachments: Attachment[];
   addFiles: (files: FileList | null) => void;
+  clearFiles: () => void;
   getFile: (id: string) => File | undefined;
   removeFile: (id: string) => void;
   onUploaded: (fileId: string, uploadedFileId: string) => void;
 }>({
   attachments: [] as Attachment[],
   addFiles: (_files: FileList | null) => {},
+  clearFiles: () => {},
   getFile: (_id: string) => undefined as File | undefined,
   removeFile: (_id: string) => {},
   onUploaded: (_fileId: string, _uploadedFileId: string) => {},
@@ -63,6 +65,11 @@ export const FilesProvider = ({ children }: { children: React.ReactNode }) => {
     });
   };
 
+  const clearFiles = () => {
+    setAttachments([]);
+    filesRef.current.clear();
+  };
+
   const onUploaded = (fileId: string, uploadedFileId: string) => {
     const file = filesRef.current.get(fileId);
     filesRef.current.delete(fileId);
@@ -82,7 +89,14 @@ export const FilesProvider = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <FilesContext.Provider
-      value={{ attachments, addFiles, getFile, removeFile, onUploaded }}
+      value={{
+        attachments,
+        addFiles,
+        clearFiles,
+        getFile,
+        removeFile,
+        onUploaded,
+      }}
     >
       {children}
     </FilesContext.Provider>

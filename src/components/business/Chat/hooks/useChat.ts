@@ -60,7 +60,9 @@ export const useChat = (chatId: string | undefined) => {
 
   useEffect(() => {
     if (chat) {
-      setMessages(chat.prompts);
+      if (chat.prompts.length > 0) {
+        setMessages(chat.prompts);
+      }
       setModel(chat.chat.model);
     }
   }, [chat]);
