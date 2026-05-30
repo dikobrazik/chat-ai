@@ -3,8 +3,11 @@ import classNames from "classnames";
 import { useParams } from "next/navigation";
 import { Streamdown } from "streamdown";
 import { getImageUrl, type Prompt } from "@/api";
+import { Banner } from "@/components/ui/Banner";
+import Button from "@/components/ui/Button";
 import { FileComponent } from "@/components/ui/File";
 import Icon from "@/components/ui/Icon";
+import { useCopy } from "@/hooks/useCopy";
 import { cn } from "@/lib/utils";
 import styles from "./Message.module.scss";
 
@@ -20,6 +23,12 @@ export const ERROR_MESSAGE_ID = "this-is-error-message";
 export const WAITING_RESPONSE_MESSAGE_ID = "AI is typing...";
 export const TOO_MANY_REQUESTS_MESSAGE_ID =
   "Too many requests. Please try again later.";
+
+const SYSTEM_MESSAGES = [
+  ERROR_MESSAGE_ID,
+  WAITING_RESPONSE_MESSAGE_ID,
+  TOO_MANY_REQUESTS_MESSAGE_ID,
+];
 
 const Typing = () => {
   return (
@@ -58,9 +67,15 @@ const MessageContent = ({ id, message }: { id: string; message: string }) => {
     return <span>{message}</span>;
   } else if (id === TOO_MANY_REQUESTS_MESSAGE_ID) {
     return (
-      <span>
-        Вы достигли лимита запросов. Зарегистрируйтесь, чтобы продолжить.
-      </span>
+      <Banner
+        title="Вы достигли лимита бесплатного плана"
+        description="Перейдите на Плюс, чтобы продолжить без ограничений за 490 ₽ в месяц — всё включено"
+        action={
+          <Button variant="primary" href="/plans" align="center">
+            Перейти на Плюс
+          </Button>
+        }
+      />
     );
   } else if (id === WAITING_RESPONSE_MESSAGE_ID) {
     return <Typing />;
@@ -83,8 +98,43 @@ const MessageContent = ({ id, message }: { id: string; message: string }) => {
 };
 
 export const Message = ({ id, role, files, message, className }: Props) => {
+  const copyToClipboard = useCopy();
+
   return (
     <>
+      {!SYSTEM_MESSAGES.includes(id) && (
+        <div className={styles[role]}>
+          <Button
+            size="x"
+            leftIcon={<Icon name="copy" size="16" />}
+            onClick={() => copyToClipboard(message)}
+          />
+          {role === "model" && (
+            <>
+              <Button
+                size="x"
+                leftIcon={<Icon name="refresh" size="16" />}
+                onClick={() => copyToClipboard(message)}
+              />
+              <Button
+                size="x"
+                leftIcon={<Icon name="like" size="16" />}
+                onClick={() => copyToClipboard(message)}
+              />
+              <Button
+                size="x"
+                leftIcon={<Icon name="dislike" size="16" />}
+                onClick={() => copyToClipboard(message)}
+              />
+              <Button
+                size="x"
+                leftIcon={<Icon name="export" size="16" />}
+                onClick={() => copyToClipboard(message)}
+              />
+            </>
+          )}
+        </div>
+      )}
       <div
         className={classNames(styles.message, className, styles[`${role}`], {
           [styles.error]: id === ERROR_MESSAGE_ID,

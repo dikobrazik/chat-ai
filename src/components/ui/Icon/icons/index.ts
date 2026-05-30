@@ -1,13 +1,10 @@
 // Import all icons
-import { DocumentIcon } from "./DocumentIcon";
-import { GalleryEditIcon } from "./GalleryEditIcon";
-import { PaperclipIcon } from "./PaperclipIcon";
-import { ArchiveIcon } from "./ArchiveIcon";
-import { EditSquareIcon } from "./EditSquareIcon";
-import { AddSquareIcon } from "./AddSquareIcon";
-import { PinIcon } from "./PinIcon";
+import { DislikeIcon } from "./DislikeIcon";
+import { LikeIcon } from "./LikeIcon";
 
+import { AddSquareIcon } from "./AddSquareIcon";
 import { AlertTriangleIcon } from "./AlertTriangleIcon";
+import { ArchiveIcon } from "./ArchiveIcon";
 import { ArrowRightIcon } from "./ArrowRightIcon";
 import { ArrowUpIcon } from "./ArrowUpIcon";
 import { BookSavedIcon } from "./BookSavedIcon";
@@ -19,13 +16,16 @@ import { ClipboardIcon } from "./ClipboardIcon";
 import { CloseIcon } from "./CloseIcon";
 import { CloseSquareIcon } from "./CloseSquareIcon";
 import { CopyIcon } from "./CopyIcon";
+import { DocumentIcon } from "./DocumentIcon";
 import { DownloadIcon } from "./DownloadIcon";
 import { EditIcon } from "./EditIcon";
+import { EditSquareIcon } from "./EditSquareIcon";
 import { ExportIcon } from "./ExportIcon";
 import { ExternalLinkIcon } from "./ExternalLinkIcon";
 import { FeatureIcon } from "./FeatureIcon";
 import { FirstlineIcon } from "./FirstlineIcon";
 import { FlashCircleIcon } from "./FlashCircleIcon";
+import { GalleryEditIcon } from "./GalleryEditIcon";
 import { GalleryIcon } from "./GalleryIcon";
 import { GoogleIcon } from "./GoogleIcon";
 import { HeartIcon } from "./HeartIcon";
@@ -39,8 +39,11 @@ import { MenuIcon } from "./MenuIcon";
 import { MessageCreateIcon } from "./MessageCreateIcon";
 import { MessageQuestionIcon } from "./MessageQuestionIcon";
 import { MoreIcon } from "./MoreIcon";
+import { PaperclipIcon } from "./PaperclipIcon";
+import { PinIcon } from "./PinIcon";
 import { PlusIcon } from "./PlusIcon";
 import { ProfileCircleIcon } from "./ProfileCircleIcon";
+import { RefreshIcon } from "./Refresh2Icon";
 import { SettingIcon } from "./SettingIcon";
 import { SettingsIcon } from "./SettingsIcon";
 import { ShareIcon } from "./ShareIcon";
@@ -54,13 +57,16 @@ import { YandexIcon } from "./YandexIcon";
 
 // Re-export all icons
 export {
-DocumentIcon,
-GalleryEditIcon,
-PaperclipIcon,
-ArchiveIcon,
-EditSquareIcon,
-AddSquareIcon,
-PinIcon,
+DislikeIcon,
+LikeIcon,
+  RefreshIcon,
+  DocumentIcon,
+  GalleryEditIcon,
+  PaperclipIcon,
+  ArchiveIcon,
+  EditSquareIcon,
+  AddSquareIcon,
+  PinIcon,
   TrashIcon,
   CloseSquareIcon,
   EditIcon as Edit2Icon,
@@ -109,22 +115,19 @@ PinIcon,
 
 // Icon registry for dynamic loading
 export const iconComponents = {
-  "document": DocumentIcon,
+  "dislike": DislikeIcon,
 
+  "like": LikeIcon,
+
+  refresh: RefreshIcon,
+  document: DocumentIcon,
   "gallery-edit": GalleryEditIcon,
-
-  "paperclip": PaperclipIcon,
-
-  "archive": ArchiveIcon,
-
+  paperclip: PaperclipIcon,
+  archive: ArchiveIcon,
   "edit-square": EditSquareIcon,
-
   "add-square": AddSquareIcon,
-
-  "pin": PinIcon,
-
+  pin: PinIcon,
   "close-square": CloseSquareIcon,
-
   edit: EditIcon,
   "info-circle": InfoCircleIcon,
   card: CardIcon,
