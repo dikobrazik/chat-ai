@@ -11,7 +11,7 @@ export default function PlansPage() {
     <Modal
       size="fullscreen"
       isOpen
-      className="bg-[#F7F7F7]"
+      className="bg-[#F7F7F7]!"
       onClose={() => router.back()}
     >
       <Plans />

@@ -1,0 +1,18 @@
+.plan {
+  display: flex;
+  flex-direction: column;
+  background-color: #FFFFFF;
+  border-radius: 24px;
+  padding: 24px;
+  gap: 24px;
+  flex: 1;
+  scroll-snap-align: center;
+
+  @include media-max(md) {
+    flex: 1 0 90%;
+  }
+
+  & .selectButton {
+    margin-top: auto;
+  }
+}

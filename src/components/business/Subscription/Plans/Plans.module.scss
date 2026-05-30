@@ -1,35 +1,20 @@
 .container {
   display: flex;
   flex-direction: column;
-  gap: spacing(8);
+  gap: 32px;
   background-color: #F7F7F7;
 }
 
 .plansContainer {
   display: flex;
-  gap: spacing(1);
+  gap: 24px;
   width: 100%;
 
   overflow-x: auto;
   scroll-snap-type: x mandatory;
 
-  .plan {
-    display: flex;
+  @include media-max(md) {
     flex-direction: column;
-    background-color: #FFFFFF;
-    border-radius: 24px;
-    padding: 24px;
-    gap: 24px;
-    flex: 1;
-    scroll-snap-align: center;
-
-    @include media-max(md) {
-      flex: 1 0 90%;
-    }
-
-    & .selectButton {
-      margin-top: auto;
-    }
   }
 }
 
