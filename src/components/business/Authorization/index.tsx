@@ -22,14 +22,16 @@ const ProfileInfo = () => {
 
   return (
     <div className="w-full flex items-center gap-3">
-      <Image
-        className={styles.profilePhoto}
-        src={profile?.photo ? (profile?.photo as string) : "default-avatar.svg"}
-        fetchPriority="low"
-        alt="Profile Photo"
-        width={200}
-        height={200}
-      />
+      {profile?.photo && (
+        <Image
+          className={styles.profilePhoto}
+          src={profile?.photo}
+          fetchPriority="low"
+          alt="Profile Photo"
+          width={200}
+          height={200}
+        />
+      )}
 
       <div className="flex flex-col w-[50%]">
         <Text type="s" style="medium" className="truncate">
