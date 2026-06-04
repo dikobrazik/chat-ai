@@ -47,7 +47,7 @@ export const Registration = () => {
     setServerError("");
     try {
       await postEmailSignIn(data.email, data.password);
-      router.push("/verify-code");
+      router.push("/auth/verify-code");
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
         setServerError(
@@ -95,9 +95,9 @@ export const Registration = () => {
         <Button variant="primary" size="m" align="center" type="submit">
           Продолжить
         </Button>
-        <Text className="self-center" style="regular" color="#6F6F6F" type="s">
-          <Link href="/reset-password">Забыли пароль?</Link>
-        </Text>
+        {/* <Text className="self-center" style="regular" color="#6F6F6F" type="s">
+          <Link href="/auth/password-reset">Забыли пароль?</Link>
+        </Text> */}
         {serverError && (
           <Text className="self-center" style="regular" color="red" type="s">
             {serverError}

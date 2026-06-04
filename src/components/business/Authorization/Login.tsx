@@ -39,7 +39,7 @@ export const Login = () => {
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     setEmail(data.email);
-    router.push("/sign-up");
+    router.push("/auth/sign-up");
   };
 
   return (
@@ -98,9 +98,9 @@ export const Login = () => {
         <Button variant="primary" size="m" align="center" type="submit">
           Продолжить
         </Button>
-        <Text className="self-center" style="regular" color="#6F6F6F" type="s">
-          <Link href="/reset-password">Забыли пароль?</Link>
-        </Text>
+        {/* <Text className="self-center" style="regular" color="#6F6F6F" type="s">
+          <Link href="/auth/password-reset">Забыли пароль?</Link>
+        </Text> */}
       </form>
 
       <Text type="xs" style="regular" color="#9C9C9C" className="text-center">
