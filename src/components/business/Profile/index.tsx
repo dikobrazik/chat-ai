@@ -9,7 +9,7 @@ import Popover from "@/components/ui/Popover";
 import { Text } from "@/components/ui/Text";
 import { useAuthContext } from "@/providers/AuthProvider/hooks";
 import Button from "@/ui/Button";
-import styles from "./Authorization.module.scss";
+import styles from "./Profile.module.scss";
 
 const ProfileInfo = () => {
   const { isGuest } = useAuthContext();
@@ -22,18 +22,16 @@ const ProfileInfo = () => {
 
   return (
     <div className="w-full flex items-center gap-3">
-      {profile?.photo && (
-        <Image
-          className={styles.profilePhoto}
-          src={profile?.photo}
-          fetchPriority="low"
-          alt="Profile Photo"
-          width={200}
-          height={200}
-        />
-      )}
+      <Image
+        className={styles.profilePhoto}
+        src={profile?.photo ?? "/default-avatar.svg"}
+        fetchPriority="low"
+        alt="Profile Photo"
+        width={200}
+        height={200}
+      />
 
-      <div className="flex flex-col w-[50%]">
+      <div className="flex flex-col w-auto">
         <Text type="s" style="medium" className="truncate">
           {profile?.name ?? profile?.email}
         </Text>
@@ -45,7 +43,7 @@ const ProfileInfo = () => {
   );
 };
 
-export const AuthorizationButton = () => {
+export const Profile = () => {
   const { isReady, onLogoutClick } = useAuthContext();
 
   if (!isReady) {

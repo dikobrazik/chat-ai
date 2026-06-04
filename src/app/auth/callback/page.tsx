@@ -3,6 +3,7 @@
 import axios from "axios";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
+import { toast } from "react-toastify/unstyled";
 import { setAuthToken } from "@/api";
 import { ACCESS_TOKEN_SOURCE_LOCAL_STORAGE_KEY } from "@/constants/auth";
 import { useAuthContext } from "@/providers/AuthProvider/hooks";
@@ -28,6 +29,7 @@ export default function AuthCallbackPage() {
       }
 
       router.replace("/");
+      toast.success("Успешный вход в систему");
     } else {
       router.replace("/login?error=no_token");
     }

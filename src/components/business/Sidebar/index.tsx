@@ -1,8 +1,7 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
-import { getChats, useChats } from "@/api";
+import { useChats } from "@/api";
 import { Badge } from "@/components/ui/Badge";
 import { Banner } from "@/components/ui/Banner";
 import Button from "@/components/ui/Button";
@@ -17,8 +16,8 @@ import { Text } from "@/components/ui/Text";
 import { cn } from "@/lib/utils";
 import { useAuthContext } from "@/providers/AuthProvider/hooks";
 import { preventDefault, stopPropagation } from "@/utils";
-import { AuthorizationButton } from "../Authorization";
 import { ChatActions } from "../ChatActions";
+import { Profile } from "../Profile";
 import styles from "./Sidebar.module.scss";
 
 export const ChatSidebar = ({
@@ -194,7 +193,7 @@ export const ChatSidebar = ({
           }
         />
       ) : (
-        <AuthorizationButton />
+        <Profile />
       )}
     </>
   );

@@ -1,15 +1,15 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { Login } from "@/components/business/Authorization/Login";
+import { VerifyCode } from "@/components/business/Authorization/Verify";
 import Modal from "@/components/ui/Modal";
 
-export default function LoginPage() {
+export default function VerifyCodePage() {
   const router = useRouter();
 
   return (
     <Modal onClose={() => router.back()} isOpen headerBorder={false}>
-      <Login />
+      <VerifyCode />
     </Modal>
   );
 }

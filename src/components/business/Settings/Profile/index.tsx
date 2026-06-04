@@ -29,7 +29,7 @@ export const ProfileSettings = () => {
         </Text>
 
         <div className="flex gap-2">
-          <TextField readonly value={profile?.name ?? ""} />
+          <TextField readOnly value={profile?.name ?? ""} />
           <Button variant="base" leftIcon={<Icon name="edit" />} />
         </div>
       </div>
@@ -42,7 +42,7 @@ export const ProfileSettings = () => {
         </Text>
 
         <div className="flex gap-2">
-          <TextField readonly value={profile?.email} />
+          <TextField readOnly value={profile?.email} />
           <Button variant="base" leftIcon={<Icon name="edit" />} />
         </div>
       </div>
@@ -65,7 +65,7 @@ export const ProfileSettings = () => {
         </Text>
 
         <div className="flex gap-2">
-          <TextField readonly />
+          <TextField readOnly />
           <Button variant="base" leftIcon={<Icon name="edit" />} />
         </div>
       </div>

@@ -14,6 +14,25 @@
     padding: 16px;
   }
 
+  &.fullWidth {
+    width: 100%;
+  }
+
+  &.error {
+    color: #FC3F1D;
+    border: 1px solid #FF4D4F;
+    background-color: #FC3F1D3D;
+
+    &:not(:read-only) {
+
+      &:active,
+      &:focus {
+        outline: none;
+        box-shadow: 0 0 0 2px #FC3F1D3D;
+      }
+    }
+  }
+
 
   &:not(:read-only) {
 

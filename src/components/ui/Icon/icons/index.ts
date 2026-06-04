@@ -1,4 +1,5 @@
 // Import all icons
+import { EyeIcon } from "./EyeIcon";
 import { DislikeIcon } from "./DislikeIcon";
 import { LikeIcon } from "./LikeIcon";
 
@@ -57,6 +58,7 @@ import { YandexIcon } from "./YandexIcon";
 
 // Re-export all icons
 export {
+EyeIcon,
 DislikeIcon,
 LikeIcon,
   RefreshIcon,
@@ -115,6 +117,8 @@ LikeIcon,
 
 // Icon registry for dynamic loading
 export const iconComponents = {
+  "eye": EyeIcon,
+
   "dislike": DislikeIcon,
 
   "like": LikeIcon,

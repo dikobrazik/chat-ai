@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { AuthorizationModal } from "@/components/business/Authorization/Modal";
+import { Login } from "@/components/business/Authorization/Login";
 import Modal from "@/components/ui/Modal";
 
 export default function LoginModal() {
@@ -9,7 +9,7 @@ export default function LoginModal() {
 
   return (
     <Modal onClose={() => router.back()} isOpen headerBorder={false}>
-      <AuthorizationModal />
+      <Login />
     </Modal>
   );
 }
