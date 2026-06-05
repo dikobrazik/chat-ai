@@ -11,6 +11,18 @@ import { useAuthContext } from "@/providers/AuthProvider/hooks";
 import Button from "@/ui/Button";
 import styles from "./Profile.module.scss";
 
+const USER_STATUS_MAP: Record<string, string> = {
+  active: "Бесплатный",
+  subscription_plus: "Плюс",
+  subscription_pro: "Профессиональный",
+};
+
+const USER_STATUS_COLOR_MAP: Record<string, string> = {
+  active: "#9C9C9C",
+  subscription_plus: "#0F8AFF",
+  subscription_pro: "#FF6B34",
+};
+
 const ProfileInfo = () => {
   const { isGuest } = useAuthContext();
 
@@ -35,8 +47,12 @@ const ProfileInfo = () => {
         <Text type="s" style="medium" className="truncate">
           {profile?.name ?? profile?.email}
         </Text>
-        <Text type="xs" style="regular" color="#9C9C9C">
-          Бесплатный
+        <Text
+          type="xs"
+          style="regular"
+          color={USER_STATUS_COLOR_MAP[profile?.status ?? "active"]}
+        >
+          {USER_STATUS_MAP[profile?.status ?? "active"]}
         </Text>
       </div>
     </div>
