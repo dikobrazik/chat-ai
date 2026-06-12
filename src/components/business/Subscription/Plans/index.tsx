@@ -1,25 +1,22 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { getPlans } from "@/api";
+import { usePlans } from "@/api";
 import { Badge } from "@/components/ui/Badge";
 import { Tabs } from "@/components/ui/Tabs";
 import { Text } from "@/components/ui/Text";
+import { SIX_MONTHS_QUERY_KEY } from "../constants";
 import { Plan } from "./components/Plan";
 import styles from "./Plans.module.scss";
 
 export const Plans = () => {
   const router = useRouter();
 
-  const { data: plans = [] } = useQuery({
-    queryKey: ["subscription", "plans"],
-    queryFn: getPlans,
-  });
+  const { plans, sixMonthsPlans } = usePlans();
 
   const onPlanSelect = (planId: string) => {
-    router.push(`/plans/${planId}`);
+    router.push(`/plans/${planId}?${SIX_MONTHS_QUERY_KEY}=true`);
   };
 
   return (
@@ -45,20 +42,23 @@ export const Plans = () => {
             label: (
               <span>
                 6 месяцев{" "}
-                <Badge as="span" variant="danger">
-                  <Text style="medium" type="xs">
-                    -15%
-                  </Text>
-                </Badge>
+                {sixMonthsPlans[1]?.discount && (
+                  <Badge as="span" variant="danger">
+                    <Text style="medium" type="xs">
+                      -{sixMonthsPlans[1]?.discount}%
+                    </Text>
+                  </Badge>
+                )}
               </span>
             ),
             content: (
               <div className={styles.plansContainer}>
-                {plans.map((plan) => (
+                {sixMonthsPlans.map((plan) => (
                   <Plan
                     isSixMonths
                     key={plan.id}
                     plan={plan}
+                    discount={plan?.discount}
                     onPlanSelect={onPlanSelect}
                   />
                 ))}

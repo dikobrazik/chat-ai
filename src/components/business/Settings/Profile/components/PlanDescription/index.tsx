@@ -1,13 +1,10 @@
-import { useQuery } from "@tanstack/react-query";
-import { getPlans } from "@/api";
+import { usePlans } from "@/api";
 import { List, ListItem } from "@/components/ui/List";
 import { Text } from "@/components/ui/Text";
 
 export const PlanDescription = () => {
-  const { data: plans = [] } = useQuery({
-    queryKey: ["subscription", "plans"],
-    queryFn: getPlans,
-  });
+  const { plans } = usePlans();
+
   return (
     <div>
       <Text type="s">Спасибо за использование на Jonu AI!</Text>

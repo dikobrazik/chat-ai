@@ -1,9 +1,10 @@
 "use client";
 
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import Script from "next/script";
 import { useRef, useState } from "react";
 import { initPayment } from "@/api";
+import { SIX_MONTHS_QUERY_KEY } from "@/components/business/Subscription/constants";
 import Modal from "@/components/ui/Modal";
 import { Spinner } from "@/components/ui/Spinner";
 
@@ -14,6 +15,7 @@ export default function PlanPage() {
 
   const { plan } = useParams();
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const onPaymentIntegrationLoad = () => {
     const initConfig = {
@@ -26,7 +28,9 @@ export default function PlanPage() {
             const res = await initPayment({
               paymentType,
               plan: plan as string,
-            }); // URL — это URL вашего бэкенд-сервиса, который вызовет метод «Инициировать платеж»
+              sixMonths: searchParams.get(SIX_MONTHS_QUERY_KEY) === "true",
+            });
+
             return res.PaymentURL;
           },
           config: {

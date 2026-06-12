@@ -45,11 +45,10 @@ export const VerifyCode = () => {
       setIsGuest(false);
 
       axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
-
-      router.push("/");
-      router.refresh();
-
       toast.success("Успешный вход в систему");
+
+      router.refresh();
+      router.push("/");
     });
   };
 

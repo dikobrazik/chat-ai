@@ -21,13 +21,22 @@ const SUBSCRIPTION_BUTTON_VARIANT = {
 
 export const Plan = ({
   isSixMonths,
+  discount,
   plan,
   onPlanSelect,
 }: {
   isSixMonths?: boolean;
   plan: PlanType;
-  onPlanSelect: (planId: string) => void;
+  discount?: number;
+  onPlanSelect: (planId: string, sixMonths?: boolean) => void;
 }) => {
+  const discountMultiplier = discount ? (100 - discount) / 100 : 1;
+  let finalPrice = plan.price * discountMultiplier;
+
+  if (plan.freeDays) {
+    finalPrice = 1;
+  }
+
   return (
     <div key={plan.id} className={styles.plan}>
       <div className="flex justify-between items-start h-7">
@@ -44,7 +53,7 @@ export const Plan = ({
 
       <div className="gap-1 h-14">
         <div>
-          {(isSixMonths || plan.oldPrice) && (
+          {((isSixMonths && plan.price > 0) || finalPrice !== plan.price) && (
             <>
               <Text
                 color="#0F8AFF3D"
@@ -53,27 +62,23 @@ export const Plan = ({
                 style="regular"
                 type="xl"
               >
-                {formatCurrency(
-                  isSixMonths ? plan.price : (plan.oldPrice ?? 0),
-                )}
+                {formatCurrency(plan.price)}
               </Text>{" "}
             </>
           )}
           <Text className="inline" as="h4" style="regular" type="xl">
-            {formatCurrency(isSixMonths ? plan.sixMonthsPrice : plan.price)}
+            {formatCurrency(finalPrice)}
           </Text>
           <Text color="#9C9C9C" as="span" style="regular" type="m">
             {" "}
-            / месяц
+            / {plan.freeDays ? `в течение ${plan.freeDays} дней` : "месяц"}
           </Text>
         </div>
         <Text color="#6F6F6F" style="regular" type="s">
-          {isSixMonths ? (
+          {isSixMonths && finalPrice > 0 ? (
             <>
-              <Text color="black">
-                {formatCurrency(plan.sixMonthsPrice * 6)}
-              </Text>{" "}
-              за 6 месяцев
+              <Text color="black">{formatCurrency(finalPrice * 6)}</Text> за 6
+              месяцев
             </>
           ) : (
             plan.description
@@ -85,7 +90,7 @@ export const Plan = ({
         variant={SUBSCRIPTION_BUTTON_VARIANT[plan.id]}
         disabled={plan.isCurrentPlan}
         size="m"
-        onClick={() => onPlanSelect(plan.id)}
+        onClick={() => onPlanSelect(plan.id, isSixMonths)}
       >
         {SUBSCRIPTION_BUTTON_TEXT[plan.id]}
       </Button>
