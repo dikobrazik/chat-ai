@@ -1,6 +1,8 @@
+import { isAxiosError } from "axios";
 import { type Dispatch, type SetStateAction, useRef, useState } from "react";
 import { type Prompt, sendStreamPrompt } from "@/api";
 import { useFiles } from "@/providers/FilesProvider/useFiles";
+import { TOO_MANY_REQUESTS_MESSAGE_ID } from "../components/Message/constants";
 
 export const useSendPromptStream = (
   chatId: string,
@@ -64,6 +66,21 @@ export const useSendPromptStream = (
               {
                 id: data.promptId || randomId,
                 text: prevMessages[0].text + data.content,
+                role: "model",
+                files: [],
+              },
+              ...prevMessages.slice(1),
+            ]);
+          }
+        }
+      })
+      .catch((error) => {
+        if (isAxiosError(error)) {
+          if (error.status === 429) {
+            setMessages((prevMessages) => [
+              {
+                id: TOO_MANY_REQUESTS_MESSAGE_ID,
+                text: "",
                 role: "model",
                 files: [],
               },

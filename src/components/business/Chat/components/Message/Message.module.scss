@@ -10,6 +10,10 @@
     background-color: color(warning);
   }
 
+  &.banner {
+    align-self: auto;
+  }
+
   & .messageContent {
     font-size: 16px;
   }

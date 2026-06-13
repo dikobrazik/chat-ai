@@ -16,6 +16,7 @@ import {
 import styles from "./Message.module.scss";
 import { MessageActions } from "./MessageActions";
 import { ModelTyping } from "./ModelTyping";
+import { TooManyRequests } from "./TooManyRequests";
 
 const ImageContent = ({
   chatId,
@@ -43,17 +44,7 @@ const MessageContent = ({ id, message }: { id: string; message: string }) => {
   if (id === ERROR_MESSAGE_ID) {
     return <span>{message}</span>;
   } else if (id === TOO_MANY_REQUESTS_MESSAGE_ID) {
-    return (
-      <Banner
-        title="Вы достигли лимита бесплатного плана"
-        description="Перейдите на Плюс, чтобы продолжить без ограничений за 490 ₽ в месяц — всё включено"
-        action={
-          <Button variant="primary" href="/plans" align="center">
-            Перейти на Плюс
-          </Button>
-        }
-      />
-    );
+    return <TooManyRequests />;
   } else if (id === WAITING_RESPONSE_MESSAGE_ID) {
     return <ModelTyping />;
   }
@@ -83,6 +74,7 @@ export const Message = ({ id, role, files, text: message }: Prompt) => {
       <div
         className={classNames(styles.message, styles[`${role}`], {
           [styles.error]: id === ERROR_MESSAGE_ID,
+          [styles.banner]: id === TOO_MANY_REQUESTS_MESSAGE_ID,
         })}
       >
         <MessageContent id={id} message={message} />
