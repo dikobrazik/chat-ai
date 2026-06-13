@@ -1,46 +1,57 @@
-import type { Plan as PlanType } from "@/api/subscription";
+import type { Plan as PlanType, Subscription } from "@/api/subscription";
 import { Badge } from "@/components/ui/Badge";
 import Button, { type ButtonVariant } from "@/components/ui/Button";
 import { Divider } from "@/components/ui/Divider";
 import { List, ListItem } from "@/components/ui/List";
 import { Text } from "@/components/ui/Text";
+import { PLANS_MAP } from "@/constants/plans";
 import { formatCurrency } from "@/utils/format-currency";
 import styles from "./Plan.module.scss";
 
 const CURRENT_PLAN_TEXT = "Текущий план";
 
 const SUBSCRIPTION_BUTTON_TEXT = {
-  base: "Прошлый век",
-  plus: "Начать бесплатно",
-  pro: "Перейти на Pro",
+  [PLANS_MAP.base]: "Прошлый век",
+  [PLANS_MAP.plus]: "Перейти на Plus",
+  [PLANS_MAP.pro]: "Перейти на Pro",
 } as Record<string, string>;
 
 const SUBSCRIPTION_BUTTON_VARIANT = {
-  base: "base",
-  plus: "primary",
-  pro: "pro",
+  [PLANS_MAP.base]: "base",
+  [PLANS_MAP.plus]: "primary",
+  [PLANS_MAP.pro]: "pro",
 } as Record<string, ButtonVariant>;
 
 type PlanProps = {
   isSixMonths?: boolean;
   plan: PlanType;
-  isActive?: boolean;
+  activePlan?: Subscription["plan"];
   discount?: number;
   onPlanSelect: (planId: string, sixMonths?: boolean) => void;
 };
 
 export const Plan = ({
   isSixMonths,
-  isActive,
+  activePlan,
   discount,
   plan,
   onPlanSelect,
 }: PlanProps) => {
+  const isActive = activePlan === plan.id;
+  let buttonText = isActive
+    ? CURRENT_PLAN_TEXT
+    : SUBSCRIPTION_BUTTON_TEXT[plan.id];
+
   const discountMultiplier = discount ? (100 - discount) / 100 : 1;
   let finalPrice = plan.price * discountMultiplier;
 
   if (plan.freeDays) {
     finalPrice = 1;
+    buttonText = "Начать бесплатно";
+  }
+
+  if (activePlan === PLANS_MAP.pro && plan.id === PLANS_MAP.plus) {
+    buttonText = "Пройденный шаг";
   }
 
   return (
@@ -98,7 +109,7 @@ export const Plan = ({
         size="m"
         onClick={() => onPlanSelect(plan.id, isSixMonths)}
       >
-        {isActive ? CURRENT_PLAN_TEXT : SUBSCRIPTION_BUTTON_TEXT[plan.id]}
+        {buttonText}
       </Button>
 
       <Divider />
