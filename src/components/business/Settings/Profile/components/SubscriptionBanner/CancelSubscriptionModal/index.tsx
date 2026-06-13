@@ -1,5 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
-import { getSubscription } from "@/api/subscription";
+import { useCurrentSubscription } from "@/api";
 import Button from "@/components/ui/Button";
 import Modal from "@/components/ui/Modal";
 import { Text } from "@/components/ui/Text";
@@ -10,10 +9,7 @@ type Props = {
 };
 
 export const CancelSubscriptionModal = ({ isOpen, onClose }: Props) => {
-  const { data } = useQuery({
-    queryKey: ["subscription"],
-    queryFn: getSubscription,
-  });
+  const { data } = useCurrentSubscription();
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <div className="flex flex-col items-center">

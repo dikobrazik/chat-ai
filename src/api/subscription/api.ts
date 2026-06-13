@@ -19,17 +19,6 @@ export const getPlans = (params?: { sixMonths?: boolean }) =>
 
 export type SubscriptionResponse = {
   subscription: Subscription;
-  payments: Payment[];
-};
-
-export type Payment = {
-  id: string;
-  user_id: string;
-  subscription_id: string;
-  payment_id: string;
-  amount: number;
-  status: string;
-  payment_date: string;
 };
 
 export type Subscription = {
@@ -39,6 +28,7 @@ export type Subscription = {
   status: string;
   current_period_start: string;
   current_period_end: string;
+  isSixMonths: boolean;
   rebill_id: string;
   created_at: string;
 };
@@ -58,5 +48,3 @@ export const initPayment = (payload: InitPaymentPayload) =>
   axios
     .post<{ PaymentURL: string }>("/subscription/init", payload)
     .then((response) => response.data);
-
-export * from "./hooks";

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { usePlans } from "@/api";
+import { useCurrentSubscription, usePlans } from "@/api";
 import { Badge } from "@/components/ui/Badge";
 import { Tabs } from "@/components/ui/Tabs";
 import { Text } from "@/components/ui/Text";
@@ -12,6 +12,7 @@ import styles from "./Plans.module.scss";
 
 export const Plans = () => {
   const router = useRouter();
+  const { data: currentSubscription } = useCurrentSubscription();
 
   const { plans, sixMonthsPlans } = usePlans();
 
@@ -32,7 +33,14 @@ export const Plans = () => {
             content: (
               <div className={styles.plansContainer}>
                 {plans.map((plan) => (
-                  <Plan key={plan.id} plan={plan} onPlanSelect={onPlanSelect} />
+                  <Plan
+                    key={plan.id}
+                    isActive={
+                      currentSubscription?.subscription.plan === plan.id
+                    }
+                    plan={plan}
+                    onPlanSelect={onPlanSelect}
+                  />
                 ))}
               </div>
             ),
@@ -58,6 +66,9 @@ export const Plans = () => {
                     isSixMonths
                     key={plan.id}
                     plan={plan}
+                    isActive={
+                      currentSubscription?.subscription.plan === plan.id
+                    }
                     discount={plan?.discount}
                     onPlanSelect={onPlanSelect}
                   />

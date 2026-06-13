@@ -1,5 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
-import { getSubscription, usePlans } from "@/api";
+import { useCurrentSubscription, usePlans } from "@/api";
 import { Banner } from "@/components/ui/Banner";
 import Button from "@/components/ui/Button";
 import Icon from "@/components/ui/Icon";
@@ -8,10 +7,7 @@ import { useToggle } from "@/hooks/useToggle";
 import { CancelSubscriptionModal } from "./CancelSubscriptionModal";
 
 export const SubscriptionBanner = () => {
-  const { data } = useQuery({
-    queryKey: ["subscription"],
-    queryFn: getSubscription,
-  });
+  const { data } = useCurrentSubscription();
   const { plans } = usePlans();
 
   const subscription = data?.subscription;

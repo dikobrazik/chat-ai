@@ -7,8 +7,10 @@ import { Text } from "@/components/ui/Text";
 import { formatCurrency } from "@/utils/format-currency";
 import styles from "./Plan.module.scss";
 
+const CURRENT_PLAN_TEXT = "Текущий план";
+
 const SUBSCRIPTION_BUTTON_TEXT = {
-  base: "Текущий план",
+  base: "Прошлый век",
   plus: "Начать бесплатно",
   pro: "Перейти на Pro",
 } as Record<string, string>;
@@ -19,17 +21,21 @@ const SUBSCRIPTION_BUTTON_VARIANT = {
   pro: "pro",
 } as Record<string, ButtonVariant>;
 
+type PlanProps = {
+  isSixMonths?: boolean;
+  plan: PlanType;
+  isActive?: boolean;
+  discount?: number;
+  onPlanSelect: (planId: string, sixMonths?: boolean) => void;
+};
+
 export const Plan = ({
   isSixMonths,
+  isActive,
   discount,
   plan,
   onPlanSelect,
-}: {
-  isSixMonths?: boolean;
-  plan: PlanType;
-  discount?: number;
-  onPlanSelect: (planId: string, sixMonths?: boolean) => void;
-}) => {
+}: PlanProps) => {
   const discountMultiplier = discount ? (100 - discount) / 100 : 1;
   let finalPrice = plan.price * discountMultiplier;
 
@@ -88,11 +94,11 @@ export const Plan = ({
 
       <Button
         variant={SUBSCRIPTION_BUTTON_VARIANT[plan.id]}
-        disabled={plan.isCurrentPlan}
+        disabled={isActive}
         size="m"
         onClick={() => onPlanSelect(plan.id, isSixMonths)}
       >
-        {SUBSCRIPTION_BUTTON_TEXT[plan.id]}
+        {isActive ? CURRENT_PLAN_TEXT : SUBSCRIPTION_BUTTON_TEXT[plan.id]}
       </Button>
 
       <Divider />
