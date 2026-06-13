@@ -1,7 +1,6 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify/unstyled";
 import * as yup from "yup";
@@ -25,8 +24,7 @@ const schema = yup.object({
 });
 
 export const VerifyCode = () => {
-  const router = useRouter();
-  const { setIsGuest } = useAuthContext();
+  const { onGuestRegistered } = useAuthContext();
 
   const {
     register,
@@ -40,15 +38,11 @@ export const VerifyCode = () => {
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     await postEmailVerify(email, data.code).then((accessToken) => {
-      setAuthToken(accessToken);
-      localStorage.removeItem(ACCESS_TOKEN_SOURCE_LOCAL_STORAGE_KEY);
-      setIsGuest(false);
+      onGuestRegistered(accessToken);
 
-      axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
       toast.success("Успешный вход в систему");
 
-      router.refresh();
-      router.push("/");
+      window.location.href = "/";
     });
   };
 
@@ -79,9 +73,9 @@ export const VerifyCode = () => {
         <Button variant="primary" size="m" align="center" type="submit">
           Продолжить
         </Button>
-        <Text className="self-center" style="regular" color="#6F6F6F" type="s">
+        {/* <Text className="self-center" style="regular" color="#6F6F6F" type="s">
           <Link href="/reset-password">Забыли пароль?</Link>
-        </Text>
+        </Text> */}
       </form>
 
       <Text type="xs" style="regular" color="#9C9C9C" className="text-center">

@@ -12,6 +12,7 @@ type Props = {
   autoComplete?: HTMLInputElement["autocomplete"];
   fullWidth?: boolean;
   error?: string;
+  onValueChange?: (value: string) => void;
 } & Omit<HTMLAttributes<HTMLInputElement>, "value" | "readOnly">;
 
 export const TextField = ({
@@ -20,7 +21,6 @@ export const TextField = ({
   readOnly = false,
   size = "m",
   type = "text",
-  onChange,
   fullWidth = false,
   error,
   ...other

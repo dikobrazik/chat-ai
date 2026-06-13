@@ -6,6 +6,7 @@ type AuthContextValue = {
 
   isSubscribed: boolean;
 
+  onGuestRegistered: (token: string) => void;
   setIsGuest: (isGuest: boolean) => void;
   onLogoutClick: () => void;
 };
@@ -15,5 +16,6 @@ export const AuthContext = React.createContext<AuthContextValue>({
   isReady: false,
   isSubscribed: false,
   setIsGuest: () => {},
+  onGuestRegistered: () => {},
   onLogoutClick: () => {},
 });

@@ -47,7 +47,7 @@ export const Registration = () => {
     setServerError("");
     try {
       await postEmailSignIn(data.email, data.password);
-      router.push("/auth/verify-code");
+      router.replace("/auth/verify-code");
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
         setServerError(

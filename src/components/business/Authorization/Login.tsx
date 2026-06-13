@@ -39,7 +39,7 @@ export const Login = () => {
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     setEmail(data.email);
-    router.push("/auth/sign-up");
+    router.replace("/auth/sign-up");
   };
 
   return (

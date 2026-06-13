@@ -5,7 +5,8 @@ import { AuthContext } from "./context";
 import { useAuth } from "./hooks";
 
 export const AuthProvider = ({ children }: PropsWithChildren) => {
-  const { isGuest, isReady, setIsGuest, onLogoutClick } = useAuth();
+  const { isGuest, isReady, setIsGuest, onGuestRegistered, onLogoutClick } =
+    useAuth();
 
   return (
     <AuthContext.Provider
@@ -14,6 +15,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
         isReady,
         setIsGuest,
         onLogoutClick,
+        onGuestRegistered,
         isSubscribed: false,
       }}
     >

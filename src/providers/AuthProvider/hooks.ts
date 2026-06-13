@@ -21,6 +21,12 @@ export const useAuth = () => {
   const [isReady, setIsReady] = useState<boolean>(false);
   const [isGuest, setIsGuest] = useState<boolean>(true);
 
+  const onGuestRegistered = useCallback((token: string) => {
+    setAuthToken(token);
+    localStorage.removeItem(ACCESS_TOKEN_SOURCE_LOCAL_STORAGE_KEY);
+    setIsGuest(false);
+  }, []);
+
   const { mutateAsync: mutateCreateGuest } = useMutation({
     mutationFn: createGuest,
     onSuccess: (token) => {
@@ -135,12 +141,25 @@ export const useAuth = () => {
     mutateCreateGuest().then(() => router.push("/"));
   }, [mutateCreateGuest]);
 
-  return { isGuest, isReady, setIsGuest, onLogoutClick };
+  return { isGuest, isReady, setIsGuest, onGuestRegistered, onLogoutClick };
 };
 
 export const useAuthContext = () => {
-  const { isGuest, isReady, isSubscribed, setIsGuest, onLogoutClick } =
-    useContext(AuthContext);
+  const {
+    isGuest,
+    isReady,
+    isSubscribed,
+    setIsGuest,
+    onGuestRegistered,
+    onLogoutClick,
+  } = useContext(AuthContext);
 
-  return { isGuest, isReady, isSubscribed, setIsGuest, onLogoutClick };
+  return {
+    isGuest,
+    isReady,
+    isSubscribed,
+    onGuestRegistered,
+    setIsGuest,
+    onLogoutClick,
+  };
 };
