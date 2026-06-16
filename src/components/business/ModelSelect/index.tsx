@@ -58,12 +58,14 @@ export const ModelSelect = () => {
       }))}
       formatGroupLabel={(data) => (
         <div className={styles.groupLabel}>
-          <Image
-            src={`/icons/providers/${data.label}.png`}
-            width={20}
-            height={20}
-            alt={`Provider ${data.label}`}
-          />
+          <div className={styles.providerImage}>
+            <Image
+              src={`/icons/providers/${data.label}.png`}
+              width={20}
+              height={20}
+              alt={`Provider ${data.label}`}
+            />
+          </div>
           <strong>{data.label}</strong>{" "}
         </div>
       )}
@@ -78,14 +80,16 @@ export const ModelSelect = () => {
           <div className={styles.heading}>
             <div className="flex gap-3 items-center">
               {context === "value" && (
-                <Image
-                  src={`/icons/providers/${providersById?.[data.id]}.png`}
-                  width={16}
-                  height={16}
-                  alt={`Provider ${providersById?.[data.id]}`}
-                />
+                <div className={styles.providerImage}>
+                  <Image
+                    src={`/icons/providers/${providersById?.[data.id]}.png`}
+                    width={16}
+                    height={16}
+                    alt={`Provider ${providersById?.[data.id]}`}
+                  />
+                </div>
               )}
-              <span>{data.name}</span>
+              <span className={styles.modelName}>{data.name}</span>
             </div>
 
             {isOptionDisabled(profile)(data) &&

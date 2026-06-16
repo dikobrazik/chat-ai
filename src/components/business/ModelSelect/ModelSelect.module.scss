@@ -23,6 +23,9 @@
 
   & .menu {
     min-width: 240px;
+
+    background: var(--background);
+    border: 1px solid var(--foreground);
   }
 }
 
@@ -44,7 +47,7 @@
 
     &.selected {
       & .modelDescription {
-        color: invert(color(gray, 500));
+        color: color(gray, 500);
       }
     }
 
@@ -66,4 +69,14 @@
       color: color(gray, 500);
     }
   }
+}
+
+.providerImage {
+  border-radius: 4px;
+  padding: 2px;
+  background-color: var(--foreground);
+}
+
+.modelName {
+  color: var(--foreground);
 }

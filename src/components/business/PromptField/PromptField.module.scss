@@ -7,6 +7,11 @@
   padding: 12px;
   border-radius: 16px;
 
+  @media (prefers-color-scheme: dark) {
+    border: 1px solid #F7F7F7;
+    background-color: var(--background);
+  }
+
   &.withFiles {
     height: auto;
   }
