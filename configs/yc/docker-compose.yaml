@@ -21,6 +21,7 @@ services:
         restart: always
         depends_on:
             - frontend
+            - uptime-kuma
 
     frontend:
         image: ghcr.io/dikobrazik/chat-ai-front:latest
