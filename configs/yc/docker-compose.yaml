@@ -24,17 +24,28 @@ services:
 
     frontend:
         image: ghcr.io/dikobrazik/chat-ai-front:latest
+        container_name: frontend
         volumes:
             - /tmp/.next/cache:/usr/app/.next/cache
         restart: always
 
     backend:
         image: ghcr.io/dikobrazik/chat-ai-api:latest
+        container_name: backend
         volumes:
             - shared-volume:/var/tmp/shared-docker
         env_file:
             - ./backend.env
         restart: always
+
+    uptime-kuma:
+        image: louislam/uptime-kuma:2
+        container_name: uptime
+        restart: unless-stopped
+        volumes:
+            - ./data:/var/tmp/uptime
+        # ports:
+        # - "3001:3001"
 
 volumes:
     shared-volume:
