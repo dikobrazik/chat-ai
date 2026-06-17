@@ -1,6 +1,7 @@
 name: Shared Job
 
 on:
+  workflow_dispatch:
   workflow_call:
     inputs:
       status:
