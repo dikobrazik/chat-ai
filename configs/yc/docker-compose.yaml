@@ -45,8 +45,8 @@ services:
         restart: unless-stopped
         volumes:
             - ./data:/var/tmp/uptime
-        # ports:
-        # - "3001:3001"
+        ports:
+            - "3001:3001"
 
 volumes:
     shared-volume:
