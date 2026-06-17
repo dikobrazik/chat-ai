@@ -67,7 +67,7 @@ jobs:
   notify:
     needs: [update-yc]
     if: always()
-    uses: ./telegram-notify.yaml
+    uses: ./telegram-notify.yaml@main
     with:
       status: ${{ needs.update-yc.result }}
     secrets:
