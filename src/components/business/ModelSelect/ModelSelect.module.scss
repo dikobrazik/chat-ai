@@ -25,7 +25,10 @@
     min-width: 240px;
 
     background: var(--background);
-    border: 1px solid var(--foreground);
+
+    @media (prefers-color-scheme: dark) {
+      border: 1px solid var(--foreground);
+    }
   }
 }
 
@@ -74,7 +77,10 @@
 .providerImage {
   border-radius: 4px;
   padding: 2px;
-  background-color: var(--foreground);
+
+  @media (prefers-color-scheme: dark) {
+    background-color: var(--foreground);
+  }
 }
 
 .modelName {
