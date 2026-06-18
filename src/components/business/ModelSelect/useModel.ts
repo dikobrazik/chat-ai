@@ -1,7 +1,7 @@
-import { useQuery } from "@tanstack/react-query";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useMemo } from "react";
-import { getProviders, type Model } from "@/api";
+import type { Model } from "@/api";
+import { useProviders } from "@/api/model";
 import { useModelContext } from "@/providers/ModelProvider/hooks";
 
 export const useModel = () => {
@@ -10,11 +10,7 @@ export const useModel = () => {
 
   const { model, setModel } = useModelContext();
 
-  const { data: providers } = useQuery({
-    queryKey: ["providers"],
-    queryFn: getProviders,
-    refetchInterval: false,
-  });
+  const { data: providers } = useProviders();
 
   const filteredProviders = useMemo(() => {
     if (!providers) return [];

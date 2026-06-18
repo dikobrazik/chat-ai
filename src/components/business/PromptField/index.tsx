@@ -8,6 +8,7 @@ import Button from "../../ui/Button";
 import Icon from "../../ui/Icon";
 import { File } from "./components/File";
 import styles from "./PromptField.module.scss";
+import { useAccept } from "./useAccept";
 
 type PromptFieldProps = {
   value: string;
@@ -30,6 +31,8 @@ export const PromptField = forwardRef<HTMLTextAreaElement, PromptFieldProps>(
     },
     ref,
   ) => {
+    const accept = useAccept();
+
     const inputRef = useRef<HTMLTextAreaElement>(null);
     const addFilesRef = useRef<HTMLInputElement>(null);
     const { attachments, areAllFilesUploaded, addFiles } = useFiles();
@@ -63,7 +66,7 @@ export const PromptField = forwardRef<HTMLTextAreaElement, PromptFieldProps>(
           hidden
           type="file"
           id="fileInput"
-          accept="image/*,application/pdf,.doc,.docx,.txt,.md"
+          accept={accept}
           onChange={(e) => {
             addFiles(e.target.files);
 
@@ -103,12 +106,14 @@ export const PromptField = forwardRef<HTMLTextAreaElement, PromptFieldProps>(
               )}
             >
               <div className="flex flex-col gap-1">
-                <Button
-                  leftIcon={<Icon name="paperclip" />}
-                  onClick={() => addFilesRef.current?.click()}
-                >
-                  Добавить фото или файл
-                </Button>
+                {Boolean(accept) && (
+                  <Button
+                    leftIcon={<Icon name="paperclip" />}
+                    onClick={() => addFilesRef.current?.click()}
+                  >
+                    Добавить фото или файл
+                  </Button>
+                )}
                 <Button
                   href="/image-chat"
                   leftIcon={<Icon name="gallery-edit" />}

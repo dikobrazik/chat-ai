@@ -11,7 +11,7 @@ export function setAuthToken(token: string) {
 export * from "./auth";
 export * from "./chat";
 export * from "./files";
-export * from "./model";
+export * from "./model/api";
 export * from "./promotion";
 export * from "./subscription";
 export * from "./user";

@@ -1,6 +1,6 @@
 import EventSourceStream from "@server-sent-stream/web";
 import axios from "axios";
-import type { Model } from "../model";
+import type { Model } from "../model/api";
 
 type SendPromptRequest = {
   input: string;
