@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { useChats } from "@/api";
-import { Badge } from "@/components/ui/Badge";
 import { Banner } from "@/components/ui/Banner";
 import Button from "@/components/ui/Button";
 import { Divider } from "@/components/ui/Divider";
@@ -48,35 +47,7 @@ export const ChatSidebar = ({
         </div>
         <div className="flex flex-col gap-3">
           <Button href="/" leftIcon={<Icon name="message-create" />} />
-          <Button
-            disabled
-            leftIcon={<Icon name="video-play" />}
-            rightIcon={
-              <Badge variant="secondary" size="s">
-                <Text type="xs" style="regular">
-                  Скоро
-                </Text>
-              </Badge>
-            }
-            href="/search"
-          >
-            Поиск в чатах
-          </Button>
           <Button href="/image-chat" leftIcon={<Icon name="gallery" />} />
-          <Button
-            disabled
-            leftIcon={<Icon name="video-play" />}
-            rightIcon={
-              <Badge variant="secondary" size="s">
-                <Text type="xs" style="regular">
-                  Скоро
-                </Text>
-              </Badge>
-            }
-            href="/"
-          >
-            Видео
-          </Button>
         </div>
       </>
     );
@@ -84,7 +55,10 @@ export const ChatSidebar = ({
   return (
     <>
       <div className="flex flex-row justify-between items-center">
-        <Link href="/" className="flex flex-row items-center gap-3">
+        <Link
+          href="/"
+          className={cn(styles.logoLink, "flex flex-row items-center gap-3")}
+        >
           <Logo />
 
           <Text type="s" as="h1">
@@ -104,36 +78,8 @@ export const ChatSidebar = ({
         <Button leftIcon={<Icon name="message-create" />} href="/">
           Новый чат
         </Button>
-        <Button
-          disabled
-          leftIcon={<Icon name="video-play" />}
-          rightIcon={
-            <Badge variant="secondary" size="s">
-              <Text type="xs" style="regular">
-                Скоро
-              </Text>
-            </Badge>
-          }
-          href="/search"
-        >
-          Поиск в чатах
-        </Button>
         <Button leftIcon={<Icon name="gallery" />} href="/image-chat">
           Изображения
-        </Button>
-        <Button
-          disabled
-          leftIcon={<Icon name="video-play" />}
-          rightIcon={
-            <Badge variant="secondary" size="s">
-              <Text type="xs" style="regular">
-                Скоро
-              </Text>
-            </Badge>
-          }
-          href="/"
-        >
-          Видео
         </Button>
       </div>
       <Divider />
@@ -184,11 +130,13 @@ export const ChatSidebar = ({
       </Expander>
       {isGuest ? (
         <Banner
-          title="Получайте персонализированные ответы"
+          title="Получайте ответы, адаптированные специально для вас"
           description="Войдите в систему, чтобы использовать историю чатов, создавать изображения и загружать файлы."
           action={
             <Button as="a" variant="primary" href="/login">
-              <div className="w-full text-center">Войти</div>
+              <Text className="w-full text-center" type="s" as="div">
+                Войти
+              </Text>
             </Button>
           }
         />
