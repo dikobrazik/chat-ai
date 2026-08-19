@@ -64,7 +64,7 @@ export default function Page() {
           placeholder={
             isImageChat
               ? "Опишите или придумайте изображение"
-              : "Например, 'Напиши стихотворение в стиле Пушкина о весне'"
+              : "Спросите о чём угодно"
           }
           isPromptSending={false}
           isChatCreating={false}
