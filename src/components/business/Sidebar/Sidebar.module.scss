@@ -8,6 +8,13 @@
   text-decoration: none;
 }
 
+// та же геометрия, что у кнопок с текстом (высота 40, иконка с отступом 12) —
+// чтобы иконки не смещались при сворачивании сайдбара
+.collapsedNavButton {
+  min-width: 2.75rem;
+  min-height: 2.5rem;
+}
+
 .card {
   width: 36px;
   height: 36px;

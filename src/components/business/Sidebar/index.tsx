@@ -46,8 +46,18 @@ export const ChatSidebar = ({
           </div>
         </div>
         <div className="flex flex-col gap-3">
-          <Button href="/" leftIcon={<Icon name="message-create" />} />
-          <Button href="/image-chat" leftIcon={<Icon name="gallery" />} />
+          <Button
+            href="/"
+            align="center"
+            className={styles.collapsedNavButton}
+            leftIcon={<Icon name="message-create" />}
+          />
+          <Button
+            href="/image-chat"
+            align="center"
+            className={styles.collapsedNavButton}
+            leftIcon={<Icon name="gallery" />}
+          />
         </div>
       </>
     );
