@@ -34,10 +34,6 @@ const nextConfig: NextConfig = {
       },
     ];
   },
-        destination: `${process.env.DEV_API_PROXY}/api/:path*`,
-      },
-    ];
-  },
 };
 
 export default withBundleAnalyzer(nextConfig);
