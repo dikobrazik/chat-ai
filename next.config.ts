@@ -24,10 +24,16 @@ const nextConfig: NextConfig = {
   // proxies /api/* server-side, so the browser stays same-origin (no CORS).
   // Not set in production env — no effect on prod builds.
   async rewrites() {
-    if (!process.env.DEV_API_PROXY) return [];
+    const proxy = process.env.DEV_API_PROXY;
+    if (!proxy || process.env.NODE_ENV === "production") return [];
+    const base = proxy.replace(/\/$/, "");
     return [
       {
         source: "/api/:path*",
+        destination: `${base}/api/:path*`,
+      },
+    ];
+  },
         destination: `${process.env.DEV_API_PROXY}/api/:path*`,
       },
     ];
