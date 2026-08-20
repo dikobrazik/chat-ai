@@ -1,0 +1,37 @@
+name: PR checks
+
+on:
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # full history: biome needs origin/main to lint changed files only
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+
+      # only files changed in the PR: old code has known lint debt,
+      # switch to `npx biome ci .` after it is cleaned up
+      - name: Lint (changed files)
+        run: npx biome ci --changed --since=origin/main
+
+      - name: Typecheck
+        run: npx tsc --noEmit
+
+      # build works without .env by design — no secrets in PR builds
+      - name: Build
+        run: npm run build
