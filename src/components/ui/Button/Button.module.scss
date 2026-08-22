@@ -8,10 +8,6 @@
   text-decoration: none;
   cursor: pointer;
 
-  &.disabled {
-    cursor: not-allowed;
-  }
-
   &.align-center {
     justify-content: center;
   }
