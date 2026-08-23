@@ -49,8 +49,10 @@ export default function Page() {
             <Text style="regular">Добрый день, {name}!</Text>
           </div>
         )}
-        <div className="flex flex-col gap-2">
-          <h1>Чем я могу помочь?</h1>
+        <div className="flex flex-col gap-2 text-center">
+          <Text as="h1" type="xl" style="regular">
+            Чем я могу помочь?
+          </Text>
           <Text as="h2" type="s" style="regular" color="#6F6F6F">
             {isImageChat
               ? "Здесь можно создавать крутые изображения"
@@ -73,7 +75,7 @@ export default function Page() {
         />
 
         {!isImageChat && (
-          <div className="flex gap-2">
+          <div className="flex gap-2 justify-center">
             <Button
               onClick={() => {
                 setValue("Создай текст ");

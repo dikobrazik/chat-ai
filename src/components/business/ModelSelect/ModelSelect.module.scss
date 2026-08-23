@@ -7,6 +7,28 @@
     border: none;
     background: none;
     min-height: auto;
+    // по макету подсветка — полная «пилюля» с воздухом вокруг контента
+    border-radius: 999px;
+    padding: 4px 12px 4px 4px;
+    cursor: pointer;
+
+    // как у кнопок на серой подложке поля ввода;
+    // держится и при открытом меню (controlOpen), не только под курсором
+    &:hover,
+    &.controlOpen {
+      background-color: #00000014;
+
+      @media (prefers-color-scheme: dark) {
+        background-color: color-mix(in srgb, var(--background), white 20%);
+      }
+    }
+
+    // иконка провайдера в белом кружке, как в макете
+    & .providerImage {
+      padding: 4px;
+      background-color: #FFFFFF;
+      border-radius: 999px;
+    }
 
     & .indicatorSeparator {
       display: none;
@@ -16,7 +38,9 @@
       // padding: 0;
 
       & .dropdownIndicator {
-        padding: 0 spacing(2);
+        // слева 1px — шеврон вплотную к названию модели (просьба дизайна),
+        // визуальный зазор ~11px даёт паддинг value-контейнера
+        margin: 0 spacing(2) 0 1px;
       }
     }
   }
