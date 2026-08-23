@@ -56,7 +56,7 @@ export default function Page() {
           <Text as="h2" type="s" style="regular" color="#6F6F6F">
             {isImageChat
               ? "Здесь можно создавать крутые изображения"
-              : `ChatGPT, Gemini, DeepSeek, Claude и другие нейросети для работы с текстами, изображениями и видео`}
+              : `ChatGPT, Gemini, DeepSeek, Claude, Nano Banana, Midjourney, Seedream и другие нейросети для работы с текстами, изображениями и видео`}
           </Text>
         </div>
 

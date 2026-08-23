@@ -44,6 +44,27 @@ const MODEL_DISPLAY: Record<string, { name: string; description: string }> = {
     name: "Claude 4.6 Sonnet",
     description: "Лучший баланс скорости и интеллекта",
   },
+  // картиночные модели (раздел «Изображения»)
+  "gpt-image-1-mini": {
+    name: "OpenAI GPT Image 1 Mini",
+    description: "Экономичная генерация картинок",
+  },
+  "gemini-3-pro-image": {
+    name: "Gemini 3 Pro Image",
+    description: "Nano Banana Pro для сложных сцен",
+  },
+  "gemini-3.1-flash-image": {
+    name: "Gemini 3.1 Flash Image",
+    description: "Nano Banana 2 — быстрая и точная",
+  },
+  "gemini-2.5-flash-image": {
+    name: "Gemini 2.5 Flash Image",
+    description: "Nano Banana для быстрых картинок",
+  },
+  "grok-imagine-image": {
+    name: "Grok Imagine",
+    description: "Генерация изображений от xAI",
+  },
 };
 
 export const getModelDisplay = (model: Model) =>

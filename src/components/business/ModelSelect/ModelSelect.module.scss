@@ -105,6 +105,10 @@
 
   & .menuList {
     padding: spacing(2) 0;
+    // зазор между строками, чтобы соседние серые плашки не слипались
+    display: flex;
+    flex-direction: column;
+    gap: spacing(1);
 
     @include for-mobile {
       max-height: 70dvh;
@@ -156,10 +160,6 @@
     background: none;
     color: var(--foreground);
     cursor: pointer;
-
-    &[aria-disabled="true"] {
-      cursor: default;
-    }
 
     // и ховер, и выбранная, и нажатие — серая плашка, как в макете.
     // :hover нужен отдельно: react-select не фокусирует disabled-опции,

@@ -91,7 +91,8 @@ export const ModelSelect = () => {
       menuPosition="fixed"
       maxMenuHeight={340}
       options={providers.flatMap((provider) => provider.models)}
-      isOptionDisabled={isOptionDisabled(profile)}
+      // недоступные модели НЕ disabled: клик по ним ведёт в окно входа
+      // (обрабатывается в onModelChange), бейджи рисуются ниже по статусу
       formatOptionLabel={(data, { context, selectValue }) => {
         const display = getModelDisplay(data);
 
