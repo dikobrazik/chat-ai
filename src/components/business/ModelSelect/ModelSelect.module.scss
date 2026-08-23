@@ -7,16 +7,27 @@
     border: none;
     background: none;
     min-height: auto;
-    border-radius: 0.75rem;
+    // по макету подсветка — полная «пилюля» с воздухом вокруг контента
+    border-radius: 999px;
+    padding: 4px 12px 4px 4px;
     cursor: pointer;
 
-    // как у кнопок на серой подложке поля ввода
-    &:hover {
+    // как у кнопок на серой подложке поля ввода;
+    // держится и при открытом меню (controlOpen), не только под курсором
+    &:hover,
+    &.controlOpen {
       background-color: #00000014;
 
       @media (prefers-color-scheme: dark) {
         background-color: color-mix(in srgb, var(--background), white 20%);
       }
+    }
+
+    // иконка провайдера в белом кружке, как в макете
+    & .providerImage {
+      padding: 4px;
+      background-color: #FFFFFF;
+      border-radius: 999px;
     }
 
     & .indicatorSeparator {

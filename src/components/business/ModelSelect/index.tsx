@@ -45,7 +45,8 @@ export const ModelSelect = () => {
       classNames={{
         indicatorSeparator: () => styles.indicatorSeparator,
         indicatorsContainer: () => styles.indicatorsContainer,
-        control: () => styles.control,
+        control: (state) =>
+          cn(styles.control, state.menuIsOpen && styles.controlOpen),
         groupHeading: () => styles.groupHeading,
         menu: () => styles.menu,
         option: () => styles.option,
