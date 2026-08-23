@@ -18,6 +18,8 @@
 .card {
   width: 36px;
   height: 36px;
+  // карточка уже кнопок ниже (44px) — центрируем, чтобы иконки были на одной оси
+  align-self: center;
 }
 
 .cardInner {
