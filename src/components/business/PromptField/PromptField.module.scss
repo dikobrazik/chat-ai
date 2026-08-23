@@ -36,4 +36,26 @@
       flex: none;
     }
   }
+
+  // подложка поля сама gray-1, поэтому у кнопки не белый фон, а прозрачный;
+  // ховер/нажатие — ghost-паттерн кита (solid 8/16%), сплошные серые тут не видны
+  .plusButton {
+    background-color: transparent;
+
+    &:hover:not(:disabled) {
+      background-color: #00000014;
+
+      @media (prefers-color-scheme: dark) {
+        background-color: color-mix(in srgb, var(--background), white 20%);
+      }
+    }
+
+    &:active:not(:disabled) {
+      background-color: #00000029;
+
+      @media (prefers-color-scheme: dark) {
+        background-color: color-mix(in srgb, var(--background), white 10%);
+      }
+    }
+  }
 }
