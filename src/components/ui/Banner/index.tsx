@@ -15,7 +15,7 @@ export const Banner = (props: BannerProps) => {
     <div className={cn(styles.banner, styles[`${props.direction || "col"}`])}>
       <div>
         <Text as="div">{props.title}</Text>
-        <Text type="xs" color="#6F6F6F" as="div">
+        <Text type="xs" color="#6F6F6F" as="div" style="regular">
           {props.description}
         </Text>
       </div>

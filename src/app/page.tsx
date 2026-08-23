@@ -64,7 +64,7 @@ export default function Page() {
           placeholder={
             isImageChat
               ? "Опишите или придумайте изображение"
-              : "Например, 'Напиши стихотворение в стиле Пушкина о весне'"
+              : "Спросите о чём угодно"
           }
           isPromptSending={false}
           isChatCreating={false}
@@ -80,6 +80,7 @@ export default function Page() {
                 promptRef.current?.focus();
               }}
               variant="outline"
+              borderRadius="full"
               leftIcon={<Icon name="firstline" />}
             >
               Создать текст
@@ -90,6 +91,7 @@ export default function Page() {
                 promptRef.current?.focus();
               }}
               variant="outline"
+              borderRadius="full"
               leftIcon={<Icon name="book-saved" />}
             >
               Для учёбы
@@ -100,6 +102,7 @@ export default function Page() {
                 promptRef.current?.focus();
               }}
               variant="outline"
+              borderRadius="full"
               leftIcon={<Icon name="lamp-on" />}
             >
               Придумать идею
@@ -107,6 +110,7 @@ export default function Page() {
             <Button
               href="/image-chat"
               variant="outline"
+              borderRadius="full"
               leftIcon={<Icon name="image" />}
             >
               Создать картинку
