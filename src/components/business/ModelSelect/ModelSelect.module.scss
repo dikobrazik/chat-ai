@@ -3,6 +3,11 @@
   margin: auto 0;
   padding: 0 12px;
 
+  // на узких экранах отступы съедают место у названия модели
+  @include for-mobile {
+    padding: 0 4px;
+  }
+
   & .control {
     border: none;
     background: none;
@@ -11,6 +16,10 @@
     border-radius: 999px;
     padding: 4px 12px 4px 4px;
     cursor: pointer;
+
+    @include for-mobile {
+      padding-right: 8px;
+    }
 
     // как у кнопок на серой подложке поля ввода;
     // держится и при открытом меню (controlOpen), не только под курсором
@@ -43,6 +52,10 @@
         margin: 0 spacing(2) 0 1px;
         transition: transform 150ms ease-in-out;
 
+        @include for-mobile {
+          margin-right: spacing(1);
+        }
+
         &.dropdownIndicatorOpen {
           transform: rotate(180deg);
         }
@@ -58,7 +71,8 @@
   }
 
   & .menu {
-    min-width: 320px;
+    // ширины должно хватать на самую длинную строку описания без обрезания
+    min-width: 360px;
     padding: spacing(2);
     border-radius: border-radius("2xl");
     box-shadow: shadow(lg);
@@ -123,17 +137,6 @@
     color: var(--foreground);
   }
 
-  & .groupHeading {
-    padding: spacing(2) spacing(3);
-    font-size: font-size(sm);
-    font-weight: 400;
-    text-transform: none;
-
-    & .groupLabel {
-      color: color(gray, 500);
-    }
-  }
-
   & .option {
     padding: spacing(2) spacing(3);
     border-radius: border-radius(xl);
@@ -187,7 +190,7 @@
       align-items: center;
       gap: spacing(2);
 
-      // бейдж «Плюс»-стиля из кита: синий текст на синей подложке 16%
+      // бейдж «Плюс» из кита: синий текст на синей подложке 16%
       & .subscription {
         flex-shrink: 0;
         font-size: font-size(xs);
@@ -196,14 +199,24 @@
         color: #0F8AFF;
         background-color: #0F8AFF29;
       }
+
+      & .lockIcon {
+        flex-shrink: 0;
+        color: color(gray, 500);
+      }
     }
 
     & .modelDescription {
       font-size: font-size(sm);
       color: color(gray, 500);
-      white-space: nowrap;
+      // переносы в описаниях расставлены руками (modelDisplay.ts),
+      // клэмп страхует незамапленные модели с длинным текстом с бэка
+      white-space: pre-line;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
       overflow: hidden;
-      text-overflow: ellipsis;
     }
 
     & .checkIcon {

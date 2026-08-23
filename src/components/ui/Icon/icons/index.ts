@@ -1,7 +1,4 @@
 // Import all icons
-import { EyeIcon } from "./EyeIcon";
-import { DislikeIcon } from "./DislikeIcon";
-import { LikeIcon } from "./LikeIcon";
 
 import { AddSquareIcon } from "./AddSquareIcon";
 import { AlertTriangleIcon } from "./AlertTriangleIcon";
@@ -17,12 +14,14 @@ import { ClipboardIcon } from "./ClipboardIcon";
 import { CloseIcon } from "./CloseIcon";
 import { CloseSquareIcon } from "./CloseSquareIcon";
 import { CopyIcon } from "./CopyIcon";
+import { DislikeIcon } from "./DislikeIcon";
 import { DocumentIcon } from "./DocumentIcon";
 import { DownloadIcon } from "./DownloadIcon";
 import { EditIcon } from "./EditIcon";
 import { EditSquareIcon } from "./EditSquareIcon";
 import { ExportIcon } from "./ExportIcon";
 import { ExternalLinkIcon } from "./ExternalLinkIcon";
+import { EyeIcon } from "./EyeIcon";
 import { FeatureIcon } from "./FeatureIcon";
 import { FirstlineIcon } from "./FirstlineIcon";
 import { FlashCircleIcon } from "./FlashCircleIcon";
@@ -35,6 +34,8 @@ import { ImageIcon } from "./ImageIcon";
 import { InfoCircleIcon } from "./InfoCircleIcon";
 import { InfoIcon } from "./InfoIcon";
 import { LampOnIcon } from "./LampOnIcon";
+import { LikeIcon } from "./LikeIcon";
+import { LockIcon } from "./LockIcon";
 import { LogoutIcon } from "./LogoutIcon";
 import { MenuIcon } from "./MenuIcon";
 import { MessageCreateIcon } from "./MessageCreateIcon";
@@ -58,9 +59,9 @@ import { YandexIcon } from "./YandexIcon";
 
 // Re-export all icons
 export {
-EyeIcon,
-DislikeIcon,
-LikeIcon,
+  EyeIcon,
+  DislikeIcon,
+  LikeIcon,
   RefreshIcon,
   DocumentIcon,
   GalleryEditIcon,
@@ -113,15 +114,16 @@ LikeIcon,
   FlashCircleIcon,
   MoreIcon,
   SettingIcon,
+  LockIcon,
 };
 
 // Icon registry for dynamic loading
 export const iconComponents = {
-  "eye": EyeIcon,
+  eye: EyeIcon,
 
-  "dislike": DislikeIcon,
+  dislike: DislikeIcon,
 
-  "like": LikeIcon,
+  like: LikeIcon,
 
   refresh: RefreshIcon,
   document: DocumentIcon,
@@ -143,6 +145,7 @@ export const iconComponents = {
   firstline: FirstlineIcon,
   "arrow-up": ArrowUpIcon,
   feature: FeatureIcon,
+  lock: LockIcon,
   logout: LogoutIcon,
   menu: MenuIcon,
   "alert-triangle": AlertTriangleIcon,
