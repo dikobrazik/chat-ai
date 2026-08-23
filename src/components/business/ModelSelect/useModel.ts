@@ -1,8 +1,10 @@
+import { useQuery } from "@tanstack/react-query";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useMemo } from "react";
-import type { Model } from "@/api";
+import { getProfile, type Model } from "@/api";
 import { useProviders } from "@/api/model";
 import { useModelContext } from "@/providers/ModelProvider/hooks";
+import { isOptionDisabled } from "./modelAccess";
 
 export const useModel = () => {
   const router = useRouter();
@@ -11,6 +13,11 @@ export const useModel = () => {
   const { model, setModel } = useModelContext();
 
   const { data: providers } = useProviders();
+  const { data: profile } = useQuery({
+    queryKey: ["profile"],
+    queryFn: getProfile,
+    refetchInterval: false,
+  });
 
   const filteredProviders = useMemo(() => {
     if (!providers) return [];
@@ -58,19 +65,30 @@ export const useModel = () => {
   }, [filteredProviders]);
 
   useEffect(() => {
-    // если модель не выбрана, выбираем первую из первой найденной модели
-    if (
-      filteredProviders &&
-      (!model || models.find((m) => m.id === model.id) === undefined)
-    ) {
-      const firstProvider = filteredProviders?.[0];
-      const firstModel = firstProvider?.models?.[0];
+    const currentModel = model
+      ? models.find((m) => m.id === model.id)
+      : undefined;
+
+    // выбранная модель могла стать недоступной (логаут, слетела подписка) —
+    // проверяем только с загруженным профилем, чтобы не сбросить выбор
+    // подписчика, пока его профиль ещё едет
+    const currentModelLocked =
+      profile && currentModel && isOptionDisabled(profile)(currentModel);
+
+    // если модель не выбрана или недоступна, выбираем первую ДОСТУПНУЮ:
+    // гостю нельзя дефолтить недоступную gpt-4o — его дефолт gpt-4o-mini
+    if (filteredProviders && (!currentModel || currentModelLocked)) {
+      const firstAvailableModel = models.find(
+        (m) => !isOptionDisabled(profile)(m),
+      );
+
+      const firstModel = firstAvailableModel ?? models[0];
 
       if (firstModel) {
         setModel(firstModel);
       }
     }
-  }, [filteredProviders]);
+  }, [filteredProviders, profile, model, models, setModel]);
 
   const selectedModel = model ? models.find((m) => m.id === model.id) : null;
 

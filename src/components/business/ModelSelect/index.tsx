@@ -5,24 +5,13 @@ import cn from "classnames";
 import Image from "next/image";
 import { useState } from "react";
 import Select, { components } from "react-select";
-import { getProfile, type Model, type Profile } from "@/api";
+import { getProfile, type Model } from "@/api";
 import Icon from "@/components/ui/Icon";
 import { useIsMobile } from "@/hooks/useMobile";
 import styles from "./ModelSelect.module.scss";
+import { isOptionDisabled } from "./modelAccess";
 import { getModelDisplay } from "./modelDisplay";
 import { useModel } from "./useModel";
-
-const USER_STATUSES = [
-  "guest",
-  "active",
-  "subscription_base",
-  "subscription_plus",
-  "subscription_pro",
-];
-
-const isOptionDisabled = (profile?: Profile) => (option: Model) =>
-  USER_STATUSES.indexOf(option.available_for_status) >
-  (profile?.status ? USER_STATUSES.indexOf(profile?.status) : -1);
 
 export const ModelSelect = () => {
   const { data: profile } = useQuery({
@@ -100,6 +89,7 @@ export const ModelSelect = () => {
       // вниз, когда есть место; на низких экранах и в чате сам уедет вверх
       menuPlacement="auto"
       menuPosition="fixed"
+      maxMenuHeight={340}
       options={providers.flatMap((provider) => provider.models)}
       isOptionDisabled={isOptionDisabled(profile)}
       formatOptionLabel={(data, { context, selectValue }) => {
