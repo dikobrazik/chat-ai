@@ -3,9 +3,11 @@
 import { useQuery } from "@tanstack/react-query";
 import cn from "classnames";
 import Image from "next/image";
-import Select from "react-select";
+import { useState } from "react";
+import Select, { components } from "react-select";
 import { getProfile, type Model, type Profile } from "@/api";
 import Icon from "@/components/ui/Icon";
+import { useIsMobile } from "@/hooks/useMobile";
 import styles from "./ModelSelect.module.scss";
 import { useModel } from "./useModel";
 
@@ -30,6 +32,10 @@ export const ModelSelect = () => {
 
   const { providers, providersById, selectedModel, onModelChange } = useModel();
 
+  const isMobile = useIsMobile();
+  // меню управляемое, чтобы на мобилке закрывать шторку тапом по оверлею
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   if (!providers) return null;
 
   return (
@@ -48,18 +54,49 @@ export const ModelSelect = () => {
         control: (state) =>
           cn(styles.control, state.menuIsOpen && styles.controlOpen),
         groupHeading: () => styles.groupHeading,
+        menuPortal: () => styles.menuPortal,
         menu: () => styles.menu,
-        option: () => styles.option,
+        menuList: () => styles.menuList,
+        option: (state) =>
+          cn(
+            styles.option,
+            state.isSelected && styles.optionSelected,
+            state.isFocused && styles.optionFocused,
+          ),
       }}
       components={{
         DropdownIndicator: () => (
           <Icon
-            className={styles.dropdownIndicator}
+            className={cn(
+              styles.dropdownIndicator,
+              isMenuOpen && styles.dropdownIndicatorOpen,
+            )}
             name="chevron-down"
             strokeWidth={1}
           />
         ),
+        Menu: (props) => (
+          <>
+            <div
+              className={styles.sheetOverlay}
+              onClick={() => setIsMenuOpen(false)}
+              aria-hidden="true"
+            />
+            <components.Menu {...props}>
+              {/* шапка видна только в мобильной шторке */}
+              <div className={styles.sheetHeader}>
+                <div className={styles.sheetHandle} />
+                <span className={styles.sheetTitle}>Выберите модель</span>
+              </div>
+              {props.children}
+            </components.Menu>
+          </>
+        ),
       }}
+      menuIsOpen={isMenuOpen}
+      onMenuOpen={() => setIsMenuOpen(true)}
+      onMenuClose={() => setIsMenuOpen(false)}
+      menuShouldBlockScroll={isMobile}
       menuPlacement="top"
       menuPosition="fixed"
       options={providers.map((provider) => ({
@@ -67,57 +104,56 @@ export const ModelSelect = () => {
         options: provider.models,
       }))}
       formatGroupLabel={(data) => (
-        <div className={styles.groupLabel}>
-          <div className={styles.providerImage}>
-            <Image
-              src={`/icons/providers/${data.label}.png`}
-              width={20}
-              height={20}
-              alt={`Provider ${data.label}`}
-            />
-          </div>
-          <strong>{data.label}</strong>{" "}
-        </div>
+        <div className={styles.groupLabel}>{data.label}</div>
       )}
       isOptionDisabled={isOptionDisabled(profile)}
-      formatOptionLabel={(data, { context, selectValue }) => (
-        <div
-          className={cn(
-            styles.model,
-            selectValue.some((item) => item.id === data.id) && styles.selected,
-          )}
-        >
-          <div className={styles.heading}>
+      formatOptionLabel={(data, { context, selectValue }) => {
+        if (context === "value") {
+          return (
             <div className="flex gap-3 items-center">
-              {context === "value" && (
-                <div className={styles.providerImage}>
-                  <Image
-                    src={`/icons/providers/${providersById?.[data.id]}.png`}
-                    width={16}
-                    height={16}
-                    alt={`Provider ${providersById?.[data.id]}`}
-                  />
-                </div>
-              )}
+              <div className={styles.providerImage}>
+                <Image
+                  src={`/icons/providers/${providersById?.[data.id]}.png`}
+                  width={16}
+                  height={16}
+                  alt={`Provider ${providersById?.[data.id]}`}
+                />
+              </div>
               <span className={styles.modelName}>{data.name}</span>
             </div>
+          );
+        }
 
-            {context === "menu" &&
-              isOptionDisabled(profile)(data) &&
-              data.available_for_status.startsWith("subscription") && (
-                <span className={styles.subscription}>с подпиской</span>
-              )}
-            {context === "menu" &&
-              isOptionDisabled(profile)(data) &&
-              data.available_for_status === "active" && (
-                <span className={styles.subscription}>после входа</span>
-              )}
+        return (
+          <div className={styles.model}>
+            <div className={styles.optionProviderImage}>
+              <Image
+                src={`/icons/providers/${providersById?.[data.id]}.png`}
+                width={24}
+                height={24}
+                alt={`Provider ${providersById?.[data.id]}`}
+              />
+            </div>
+            <div className={styles.optionInfo}>
+              <div className={styles.heading}>
+                <span className={styles.modelName}>{data.name}</span>
+                {isOptionDisabled(profile)(data) &&
+                  data.available_for_status.startsWith("subscription") && (
+                    <span className={styles.subscription}>с подпиской</span>
+                  )}
+                {isOptionDisabled(profile)(data) &&
+                  data.available_for_status === "active" && (
+                    <span className={styles.subscription}>после входа</span>
+                  )}
+              </div>
+              <div className={styles.modelDescription}>{data.description}</div>
+            </div>
+            {selectValue.some((item) => item.id === data.id) && (
+              <Icon className={styles.checkIcon} name="check" size={20} />
+            )}
           </div>
-          {context === "menu" && (
-            <div className={styles.modelDescription}>{data.description}</div>
-          )}
-        </div>
-      )}
+        );
+      }}
     />
   );
 };
