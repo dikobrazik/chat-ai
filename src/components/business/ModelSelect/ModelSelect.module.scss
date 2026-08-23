@@ -41,59 +41,174 @@
         // слева 1px — шеврон вплотную к названию модели (просьба дизайна),
         // визуальный зазор ~11px даёт паддинг value-контейнера
         margin: 0 spacing(2) 0 1px;
+        transition: transform 150ms ease-in-out;
+
+        &.dropdownIndicatorOpen {
+          transform: rotate(180deg);
+        }
       }
     }
   }
 
+  // на мобилке шторка должна лечь поверх сайдбара и шапки
+  & .menuPortal {
+    @include for-mobile {
+      z-index: z-index(overlay);
+    }
+  }
+
   & .menu {
-    min-width: 240px;
+    min-width: 320px;
+    padding: spacing(2);
+    border-radius: border-radius("2xl");
+    box-shadow: shadow(lg);
 
     background: var(--background);
 
     @media (prefers-color-scheme: dark) {
       border: 1px solid var(--foreground);
     }
+
+    // на мобилке меню — шторка снизу во всю ширину, как в макете
+    @include for-mobile {
+      position: fixed;
+      inset: auto 0 0 0;
+      margin: 0;
+      min-width: 0;
+      padding: spacing(2) spacing(2) spacing(4);
+      border-radius: border-radius("3xl") border-radius("3xl") 0 0;
+    }
   }
-}
 
-.groupHeading {
-  padding: spacing(2) spacing(4);
+  & .menuList {
+    @include for-mobile {
+      max-height: 70dvh;
+    }
+  }
 
-  & .groupLabel {
-    display: flex;
-    align-items: center;
-    gap: spacing(1);
+  // затемнение под шторкой; на десктопе не рендерится визуально
+  & .sheetOverlay {
+    display: none;
+
+    @include for-mobile {
+      display: block;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.24);
+    }
+  }
+
+  & .sheetHeader {
+    display: none;
+
+    @include for-mobile {
+      display: flex;
+      flex-direction: column;
+      gap: spacing(4);
+      padding: spacing(2) spacing(3) spacing(2);
+    }
+  }
+
+  & .sheetHandle {
+    align-self: center;
+    width: 36px;
+    height: 4px;
+    border-radius: border-radius(full);
+    background-color: color(gray, 300);
+  }
+
+  & .sheetTitle {
+    font-size: font-size(xl);
+    font-weight: 500;
+    color: var(--foreground);
+  }
+
+  & .groupHeading {
+    padding: spacing(2) spacing(3);
+    font-size: font-size(sm);
+    font-weight: 400;
+    text-transform: none;
+
+    & .groupLabel {
+      color: color(gray, 500);
+    }
+  }
+
+  & .option {
+    padding: spacing(2) spacing(3);
+    border-radius: border-radius(xl);
+    background: none;
+    color: var(--foreground);
+    cursor: pointer;
+
+    // и ховер, и выбранная, и нажатие — серая плашка, как в макете
+    &.optionFocused,
+    &.optionSelected,
+    &:active {
+      background-color: color(gray, 100);
+    }
   }
 }
 
 .option {
   .model {
     display: flex;
-    flex-direction: column;
-    gap: spacing(1);
+    align-items: center;
+    gap: spacing(3);
+    min-width: 0;
 
-    &.selected {
-      & .modelDescription {
-        color: color(gray, 500);
+    & .optionProviderImage {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      background-color: #FFFFFF;
+      border: 1px solid color(gray, 100);
+      border-radius: border-radius(xl);
+
+      @media (prefers-color-scheme: dark) {
+        background-color: var(--foreground);
+        border-color: transparent;
       }
+    }
+
+    & .optionInfo {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: spacing(1);
     }
 
     & .heading {
       display: flex;
-      justify-content: space-between;
+      align-items: center;
+      gap: spacing(2);
 
+      // бейдж «Плюс»-стиля из кита: синий текст на синей подложке 16%
       & .subscription {
-        font-size: 0.7rem;
-        border-radius: 4px;
-        padding: spacing(1);
-        color: color(primary, 50);
-        background-color: color(info);
+        flex-shrink: 0;
+        font-size: font-size(xs);
+        border-radius: border-radius(lg);
+        padding: 2px spacing(2);
+        color: #0F8AFF;
+        background-color: #0F8AFF29;
       }
     }
 
     & .modelDescription {
       font-size: font-size(sm);
       color: color(gray, 500);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    & .checkIcon {
+      flex-shrink: 0;
+      color: var(--foreground);
     }
   }
 }
