@@ -7,6 +7,17 @@
     border: none;
     background: none;
     min-height: auto;
+    border-radius: 0.75rem;
+    cursor: pointer;
+
+    // как у кнопок на серой подложке поля ввода
+    &:hover {
+      background-color: #00000014;
+
+      @media (prefers-color-scheme: dark) {
+        background-color: color-mix(in srgb, var(--background), white 20%);
+      }
+    }
 
     & .indicatorSeparator {
       display: none;
@@ -16,7 +27,9 @@
       // padding: 0;
 
       & .dropdownIndicator {
-        padding: 0 spacing(2);
+        // слева 1px — шеврон вплотную к названию модели (просьба дизайна),
+        // визуальный зазор ~11px даёт паддинг value-контейнера
+        margin: 0 spacing(2) 0 1px;
       }
     }
   }

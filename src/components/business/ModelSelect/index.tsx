@@ -5,6 +5,7 @@ import cn from "classnames";
 import Image from "next/image";
 import Select from "react-select";
 import { getProfile, type Model, type Profile } from "@/api";
+import Icon from "@/components/ui/Icon";
 import styles from "./ModelSelect.module.scss";
 import { useModel } from "./useModel";
 
@@ -44,11 +45,19 @@ export const ModelSelect = () => {
       classNames={{
         indicatorSeparator: () => styles.indicatorSeparator,
         indicatorsContainer: () => styles.indicatorsContainer,
-        dropdownIndicator: () => styles.dropdownIndicator,
         control: () => styles.control,
         groupHeading: () => styles.groupHeading,
         menu: () => styles.menu,
         option: () => styles.option,
+      }}
+      components={{
+        DropdownIndicator: () => (
+          <Icon
+            className={styles.dropdownIndicator}
+            name="chevron-down"
+            strokeWidth={1}
+          />
+        ),
       }}
       menuPlacement="top"
       menuPosition="fixed"
@@ -92,11 +101,13 @@ export const ModelSelect = () => {
               <span className={styles.modelName}>{data.name}</span>
             </div>
 
-            {isOptionDisabled(profile)(data) &&
+            {context === "menu" &&
+              isOptionDisabled(profile)(data) &&
               data.available_for_status.startsWith("subscription") && (
                 <span className={styles.subscription}>с подпиской</span>
               )}
-            {isOptionDisabled(profile)(data) &&
+            {context === "menu" &&
+              isOptionDisabled(profile)(data) &&
               data.available_for_status === "active" && (
                 <span className={styles.subscription}>после входа</span>
               )}
