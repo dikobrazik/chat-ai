@@ -1,0 +1,65 @@
+.list {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  // proximity, не mandatory: mandatory-снап в Chrome отменяет плавный scrollTo стрелок
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  // на мобильных карусель уходит под края контента, скролл пальцем
+  @include media-max(md) {
+    margin: 0 -16px;
+    padding: 0 16px;
+    // иначе снап прилипает к краю скроллпорта и съедает боковой отступ
+    scroll-padding: 0 16px;
+  }
+}
+
+.card {
+  position: relative;
+  flex: none;
+  width: 112px;
+  height: 128px;
+  border-radius: 16px;
+  overflow: hidden;
+  scroll-snap-align: start;
+  cursor: pointer;
+
+  &:hover .cardImage {
+    transform: scale(1.04);
+  }
+}
+
+.cardImage {
+  object-fit: cover;
+  transition: transform 0.2s ease-in-out;
+}
+
+.cardTitle {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 20px 10px 8px;
+  text-align: left;
+  color: #FFF;
+  background: linear-gradient(to top, #00000099, transparent);
+}
+
+.arrows {
+  @include media-max(md) {
+    display: none;
+  }
+}
+
+.arrowLeft {
+  transform: rotate(90deg);
+}
+
+.arrowRight {
+  transform: rotate(-90deg);
+}

@@ -3,6 +3,7 @@ import { createContext, useRef, useState } from "react";
 export const FilesContext = createContext<{
   attachments: Attachment[];
   addFiles: (files: FileList | null) => void;
+  restoreFiles: (files: Attachment[]) => void;
   clearFiles: () => void;
   getFile: (id: string) => File | undefined;
   removeFile: (id: string) => void;
@@ -10,13 +11,14 @@ export const FilesContext = createContext<{
 }>({
   attachments: [] as Attachment[],
   addFiles: (_files: FileList | null) => {},
+  restoreFiles: (_files: Attachment[]) => {},
   clearFiles: () => {},
   getFile: (_id: string) => undefined as File | undefined,
   removeFile: (_id: string) => {},
   onUploaded: (_fileId: string, _uploadedFileId: string) => {},
 });
 
-type Attachment = {
+export type Attachment = {
   id: string;
   name: string;
   type: string;
@@ -65,6 +67,12 @@ export const FilesProvider = ({ children }: { children: React.ReactNode }) => {
     });
   };
 
+  // восстановление уже загруженных вложений (например, после логина):
+  // блобов нет, но для отправки достаточно серверных id
+  const restoreFiles = (files: Attachment[]) => {
+    setAttachments(files.filter((file) => file.isUploaded));
+  };
+
   const clearFiles = () => {
     setAttachments([]);
     filesRef.current.clear();
@@ -92,6 +100,7 @@ export const FilesProvider = ({ children }: { children: React.ReactNode }) => {
       value={{
         attachments,
         addFiles,
+        restoreFiles,
         clearFiles,
         getFile,
         removeFile,

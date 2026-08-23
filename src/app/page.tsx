@@ -2,25 +2,50 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { usePathname, useRouter } from "next/navigation";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useProviders } from "@/api/model";
 import { getProfile } from "@/api/user";
 import { useChat } from "@/components/business/Chat/hooks/useChat";
 import { Footer } from "@/components/business/Footer";
+import { ImageFilters } from "@/components/business/ImageFilters";
+import type { ImageFilter } from "@/components/business/ImageFilters/filters";
+import { isOptionDisabled } from "@/components/business/ModelSelect/modelAccess";
 import { PromptField } from "@/components/business/PromptField";
 import Button from "@/components/ui/Button";
 import Icon from "@/components/ui/Icon";
 import { Logo } from "@/components/ui/Logo";
 import { Text } from "@/components/ui/Text";
+import { usePersistentState } from "@/hooks/usePersistenState";
 import { useAuth } from "@/providers/AuthProvider/hooks";
+import type { Attachment } from "@/providers/FilesProvider";
+import { useFiles } from "@/providers/FilesProvider/useFiles";
+import { useModelContext } from "@/providers/ModelProvider/hooks";
+
+// черновик гостя на «/image-chat»: переживает уход на логин,
+// после входа возвращаем промпт, вложения и модель
+type ImageChatDraft = {
+  prompt: string;
+  modelId: number | null;
+  attachments: Attachment[];
+} | null;
 
 export default function Page() {
   const pathname = usePathname();
   const router = useRouter();
   const promptRef = useRef<HTMLTextAreaElement>(null);
+  const attachInputRef = useRef<HTMLInputElement>(null);
   const [value, setValue] = useState("");
   const { isGuest } = useAuth();
 
   const { createChat } = useChat(undefined);
+  const { attachments, restoreFiles } = useFiles();
+  const { model, setModel } = useModelContext();
+  const { data: providers } = useProviders();
+
+  const [draft, setDraft] = usePersistentState<ImageChatDraft>(
+    "image-chat-draft",
+    null,
+  );
 
   const { data: profile } = useQuery({
     queryKey: ["profile"],
@@ -38,6 +63,100 @@ export default function Page() {
     router.push(`/chat/${chatId}?query=${encodeURIComponent(value)}`);
   };
 
+  const resizePrompt = () => {
+    const prompt = promptRef.current;
+
+    if (!prompt) return;
+
+    prompt.style.height = "auto";
+    prompt.style.height = `${prompt.scrollHeight}px`;
+  };
+
+  // гостевое восстановление черновика после перезагрузки страницы
+  // biome-ignore lint/correctness/useExhaustiveDependencies: только на маунте пустого композера
+  useEffect(() => {
+    if (!isImageChat || !isGuest || !draft) return;
+    if (value || attachments.length) return;
+
+    setValue(draft.prompt);
+    restoreFiles(draft.attachments);
+    requestAnimationFrame(resizePrompt);
+  }, [isImageChat, isGuest]);
+
+  // гость может уйти на логин в любой момент — держим черновик свежим;
+  // обнуляем только если контент был и пользователь сам его стёр,
+  // иначе пустой композер на маунте затирает черновик до восстановления
+  const hadContentRef = useRef(false);
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: setDraft стабилен
+  useEffect(() => {
+    if (!isImageChat || !isGuest) return;
+
+    const uploaded = attachments.filter((attachment) => attachment.isUploaded);
+    const hasContent = Boolean(value) || uploaded.length > 0;
+
+    if (!hasContent) {
+      if (hadContentRef.current) {
+        setDraft(null);
+      }
+
+      hadContentRef.current = false;
+
+      return;
+    }
+
+    hadContentRef.current = true;
+    setDraft({
+      prompt: value,
+      modelId: model?.id ?? null,
+      attachments: uploaded,
+    });
+  }, [isImageChat, isGuest, value, attachments, model]);
+
+  // после входа пользователь всегда попадает на «/» — возвращаем его
+  // к незаконченному изображению, если модель черновика ему доступна
+  // biome-ignore lint/correctness/useExhaustiveDependencies: setDraft/restoreFiles/setModel стабильны
+  useEffect(() => {
+    if (isGuest || !draft || !providers || !profile) return;
+
+    const draftModel = providers
+      .flatMap((provider) => provider.models)
+      .find((item) => item.id === draft.modelId);
+
+    if (!draftModel || isOptionDisabled(profile)(draftModel)) {
+      setDraft(null);
+
+      return;
+    }
+
+    if (!isImageChat) {
+      router.replace("/image-chat");
+
+      return;
+    }
+
+    setValue(draft.prompt);
+    restoreFiles(draft.attachments);
+    setModel({ id: draftModel.id });
+    setDraft(null);
+    requestAnimationFrame(resizePrompt);
+  }, [isGuest, draft, providers, profile, isImageChat]);
+
+  const onFilterSelect = async (filter: ImageFilter) => {
+    if (filter.withPhoto) {
+      setValue(filter.prompt);
+      promptRef.current?.focus();
+      requestAnimationFrame(resizePrompt);
+      attachInputRef.current?.click();
+
+      return;
+    }
+
+    const chatId = await createChat();
+
+    router.push(`/chat/${chatId}?query=${encodeURIComponent(filter.prompt)}`);
+  };
+
   return (
     <div className="flex flex-col justify-between h-full">
       <div></div>
@@ -51,11 +170,18 @@ export default function Page() {
         )}
         <div className="flex flex-col gap-2 text-center">
           <Text as="h1" type="xl" style="regular">
-            Чем я могу помочь?
+            {isImageChat ? "Изображения" : "Чем я могу помочь?"}
           </Text>
-          <Text as="h2" type="s" style="regular" color="#6F6F6F">
+          {/* резерв под две строки, чтобы разная длина подзаголовков не сдвигала поле ввода */}
+          <Text
+            as="h2"
+            type="s"
+            style="regular"
+            color="#6F6F6F"
+            className="min-h-10"
+          >
             {isImageChat
-              ? "Здесь можно создавать крутые изображения"
+              ? `Nano Banana, ChatGPT, Midjourney, Flux, Seedream, Stable Diffusion, Recraft и другие нейросети для работы с изображениями`
               : `ChatGPT, Gemini, DeepSeek, Claude, Nano Banana, Midjourney, Seedream и другие нейросети для работы с текстами, изображениями и видео`}
           </Text>
         </div>
@@ -64,18 +190,23 @@ export default function Page() {
           ref={promptRef}
           value={value}
           placeholder={
-            isImageChat
-              ? "Опишите или придумайте изображение"
-              : "Спросите о чём угодно"
+            isImageChat ? "Опишите новое изображение" : "Спросите о чём угодно"
           }
           isPromptSending={false}
           isChatCreating={false}
+          attachOnly={isImageChat}
+          attachInputRef={attachInputRef}
           onInputChange={setValue}
           onSendClick={sendClick}
         />
 
-        {!isImageChat && (
-          <div className="flex gap-2 justify-center">
+        {/* высота одинаковая на обоих разделах, чтобы заголовок и поле ввода не прыгали при переключении */}
+        {isImageChat ? (
+          <div className="h-40">
+            <ImageFilters onSelect={onFilterSelect} />
+          </div>
+        ) : (
+          <div className="flex gap-2 justify-center items-start h-40">
             <Button
               onClick={() => {
                 setValue("Создай текст ");

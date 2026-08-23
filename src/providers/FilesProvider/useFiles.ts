@@ -2,8 +2,15 @@ import { useContext } from "react";
 import { FilesContext } from ".";
 
 export const useFiles = () => {
-  const { attachments, addFiles, clearFiles, getFile, removeFile, onUploaded } =
-    useContext(FilesContext);
+  const {
+    attachments,
+    addFiles,
+    restoreFiles,
+    clearFiles,
+    getFile,
+    removeFile,
+    onUploaded,
+  } = useContext(FilesContext);
 
   const areAllFilesUploaded = attachments.every(
     (attachment) => attachment.isUploaded,
@@ -13,6 +20,7 @@ export const useFiles = () => {
     attachments,
     areAllFilesUploaded,
     addFiles,
+    restoreFiles,
     getFile,
     clearFiles,
     removeFile,

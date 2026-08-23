@@ -16,10 +16,13 @@ const UPLOADING_TEXTS = [
 ];
 
 export const File = ({ fileId }: Props) => {
-  const { getFile, removeFile, onUploaded } = useFiles();
+  const { attachments, getFile, removeFile, onUploaded } = useFiles();
+
+  // восстановленное после логина вложение уже загружено: блоба нет, есть только метаданные
+  const attachment = attachments.find((item) => item.id === fileId);
 
   const uploadingIntervalRef = useRef<NodeJS.Timeout | null>(null);
-  const [isUploaded, setIsUploaded] = useState(false);
+  const [isUploaded, setIsUploaded] = useState(Boolean(attachment?.isUploaded));
   const [uploadingTextIndex, setUploadingTextIndex] = useState(0);
 
   const { mutate, isPending, progress } = useUploadFiles({
@@ -64,9 +67,9 @@ export const File = ({ fileId }: Props) => {
       <FileComponent
         isUploaded={isUploaded}
         progress={progress}
-        type={file?.type}
-        name={file?.name}
-        size={file?.size}
+        type={file?.type ?? attachment?.type}
+        name={file?.name ?? attachment?.name}
+        size={file?.size ?? attachment?.size}
         uploadingText={UPLOADING_TEXTS[uploadingTextIndex]}
       />
     </Button>
