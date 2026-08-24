@@ -1,5 +1,7 @@
+import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import Icon from "../Icon";
+import type { IconName } from "../Icon/icons";
 import { Text } from "../Text";
 import { FILE_TYPES_MAP } from "./constants";
 import styles from "./File.module.scss";
@@ -16,9 +18,20 @@ type Props = {
 export const FileComponent = (props: Props) => {
   const { isUploaded, progress = 0, name, type, size, uploadingText } = props;
 
+  const [icon, setIcon] = useState<IconName>("document");
+
   useEffect(() => {
-    if (progress === 100) {
+    if (progress === 100 && icon === "document") {
+      setIcon("file-uploaded");
+
+      const timeoutId = setTimeout(() => {
+        setIcon("document");
+      }, 5000);
+
+      return () => clearTimeout(timeoutId);
     }
+
+    return () => {};
   }, [progress]);
 
   return (
@@ -32,8 +45,8 @@ export const FileComponent = (props: Props) => {
         >
           <div className={styles.iconWrapper}>
             <Icon
-              name="document"
-              size="16"
+              name={icon}
+              size={icon === "document" ? "16" : "32"}
               color={isUploaded ? "#000000" : "#9C9C9C"}
             />
           </div>
@@ -60,6 +73,3 @@ export const FileComponent = (props: Props) => {
     </>
   );
 };
-function useEffect(arg0: () => void, arg1: number[]) {
-  throw new Error("Function not implemented.");
-}

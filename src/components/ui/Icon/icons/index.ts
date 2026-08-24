@@ -23,6 +23,7 @@ import { ExportIcon } from "./ExportIcon";
 import { ExternalLinkIcon } from "./ExternalLinkIcon";
 import { EyeIcon } from "./EyeIcon";
 import { FeatureIcon } from "./FeatureIcon";
+import { FileUploadedIcon } from "./FileUploadedIcon";
 import { FirstlineIcon } from "./FirstlineIcon";
 import { FlashCircleIcon } from "./FlashCircleIcon";
 import { GalleryEditIcon } from "./GalleryEditIcon";
@@ -59,6 +60,7 @@ import { YandexIcon } from "./YandexIcon";
 
 // Re-export all icons
 export {
+  FileUploadedIcon as File_uploadedIcon,
   EyeIcon,
   DislikeIcon,
   LikeIcon,
@@ -119,6 +121,8 @@ export {
 
 // Icon registry for dynamic loading
 export const iconComponents = {
+  "file-uploaded": FileUploadedIcon,
+
   eye: EyeIcon,
 
   dislike: DislikeIcon,
