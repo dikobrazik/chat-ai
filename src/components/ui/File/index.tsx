@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils";
 import Icon from "../Icon";
 import { Text } from "../Text";
+import { FILE_TYPES_MAP } from "./constants";
 import styles from "./File.module.scss";
 
 type Props = {
@@ -39,7 +40,11 @@ export const FileComponent = (props: Props) => {
         </Text>
         {isUploaded ? (
           <Text type="xs" style="regular" color="#9C9C9C">
-            {type}&nbsp;•&nbsp;{((size ?? 0) / 1024).toFixed(2)} КБ
+            {type && type in FILE_TYPES_MAP
+              ? FILE_TYPES_MAP[type as keyof typeof FILE_TYPES_MAP]
+              : type}
+            &nbsp;•&nbsp;
+            {((size ?? 0) / 1024).toFixed(2)} КБ
           </Text>
         ) : (
           <Text type="xs" style="regular" color="#9C9C9C">
