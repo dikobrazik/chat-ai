@@ -15,6 +15,9 @@ type PromptFieldProps = {
   placeholder?: string;
   isPromptSending: boolean;
   isChatCreating: boolean;
+  // в разделе изображений вместо меню «+» — сразу скрепка с выбором файла
+  attachOnly?: boolean;
+  attachInputRef?: React.RefObject<HTMLInputElement | null>;
   onInputChange: (value: string) => void;
   onSendClick: () => void;
 };
@@ -25,6 +28,8 @@ export const PromptField = forwardRef<HTMLTextAreaElement, PromptFieldProps>(
       value,
       isPromptSending,
       isChatCreating,
+      attachOnly,
+      attachInputRef,
       onInputChange,
       onSendClick,
       placeholder,
@@ -73,7 +78,11 @@ export const PromptField = forwardRef<HTMLTextAreaElement, PromptFieldProps>(
             inputRef.current?.focus();
           }}
           multiple
-          ref={addFilesRef}
+          ref={
+            attachInputRef
+              ? mergeRefs([addFilesRef, attachInputRef])
+              : addFilesRef
+          }
         ></input>
 
         <div>
@@ -97,34 +106,44 @@ export const PromptField = forwardRef<HTMLTextAreaElement, PromptFieldProps>(
 
         <div className={styles.controls}>
           <div className="flex gap-1">
-            <Popover
-              position="top"
-              align="start"
-              Trigger={(props) => (
+            {attachOnly ? (
+              Boolean(accept) && (
                 <Button
-                  {...props}
                   className={styles.plusButton}
-                  leftIcon={<Icon name="plus" color="black" size={22} />}
+                  leftIcon={<Icon name="paperclip" />}
+                  onClick={() => addFilesRef.current?.click()}
                 />
-              )}
-            >
-              <div className="flex flex-col gap-1">
-                {Boolean(accept) && (
+              )
+            ) : (
+              <Popover
+                position="top"
+                align="start"
+                Trigger={(props) => (
                   <Button
-                    leftIcon={<Icon name="paperclip" />}
-                    onClick={() => addFilesRef.current?.click()}
-                  >
-                    Добавить фото или файл
-                  </Button>
+                    {...props}
+                    className={styles.plusButton}
+                    leftIcon={<Icon name="plus" color="black" size={22} />}
+                  />
                 )}
-                <Button
-                  href="/image-chat"
-                  leftIcon={<Icon name="gallery-edit" />}
-                >
-                  Создать изображение
-                </Button>
-              </div>
-            </Popover>
+              >
+                <div className="flex flex-col gap-1">
+                  {Boolean(accept) && (
+                    <Button
+                      leftIcon={<Icon name="paperclip" />}
+                      onClick={() => addFilesRef.current?.click()}
+                    >
+                      Добавить фото или файл
+                    </Button>
+                  )}
+                  <Button
+                    href="/image-chat"
+                    leftIcon={<Icon name="gallery-edit" />}
+                  >
+                    Создать изображение
+                  </Button>
+                </div>
+              </Popover>
+            )}
             <ModelSelect />
           </div>
           <div></div>
