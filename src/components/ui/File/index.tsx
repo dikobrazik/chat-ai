@@ -16,6 +16,11 @@ type Props = {
 export const FileComponent = (props: Props) => {
   const { isUploaded, progress = 0, name, type, size, uploadingText } = props;
 
+  useEffect(() => {
+    if (progress === 100) {
+    }
+  }, [progress]);
+
   return (
     <>
       <div className={cn(styles.progress)}>
@@ -55,3 +60,6 @@ export const FileComponent = (props: Props) => {
     </>
   );
 };
+function useEffect(arg0: () => void, arg1: number[]) {
+  throw new Error("Function not implemented.");
+}

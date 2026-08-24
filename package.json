@@ -9,7 +9,9 @@
     "start": "next start",
     "import-icon": "node --experimental-strip-types tools/import-icon/index.ts",
     "lint": "biome check",
-    "format": "biome format --write"
+    "format": "biome format --write",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.4.0",
@@ -38,7 +40,10 @@
     "@types/react": "19",
     "@types/react-dom": "19",
     "sass": "1.93.2",
-    "typescript": "5"
+    "typescript": "5",
+    "storybook": "^10.5.10",
+    "@storybook/nextjs-vite": "^10.5.10",
+    "vite": "latest"
   },
   "optionalDependencies": {
     "lightningcss-linux-arm64-musl": "1.30.2",
