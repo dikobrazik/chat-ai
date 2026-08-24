@@ -3,6 +3,11 @@
   margin: auto 0;
   padding: 0 12px;
 
+  // на узких экранах отступы съедают место у названия модели
+  @include for-mobile {
+    padding: 0 4px;
+  }
+
   & .control {
     border: none;
     background: none;
@@ -11,6 +16,10 @@
     border-radius: 999px;
     padding: 4px 12px 4px 4px;
     cursor: pointer;
+
+    @include for-mobile {
+      padding-right: 8px;
+    }
 
     // как у кнопок на серой подложке поля ввода;
     // держится и при открытом меню (controlOpen), не только под курсором
@@ -43,6 +52,10 @@
         margin: 0 spacing(2) 0 1px;
         transition: transform 150ms ease-in-out;
 
+        @include for-mobile {
+          margin-right: spacing(1);
+        }
+
         &.dropdownIndicatorOpen {
           transform: rotate(180deg);
         }
@@ -58,10 +71,18 @@
   }
 
   & .menu {
-    min-width: 320px;
-    padding: spacing(2);
+    // ширины должно хватать на самую длинную строку описания без обрезания
+    min-width: 360px;
+    // вертикальный отступ живёт в menuList: react-select считает высоту
+    // меню по списку, и паддинг панели выталкивал её за край экрана;
+    // overflow клипает прокрученные строки по скруглению панели
+    padding: 0 spacing(2);
+    overflow: hidden;
     border-radius: border-radius("2xl");
-    box-shadow: shadow(lg);
+    // граница + рассеянная тень, чтобы панель не сливалась с белым фоном
+    // (в маке панель отделена мягкой тенью; Border gray-2 из кита)
+    border: 1px solid #EFEFEF;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.10), 0 2px 8px rgba(0, 0, 0, 0.06);
 
     background: var(--background);
 
@@ -69,7 +90,9 @@
       border: 1px solid var(--foreground);
     }
 
-    // на мобилке меню — шторка снизу во всю ширину, как в макете
+    // на мобилке меню — шторка снизу во всю ширину, как в макете;
+    // шторке приклеенной к низу расчёт высоты не мешает, поэтому
+    // отступы обычные, на панели
     @include for-mobile {
       position: fixed;
       inset: auto 0 0 0;
@@ -81,8 +104,15 @@
   }
 
   & .menuList {
+    padding: spacing(2) 0;
+    // зазор между строками, чтобы соседние серые плашки не слипались
+    display: flex;
+    flex-direction: column;
+    gap: spacing(1);
+
     @include for-mobile {
       max-height: 70dvh;
+      padding: 0;
     }
   }
 
@@ -123,29 +153,28 @@
     color: var(--foreground);
   }
 
-  & .groupHeading {
-    padding: spacing(2) spacing(3);
-    font-size: font-size(sm);
-    font-weight: 400;
-    text-transform: none;
-
-    & .groupLabel {
-      color: color(gray, 500);
-    }
-  }
-
   & .option {
-    padding: spacing(2) spacing(3);
+    // вертикаль 6px — строки компактные, как в маке (~48px высотой)
+    padding: 6px spacing(3);
     border-radius: border-radius(xl);
     background: none;
     color: var(--foreground);
     cursor: pointer;
 
-    // и ховер, и выбранная, и нажатие — серая плашка, как в макете
+    // и ховер, и выбранная, и нажатие — серая плашка, как в макете.
+    // :hover нужен отдельно: react-select не фокусирует disabled-опции,
+    // а у гостя почти все модели заблокированы — без него ховера «нет».
+    // (hover: hover) — иначе на таче подсветка залипает на тапнутой строке
     &.optionFocused,
     &.optionSelected,
     &:active {
       background-color: color(gray, 100);
+    }
+
+    @media (hover: hover) {
+      &:hover {
+        background-color: color(gray, 100);
+      }
     }
   }
 }
@@ -179,7 +208,8 @@
       min-width: 0;
       display: flex;
       flex-direction: column;
-      gap: spacing(1);
+      // в маке описание сидит вплотную к названию
+      gap: 2px;
     }
 
     & .heading {
@@ -187,19 +217,28 @@
       align-items: center;
       gap: spacing(2);
 
-      // бейдж «Плюс»-стиля из кита: синий текст на синей подложке 16%
+      // бейдж «Плюс» из кита: синий текст на синей подложке 16%, пилюля
       & .subscription {
         flex-shrink: 0;
         font-size: font-size(xs);
-        border-radius: border-radius(lg);
+        line-height: 16px;
+        border-radius: border-radius(full);
         padding: 2px spacing(2);
         color: #0F8AFF;
         background-color: #0F8AFF29;
       }
+
+      & .lockIcon {
+        flex-shrink: 0;
+        color: color(gray, 500);
+      }
     }
 
     & .modelDescription {
-      font-size: font-size(sm);
+      // Body-XS 12/16 — как в маке; строго одна строка,
+      // многоточие страхует незамапленные длинные тексты с бэка
+      font-size: font-size(xs);
+      line-height: 16px;
       color: color(gray, 500);
       white-space: nowrap;
       overflow: hidden;

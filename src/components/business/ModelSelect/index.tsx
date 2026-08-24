@@ -5,23 +5,13 @@ import cn from "classnames";
 import Image from "next/image";
 import { useState } from "react";
 import Select, { components } from "react-select";
-import { getProfile, type Model, type Profile } from "@/api";
+import { getProfile, type Model } from "@/api";
 import Icon from "@/components/ui/Icon";
 import { useIsMobile } from "@/hooks/useMobile";
 import styles from "./ModelSelect.module.scss";
+import { isOptionDisabled } from "./modelAccess";
+import { getModelDisplay } from "./modelDisplay";
 import { useModel } from "./useModel";
-
-const USER_STATUSES = [
-  "guest",
-  "active",
-  "subscription_base",
-  "subscription_plus",
-  "subscription_pro",
-];
-
-const isOptionDisabled = (profile?: Profile) => (option: Model) =>
-  USER_STATUSES.indexOf(option.available_for_status) >
-  (profile?.status ? USER_STATUSES.indexOf(profile?.status) : -1);
 
 export const ModelSelect = () => {
   const { data: profile } = useQuery({
@@ -53,7 +43,6 @@ export const ModelSelect = () => {
         indicatorsContainer: () => styles.indicatorsContainer,
         control: (state) =>
           cn(styles.control, state.menuIsOpen && styles.controlOpen),
-        groupHeading: () => styles.groupHeading,
         menuPortal: () => styles.menuPortal,
         menu: () => styles.menu,
         menuList: () => styles.menuList,
@@ -97,17 +86,16 @@ export const ModelSelect = () => {
       onMenuOpen={() => setIsMenuOpen(true)}
       onMenuClose={() => setIsMenuOpen(false)}
       menuShouldBlockScroll={isMobile}
-      menuPlacement="top"
+      // вниз, когда есть место; на низких экранах и в чате сам уедет вверх
+      menuPlacement="auto"
       menuPosition="fixed"
-      options={providers.map((provider) => ({
-        label: provider.name,
-        options: provider.models,
-      }))}
-      formatGroupLabel={(data) => (
-        <div className={styles.groupLabel}>{data.label}</div>
-      )}
-      isOptionDisabled={isOptionDisabled(profile)}
+      maxMenuHeight={340}
+      options={providers.flatMap((provider) => provider.models)}
+      // недоступные модели НЕ disabled: клик по ним ведёт в окно входа
+      // (обрабатывается в onModelChange), бейджи рисуются ниже по статусу
       formatOptionLabel={(data, { context, selectValue }) => {
+        const display = getModelDisplay(data);
+
         if (context === "value") {
           return (
             <div className="flex gap-3 items-center">
@@ -119,7 +107,7 @@ export const ModelSelect = () => {
                   alt={`Provider ${providersById?.[data.id]}`}
                 />
               </div>
-              <span className={styles.modelName}>{data.name}</span>
+              <span className={styles.modelName}>{display.name}</span>
             </div>
           );
         }
@@ -136,17 +124,19 @@ export const ModelSelect = () => {
             </div>
             <div className={styles.optionInfo}>
               <div className={styles.heading}>
-                <span className={styles.modelName}>{data.name}</span>
+                <span className={styles.modelName}>{display.name}</span>
                 {isOptionDisabled(profile)(data) &&
                   data.available_for_status.startsWith("subscription") && (
-                    <span className={styles.subscription}>с подпиской</span>
+                    <span className={styles.subscription}>Плюс</span>
                   )}
                 {isOptionDisabled(profile)(data) &&
                   data.available_for_status === "active" && (
-                    <span className={styles.subscription}>после входа</span>
+                    <Icon className={styles.lockIcon} name="lock" size={16} />
                   )}
               </div>
-              <div className={styles.modelDescription}>{data.description}</div>
+              <div className={styles.modelDescription}>
+                {display.description}
+              </div>
             </div>
             {selectValue.some((item) => item.id === data.id) && (
               <Icon className={styles.checkIcon} name="check" size={20} />
