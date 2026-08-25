@@ -35,12 +35,12 @@ export const ChatSidebar = ({
   if (!isOpen)
     return (
       <>
-        <div className={styles.card}>
+        {/* onClick на карточке, а не на кнопке — чтобы клик срабатывал и во время переворота, пока сверху ещё логотип */}
+        <div className={styles.card} onClick={toggleSidebar}>
           <div className={cn(styles.cardInner)}>
             <Logo className={styles.cardFront} />
             <Button
               className={styles.cardBack}
-              onClick={toggleSidebar}
               leftIcon={<Icon name="sidebar-toggle-on" />}
             />
           </div>
