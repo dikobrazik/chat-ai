@@ -59,6 +59,19 @@ export const ChatSidebar = ({
             leftIcon={<Icon name="gallery" />}
           />
         </div>
+        {/* профиль прижат к низу, как в развёрнутом сайдбаре */}
+        <div className="mt-auto flex flex-col items-center">
+          {isGuest ? (
+            <Button
+              href="/login"
+              align="center"
+              className={styles.collapsedNavButton}
+              leftIcon={<Icon name="profile-circle" />}
+            />
+          ) : (
+            <Profile collapsed />
+          )}
+        </div>
       </>
     );
 

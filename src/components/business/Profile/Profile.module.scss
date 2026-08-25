@@ -16,3 +16,10 @@
 .profileButton {
   padding: spacing(1);
 }
+
+// аватар-кнопка в свёрнутом сайдбаре: 32px фото + 4px воздуха = 40px,
+// та же высота, что у иконок навигации выше
+.avatarButton {
+  padding: spacing(1);
+  border-radius: border-radius(full);
+}

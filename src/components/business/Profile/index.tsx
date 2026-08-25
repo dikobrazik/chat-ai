@@ -7,6 +7,7 @@ import { Divider } from "@/components/ui/Divider";
 import Icon from "@/components/ui/Icon";
 import Popover from "@/components/ui/Popover";
 import { Text } from "@/components/ui/Text";
+import { cn } from "@/lib/utils";
 import { useAuthContext } from "@/providers/AuthProvider/hooks";
 import Button from "@/ui/Button";
 import styles from "./Profile.module.scss";
@@ -23,6 +24,27 @@ const USER_STATUS_COLOR_MAP: Record<string, string> = {
   subscription_pro: "#FF6B34",
 };
 
+const ProfileAvatar = () => {
+  const { isGuest } = useAuthContext();
+
+  const { data: profile } = useQuery({
+    queryKey: ["profile"],
+    queryFn: getProfile,
+    enabled: !isGuest,
+  });
+
+  return (
+    <Image
+      className={styles.profilePhoto}
+      src={profile?.photo ?? "/default-avatar.svg"}
+      fetchPriority="low"
+      alt="Profile Photo"
+      width={200}
+      height={200}
+    />
+  );
+};
+
 const ProfileInfo = () => {
   const { isGuest } = useAuthContext();
 
@@ -34,14 +56,7 @@ const ProfileInfo = () => {
 
   return (
     <div className="w-full flex items-center gap-3">
-      <Image
-        className={styles.profilePhoto}
-        src={profile?.photo ?? "/default-avatar.svg"}
-        fetchPriority="low"
-        alt="Profile Photo"
-        width={200}
-        height={200}
-      />
+      <ProfileAvatar />
 
       <div className="flex flex-col w-auto">
         <Text type="s" style="medium" className="truncate">
@@ -59,11 +74,70 @@ const ProfileInfo = () => {
   );
 };
 
-export const Profile = () => {
-  const { isReady, onLogoutClick } = useAuthContext();
+const ProfileMenu = () => {
+  const { onLogoutClick } = useAuthContext();
+
+  return (
+    <>
+      <ProfileInfo />
+      <div className="flex flex-col gap-2">
+        <Button align="center" variant="primary" as="a" href="/plans">
+          <Text type="s" style="medium">
+            Открыть полный доступ
+          </Text>
+        </Button>
+        <Button
+          as="a"
+          href="/settings/profile"
+          leftIcon={<Icon name="setting" />}
+        >
+          Настройки
+        </Button>
+        <Button
+          as="a"
+          href="/settings/help"
+          leftIcon={<Icon name="message-question" />}
+        >
+          Справка
+        </Button>
+      </div>
+      <Divider />
+      <Button
+        variant="danger"
+        leftIcon={<Icon name="logout" />}
+        onClick={onLogoutClick}
+      >
+        Выйти
+      </Button>
+    </>
+  );
+};
+
+export const Profile = ({ collapsed }: { collapsed?: boolean }) => {
+  const { isReady } = useAuthContext();
 
   if (!isReady) {
     return <Button loading />;
+  }
+
+  // в свёрнутом сайдбаре от профиля остаётся только аватар с тем же меню
+  if (collapsed) {
+    return (
+      <Popover
+        popoverClassName={styles.profilePopover}
+        position="top"
+        align="start"
+        Trigger={(props) => (
+          <Button
+            {...props}
+            className={cn(props.className, styles.avatarButton)}
+            leftIcon={<ProfileAvatar />}
+          />
+        )}
+      >
+        <ProfileMenu />
+      </Popover>
+    );
   }
 
   return (
@@ -78,36 +152,7 @@ export const Profile = () => {
           <Button {...props} leftIcon={<Icon name="more" />} />
         )}
       >
-        <ProfileInfo />
-        <div className="flex flex-col gap-2">
-          <Button align="center" variant="primary" as="a" href="/plans">
-            <Text type="s" style="medium">
-              Открыть полный доступ
-            </Text>
-          </Button>
-          <Button
-            as="a"
-            href="/settings/profile"
-            leftIcon={<Icon name="setting" />}
-          >
-            Настройки
-          </Button>
-          <Button
-            as="a"
-            href="/settings/help"
-            leftIcon={<Icon name="message-question" />}
-          >
-            Справка
-          </Button>
-        </div>
-        <Divider />
-        <Button
-          variant="danger"
-          leftIcon={<Icon name="logout" />}
-          onClick={onLogoutClick}
-        >
-          Выйти
-        </Button>
+        <ProfileMenu />
       </Popover>
     </div>
   );
