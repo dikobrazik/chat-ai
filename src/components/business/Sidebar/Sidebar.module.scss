@@ -15,6 +15,12 @@
   min-height: 2.5rem;
 }
 
+// профиль до логина: та же ось, что у навигации, но без min-height —
+// естественные 36px ставят иконку в ту же точку, где аватар после логина
+.collapsedProfileButton {
+  min-width: 2.75rem;
+}
+
 .card {
   width: 36px;
   height: 36px;

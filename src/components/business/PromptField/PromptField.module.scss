@@ -17,11 +17,15 @@
   }
 
   .textfield {
-    flex: 1;
+    // flex-basis auto, не 0: иначе flex игнорирует высоту из onChange
+    // и поле не растёт вместе с текстом
+    flex: 1 1 auto;
+    // не выше 6 строк — дальше текст прокручивается внутри поля
+    max-height: calc(6 * 24px);
 
     transition: height 0.2s ease-in-out;
 
-    overflow-y: hidden;
+    overflow-y: auto;
 
     resize: none;
     border: none;

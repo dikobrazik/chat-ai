@@ -59,6 +59,19 @@ export const ChatSidebar = ({
             leftIcon={<Icon name="gallery" />}
           />
         </div>
+        {/* профиль прижат к низу, как в развёрнутом сайдбаре */}
+        <div className="mt-auto flex flex-col items-center">
+          {isGuest ? (
+            <Button
+              href="/login"
+              align="center"
+              className={styles.collapsedProfileButton}
+              leftIcon={<Icon name="profile-circle" />}
+            />
+          ) : (
+            <Profile collapsed />
+          )}
+        </div>
       </>
     );
 
@@ -151,7 +164,10 @@ export const ChatSidebar = ({
           }
         />
       ) : (
-        <Profile />
+        // сдвиг на ось иконок рейла — аватар не прыгает при сворачивании
+        <div className="pl-1.5">
+          <Profile />
+        </div>
       )}
     </>
   );
