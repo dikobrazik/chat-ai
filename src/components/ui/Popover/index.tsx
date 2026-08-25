@@ -2,7 +2,12 @@
 
 import classNames from "classnames";
 import type React from "react";
-import { type PropsWithChildren, type ReactNode, useState } from "react";
+import {
+  type PropsWithChildren,
+  type ReactNode,
+  useEffect,
+  useState,
+} from "react";
 import {
   type PopoverAlign,
   type PopoverPosition,
@@ -30,6 +35,22 @@ const Popover = ({
   align,
 }: PropsWithChildren<Props>) => {
   const [isVisible, setIsVisible] = useState(false);
+
+  // scroll не всплывает — слушаем в capture-фазе
+  useEffect(() => {
+    if (!isVisible) return;
+    const onScroll = (e: Event) => {
+      if (
+        e.target instanceof Element &&
+        e.target.closest(".react-tiny-popover-container")
+      ) {
+        return;
+      }
+      setIsVisible(false);
+    };
+    window.addEventListener("scroll", onScroll, true);
+    return () => window.removeEventListener("scroll", onScroll, true);
+  }, [isVisible]);
 
   const toggleVisibility = () => {
     setIsVisible(!isVisible);
