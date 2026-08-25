@@ -78,9 +78,13 @@ export const ChatSidebar = ({
   return (
     <>
       <div className="flex flex-row justify-between items-center">
+        {/* pl-1: центр лого (36px) на оси центров иконок навигации (паддинг кнопки 12 + половина иконки 10) */}
         <Link
           href="/"
-          className={cn(styles.logoLink, "flex flex-row items-center gap-3")}
+          className={cn(
+            styles.logoLink,
+            "flex flex-row items-center gap-3 pl-1",
+          )}
         >
           <Logo />
 
@@ -110,12 +114,12 @@ export const ChatSidebar = ({
         className="flex-1 pb-6"
         defaultOpen
         Header={() => (
-          <>
+          <div className="flex items-center gap-3 pl-3">
             <Icon className={styles.icon} color="#9C9C9C" name="chevron-down" />
             <Text color="#9C9C9C" style="regular">
               Чаты
             </Text>
-          </>
+          </div>
         )}
       >
         <div className="flex flex-col h-full gap-1">
@@ -152,19 +156,24 @@ export const ChatSidebar = ({
         </div>
       </Expander>
       {isGuest ? (
-        <Banner
-          title="Получайте ответы, адаптированные специально для вас"
-          description="Войдите в систему, чтобы использовать историю чатов, создавать изображения и загружать файлы."
-          action={
-            <Button as="a" variant="primary" href="/login">
-              <Text className="w-full text-center" type="s" as="div">
-                Войти
-              </Text>
-            </Button>
-          }
-        />
+        // -mx-1: внутренний паддинг баннера (16px) минус вынос за колонку (4px)
+        // ставит текст на ось контента кнопок, фон выступает как ховер у кнопок
+        <div className="-mx-1">
+          <Banner
+            title="Получайте ответы, адаптированные специально для вас"
+            description="Войдите в систему, чтобы использовать историю чатов, создавать изображения и загружать файлы."
+            action={
+              <Button as="a" variant="primary" href="/login">
+                <Text className="w-full text-center" type="s" as="div">
+                  Войти
+                </Text>
+              </Button>
+            }
+          />
+        </div>
       ) : (
-        // сдвиг на ось иконок рейла — аватар не прыгает при сворачивании
+        // pl-1.5: центр аватара (32px) на оси центров иконок — та же точка,
+        // что в свёрнутом рейле, поэтому аватар не прыгает при сворачивании
         <div className="pl-1.5">
           <Profile />
         </div>
