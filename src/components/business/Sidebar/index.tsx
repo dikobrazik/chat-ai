@@ -65,7 +65,7 @@ export const ChatSidebar = ({
             <Button
               href="/login"
               align="center"
-              className={styles.collapsedNavButton}
+              className={styles.collapsedProfileButton}
               leftIcon={<Icon name="profile-circle" />}
             />
           ) : (
@@ -164,7 +164,10 @@ export const ChatSidebar = ({
           }
         />
       ) : (
-        <Profile />
+        // сдвиг на ось иконок рейла — аватар не прыгает при сворачивании
+        <div className="pl-1.5">
+          <Profile />
+        </div>
       )}
     </>
   );
