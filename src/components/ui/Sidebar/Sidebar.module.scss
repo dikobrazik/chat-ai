@@ -6,7 +6,8 @@
   gap: 1.5rem;
   height: 100dvh;
   overflow-y: hidden;
-  padding: 1.5rem;
+  // по горизонтали уже: ховеры кнопок доходят почти до края, меню не «висит» в пустоте
+  padding: 1.5rem 0.75rem;
   background-color: var(--background);
   flex: 0 0 auto;
   border-right: 1px solid color(gray, 200);
