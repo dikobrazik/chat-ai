@@ -2,6 +2,52 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+
+  // подсветка держится, пока открыто меню действий (как у селекта моделей)
+  &:has([aria-expanded="true"]) {
+    background-color: #F7F7F7;
+
+    @media (prefers-color-scheme: dark) {
+      background-color: color-mix(in srgb, var(--background), white 20%);
+    }
+  }
+
+  & .chatItemMore {
+    color: #D7D7D7;
+    background-color: transparent;
+    // auto прижимает точки к правому краю (Tailwind justify-between проигрывает
+    // каскаду .button); отрицательные отступы не дают кнопке 36px раздуть ряд
+    // выше 40px, зона клика остаётся прежней
+    margin: -0.5rem 0 -0.5rem auto;
+    transition: color 0.2s ease, opacity 0.2s ease;
+
+    // в dark цвет покоя должен отличаться от hover-цвета var(--foreground)
+    @media (prefers-color-scheme: dark) {
+      color: #6F6F6F;
+    }
+
+    // на десктопе точки видны только у ряда под курсором (и пока открыто меню)
+    @media (hover: hover) {
+      opacity: 0;
+    }
+
+    &:hover:not(:disabled),
+    &:active:not(:disabled),
+    &[aria-expanded="true"] {
+      color: #000;
+      background-color: transparent;
+
+      @media (prefers-color-scheme: dark) {
+        color: var(--foreground);
+      }
+    }
+  }
+
+  &:hover .chatItemMore,
+  &:focus-within .chatItemMore,
+  & .chatItemMore[aria-expanded="true"] {
+    opacity: 1;
+  }
 }
 
 .logoLink {

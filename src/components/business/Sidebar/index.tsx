@@ -127,7 +127,7 @@ export const ChatSidebar = ({
             <Button
               key={chat.id}
               href={`/chat/${chat.id}`}
-              className="flex-1 shrink-0 basis-9 justify-between"
+              className={cn(styles.chatItem, "shrink-0")}
               title={chat.title || chat.last_prompt || ""}
             >
               <Text className="truncate" style="regular">
@@ -138,6 +138,7 @@ export const ChatSidebar = ({
                 Trigger={(props) => (
                   <Button
                     {...props}
+                    className={cn(props.className, styles.chatItemMore)}
                     onClick={
                       props.onClick
                         ? preventDefault(stopPropagation(props.onClick))
