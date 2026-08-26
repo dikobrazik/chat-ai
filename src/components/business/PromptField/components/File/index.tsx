@@ -61,6 +61,7 @@ export const File = ({ fileId }: Props) => {
       className={styles.button}
       rightIcon={
         <Button
+          as="div"
           className={styles.buttonIcon}
           onClick={() => removeFile(fileId)}
         >

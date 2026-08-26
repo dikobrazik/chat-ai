@@ -33,7 +33,7 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   leftIcon?: ReactNode;
   rightIcon?: ReactNode;
   borderRadius?: "full" | "rounded" | "none";
-  as?: "button" | "a";
+  as?: "button" | "a" | "span" | "div";
   href?: string;
   target?: string;
   rel?: string;
@@ -79,12 +79,14 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       className,
     );
 
-    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const handleClick = (
+      event: React.MouseEvent<HTMLButtonElement | HTMLDivElement>,
+    ) => {
       if (isDisabled) {
         event.preventDefault();
         return;
       }
-      onClick?.(event);
+      onClick?.(event as React.MouseEvent<HTMLButtonElement>);
     };
 
     const buttonContent = (
@@ -117,17 +119,19 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       );
     }
 
+    const ButtonTag = as ?? "button";
+
     return (
-      <button
-        ref={ref}
+      <ButtonTag
+        ref={ref as any}
         type="button"
         className={buttonClasses}
         disabled={isDisabled}
         onClick={handleClick}
-        {...props}
+        {...(props as any)}
       >
         {buttonContent}
-      </button>
+      </ButtonTag>
     );
   },
 );
