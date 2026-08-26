@@ -25,9 +25,11 @@ jobs:
         run: npm ci --no-audit --no-fund
 
       # only files changed in the PR: old code has known lint debt,
-      # switch to `npx biome ci .` after it is cleaned up
+      # switch to `npx biome ci .` after it is cleaned up.
+      # --no-errors-on-unmatched: a PR touching only files biome ignores
+      # (scss, md) must not fail on "No files were processed"
       - name: Lint (changed files)
-        run: npx biome ci --changed --since=origin/main
+        run: npx biome ci --changed --since=origin/main --no-errors-on-unmatched
 
       - name: Typecheck
         run: npx tsc --noEmit
