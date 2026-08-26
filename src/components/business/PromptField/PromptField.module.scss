@@ -16,6 +16,8 @@
     height: auto;
   }
 
+  .filesContainer {}
+
   .textfield {
     // flex-basis auto, не 0: иначе flex игнорирует высоту из onChange
     // и поле не растёт вместе с текстом

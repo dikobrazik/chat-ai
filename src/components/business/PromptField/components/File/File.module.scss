@@ -1,0 +1,15 @@
+.button {
+  flex-shrink: 0;
+
+  & .buttonIcon {
+    visibility: hidden;
+  }
+
+  &.button.button.button:hover {
+    background-color: #FFFFFF;
+
+    & .buttonIcon {
+      visibility: visible;
+    }
+  }
+}

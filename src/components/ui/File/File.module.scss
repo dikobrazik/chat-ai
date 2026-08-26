@@ -1,3 +1,10 @@
+.name {
+  width: 150px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .progress {
   background-color: #F7F7F7;
   border-radius: 8px;

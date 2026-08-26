@@ -24,14 +24,10 @@ export const FileComponent = (props: Props) => {
     if (progress === 100 && icon === "document") {
       setIcon("file-uploaded");
 
-      const timeoutId = setTimeout(() => {
+      setTimeout(() => {
         setIcon("document");
       }, 5000);
-
-      return () => clearTimeout(timeoutId);
     }
-
-    return () => {};
   }, [progress]);
 
   return (
@@ -53,7 +49,7 @@ export const FileComponent = (props: Props) => {
         </div>
       </div>
       <div className="flex flex-col items-start gap-1">
-        <Text type="xs" style="regular">
+        <Text className={styles.name} type="xs" style="regular">
           {name}
         </Text>
         {isUploaded ? (

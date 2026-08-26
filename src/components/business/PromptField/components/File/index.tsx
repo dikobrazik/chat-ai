@@ -4,6 +4,7 @@ import Button from "@/components/ui/Button";
 import { FileComponent } from "@/components/ui/File";
 import { Icon } from "@/components/ui/Icon";
 import { useFiles } from "@/providers/FilesProvider/useFiles";
+import styles from "./File.module.scss";
 
 type Props = {
   fileId: string;
@@ -57,10 +58,14 @@ export const File = ({ fileId }: Props) => {
   return (
     <Button
       key={file?.name}
+      className={styles.button}
       rightIcon={
-        <div onClick={() => removeFile(fileId)}>
+        <Button
+          className={styles.buttonIcon}
+          onClick={() => removeFile(fileId)}
+        >
           <Icon name="close" />
-        </div>
+        </Button>
       }
       variant="secondary"
     >
