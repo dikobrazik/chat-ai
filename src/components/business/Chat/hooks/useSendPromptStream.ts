@@ -19,6 +19,7 @@ export const useSendPromptStream = (
   }) => {
     if (isPromptSending || isSendingRef.current) return;
 
+    clearFiles();
     isSendingRef.current = true;
     setIsPromptSending(true);
 
