@@ -4,14 +4,13 @@ import Link from "next/link";
 import { useChats } from "@/api";
 import { Banner } from "@/components/ui/Banner";
 import Button from "@/components/ui/Button";
-import { Divider } from "@/components/ui/Divider";
-import { Expander } from "@/components/ui/Expander";
 import Icon from "@/components/ui/Icon";
 import { Logo } from "@/components/ui/Logo";
 import Popover from "@/components/ui/Popover";
 import { Sidebar as UISidebar } from "@/components/ui/Sidebar";
 import { useSidebarState } from "@/components/ui/Sidebar/useSidebarState";
 import { Text } from "@/components/ui/Text";
+import { useToggle } from "@/hooks/useToggle";
 import { cn } from "@/lib/utils";
 import { useAuthContext } from "@/providers/AuthProvider/hooks";
 import { preventDefault, stopPropagation } from "@/utils";
@@ -31,6 +30,7 @@ export const ChatSidebar = ({
   const { isGuest } = useAuthContext();
 
   const chats = useChats();
+  const { active: isChatsOpen, toggle: toggleChats } = useToggle(true);
 
   if (!isOpen)
     return (
@@ -109,53 +109,59 @@ export const ChatSidebar = ({
           Изображения
         </Button>
       </div>
-      <Divider />
-      <Expander
-        className="flex-1 pb-6"
-        defaultOpen
-        Header={() => (
-          <div className="flex items-center gap-3 pl-3">
-            <Icon className={styles.icon} color="#9C9C9C" name="chevron-down" />
-            <Text color="#9C9C9C" style="regular">
-              Чаты
-            </Text>
-          </div>
-        )}
-      >
-        <div className="flex flex-col h-full gap-1">
-          {chats?.map((chat) => (
-            <Button
-              key={chat.id}
-              href={`/chat/${chat.id}`}
-              className={cn(styles.chatItem, "shrink-0")}
-              title={chat.title || chat.last_prompt || ""}
-            >
-              <Text className="truncate" style="regular">
-                {chat.title || chat.last_prompt}
-              </Text>
-
-              <Popover
-                Trigger={(props) => (
-                  <Button
-                    {...props}
-                    className={cn(props.className, styles.chatItemMore)}
-                    onClick={
-                      props.onClick
-                        ? preventDefault(stopPropagation(props.onClick))
-                        : props.onClick
-                    }
-                    leftIcon={<Icon name="more" />}
-                  />
-                )}
-                position="right"
-                align="start"
+      <div className={cn(styles.chatsSection, "flex-1 flex flex-col gap-0.5")}>
+        <button
+          type="button"
+          onClick={toggleChats}
+          className={cn(
+            styles.chatsHeader,
+            "flex items-center gap-1 self-start",
+            {
+              [styles.open]: isChatsOpen,
+            },
+          )}
+        >
+          <Text style="regular">Чаты</Text>
+          <Icon name="chevron-down" className={styles.chatsChevron} />
+        </button>
+        <div
+          className={cn(styles.chatsCollapse, { [styles.open]: isChatsOpen })}
+        >
+          <div className="flex flex-col gap-0.5">
+            {chats?.map((chat) => (
+              <Button
+                key={chat.id}
+                href={`/chat/${chat.id}`}
+                className={cn(styles.chatItem, "shrink-0")}
+                title={chat.title || chat.last_prompt || ""}
               >
-                <ChatActions chatId={chat.id} />
-              </Popover>
-            </Button>
-          ))}
+                <Text className="truncate" style="regular">
+                  {chat.title || chat.last_prompt}
+                </Text>
+
+                <Popover
+                  Trigger={(props) => (
+                    <Button
+                      {...props}
+                      className={cn(props.className, styles.chatItemMore)}
+                      onClick={
+                        props.onClick
+                          ? preventDefault(stopPropagation(props.onClick))
+                          : props.onClick
+                      }
+                      leftIcon={<Icon name="more" />}
+                    />
+                  )}
+                  position="right"
+                  align="start"
+                >
+                  <ChatActions chatId={chat.id} />
+                </Popover>
+              </Button>
+            ))}
+          </div>
         </div>
-      </Expander>
+      </div>
       {isGuest ? (
         // -mx-1: внутренний паддинг баннера (16px) минус вынос за колонку (4px)
         // ставит текст на ось контента кнопок, фон выступает как ховер у кнопок

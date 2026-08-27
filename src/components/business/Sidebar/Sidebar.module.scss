@@ -54,6 +54,72 @@
   text-decoration: none;
 }
 
+// раздел «Чаты» скроллится целиком (заголовок уезжает вместе со списком),
+// кнопки навигации выше не двигаются. Отрицательный margin затягивает контейнер
+// в штатный gap колонки (24px) — эта зона и есть размытая граница из маски
+.chatsSection {
+  min-height: 0;
+  overflow-y: auto;
+  margin-top: -1.5rem;
+  padding-top: 1.5rem;
+  // нижний отступ здесь, а не на списке: паддинг внутри .chatsCollapse
+  // не даёт 0fr-треку схлопнуться до нуля
+  padding-bottom: 1.5rem;
+  mask-image: linear-gradient(to bottom, transparent, black 1.5rem);
+}
+
+.chatsHeader {
+  cursor: pointer;
+  // геометрия ряда чата (40px), текст на одной оси с названиями чатов
+  padding: 0.5rem 0.75rem;
+  color: #9C9C9C;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: #6F6F6F;
+
+    @media (prefers-color-scheme: dark) {
+      color: #D7D7D7;
+    }
+  }
+
+  .chatsChevron {
+    transition: transform 0.3s ease, opacity 0.2s ease;
+    // свёрнутый раздел — стрелка вбок, развёрнутый — вниз
+    transform: rotate(-90deg);
+
+    // на десктопе стрелка видна только при наведении на заголовок
+    @media (hover: hover) {
+      opacity: 0;
+    }
+  }
+
+  &:hover .chatsChevron {
+    opacity: 1;
+  }
+
+  &.open .chatsChevron {
+    transform: none;
+  }
+}
+
+// схлопывание через grid-rows: max-height-приём Expander не работает
+// внутри скролл-контейнера (100% не от чего считать)
+.chatsCollapse {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.3s ease;
+
+  & > div {
+    overflow: hidden;
+    min-height: 0;
+  }
+
+  &.open {
+    grid-template-rows: 1fr;
+  }
+}
+
 // та же геометрия, что у кнопок с текстом (высота 40, иконка с отступом 12) —
 // чтобы иконки не смещались при сворачивании сайдбара
 .collapsedNavButton {
