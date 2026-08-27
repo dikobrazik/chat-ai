@@ -84,9 +84,16 @@
   }
 
   .chatsChevron {
-    transition: transform 0.3s ease, opacity 0.2s ease;
+    transition: transform 0.3s ease, opacity 0.2s ease, color 0.2s ease;
     // свёрнутый раздел — стрелка вбок, развёрнутый — вниз
     transform: rotate(-90deg);
+    // у свёрнутого раздела стрелка видна всегда, но приглушена (как точки
+    // у чатов в покое) — наведение темнит её вместе с текстом
+    color: #D7D7D7;
+
+    @media (prefers-color-scheme: dark) {
+      color: #6F6F6F;
+    }
   }
 
   // прячется по-ховерному только у развёрнутого раздела: у свёрнутого
@@ -101,6 +108,8 @@
 
   &:hover .chatsChevron {
     opacity: 1;
+    // наследует ховер-цвет заголовка (#6F6F6F / #D7D7D7 в dark)
+    color: inherit;
   }
 }
 
