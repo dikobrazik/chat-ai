@@ -87,8 +87,13 @@
     transition: transform 0.3s ease, opacity 0.2s ease;
     // свёрнутый раздел — стрелка вбок, развёрнутый — вниз
     transform: rotate(-90deg);
+  }
 
-    // на десктопе стрелка видна только при наведении на заголовок
+  // прячется по-ховерному только у развёрнутого раздела: у свёрнутого
+  // стрелка — единственный признак, что список схлопнут, видна всегда
+  &.open .chatsChevron {
+    transform: none;
+
     @media (hover: hover) {
       opacity: 0;
     }
@@ -97,10 +102,6 @@
   &:hover .chatsChevron {
     opacity: 1;
   }
-
-  &.open .chatsChevron {
-    transform: none;
-  }
 }
 
 // схлопывание через grid-rows: max-height-приём Expander не работает
@@ -108,15 +109,17 @@
 .chatsCollapse {
   display: grid;
   grid-template-rows: 0fr;
-  transition: grid-template-rows 0.3s ease;
 
   & > div {
     overflow: hidden;
     min-height: 0;
   }
 
+  // transition только на open: разворачивание плавное,
+  // сворачивание мгновенное (у нового состояния transition нет)
   &.open {
     grid-template-rows: 1fr;
+    transition: grid-template-rows 0.3s ease;
   }
 }
 
