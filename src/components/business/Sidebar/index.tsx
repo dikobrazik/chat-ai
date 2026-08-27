@@ -109,7 +109,7 @@ export const ChatSidebar = ({
           Изображения
         </Button>
       </div>
-      <div className={cn(styles.chatsSection, "flex-1 flex flex-col gap-0.5")}>
+      <div className={cn(styles.chatsSection, "flex-1 flex flex-col")}>
         <button
           type="button"
           onClick={toggleChats}
@@ -127,7 +127,7 @@ export const ChatSidebar = ({
         <div
           className={cn(styles.chatsCollapse, { [styles.open]: isChatsOpen })}
         >
-          <div className="flex flex-col gap-0.5">
+          <div className="flex flex-col">
             {chats?.map((chat) => (
               <Button
                 key={chat.id}
