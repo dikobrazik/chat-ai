@@ -170,3 +170,14 @@
 .cardBack {
   transform: rotateY(180deg);
 }
+
+// подсветка от :hover карточки, а не самой кнопки: в начале наведения кнопка
+// повёрнута от курсора, а после переворота браузер не пересчитывает её :hover,
+// пока мышь не сдвинется — подсветка появлялась бы с запозданием
+.card:hover .cardBack {
+  background-color: #F7F7F7;
+
+  @media (prefers-color-scheme: dark) {
+    background-color: color-mix(in srgb, var(--background), white 20%);
+  }
+}
