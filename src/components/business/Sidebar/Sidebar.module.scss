@@ -67,6 +67,60 @@
   min-width: 2.75rem;
 }
 
+// микро-анимации иконок навигации: только transform, без layout и JS,
+// repaint ограничен областью иконки 20x20. nth-of-type завязан на порядок
+// штрихов в MessageCreateIcon и GalleryIcon
+.newChatButton,
+.imagesButton {
+  svg {
+    // color 0.2s — не потерять переход цвета из Icon.module.scss
+    transition: transform 0.15s ease, color 0.2s ease;
+  }
+
+  path {
+    transform-box: fill-box;
+    transform-origin: center;
+    // пружинящий easing с небольшим перелётом — движение заметнее при той же цене
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  &:active svg {
+    transform: scale(0.8);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    svg,
+    path {
+      transition: none;
+    }
+  }
+}
+
+// плюс прокручивается на 180° и подрастает: штрихи симметричны, рисунок в конце тот же.
+// 0.55s — на 0.3s поворот слишком быстрый, глаз его не успевает заметить
+.newChatButton {
+  path {
+    transition-duration: 0.55s;
+  }
+
+  @media (hover: hover) {
+    &:hover path:nth-of-type(2),
+    &:hover path:nth-of-type(3) {
+      transform: rotate(180deg) scale(1.1);
+    }
+  }
+}
+
+// «солнце» всходит по диагонали и растёт; амплитуды подобраны так, чтобы
+// даже на перелёте easing (~10%) не налезало на рамку
+.imagesButton {
+  @media (hover: hover) {
+    &:hover path:nth-of-type(2) {
+      transform: translate(0.5px, -1.2px) scale(1.25);
+    }
+  }
+}
+
 .card {
   width: 36px;
   height: 36px;
