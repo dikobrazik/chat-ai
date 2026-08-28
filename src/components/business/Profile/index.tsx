@@ -34,13 +34,19 @@ const ProfileAvatar = () => {
   });
 
   return (
+    // unoptimized: аватар напрямую с CDN провайдера — не зависим от allowlist
+    // /_next/image под каждый OAuth-хост, а долгий кэш CDN не даёт кружку
+    // мигать при ремаунте (сворачивание сайдбара). eager: lazy-img после
+    // ремаунта может вообще не начать загрузку — аватар остаётся пустым
     <Image
       className={styles.profilePhoto}
       src={profile?.photo ?? "/default-avatar.svg"}
       fetchPriority="low"
+      loading="eager"
       alt="Profile Photo"
       width={200}
       height={200}
+      unoptimized
     />
   );
 };
@@ -144,10 +150,11 @@ export const Profile = ({ collapsed }: { collapsed?: boolean }) => {
     <div className="flex gap-3 w-full items-center">
       <ProfileInfo />
 
+      {/* align=end: правый край меню по кнопке «...» — меню остаётся в пределах сайдбара */}
       <Popover
         popoverClassName={styles.profilePopover}
         position="top"
-        align="start"
+        align="end"
         Trigger={(props) => (
           <Button {...props} leftIcon={<Icon name="more" />} />
         )}

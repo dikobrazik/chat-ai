@@ -1,9 +1,4 @@
-import analyzer from "@next/bundle-analyzer";
 import type { NextConfig } from "next";
-
-const withBundleAnalyzer = analyzer({
-  enabled: process.env.ANALYZE === "true",
-});
 
 const nextConfig: NextConfig = {
   images: {
@@ -12,6 +7,12 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "avatars.yandex.net",
         pathname: "/get-yapic/**",
+      },
+      // аватарки пользователей с Google-логином
+      {
+        protocol: "https",
+        hostname: "lh3.googleusercontent.com",
+        pathname: "/**",
       },
     ],
   },
@@ -36,4 +37,12 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default withBundleAnalyzer(nextConfig);
+// bundle-analyzer подключается лениво: next start на проде исполняет этот
+// конфиг, а @next/bundle-analyzer — devDependency, его может не быть в образе
+export default async () => {
+  if (process.env.ANALYZE === "true") {
+    const { default: analyzer } = await import("@next/bundle-analyzer");
+    return analyzer({ enabled: true })(nextConfig);
+  }
+  return nextConfig;
+};
