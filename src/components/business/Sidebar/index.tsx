@@ -49,13 +49,13 @@ export const ChatSidebar = ({
           <Button
             href="/"
             align="center"
-            className={styles.collapsedNavButton}
+            className={cn(styles.collapsedNavButton, styles.newChatButton)}
             leftIcon={<Icon name="message-create" />}
           />
           <Button
             href="/image-chat"
             align="center"
-            className={styles.collapsedNavButton}
+            className={cn(styles.collapsedNavButton, styles.imagesButton)}
             leftIcon={<Icon name="gallery" />}
           />
         </div>
@@ -102,10 +102,18 @@ export const ChatSidebar = ({
       </div>
 
       <div className="flex flex-col gap-3">
-        <Button leftIcon={<Icon name="message-create" />} href="/">
+        <Button
+          className={styles.newChatButton}
+          leftIcon={<Icon name="message-create" />}
+          href="/"
+        >
           Новый чат
         </Button>
-        <Button leftIcon={<Icon name="gallery" />} href="/image-chat">
+        <Button
+          className={styles.imagesButton}
+          leftIcon={<Icon name="gallery" />}
+          href="/image-chat"
+        >
           Изображения
         </Button>
       </div>
