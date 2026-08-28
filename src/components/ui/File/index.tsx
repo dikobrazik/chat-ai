@@ -18,18 +18,6 @@ type Props = {
 export const FileComponent = (props: Props) => {
   const { isUploaded, progress = 0, name, type, size, uploadingText } = props;
 
-  const [icon, setIcon] = useState<IconName>("document");
-
-  useEffect(() => {
-    if (progress === 100 && icon === "document") {
-      setIcon("file-uploaded");
-
-      setTimeout(() => {
-        setIcon("document");
-      }, 5000);
-    }
-  }, [progress]);
-
   return (
     <>
       <div className={cn(styles.progress)}>
@@ -41,11 +29,19 @@ export const FileComponent = (props: Props) => {
         >
           <div className={styles.iconWrapper}>
             <Icon
-              name={icon}
-              size={icon === "document" ? "16" : "32"}
+              name="document"
+              size={16}
               color={isUploaded ? "#000000" : "#9C9C9C"}
             />
           </div>
+
+          {isUploaded && (
+            <Icon
+              className={styles.uploadedIcon}
+              name="file-uploaded"
+              size={32}
+            />
+          )}
         </div>
       </div>
       <div className="flex flex-col items-start gap-1">
