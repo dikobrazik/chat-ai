@@ -16,8 +16,10 @@ export const Plans = () => {
 
   const { plans, sixMonthsPlans } = usePlans();
 
-  const onPlanSelect = (planId: string) => {
-    router.push(`/plans/${planId}?${SIX_MONTHS_QUERY_KEY}=true`);
+  const onPlanSelect = (planId: string, sixMonths?: boolean) => {
+    router.push(
+      `/plans/${planId}?${SIX_MONTHS_QUERY_KEY}=${Boolean(sixMonths)}`,
+    );
   };
 
   return (
