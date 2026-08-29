@@ -10,7 +10,9 @@ export const About = () => {
           Условия использования
         </Text>
 
-        <Button variant="base">Посмотреть</Button>
+        <Button variant="base" href="/terms" target="_blank">
+          Посмотреть
+        </Button>
       </div>
 
       <Divider />

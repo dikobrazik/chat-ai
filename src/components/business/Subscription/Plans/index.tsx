@@ -77,7 +77,7 @@ export const Plans = () => {
 
       <Text color="#9C9C9C" style="regular" type="xs" className="text-center">
         Нажимая кнопку «Оплатить», вы соглашаетесь с{" "}
-        <Link className="underline" target="_blank" href="/privacy">
+        <Link className="underline" target="_blank" href="/terms">
           офертой
         </Link>
       </Text>
