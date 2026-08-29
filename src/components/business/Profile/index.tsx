@@ -34,10 +34,11 @@ const ProfileAvatar = () => {
   });
 
   return (
-    // unoptimized: аватар напрямую с CDN провайдера — не зависим от allowlist
-    // /_next/image под каждый OAuth-хост, а долгий кэш CDN не даёт кружку
-    // мигать при ремаунте (сворачивание сайдбара). eager: lazy-img после
-    // ремаунта может вообще не начать загрузку — аватар остаётся пустым
+    // аватар обязан идти через /_next/image (same-origin): CSP прод-nginx
+    // разрешает img-src только 'self' + бакет генераций, прямую загрузку с
+    // avatars.yandex.net / lh3.googleusercontent.com браузер блокирует.
+    // eager: lazy-img после ремаунта (сворачивание сайдбара) может вообще
+    // не начать загрузку — аватар остаётся пустым
     <Image
       className={styles.profilePhoto}
       src={profile?.photo ?? "/default-avatar.svg"}
@@ -46,7 +47,6 @@ const ProfileAvatar = () => {
       alt="Profile Photo"
       width={200}
       height={200}
-      unoptimized
     />
   );
 };
