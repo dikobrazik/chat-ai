@@ -13,18 +13,14 @@
   }
 
   & .chatItemMore {
-    color: #D7D7D7;
+    // gray-7, в цвет подписи «Чаты»: gray-5 из макета почти неразличим на белом
+    color: #9C9C9C;
     background-color: transparent;
     // auto прижимает точки к правому краю (Tailwind justify-between проигрывает
     // каскаду .button); отрицательные отступы не дают кнопке 36px раздуть ряд
     // выше 40px, зона клика остаётся прежней
     margin: -0.5rem 0 -0.5rem auto;
     transition: color 0.2s ease, opacity 0.2s ease;
-
-    // в dark цвет покоя должен отличаться от hover-цвета var(--foreground)
-    @media (prefers-color-scheme: dark) {
-      color: #6F6F6F;
-    }
 
     // на десктопе точки видны только у ряда под курсором (и пока открыто меню)
     @media (hover: hover) {
@@ -87,13 +83,9 @@
     transition: transform 0.3s ease, opacity 0.2s ease, color 0.2s ease;
     // свёрнутый раздел — стрелка вбок, развёрнутый — вниз
     transform: rotate(-90deg);
-    // у свёрнутого раздела стрелка видна всегда, но приглушена (как точки
-    // у чатов в покое) — наведение темнит её вместе с текстом
-    color: #D7D7D7;
-
-    @media (prefers-color-scheme: dark) {
-      color: #6F6F6F;
-    }
+    // у свёрнутого раздела стрелка видна всегда, в цвет подписи:
+    // приглушённый gray-5 был почти неразличим
+    color: #9C9C9C;
   }
 
   // прячется по-ховерному только у развёрнутого раздела: у свёрнутого
