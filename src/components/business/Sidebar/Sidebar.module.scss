@@ -1,7 +1,10 @@
 .chatItem {
+  position: relative;
+  // точки вне потока высоту ряда не держат: без min-height чат с пустым
+  // названием (создан до первого промпта) схлопнулся бы до одних паддингов
+  min-height: 2.5rem;
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis;
 
   // подсветка держится, пока открыто меню действий (как у селекта моделей)
   &:has([aria-expanded="true"]) {
@@ -12,14 +15,44 @@
     }
   }
 
+  // название тянется до края ряда и растворяется маской, без «…».
+  // Градиент задан на тайле шире элемента (mask-size +2.25rem): в покое
+  // растворение у самого края, при видимых точках тайл сдвигается влево
+  // и текст гаснет до их зоны (36px) — сдвиг mask-position анимируется,
+  // смену двух разных mask-image браузер анимировать не умеет
+  & .chatItemTitle {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    // под правый паддинг кнопки, до самого края ряда
+    margin-right: -0.75rem;
+    mask-image: linear-gradient(to right, black calc(100% - 4.5rem), transparent calc(100% - 2.25rem));
+    mask-size: calc(100% + 2.25rem) 100%;
+    mask-repeat: no-repeat;
+    transition: mask-position 0.2s ease;
+
+    // на таче точки видны всегда — текст всегда уступает им место
+    @media (hover: none) {
+      mask-position: -2.25rem 0;
+    }
+  }
+
+  &:hover .chatItemTitle,
+  &:focus-within .chatItemTitle,
+  &:has([aria-expanded="true"]) .chatItemTitle {
+    mask-position: -2.25rem 0;
+  }
+
   & .chatItemMore {
     // gray-7, в цвет подписи «Чаты»: gray-5 из макета почти неразличим на белом
     color: #9C9C9C;
     background-color: transparent;
-    // auto прижимает точки к правому краю (Tailwind justify-between проигрывает
-    // каскаду .button); отрицательные отступы не дают кнопке 36px раздуть ряд
-    // выше 40px, зона клика остаётся прежней
-    margin: -0.5rem 0 -0.5rem auto;
+    // вне потока, поверх правого края ряда: текст под точками уже растворён
+    // маской, поэтому отдельная подложка точкам не нужна
+    position: absolute;
+    top: 50%;
+    right: 2px;
+    transform: translateY(-50%);
     transition: color 0.2s ease, opacity 0.2s ease;
 
     // на десктопе точки видны только у ряда под курсором (и пока открыто меню)

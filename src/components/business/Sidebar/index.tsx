@@ -143,7 +143,7 @@ export const ChatSidebar = ({
                 className={cn(styles.chatItem, "shrink-0")}
                 title={chat.title || chat.last_prompt || ""}
               >
-                <Text className="truncate" style="regular">
+                <Text className={styles.chatItemTitle} style="regular">
                   {chat.title || chat.last_prompt}
                 </Text>
 
