@@ -20,7 +20,9 @@ export const About = () => {
           Политика конфиденциальности
         </Text>
 
-        <Button variant="base">Посмотреть</Button>
+        <Button variant="base" href="/privacy" target="_blank">
+          Посмотреть
+        </Button>
       </div>
     </div>
   );

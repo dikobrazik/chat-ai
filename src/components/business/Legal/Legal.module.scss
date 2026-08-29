@@ -1,0 +1,26 @@
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  li {
+    position: relative;
+    padding-left: 20px;
+
+    &::before {
+      content: "—";
+      position: absolute;
+      left: 0;
+    }
+  }
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  border-radius: 12px;
+  padding: 16px;
+  background-color: #F7F7F7;
+}
