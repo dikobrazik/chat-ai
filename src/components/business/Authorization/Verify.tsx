@@ -87,12 +87,7 @@ export const VerifyCode = () => {
         ,<br />а также даёте{" "}
         <Link target="_blank" href="/personal-data-consent">
           согласие на обработку персональных данных
-        </Link>{" "}
-        и{" "}
-        <Link target="_blank" href="/mailing-consent">
-          согласие на рассылку
-        </Link>{" "}
-        об обновлениях продукта и акциях
+        </Link>
       </Text>
     </div>
   );
