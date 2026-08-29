@@ -47,7 +47,7 @@ export const Plan = ({
 
   if (plan.freeDays) {
     finalPrice = 1;
-    buttonText = "Начать бесплатно";
+    buttonText = "Попробовать за 1 ₽";
   }
 
   if (activePlan === PLANS_MAP.pro && plan.id === PLANS_MAP.plus) {
