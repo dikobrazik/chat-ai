@@ -3,8 +3,6 @@ import classNames from "classnames";
 import { useParams } from "next/navigation";
 import { Streamdown } from "streamdown";
 import { getImageUrl, type Prompt } from "@/api";
-import { Banner } from "@/components/ui/Banner";
-import Button from "@/components/ui/Button";
 import { FileComponent } from "@/components/ui/File";
 import { cn } from "@/lib/utils";
 import {
@@ -17,6 +15,8 @@ import styles from "./Message.module.scss";
 import { MessageActions } from "./MessageActions";
 import { ModelTyping } from "./ModelTyping";
 import { TooManyRequests } from "./TooManyRequests";
+import "streamdown/styles.css";
+import { MessageFiles } from "./MessageFiles";
 
 const ImageContent = ({
   chatId,
@@ -59,6 +59,9 @@ const MessageContent = ({ id, message }: { id: string; message: string }) => {
         "size-full [&>*:first-child]:mt-0 [&>*:last-child]:mb-0",
         styles.messageContent,
       )}
+      parseIncompleteMarkdown
+      animated={{ animation: "fadeIn", duration: 250, easing: "ease-out" }}
+      isAnimating
     >
       {message}
     </Streamdown>
@@ -79,25 +82,7 @@ export const Message = ({ id, role, files, text: message }: Prompt) => {
       >
         <MessageContent id={id} message={message} />
       </div>
-      {files?.map((file) => (
-        <div
-          key={file.id}
-          className={classNames(
-            styles.message,
-            styles[`${role}`],
-            styles.attachment,
-          )}
-        >
-          <div className={styles.file}>
-            <FileComponent
-              isUploaded
-              name={file.name}
-              type={file.type}
-              size={file.size}
-            />
-          </div>
-        </div>
-      ))}
+      <MessageFiles files={files} role={role} />
     </>
   );
 };

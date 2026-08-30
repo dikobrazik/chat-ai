@@ -29,20 +29,20 @@
     "react-select": "5.10.2",
     "react-tiny-popover": "^8.1.6",
     "react-toastify": "^11.1.0",
-    "streamdown": "1.4.0",
+    "streamdown": "2.6.0",
     "tailwindcss": "4.1.17",
     "yup": "^1.7.1"
   },
   "devDependencies": {
     "@biomejs/biome": "2.2.0",
     "@next/bundle-analyzer": "^16.2.0",
+    "@storybook/nextjs-vite": "^10.5.10",
     "@types/node": "20",
     "@types/react": "19",
     "@types/react-dom": "19",
     "sass": "1.93.2",
-    "typescript": "5",
     "storybook": "^10.5.10",
-    "@storybook/nextjs-vite": "^10.5.10",
+    "typescript": "5",
     "vite": "latest"
   },
   "optionalDependencies": {
