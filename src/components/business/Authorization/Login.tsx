@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import * as yup from "yup";
 import Button from "@/components/ui/Button";
+import { Checkbox } from "@/components/ui/Checkbox";
 import { Divider } from "@/components/ui/Divider";
 import Icon from "@/components/ui/Icon";
 import { Text } from "@/components/ui/Text";
@@ -35,7 +36,10 @@ export const Login = () => {
     resolver: yupResolver(schema),
   });
 
-  const { setEmail } = useEmailAuth();
+  const { setEmail, mailingConsent, setMailingConsent } = useEmailAuth();
+
+  // бэкенд может игнорировать параметр, пока не начнёт его принимать
+  const oauthQuery = mailingConsent ? "?mailing_consent=1" : "";
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     setEmail(data.email);
@@ -62,7 +66,7 @@ export const Login = () => {
           fullWidth
           align="center"
           leftIcon={<Icon name="google" />}
-          href={`${BASE_URL}/api/auth/g`}
+          href={`${BASE_URL}/api/auth/g${oauthQuery}`}
         >
           Продолжить с Google
         </Button>
@@ -73,7 +77,7 @@ export const Login = () => {
           size="m"
           align="center"
           leftIcon={<Icon name="yandex" />}
-          href={`${BASE_URL}/api/auth/ya`}
+          href={`${BASE_URL}/api/auth/ya${oauthQuery}`}
         >
           Продолжить с Yandex
         </Button>
@@ -103,12 +107,32 @@ export const Login = () => {
         </Text> */}
       </form>
 
-      <Text type="xs" style="regular" color="#9C9C9C" className="text-center">
-        Продолжая, вы соглашаетесь с{" "}
-        <Link href="#">Условиями использования</Link> и{" "}
-        <Link href="#">Политикой конфиденциальности</Link>,<br />а также об
-        обновлениях продукта и акциях
-      </Text>
+      <div className="flex flex-col gap-4">
+        <Checkbox
+          checked={mailingConsent}
+          onChange={(event) => setMailingConsent(event.target.checked)}
+        >
+          <Text type="xs" style="regular" color="#6F6F6F">
+            Хочу получать{" "}
+            <Link target="_blank" href="/mailing-consent">
+              рассылку
+            </Link>{" "}
+            об обновлениях продукта и акциях
+          </Text>
+        </Checkbox>
+
+        <Text type="xs" style="regular" color="#9C9C9C" className="text-center">
+          Продолжая, вы соглашаетесь с{" "}
+          <Link href="/terms">Условиями использования</Link> и{" "}
+          <Link target="_blank" href="/privacy">
+            Политикой конфиденциальности
+          </Link>
+          ,<br />а также даёте{" "}
+          <Link target="_blank" href="/personal-data-consent">
+            согласие на обработку персональных данных
+          </Link>
+        </Text>
+      </div>
     </div>
   );
 };

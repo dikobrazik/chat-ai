@@ -6,6 +6,7 @@ import { getProfile } from "@/api/user";
 import { Divider } from "@/components/ui/Divider";
 import Icon from "@/components/ui/Icon";
 import Popover from "@/components/ui/Popover";
+import { Skeleton } from "@/components/ui/Skeleton";
 import { Text } from "@/components/ui/Text";
 import { cn } from "@/lib/utils";
 import { useAuthContext } from "@/providers/AuthProvider/hooks";
@@ -34,10 +35,11 @@ const ProfileAvatar = () => {
   });
 
   return (
-    // unoptimized: аватар напрямую с CDN провайдера — не зависим от allowlist
-    // /_next/image под каждый OAuth-хост, а долгий кэш CDN не даёт кружку
-    // мигать при ремаунте (сворачивание сайдбара). eager: lazy-img после
-    // ремаунта может вообще не начать загрузку — аватар остаётся пустым
+    // аватар обязан идти через /_next/image (same-origin): CSP прод-nginx
+    // разрешает img-src только 'self' + бакет генераций, прямую загрузку с
+    // avatars.yandex.net / lh3.googleusercontent.com браузер блокирует.
+    // eager: lazy-img после ремаунта (сворачивание сайдбара) может вообще
+    // не начать загрузку — аватар остаётся пустым
     <Image
       className={styles.profilePhoto}
       src={profile?.photo ?? "/default-avatar.svg"}
@@ -46,7 +48,6 @@ const ProfileAvatar = () => {
       alt="Profile Photo"
       width={200}
       height={200}
-      unoptimized
     />
   );
 };
@@ -54,7 +55,7 @@ const ProfileAvatar = () => {
 const ProfileInfo = () => {
   const { isGuest } = useAuthContext();
 
-  const { data: profile } = useQuery({
+  const { data: profile, isLoading } = useQuery({
     queryKey: ["profile"],
     queryFn: getProfile,
     enabled: !isGuest,
@@ -62,19 +63,35 @@ const ProfileInfo = () => {
 
   return (
     <div className="w-full flex items-center gap-3">
-      <ProfileAvatar />
+      <Skeleton
+        isLoading={isLoading}
+        width={32}
+        height={32}
+        className="rounded-full"
+      >
+        <ProfileAvatar />
+      </Skeleton>
 
       <div className="flex flex-col w-auto">
-        <Text type="s" style="medium" className="truncate">
-          {profile?.name ?? profile?.email}
-        </Text>
-        <Text
-          type="xs"
-          style="regular"
-          color={USER_STATUS_COLOR_MAP[profile?.status ?? "active"]}
+        <Skeleton
+          isLoading={isLoading}
+          height={20}
+          width={150}
+          className="mb-1"
         >
-          {USER_STATUS_MAP[profile?.status ?? "active"]}
-        </Text>
+          <Text type="s" style="medium" className="truncate">
+            {profile?.name ?? profile?.email}
+          </Text>
+        </Skeleton>
+        <Skeleton isLoading={isLoading} height={16} width={100}>
+          <Text
+            type="xs"
+            style="regular"
+            color={USER_STATUS_COLOR_MAP[profile?.status ?? "active"]}
+          >
+            {USER_STATUS_MAP[profile?.status ?? "active"]}
+          </Text>
+        </Skeleton>
       </div>
     </div>
   );

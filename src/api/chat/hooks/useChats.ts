@@ -4,11 +4,11 @@ import { getChats } from "..";
 export const CHATS_QUERY_KEY = ["chats"];
 
 export const useChats = () => {
-  const { data: chats } = useQuery({
+  const { data: chats, isLoading } = useQuery({
     refetchInterval: false,
     queryKey: CHATS_QUERY_KEY,
     queryFn: getChats,
   });
 
-  return chats;
+  return { chats, isLoading };
 };
