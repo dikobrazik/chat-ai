@@ -252,7 +252,7 @@ export default function Page() {
         )}
       </div>
 
-      <Footer />
+      <Footer withRequisites />
     </div>
   );
 }

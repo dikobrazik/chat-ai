@@ -7,6 +7,7 @@ import { type SubmitHandler, useForm } from "react-hook-form";
 import * as yup from "yup";
 import { postEmailSignIn } from "@/api";
 import Button from "@/components/ui/Button";
+import { Checkbox } from "@/components/ui/Checkbox";
 import { Text } from "@/components/ui/Text";
 import { TextField } from "@/components/ui/TextField";
 import { useEmailAuth } from "@/providers/EmailAuthProvider/useEmailAuth";
@@ -30,7 +31,7 @@ const schema = yup.object({
 
 export const Registration = () => {
   const router = useRouter();
-  const { email, setEmail } = useEmailAuth();
+  const { email, setEmail, mailingConsent, setMailingConsent } = useEmailAuth();
   const [serverError, setServerError] = useState("");
 
   const {
@@ -105,12 +106,32 @@ export const Registration = () => {
         )}
       </form>
 
-      <Text type="xs" style="regular" color="#9C9C9C" className="text-center">
-        Продолжая, вы соглашаетесь с{" "}
-        <Link href="#">Условиями использования</Link> и{" "}
-        <Link href="#">Политикой конфиденциальности</Link>,<br />а также об
-        обновлениях продукта и акциях
-      </Text>
+      <div className="flex flex-col gap-4">
+        <Checkbox
+          checked={mailingConsent}
+          onChange={(event) => setMailingConsent(event.target.checked)}
+        >
+          <Text type="xs" style="regular" color="#6F6F6F">
+            Хочу получать{" "}
+            <Link target="_blank" href="/mailing-consent">
+              рассылку
+            </Link>{" "}
+            об обновлениях продукта и акциях
+          </Text>
+        </Checkbox>
+
+        <Text type="xs" style="regular" color="#9C9C9C" className="text-center">
+          Продолжая, вы соглашаетесь с{" "}
+          <Link href="/terms">Условиями использования</Link> и{" "}
+          <Link target="_blank" href="/privacy">
+            Политикой конфиденциальности
+          </Link>
+          ,<br />а также даёте{" "}
+          <Link target="_blank" href="/personal-data-consent">
+            согласие на обработку персональных данных
+          </Link>
+        </Text>
+      </div>
     </div>
   );
 };

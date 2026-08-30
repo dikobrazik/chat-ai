@@ -10,7 +10,9 @@ export const About = () => {
           Условия использования
         </Text>
 
-        <Button variant="base">Посмотреть</Button>
+        <Button variant="base" href="/terms" target="_blank">
+          Посмотреть
+        </Button>
       </div>
 
       <Divider />
@@ -20,7 +22,9 @@ export const About = () => {
           Политика конфиденциальности
         </Text>
 
-        <Button variant="base">Посмотреть</Button>
+        <Button variant="base" href="/privacy" target="_blank">
+          Посмотреть
+        </Button>
       </div>
     </div>
   );

@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import Button from "@/components/ui/Button";
 import { Text } from "@/components/ui/Text";
@@ -18,7 +19,7 @@ export const CookieBanner = () => {
 
   const onDeclineClick = () => {
     setIsVisible(false);
-    window.localStorage.setItem(COOKIE_APPROVED_KEY, "1");
+    window.localStorage.setItem(COOKIE_APPROVED_KEY, "0");
   };
 
   const onAcceptClick = () => {
@@ -35,11 +36,10 @@ export const CookieBanner = () => {
           Мы используем cookie-файлы
         </Text>
         <Text as="h6" type="s" color="#6F6F6F" style="regular">
-          Мы используем cookie-файлы, чтобы помочь этому сайту функционировать,
-          понимать использование услуг и поддерживать маркетинговые усилия.
-          Посетите «Управление cookie-файлами», чтобы изменить настройки в любое
-          время. Ознакомьтесь с нашей политикой использования cookie-файлов для
-          получения дополнительной информации.
+          Обязательные cookie-файлы нужны для входа в аккаунт и сохранения
+          настроек. Аналитические cookie, помогающие понимать, как используется
+          сервис, применяются только с вашего согласия. Подробнее — в{" "}
+          <Link href="/privacy">Политике конфиденциальности</Link>.
         </Text>
       </div>
 
