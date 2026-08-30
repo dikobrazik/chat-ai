@@ -9,6 +9,7 @@ import { Logo } from "@/components/ui/Logo";
 import Popover from "@/components/ui/Popover";
 import { Sidebar as UISidebar } from "@/components/ui/Sidebar";
 import { useSidebarState } from "@/components/ui/Sidebar/useSidebarState";
+import { Skeleton } from "@/components/ui/Skeleton";
 import { Text } from "@/components/ui/Text";
 import { useToggle } from "@/hooks/useToggle";
 import { cn } from "@/lib/utils";
@@ -29,7 +30,7 @@ export const ChatSidebar = ({
 }) => {
   const { isGuest } = useAuthContext();
 
-  const chats = useChats();
+  const { chats, isLoading } = useChats();
   const { active: isChatsOpen, toggle: toggleChats } = useToggle(true);
 
   if (!isOpen)
@@ -136,37 +137,51 @@ export const ChatSidebar = ({
           className={cn(styles.chatsCollapse, { [styles.open]: isChatsOpen })}
         >
           <div className="flex flex-col">
-            {chats?.map((chat) => (
-              <Button
-                key={chat.id}
-                href={`/chat/${chat.id}`}
-                className={cn(styles.chatItem, "shrink-0")}
-                title={chat.title || chat.last_prompt || ""}
-              >
-                <Text className={styles.chatItemTitle} style="regular">
-                  {chat.title || chat.last_prompt}
-                </Text>
-
-                <Popover
-                  Trigger={(props) => (
-                    <Button
-                      {...props}
-                      className={cn(props.className, styles.chatItemMore)}
-                      onClick={
-                        props.onClick
-                          ? preventDefault(stopPropagation(props.onClick))
-                          : props.onClick
-                      }
-                      leftIcon={<Icon name="more" />}
+            {isLoading
+              ? Array(30)
+                  .fill(undefined)
+                  .map((_, index) => (
+                    <Skeleton
+                      isLoading
+                      key={`s_${
+                        // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+                        index
+                      }`}
+                      className="mb-2"
+                      height={40}
                     />
-                  )}
-                  position="right"
-                  align="start"
-                >
-                  <ChatActions chatId={chat.id} />
-                </Popover>
-              </Button>
-            ))}
+                  ))
+              : chats?.map((chat) => (
+                  <Button
+                    key={chat.id}
+                    href={`/chat/${chat.id}`}
+                    className={cn(styles.chatItem, "shrink-0")}
+                    title={chat.title || chat.last_prompt || ""}
+                  >
+                    <Text className={styles.chatItemTitle} style="regular">
+                      {chat.title || chat.last_prompt}
+                    </Text>
+
+                    <Popover
+                      Trigger={(props) => (
+                        <Button
+                          {...props}
+                          className={cn(props.className, styles.chatItemMore)}
+                          onClick={
+                            props.onClick
+                              ? preventDefault(stopPropagation(props.onClick))
+                              : props.onClick
+                          }
+                          leftIcon={<Icon name="more" />}
+                        />
+                      )}
+                      position="right"
+                      align="start"
+                    >
+                      <ChatActions chatId={chat.id} />
+                    </Popover>
+                  </Button>
+                ))}
           </div>
         </div>
       </div>

@@ -80,9 +80,14 @@ export const VerifyCode = () => {
 
       <Text type="xs" style="regular" color="#9C9C9C" className="text-center">
         Продолжая, вы соглашаетесь с{" "}
-        <Link href="#">Условиями использования</Link> и{" "}
-        <Link href="#">Политикой конфиденциальности</Link>,<br />а также об
-        обновлениях продукта и акциях
+        <Link href="/terms">Условиями использования</Link> и{" "}
+        <Link target="_blank" href="/privacy">
+          Политикой конфиденциальности
+        </Link>
+        ,<br />а также даёте{" "}
+        <Link target="_blank" href="/personal-data-consent">
+          согласие на обработку персональных данных
+        </Link>
       </Text>
     </div>
   );

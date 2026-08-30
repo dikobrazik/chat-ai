@@ -16,14 +16,16 @@ export const Plans = () => {
 
   const { plans, sixMonthsPlans } = usePlans();
 
-  const onPlanSelect = (planId: string) => {
-    router.push(`/plans/${planId}?${SIX_MONTHS_QUERY_KEY}=true`);
+  const onPlanSelect = (planId: string, sixMonths?: boolean) => {
+    router.push(
+      `/plans/${planId}?${SIX_MONTHS_QUERY_KEY}=${Boolean(sixMonths)}`,
+    );
   };
 
   return (
     <div className={styles.container}>
       <Text as="h1" className="text-center" style="medium" type="l">
-        Попробуйте Плюс бесплатно
+        Попробуйте Плюс за 1 ₽
       </Text>
       <Tabs
         tabs={[
@@ -76,8 +78,12 @@ export const Plans = () => {
       ></Tabs>
 
       <Text color="#9C9C9C" style="regular" type="xs" className="text-center">
+        Подписка продлевается автоматически: стоимость тарифа списывается за
+        каждый следующий оплаченный период (месяц или 6 месяцев). Отключить
+        продление можно в настройках в любой момент.
+        <br />
         Нажимая кнопку «Оплатить», вы соглашаетесь с{" "}
-        <Link className="underline" target="_blank" href="/privacy">
+        <Link className="underline" target="_blank" href="/terms">
           офертой
         </Link>
       </Text>

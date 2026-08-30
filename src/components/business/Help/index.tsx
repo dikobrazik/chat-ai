@@ -71,7 +71,7 @@ export const Help = () => {
             <Text type="s">Электронная почта</Text>
 
             <Text type="xs" color="#0F8AFF" style="regular">
-              <Link href="mailto:support@jonu.com">support@jonu.com</Link>
+              <Link href="mailto:support@jonu.ru">support@jonu.ru</Link>
             </Text>
           </div>
         </div>
