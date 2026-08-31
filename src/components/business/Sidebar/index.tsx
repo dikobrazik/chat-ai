@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useChats } from "@/api";
 import { Banner } from "@/components/ui/Banner";
 import Button from "@/components/ui/Button";
@@ -29,6 +30,7 @@ export const ChatSidebar = ({
   forMobile?: boolean;
 }) => {
   const { isGuest } = useAuthContext();
+  const pathname = usePathname();
 
   const { chats, isLoading } = useChats();
   const { active: isChatsOpen, toggle: toggleChats } = useToggle(true);
@@ -50,13 +52,17 @@ export const ChatSidebar = ({
           <Button
             href="/"
             align="center"
-            className={cn(styles.collapsedNavButton, styles.newChatButton)}
+            className={cn(styles.collapsedNavButton, styles.newChatButton, {
+              [styles.active]: pathname === "/",
+            })}
             leftIcon={<Icon name="message-create" />}
           />
           <Button
             href="/image-chat"
             align="center"
-            className={cn(styles.collapsedNavButton, styles.imagesButton)}
+            className={cn(styles.collapsedNavButton, styles.imagesButton, {
+              [styles.active]: pathname === "/image-chat",
+            })}
             leftIcon={<Icon name="gallery" />}
           />
         </div>
@@ -104,14 +110,18 @@ export const ChatSidebar = ({
 
       <div className="flex flex-col gap-3">
         <Button
-          className={styles.newChatButton}
+          className={cn(styles.newChatButton, {
+            [styles.active]: pathname === "/",
+          })}
           leftIcon={<Icon name="message-create" />}
           href="/"
         >
           Новый чат
         </Button>
         <Button
-          className={styles.imagesButton}
+          className={cn(styles.imagesButton, {
+            [styles.active]: pathname === "/image-chat",
+          })}
           leftIcon={<Icon name="gallery" />}
           href="/image-chat"
         >
@@ -155,7 +165,9 @@ export const ChatSidebar = ({
                   <Button
                     key={chat.id}
                     href={`/chat/${chat.id}`}
-                    className={cn(styles.chatItem, "shrink-0")}
+                    className={cn(styles.chatItem, "shrink-0", {
+                      [styles.active]: pathname === `/chat/${chat.id}`,
+                    })}
                     title={chat.title || chat.last_prompt || ""}
                   >
                     <Text className={styles.chatItemTitle} style="regular">
