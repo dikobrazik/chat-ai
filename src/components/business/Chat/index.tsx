@@ -71,6 +71,7 @@ export const Chat = () => {
             text={message.text}
             files={message.files}
             role={message.role}
+            isStreaming={message.isStreaming}
           />
         ))}
       </div>

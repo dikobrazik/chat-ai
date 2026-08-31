@@ -38,7 +38,15 @@ const ImageContent = ({
   return <img src={data} alt="AI response" width="20%" />;
 };
 
-const MessageContent = ({ id, message }: { id: string; message: string }) => {
+const MessageContent = ({
+  id,
+  message,
+  isStreaming,
+}: {
+  id: string;
+  message: string;
+  isStreaming: boolean;
+}) => {
   const { id: chatId } = useParams();
 
   if (id === ERROR_MESSAGE_ID) {
@@ -61,14 +69,20 @@ const MessageContent = ({ id, message }: { id: string; message: string }) => {
       )}
       parseIncompleteMarkdown
       animated={{ animation: "fadeIn", duration: 250, easing: "ease-out" }}
-      isAnimating
+      isAnimating={isStreaming}
     >
       {message}
     </Streamdown>
   );
 };
 
-export const Message = ({ id, role, files, text: message }: Prompt) => {
+export const Message = ({
+  id,
+  role,
+  files,
+  text: message,
+  isStreaming,
+}: Prompt) => {
   return (
     <>
       {!SYSTEM_MESSAGES.includes(id) && (
@@ -80,7 +94,11 @@ export const Message = ({ id, role, files, text: message }: Prompt) => {
           [styles.banner]: id === TOO_MANY_REQUESTS_MESSAGE_ID,
         })}
       >
-        <MessageContent id={id} message={message} />
+        <MessageContent
+          id={id}
+          message={message}
+          isStreaming={Boolean(isStreaming)}
+        />
       </div>
       <MessageFiles files={files} role={role} />
     </>

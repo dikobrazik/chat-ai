@@ -69,6 +69,7 @@ type PromptFile = {
 export type Prompt = {
   id: string;
   text: string;
+  isStreaming?: boolean;
   files: PromptFile[];
   role: string;
 };

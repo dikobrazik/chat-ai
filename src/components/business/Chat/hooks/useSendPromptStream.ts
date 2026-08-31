@@ -55,6 +55,7 @@ export const useSendPromptStream = (
               {
                 id: data.promptId || randomId,
                 text: data.content,
+                isStreaming: false,
                 role: "model",
                 files: [],
               },
@@ -68,6 +69,7 @@ export const useSendPromptStream = (
                 id: data.promptId || randomId,
                 text: prevMessages[0].text + data.content,
                 role: "model",
+                isStreaming: true,
                 files: [],
               },
               ...prevMessages.slice(1),
@@ -83,6 +85,7 @@ export const useSendPromptStream = (
                 id: TOO_MANY_REQUESTS_MESSAGE_ID,
                 text: "",
                 role: "model",
+                isStreaming: false,
                 files: [],
               },
               ...prevMessages.slice(1),
