@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { Fragment } from "react";
 import { Divider } from "@/components/ui/Divider";
 import { Expander } from "@/components/ui/Expander";
 import Icon from "@/components/ui/Icon";
@@ -15,13 +16,9 @@ export const Help = () => {
         Часто задаваемые вопросы
       </Text>
 
-      {FAQ.map((item, index) => (
-        <>
+      {FAQ.map((item) => (
+        <Fragment key={item.question}>
           <Expander
-            key={`faq-item-${
-              // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-              index
-            }`}
             defaultOpen={false}
             Header={({ iconClassname }) => (
               <div className="flex justify-between w-full">
@@ -35,13 +32,18 @@ export const Help = () => {
               </div>
             )}
           >
-            <Text type="s" color="#6F6F6F" style="regular">
+            <Text
+              className={styles.answer}
+              type="s"
+              color="#6F6F6F"
+              style="regular"
+            >
               {item.answer}
             </Text>
           </Expander>
 
           <Divider />
-        </>
+        </Fragment>
       ))}
 
       <Text className="mt-6" type="xs" color="#6F6F6F" style="regular">
