@@ -13,7 +13,6 @@ import { isOptionDisabled } from "@/components/business/ModelSelect/modelAccess"
 import { PromptField } from "@/components/business/PromptField";
 import Button from "@/components/ui/Button";
 import Icon from "@/components/ui/Icon";
-import { Logo } from "@/components/ui/Logo";
 import { Text } from "@/components/ui/Text";
 import { usePersistentState } from "@/hooks/usePersistenState";
 import { useAuth } from "@/providers/AuthProvider/hooks";
@@ -29,12 +28,29 @@ type ImageChatDraft = {
   attachments: Attachment[];
 } | null;
 
+// тайтлы главной за залогином — случайный на каждую загрузку страницы
+const HOME_TITLES = [
+  "Чем я могу помочь?",
+  "Чем хотите заняться сегодня?",
+  "Какую идею обсудим?",
+  "Какую задачу решим сегодня?",
+  "Чем помочь сегодня?",
+  "С чего начнём?",
+  "О чём поговорим?",
+  "Начинайте, когда будете готовы.",
+  "О чём поговорим сегодня?",
+  "Что сегодня в повестке дня?",
+];
+
 export default function Page() {
   const pathname = usePathname();
   const router = useRouter();
   const promptRef = useRef<HTMLTextAreaElement>(null);
   const attachInputRef = useRef<HTMLInputElement>(null);
   const [value, setValue] = useState("");
+  const [homeTitle] = useState(
+    () => HOME_TITLES[Math.floor(Math.random() * HOME_TITLES.length)],
+  );
   const { isGuest } = useAuth();
 
   const { createChat } = useChat(undefined);
@@ -54,8 +70,6 @@ export default function Page() {
   });
 
   const isImageChat = pathname === "/image-chat";
-
-  const name = profile?.name;
 
   const sendClick = async () => {
     const chatId = await createChat();
@@ -161,29 +175,28 @@ export default function Page() {
     <div className="flex flex-col justify-between h-full">
       <div></div>
       <div className="flex flex-col gap-6">
-        {!isGuest && (
-          <div className="flex items-center gap-3">
-            <Logo size="small" />
-
-            <Text style="regular">Добрый день, {name}!</Text>
-          </div>
-        )}
         <div className="flex flex-col gap-2 text-center">
           <Text as="h1" type="xl" style="regular">
-            {isImageChat ? "Изображения" : "Чем я могу помочь?"}
-          </Text>
-          {/* резерв под две строки, чтобы разная длина подзаголовков не сдвигала поле ввода */}
-          <Text
-            as="h2"
-            type="s"
-            style="regular"
-            color="#6F6F6F"
-            className="min-h-10"
-          >
             {isImageChat
-              ? `Nano Banana, ChatGPT, Midjourney, Flux, Seedream, Stable Diffusion, Recraft и другие нейросети для работы с изображениями`
-              : `ChatGPT, Gemini, DeepSeek, Claude, Nano Banana, Midjourney, Seedream и другие нейросети для работы с текстами, изображениями и видео`}
+              ? "Изображения"
+              : isGuest
+                ? "Чем я могу помочь?"
+                : homeTitle}
           </Text>
+          {/* сабтайтл только гостям; резерв под две строки, чтобы разная длина подзаголовков не сдвигала поле ввода */}
+          {isGuest && (
+            <Text
+              as="h2"
+              type="s"
+              style="regular"
+              color="#6F6F6F"
+              className="min-h-10"
+            >
+              {isImageChat
+                ? `Nano Banana, ChatGPT, Midjourney, Flux, Seedream, Stable Diffusion, Recraft и другие нейросети для работы с изображениями`
+                : `ChatGPT, Gemini, DeepSeek, Claude, Nano Banana, Midjourney, Seedream и другие нейросети для работы с текстами, изображениями и видео`}
+            </Text>
+          )}
         </div>
 
         <PromptField
