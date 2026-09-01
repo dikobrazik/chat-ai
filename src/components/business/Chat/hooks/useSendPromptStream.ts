@@ -70,6 +70,9 @@ export const useSendPromptStream = (
                 text: prevMessages[0].text + data.content,
                 role: "model",
                 isStreaming: true,
+                thinking: data.isThinking
+                  ? prevMessages[0].thinking + data.content
+                  : prevMessages[0].thinking,
                 files: [],
               },
               ...prevMessages.slice(1),
