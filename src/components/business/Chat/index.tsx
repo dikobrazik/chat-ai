@@ -78,6 +78,7 @@ export const Chat = () => {
 
       <PromptField
         value={value}
+        placeholder="Спросите о чём угодно"
         isPromptSending={isPromptSending}
         isChatCreating={isChatCreating}
         onInputChange={setValue}
