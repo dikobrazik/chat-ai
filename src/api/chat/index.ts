@@ -37,7 +37,7 @@ export const sendStreamPrompt = ({
 export const createChat = (payload: { model_id: number }) =>
   axios.post<string>(`chat`, payload).then((response) => response.data);
 
-type Chat = {
+export type Chat = {
   id: string;
   external_chat_id: string;
   user_id: string;
