@@ -39,12 +39,22 @@ export const getSubscription = () =>
     .then((response) => response.data);
 
 type InitPaymentPayload = {
-  paymentType: string;
   plan: string;
   sixMonths: boolean;
 };
 
 export const initPayment = (payload: InitPaymentPayload) =>
   axios
-    .post<{ PaymentURL: string }>("/subscription/init", payload)
+    .post<{ paymentId: string; paymentURL: string }>(
+      "/subscription/init",
+      payload,
+    )
+    .then((response) => response.data);
+
+export const getTPayLink = (payload: InitPaymentPayload) =>
+  axios
+    .post<{ RedirectUrl: string; WebQR: string }>(
+      `/subscription/t-pay-link`,
+      payload,
+    )
     .then((response) => response.data);
