@@ -17,12 +17,42 @@
   padding: spacing(1);
 }
 
+// ховер «...» подсвечивает весь ряд профиля, а не одну кнопку, и подсветка
+// держится, пока открыто меню — как у ряда чата. Паддинги компенсированы
+// отрицательными полями: контент не сдвигается, а пилюля тянется на всю
+// колонку, как у рядов чатов — левое поле съедает pl-1.5 обёртки. Ширина
+// auto (без w-full): заданную 100% отрицательное поле не растянуло бы
+.profileRow {
+  border-radius: 0.75rem;
+  margin: -0.25rem 0 -0.25rem -0.375rem;
+  padding: 0.25rem 0 0.25rem 0.375rem;
+  transition: background-color 0.2s ease;
+
+  &:has(.menuButton:hover),
+  &:has(.menuButton[aria-expanded="true"]) {
+    background-color: #F7F7F7;
+
+    @media (prefers-color-scheme: dark) {
+      background-color: color-mix(in srgb, var(--background), white 20%);
+    }
+  }
+}
+
 // аватар-кнопка в свёрнутом сайдбаре; паддинг кнопки (8px) одиночным классом
 // не перебить (.size-x.iconOnly специфичнее), поэтому кнопку до 36×36 сжимает
 // отрицательный отступ фото — так аватар стоит ровно в той же точке,
 // что и в развёрнутом сайдбаре, и не распирает рейл шире кнопок навигации
 .avatarButton {
   border-radius: border-radius(full);
+
+  // в свёрнутом сайдбаре ховер-ободок вокруг аватара держится, пока открыто меню
+  &[aria-expanded="true"] {
+    background-color: #F7F7F7;
+
+    @media (prefers-color-scheme: dark) {
+      background-color: color-mix(in srgb, var(--background), white 20%);
+    }
+  }
 
   & .profilePhoto {
     margin: -6px;

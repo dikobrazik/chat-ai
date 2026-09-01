@@ -164,7 +164,7 @@ export const Profile = ({ collapsed }: { collapsed?: boolean }) => {
   }
 
   return (
-    <div className="flex gap-3 w-full items-center">
+    <div className={cn(styles.profileRow, "flex gap-3 items-center")}>
       <ProfileInfo />
 
       {/* align=end: правый край меню по кнопке «...» — меню остаётся в пределах сайдбара */}
@@ -173,7 +173,11 @@ export const Profile = ({ collapsed }: { collapsed?: boolean }) => {
         position="top"
         align="end"
         Trigger={(props) => (
-          <Button {...props} leftIcon={<Icon name="more" />} />
+          <Button
+            {...props}
+            className={cn(props.className, styles.menuButton)}
+            leftIcon={<Icon name="more" />}
+          />
         )}
       >
         <ProfileMenu />
