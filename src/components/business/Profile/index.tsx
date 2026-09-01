@@ -153,6 +153,7 @@ export const Profile = ({ collapsed }: { collapsed?: boolean }) => {
         Trigger={(props) => (
           <Button
             {...props}
+            align="center"
             className={cn(props.className, styles.avatarButton)}
             leftIcon={<ProfileAvatar />}
           />
