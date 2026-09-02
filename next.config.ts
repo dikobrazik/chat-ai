@@ -8,6 +8,14 @@ const nextConfig: NextConfig = {
         hostname: "avatars.yandex.net",
         pathname: "/get-yapic/**",
       },
+      {
+        protocol: "https",
+        hostname: "nspk.ru",
+      },
+      {
+        protocol: "https",
+        hostname: "*.nspk.ru",
+      },
       // аватарки пользователей с Google-логином
       {
         protocol: "https",

@@ -37,7 +37,7 @@ export const Plans = () => {
                 {plans.map((plan) => (
                   <Plan
                     key={plan.id}
-                    activePlan={currentSubscription?.subscription.plan}
+                    activePlan={currentSubscription?.subscription?.plan}
                     plan={plan}
                     onPlanSelect={onPlanSelect}
                   />
@@ -66,7 +66,7 @@ export const Plans = () => {
                     isSixMonths
                     key={plan.id}
                     plan={plan}
-                    activePlan={currentSubscription?.subscription.plan}
+                    activePlan={currentSubscription?.subscription?.plan}
                     discount={plan?.discount}
                     onPlanSelect={onPlanSelect}
                   />

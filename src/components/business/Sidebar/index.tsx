@@ -168,10 +168,10 @@ export const ChatSidebar = ({
                     className={cn(styles.chatItem, "shrink-0", {
                       [styles.active]: pathname === `/chat/${chat.id}`,
                     })}
-                    title={chat.title || chat.last_prompt || ""}
+                    title={chat.title || ""}
                   >
                     <Text className={styles.chatItemTitle} style="regular">
-                      {chat.title || chat.last_prompt}
+                      {chat.title}
                     </Text>
 
                     <Popover

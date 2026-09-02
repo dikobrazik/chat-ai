@@ -42,7 +42,6 @@ type Chat = {
   external_chat_id: string;
   user_id: string;
   title: null | string;
-  last_prompt: null | string;
   created_at: string;
 };
 
