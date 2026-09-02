@@ -8,6 +8,7 @@ import Icon from "@/components/ui/Icon";
 import Popover from "@/components/ui/Popover";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { Text } from "@/components/ui/Text";
+import { SUBSCRIBED_USER_STATUSES } from "@/constants/user";
 import { cn } from "@/lib/utils";
 import { useAuthContext } from "@/providers/AuthProvider/hooks";
 import Button, { type ButtonProps } from "@/ui/Button";
@@ -110,17 +111,30 @@ const ProfileInfo = () => {
 };
 
 const ProfileMenu = () => {
-  const { onLogoutClick } = useAuthContext();
+  const { isGuest, onLogoutClick } = useAuthContext();
+
+  const { data: profile } = useQuery({
+    queryKey: ["profile"],
+    queryFn: getProfile,
+    enabled: !isGuest,
+  });
+
+  // апселл показываем только загруженному профилю без платной подписки —
+  // подписчику полный доступ уже открыт
+  const showUpsell =
+    profile && !SUBSCRIBED_USER_STATUSES.includes(profile.status);
 
   return (
     <>
       <ProfileInfo />
       <div className="flex flex-col gap-2">
-        <Button align="center" variant="primary" as="a" href="/plans">
-          <Text type="s" style="medium">
-            Открыть полный доступ
-          </Text>
-        </Button>
+        {showUpsell && (
+          <Button align="center" variant="primary" as="a" href="/plans">
+            <Text type="s" style="medium">
+              Открыть полный доступ
+            </Text>
+          </Button>
+        )}
         <Button
           as="a"
           href="/settings/profile"
