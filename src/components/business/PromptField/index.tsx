@@ -158,7 +158,7 @@ export const PromptField = forwardRef<HTMLTextAreaElement, PromptFieldProps>(
             leftIcon={<Icon name="arrow-up" color="white" />}
             disabled={!value || !areAllFilesUploaded}
             loading={isPromptSending || isChatCreating}
-            onClick={onSendClick}
+            onClick={() => onSendClick()}
           />
         </div>
       </div>
