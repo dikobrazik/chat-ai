@@ -16,6 +16,40 @@
 
   & .messageContent {
     font-size: 16px;
+
+    & [data-streamdown="code-block"] {
+      background-color: #F7F7F7;
+      border: none;
+
+      & [data-streamdown="code-block-actions"] {
+        border: none;
+      }
+
+      & [data-streamdown="code-block-body"] {
+        border: none;
+      }
+    }
+
+    & [data-streamdown="table-wrapper"] {
+      border: none;
+
+      &>* {
+        border: none;
+      }
+
+      & tr,
+      thead {
+        border-color: #EFEFEF;
+      }
+    }
+
+    & [data-streamdown="horizontal-rule"] {
+      border-color: #EFEFEF;
+    }
+
+    & [aria-hidden="true"] {
+      display: none;
+    }
   }
 
   &.attachment {

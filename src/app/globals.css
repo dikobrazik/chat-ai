@@ -1,3 +1,7 @@
 @import "tailwindcss";
 /* biome-ignore lint/suspicious/noUnknownAtRules: <explanation> */
 @source "../../node_modules/streamdown/dist/index.js";
+/* biome-ignore lint/suspicious/noUnknownAtRules: <explanation> */
+@source "../node_modules/@streamdown/code/dist/*.js";
+/* biome-ignore lint/suspicious/noUnknownAtRules: <explanation> */
+@source "../node_modules/@streamdown/math/dist/*.js";

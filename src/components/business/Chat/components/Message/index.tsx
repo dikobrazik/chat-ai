@@ -1,9 +1,10 @@
+import { code } from "@streamdown/code";
+import { math } from "@streamdown/math";
 import { useQuery } from "@tanstack/react-query";
 import classNames from "classnames";
 import { useParams } from "next/navigation";
 import { Streamdown } from "streamdown";
 import { getImageUrl, type Prompt } from "@/api";
-import { FileComponent } from "@/components/ui/File";
 import { cn } from "@/lib/utils";
 import {
   ERROR_MESSAGE_ID,
@@ -70,8 +71,10 @@ const MessageContent = ({
       parseIncompleteMarkdown
       animated={{ animation: "fadeIn", duration: 250, easing: "ease-out" }}
       isAnimating={isStreaming}
+      plugins={{ math, code }}
     >
-      {message}
+      {message.replace(/[$]([^$])/g, "$$$$$1")}
+      {/* {`$$\\frac{\\log_a x}{\\log_a y} \\neq \\log_a \\frac{x}{y}$$`} */}
     </Streamdown>
   );
 };
