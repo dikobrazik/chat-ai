@@ -10,7 +10,7 @@ import { Skeleton } from "@/components/ui/Skeleton";
 import { Text } from "@/components/ui/Text";
 import { cn } from "@/lib/utils";
 import { useAuthContext } from "@/providers/AuthProvider/hooks";
-import Button from "@/ui/Button";
+import Button, { type ButtonProps } from "@/ui/Button";
 import styles from "./Profile.module.scss";
 
 const USER_STATUS_MAP: Record<string, string> = {
@@ -51,6 +51,18 @@ const ProfileAvatar = () => {
     />
   );
 };
+
+// триггер вынесен из рендера Profile: Popover рендерит Trigger как компонент,
+// инлайновая стрелка была бы новым типом на каждый рендер — аватар с useQuery
+// и next/image перемонтировался бы при каждой навигации с лишним запросом профиля
+const AvatarTrigger = (props: ButtonProps) => (
+  <Button
+    {...props}
+    align="center"
+    className={cn(props.className, styles.avatarButton)}
+    leftIcon={<ProfileAvatar />}
+  />
+);
 
 const ProfileInfo = () => {
   const { isGuest } = useAuthContext();
@@ -150,13 +162,7 @@ export const Profile = ({ collapsed }: { collapsed?: boolean }) => {
         popoverClassName={styles.profilePopover}
         position="top"
         align="start"
-        Trigger={(props) => (
-          <Button
-            {...props}
-            className={cn(props.className, styles.avatarButton)}
-            leftIcon={<ProfileAvatar />}
-          />
-        )}
+        Trigger={AvatarTrigger}
       >
         <ProfileMenu />
       </Popover>
