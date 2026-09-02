@@ -148,6 +148,19 @@ const ProfileMenu = () => {
   );
 };
 
+// триггер вынесен из Profile: инлайновая стрелка — новый тип компонента на
+// каждый рендер, и React перемонтировал бы весь ряд (аватар, запрос профиля)
+// при каждой навигации
+const ProfileTrigger = (props: ButtonProps) => (
+  <Button
+    {...props}
+    className={cn(props.className, styles.profileButton)}
+    rightIcon={<Icon name="more" />}
+  >
+    <ProfileInfo />
+  </Button>
+);
+
 export const Profile = ({ collapsed }: { collapsed?: boolean }) => {
   const { isReady } = useAuthContext();
 
@@ -169,25 +182,17 @@ export const Profile = ({ collapsed }: { collapsed?: boolean }) => {
     );
   }
 
+  // весь ряд — одна кнопка-триггер меню, как аватар в свёрнутом сайдбаре:
+  // ховер и клик работают по всему профилю, у «...» своей подсветки нет.
+  // align=end: правый край меню по краю ряда — меню остаётся в пределах сайдбара
   return (
-    <div className={cn(styles.profileRow, "flex gap-3 items-center")}>
-      <ProfileInfo />
-
-      {/* align=end: правый край меню по кнопке «...» — меню остаётся в пределах сайдбара */}
-      <Popover
-        popoverClassName={styles.profilePopover}
-        position="top"
-        align="end"
-        Trigger={(props) => (
-          <Button
-            {...props}
-            className={cn(props.className, styles.menuButton)}
-            leftIcon={<Icon name="more" />}
-          />
-        )}
-      >
-        <ProfileMenu />
-      </Popover>
-    </div>
+    <Popover
+      popoverClassName={styles.profilePopover}
+      position="top"
+      align="end"
+      Trigger={ProfileTrigger}
+    >
+      <ProfileMenu />
+    </Popover>
   );
 };
