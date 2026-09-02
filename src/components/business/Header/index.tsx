@@ -67,36 +67,41 @@ export const Header = () => {
             Поделиться
           </Button>
         )}
-        <Popover
-          position="bottom"
-          align="end"
-          Trigger={(props) => (
-            <Button
-              variant="base"
-              leftIcon={
-                <Icon name={!isChatScreen ? "message-question" : "more"} />
-              }
-              {...props}
-            />
-          )}
-        >
-          {!isChatScreen ? (
-            <div className="flex flex-col">
-              <Button leftIcon={<Icon name="clipboard" />}>
-                <Text type="s" style="regular">
-                  Тарифы
-                </Text>
-              </Button>
-              <Button leftIcon={<Icon name="message-question" />}>
-                <Text type="s" style="regular">
-                  Вопросы
-                </Text>
-              </Button>
-            </div>
-          ) : (
-            <ChatActions chatId={chatId as string} hiddenActions={["share"]} />
-          )}
-        </Popover>
+        {(isChatScreen || isGuest) && (
+          <Popover
+            position="bottom"
+            align="end"
+            Trigger={(props) => (
+              <Button
+                variant="base"
+                leftIcon={
+                  <Icon name={!isChatScreen ? "message-question" : "more"} />
+                }
+                {...props}
+              />
+            )}
+          >
+            {!isChatScreen ? (
+              <div className="flex flex-col">
+                <Button leftIcon={<Icon name="clipboard" />}>
+                  <Text type="s" style="regular">
+                    Тарифы
+                  </Text>
+                </Button>
+                <Button leftIcon={<Icon name="message-question" />}>
+                  <Text type="s" style="regular">
+                    Вопросы
+                  </Text>
+                </Button>
+              </div>
+            ) : (
+              <ChatActions
+                chatId={chatId as string}
+                hiddenActions={["share"]}
+              />
+            )}
+          </Popover>
+        )}
       </div>
     </header>
   );
