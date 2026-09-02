@@ -608,10 +608,6 @@ export const TERMS: LegalDocumentData = {
               items: ["319631300162300"],
             },
             {
-              label: "Телефон",
-              items: ["+7 (985) 344-04-19"],
-            },
-            {
               label: "Email",
               items: ["support@jonu.ru"],
             },
@@ -1262,10 +1258,6 @@ export const TERMS: LegalDocumentData = {
             {
               label: "ОГРНИП",
               items: ["319631300162300"],
-            },
-            {
-              label: "Телефон",
-              items: ["+7 (985) 344-04-19"],
             },
             {
               label: "Email поддержки",
