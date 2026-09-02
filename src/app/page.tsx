@@ -15,7 +15,7 @@ import Button from "@/components/ui/Button";
 import Icon from "@/components/ui/Icon";
 import { Text } from "@/components/ui/Text";
 import { usePersistentState } from "@/hooks/usePersistenState";
-import { useAuth } from "@/providers/AuthProvider/hooks";
+import { useAuthContext } from "@/providers/AuthProvider/hooks";
 import type { Attachment } from "@/providers/FilesProvider";
 import { useFiles } from "@/providers/FilesProvider/useFiles";
 import { useModelContext } from "@/providers/ModelProvider/hooks";
@@ -51,7 +51,7 @@ export default function Page() {
   const [homeTitle] = useState(
     () => HOME_TITLES[Math.floor(Math.random() * HOME_TITLES.length)],
   );
-  const { isGuest } = useAuth();
+  const { isGuest } = useAuthContext();
 
   const { createChat } = useChat(undefined);
   const { attachments, restoreFiles } = useFiles();
