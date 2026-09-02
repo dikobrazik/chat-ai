@@ -44,11 +44,14 @@
   }
 
   // подложка поля сама gray-1, поэтому у кнопки не белый фон, а прозрачный;
-  // ховер/нажатие — ghost-паттерн кита (solid 8/16%), сплошные серые тут не видны
+  // ховер/нажатие — ghost-паттерн кита (solid 8/16%), сплошные серые тут не видны.
+  // Подсветка держится, пока открыто меню «+» (aria-expanded от Popover) —
+  // как у соседнего селекта модели (controlOpen) и у «...» в сайдбаре
   .plusButton {
     background-color: transparent;
 
-    &:hover:not(:disabled) {
+    &:hover:not(:disabled),
+    &[aria-expanded="true"] {
       background-color: #00000014;
 
       @media (prefers-color-scheme: dark) {
