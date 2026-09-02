@@ -72,7 +72,7 @@ export default function Page() {
   const isImageChat = pathname === "/image-chat";
 
   const sendClick = async () => {
-    const chatId = await createChat();
+    const chatId = await createChat(value);
 
     router.push(`/chat/${chatId}?query=${encodeURIComponent(value)}`);
   };
@@ -166,7 +166,7 @@ export default function Page() {
       return;
     }
 
-    const chatId = await createChat();
+    const chatId = await createChat(filter.prompt);
 
     router.push(`/chat/${chatId}?query=${encodeURIComponent(filter.prompt)}`);
   };

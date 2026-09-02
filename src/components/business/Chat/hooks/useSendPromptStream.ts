@@ -1,6 +1,7 @@
+import { useQueryClient } from "@tanstack/react-query";
 import { isAxiosError } from "axios";
 import { type Dispatch, type SetStateAction, useRef, useState } from "react";
-import { type Prompt, sendStreamPrompt } from "@/api";
+import { CHATS_QUERY_KEY, type Prompt, sendStreamPrompt } from "@/api";
 import { useFiles } from "@/providers/FilesProvider/useFiles";
 import { TOO_MANY_REQUESTS_MESSAGE_ID } from "../components/Message/constants";
 
@@ -8,6 +9,7 @@ export const useSendPromptStream = (
   chatId: string,
   setMessages: Dispatch<SetStateAction<Prompt[]>>,
 ) => {
+  const queryClient = useQueryClient();
   const isSendingRef = useRef(false);
   const [isPromptSending, setIsPromptSending] = useState(false);
   const { clearFiles } = useFiles();
@@ -79,6 +81,10 @@ export const useSendPromptStream = (
             ]);
           }
         }
+
+        // заголовок и last_prompt бэк проставляет по завершении ответа —
+        // забираем их вместо оптимистичной записи в списке чатов
+        queryClient.invalidateQueries({ queryKey: CHATS_QUERY_KEY });
       })
       .catch((error) => {
         if (isAxiosError(error)) {

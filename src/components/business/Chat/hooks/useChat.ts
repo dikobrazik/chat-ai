@@ -2,7 +2,14 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { createChat, getChat, type Model, type Prompt } from "@/api";
+import {
+  CHATS_QUERY_KEY,
+  type Chat,
+  createChat,
+  getChat,
+  type Model,
+  type Prompt,
+} from "@/api";
 import { useModelContext } from "@/providers/ModelProvider/hooks";
 import { ERROR_MESSAGE_ID } from "../components/Message/constants";
 
@@ -15,7 +22,7 @@ export const useChat = (chatId: string | undefined) => {
 
   const { mutateAsync: createChatMutation, isPending: isCreateChatPending } =
     useMutation({
-      mutationFn: () => createChat({ model_id: model?.id ?? 1 }),
+      mutationFn: (_prompt: string) => createChat({ model_id: model?.id ?? 1 }),
       onError: (error) => {
         if (axios.isAxiosError(error)) {
           if (error.status === 403) {
@@ -32,8 +39,26 @@ export const useChat = (chatId: string | undefined) => {
           }
         }
       },
-      onSuccess: (chatId) => {
-        queryClient.invalidateQueries({ queryKey: ["chats"] });
+      onSuccess: (chatId, prompt) => {
+        // GET /chat не отдаёт чат, пока в нём нет ни одного промпта, поэтому
+        // инвалидация тут бесполезна — кладём чат в список сами, чтобы он
+        // появился в сайдбаре сразу по клику «отправить»; настоящий заголовок
+        // придёт с бэка, когда модель дочитает ответ (useSendPromptStream)
+        queryClient.setQueryData<Chat[]>(CHATS_QUERY_KEY, (chats) =>
+          chats
+            ? [
+                {
+                  id: chatId,
+                  external_chat_id: "",
+                  user_id: "",
+                  title: null,
+                  last_prompt: prompt,
+                  created_at: new Date().toISOString(),
+                },
+                ...chats,
+              ]
+            : chats,
+        );
         window.history.replaceState({}, "", `/chat/${chatId}`);
       },
     });
