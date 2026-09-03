@@ -7,7 +7,8 @@ export const useProviders = () => {
   const { data, isLoading, isError } = useQuery({
     queryKey: PROVIDERS_QUERY_KEY,
     queryFn: getProviders,
-    refetchInterval: false,
+    gcTime: 1000 * 60 * 60 * 6, // 6 hours
+    staleTime: 1000 * 60 * 60 * 6, // 6 hours
   });
 
   return { data, isLoading, isError };
