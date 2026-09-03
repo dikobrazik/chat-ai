@@ -43,6 +43,34 @@
     }
   }
 
+  // чип принудительного поиска: рамка и прозрачный фон — от variant-outline,
+  // но ховер/нажатие — ghost-паттерн, как у соседних кнопок на серой подложке
+  .searchChip {
+    // на узком экране подпись отбирает место у названия модели —
+    // оставляем планету и крестик
+    .searchChipLabel {
+      @include for-mobile {
+        display: none;
+      }
+    }
+
+    &:hover:not(:disabled) {
+      background-color: #00000014;
+
+      @media (prefers-color-scheme: dark) {
+        background-color: color-mix(in srgb, var(--background), white 20%);
+      }
+    }
+
+    &:active:not(:disabled) {
+      background-color: #00000029;
+
+      @media (prefers-color-scheme: dark) {
+        background-color: color-mix(in srgb, var(--background), white 10%);
+      }
+    }
+  }
+
   // подложка поля сама gray-1, поэтому у кнопки не белый фон, а прозрачный;
   // ховер/нажатие — ghost-паттерн кита (solid 8/16%), сплошные серые тут не видны.
   // Подсветка держится, пока открыто меню «+» (aria-expanded от Popover) —

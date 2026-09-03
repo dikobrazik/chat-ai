@@ -2,6 +2,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { isAxiosError } from "axios";
 import { type Dispatch, type SetStateAction, useRef, useState } from "react";
 import { CHATS_QUERY_KEY, type Prompt, sendStreamPrompt } from "@/api";
+import { useSearch } from "@/components/business/PromptField/useSearch";
 import { useFiles } from "@/providers/FilesProvider/useFiles";
 import {
   ERROR_MESSAGE_ID,
@@ -16,6 +17,7 @@ export const useSendPromptStream = (
   const isSendingRef = useRef(false);
   const [isPromptSending, setIsPromptSending] = useState(false);
   const { clearFiles } = useFiles();
+  const { withSearch } = useSearch();
 
   const sendPrompt = (payload: {
     input: string;
@@ -32,6 +34,7 @@ export const useSendPromptStream = (
       chat_id: payload.newChatId ?? (chatId as string),
       input: payload.input,
       filesIds: payload.filesIds,
+      withSearch,
     })
       .then(async (reader) => {
         const randomId = crypto.randomUUID();

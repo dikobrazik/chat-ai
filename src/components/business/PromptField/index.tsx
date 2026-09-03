@@ -9,6 +9,7 @@ import Icon from "../../ui/Icon";
 import { File } from "./components/File";
 import styles from "./PromptField.module.scss";
 import { useAccept } from "./useAccept";
+import { useSearch } from "./useSearch";
 
 type PromptFieldProps = {
   value: string;
@@ -37,6 +38,7 @@ export const PromptField = forwardRef<HTMLTextAreaElement, PromptFieldProps>(
     ref,
   ) => {
     const accept = useAccept();
+    const { isSearchAvailable, withSearch, setWithSearch } = useSearch();
 
     const inputRef = useRef<HTMLTextAreaElement>(null);
     const addFilesRef = useRef<HTMLInputElement>(null);
@@ -146,10 +148,30 @@ export const PromptField = forwardRef<HTMLTextAreaElement, PromptFieldProps>(
                   >
                     Создать изображение
                   </Button>
+                  {isSearchAvailable && (
+                    <Button
+                      leftIcon={<Icon name="global" />}
+                      onClick={() => setWithSearch(!withSearch)}
+                    >
+                      Поиск в сети
+                    </Button>
+                  )}
                 </div>
               </Popover>
             )}
             <ModelSelect />
+            {withSearch && !attachOnly && (
+              <Button
+                variant="outline"
+                borderRadius="full"
+                className={styles.searchChip}
+                leftIcon={<Icon name="global" />}
+                rightIcon={<Icon name="close" size={16} />}
+                onClick={() => setWithSearch(false)}
+              >
+                <span className={styles.searchChipLabel}>Поиск</span>
+              </Button>
+            )}
           </div>
           <div></div>
           <Button
