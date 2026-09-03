@@ -18,7 +18,12 @@ export const sendStreamPrompt = ({
       headers: {
         Accept: "text/event-stream",
       },
-      params: { input, files_ids: filesIds },
+      params: {
+        input,
+        files_ids: filesIds,
+        with_thinking: false,
+        with_search: false,
+      },
       responseType: "stream",
       adapter: "fetch", // <- this option can also be set in axios.create()
     })

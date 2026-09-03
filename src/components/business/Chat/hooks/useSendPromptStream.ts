@@ -3,7 +3,10 @@ import { isAxiosError } from "axios";
 import { type Dispatch, type SetStateAction, useRef, useState } from "react";
 import { CHATS_QUERY_KEY, type Prompt, sendStreamPrompt } from "@/api";
 import { useFiles } from "@/providers/FilesProvider/useFiles";
-import { TOO_MANY_REQUESTS_MESSAGE_ID } from "../components/Message/constants";
+import {
+  ERROR_MESSAGE_ID,
+  TOO_MANY_REQUESTS_MESSAGE_ID,
+} from "../components/Message/constants";
 
 export const useSendPromptStream = (
   chatId: string,
@@ -33,16 +36,6 @@ export const useSendPromptStream = (
       .then(async (reader) => {
         const randomId = crypto.randomUUID();
 
-        setMessages((prevMessages) => [
-          {
-            id: randomId,
-            text: "",
-            role: "model",
-            files: [],
-          },
-          ...prevMessages.slice(1),
-        ]);
-
         while (true) {
           const { value, done } = await reader.read();
 
@@ -69,13 +62,23 @@ export const useSendPromptStream = (
             setMessages((prevMessages) => [
               {
                 id: data.promptId || randomId,
-                text: prevMessages[0].text + data.content,
+                text: (prevMessages[0].text ?? "") + data.content,
                 role: "model",
                 isStreaming: true,
                 thinking: data.isThinking
                   ? prevMessages[0].thinking + data.content
                   : prevMessages[0].thinking,
                 files: [],
+              },
+              ...prevMessages.slice(1),
+            ]);
+          } else if (value.type === "error") {
+            setMessages((prevMessages) => [
+              {
+                id: ERROR_MESSAGE_ID,
+                files: [],
+                text: "В последнем сообщении произошла ошибка. Попробуйте отправить его ещё раз или обновите страницу.",
+                role: "model",
               },
               ...prevMessages.slice(1),
             ]);
@@ -96,6 +99,16 @@ export const useSendPromptStream = (
                 role: "model",
                 isStreaming: false,
                 files: [],
+              },
+              ...prevMessages.slice(1),
+            ]);
+          } else {
+            setMessages((prevMessages) => [
+              {
+                id: ERROR_MESSAGE_ID,
+                files: [],
+                text: "В последнем сообщении произошла ошибка. Попробуйте отправить его ещё раз или обновите страницу.",
+                role: "model",
               },
               ...prevMessages.slice(1),
             ]);

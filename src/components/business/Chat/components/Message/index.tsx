@@ -74,7 +74,6 @@ const MessageContent = ({
       plugins={{ math, code }}
     >
       {message.replace(/[$]([^$])/g, "$$$$$1")}
-      {/* {`$$\\frac{\\log_a x}{\\log_a y} \\neq \\log_a \\frac{x}{y}$$`} */}
     </Streamdown>
   );
 };
