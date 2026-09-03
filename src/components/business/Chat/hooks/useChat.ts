@@ -51,7 +51,7 @@ export const useChat = (chatId: string | undefined) => {
                   id: chatId,
                   external_chat_id: "",
                   user_id: "",
-                  title: null,
+                  title: "Новый чат",
                   last_prompt: prompt,
                   created_at: new Date().toISOString(),
                 },
