@@ -5,8 +5,11 @@ import { getPlans, PLANS_QUERY_KEY, SIX_MONTHS_PLANS_QUERY_KEY } from "@/api";
 import Button from "@/components/ui/Button";
 import Icon from "@/components/ui/Icon";
 import { Text } from "@/components/ui/Text";
+import { useIsMobile } from "@/hooks/useMobile";
 
 export const SubscriptionButton = () => {
+  const isMobile = useIsMobile();
+
   usePrefetchQuery({
     queryKey: PLANS_QUERY_KEY,
     queryFn: () => getPlans(),
@@ -24,7 +27,7 @@ export const SubscriptionButton = () => {
       leftIcon={<Icon name="flash-circle" />}
     >
       <Text type="s" style="regular">
-        Улучшить
+        {isMobile ? "Улучшить" : "Открыть полный доступ"}
       </Text>
     </Button>
   );
