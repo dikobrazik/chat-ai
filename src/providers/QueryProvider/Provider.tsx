@@ -8,7 +8,8 @@ export const QueryProvider = ({ children }: PropsWithChildren) => {
     new QueryClient({
       defaultOptions: {
         queries: {
-          staleTime: 1000 * 60 * 15, // 5 minutes
+          gcTime: 1000 * 60 * 15, // 15 minutes
+          staleTime: 1000 * 60 * 15, // 15 minutes
           refetchInterval: (query) => {
             console.log("fetchFailureCount", query.state.fetchFailureCount);
             return query.state.fetchFailureCount ** 2 * 1000;
