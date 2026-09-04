@@ -83,12 +83,20 @@ export const Header = () => {
           >
             {!isChatScreen ? (
               <div className="flex flex-col">
-                <Button leftIcon={<Icon name="clipboard" />}>
+                <Button
+                  as="a"
+                  href="/plans"
+                  leftIcon={<Icon name="clipboard" />}
+                >
                   <Text type="s" style="regular">
                     Тарифы
                   </Text>
                 </Button>
-                <Button leftIcon={<Icon name="message-question" />}>
+                <Button
+                  as="a"
+                  href="/settings/help"
+                  leftIcon={<Icon name="message-question" />}
+                >
                   <Text type="s" style="regular">
                     Вопросы
                   </Text>
