@@ -16,22 +16,29 @@ export const refreshAccessToken = () =>
 export const postLogout = () =>
   axios.post<void>("auth/logout").then((response) => response.data);
 
+export const checkIsEmailRegistered = (email: string) =>
+  axios
+    .post<{ isRegistered: boolean }>("auth/email/check-email", { email })
+    .then((response) => response.data);
+
+type SignInResponse = { accessToken: string; authCodeSent: boolean };
+
 export const postEmailSignIn = (email: string, password: string) =>
   axios
-    .post<void>("auth/email/sign-in", { email, password })
+    .post<SignInResponse>("auth/email/sign-in", { email, password })
     .then((response) => response.data);
 
 export const postEmailVerify = (email: string, code: string) =>
   axios
-    .post<string>("auth/email/verify", { email, code })
+    .post<{ accessToken: string }>("auth/email/verify", { email, code })
     .then((response) => response.data);
 
 export const postResetPassword = (email: string) =>
   axios
-    .post<string>("auth/email/reset", { email })
+    .post<void>("auth/email/reset", { email })
     .then((response) => response.data);
 
 export const postResetNewPasswordVerify = (code: string, newPassword: string) =>
   axios
-    .post<string>("auth/email/reset-verify", { code, password: newPassword })
+    .post<void>("auth/email/reset-verify", { code, password: newPassword })
     .then((response) => response.data);

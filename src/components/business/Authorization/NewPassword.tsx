@@ -1,7 +1,8 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useMutation } from "@tanstack/react-query";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { type SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "react-toastify/unstyled";
 import * as yup from "yup";
 import { postResetNewPasswordVerify } from "@/api";
 import Button from "@/components/ui/Button";
@@ -25,6 +26,7 @@ const schema = yup.object({
 });
 
 export const NewPassword = () => {
+  const router = useRouter();
   const searchParams = useSearchParams();
 
   const {
@@ -39,6 +41,10 @@ export const NewPassword = () => {
     mutationKey: ["postResetNewPasswordVerify"],
     mutationFn: ({ code, password }: { code: string; password: string }) =>
       postResetNewPasswordVerify(code, password),
+    onSuccess: () => {
+      toast.success("Пароль успешно изменён, теперь вы можете войти в систему");
+      router.replace("/auth/sign-in");
+    },
   });
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {

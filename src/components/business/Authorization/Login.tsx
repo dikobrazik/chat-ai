@@ -1,10 +1,12 @@
 "use client";
 
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useMutation } from "@tanstack/react-query";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import * as yup from "yup";
+import { checkIsEmailRegistered } from "@/api";
 import Button from "@/components/ui/Button";
 import { Checkbox } from "@/components/ui/Checkbox";
 import { Divider } from "@/components/ui/Divider";
@@ -41,9 +43,21 @@ export const Login = () => {
   // бэкенд может игнорировать параметр, пока не начнёт его принимать
   const oauthQuery = mailingConsent ? "?mailing_consent=1" : "";
 
+  const { isPending, mutate } = useMutation({
+    mutationKey: ["check-email-registered"],
+    mutationFn: checkIsEmailRegistered,
+    onSuccess: ({ isRegistered }) => {
+      if (isRegistered) {
+        router.replace("/auth/sign-in");
+      } else {
+        router.replace("/auth/sign-up");
+      }
+    },
+  });
+
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     setEmail(data.email);
-    router.replace("/auth/sign-up");
+    mutate(data.email);
   };
 
   return (
@@ -65,6 +79,7 @@ export const Login = () => {
           size="m"
           fullWidth
           align="center"
+          disabled={isPending}
           leftIcon={<Icon name="google" />}
           href={`${BASE_URL}/api/auth/g${oauthQuery}`}
         >
@@ -76,6 +91,7 @@ export const Login = () => {
           fullWidth
           size="m"
           align="center"
+          disabled={isPending}
           leftIcon={<Icon name="yandex" />}
           href={`${BASE_URL}/api/auth/ya${oauthQuery}`}
         >
@@ -96,14 +112,24 @@ export const Login = () => {
           label="E-mail"
           fullWidth
           size="l"
+          readOnly={isPending}
           {...register("email")}
           error={errors.email?.message}
         />
-        <Button variant="primary" size="m" align="center" type="submit">
+        <Button
+          variant="primary"
+          size="m"
+          align="center"
+          type="submit"
+          loading={isPending}
+        >
           Продолжить
         </Button>
         <Text className="self-center" style="regular" color="#6F6F6F" type="s">
-          <Button onClick={() => router.replace("/auth/password-reset")}>
+          <Button
+            disabled={isPending}
+            onClick={() => router.replace("/auth/password-reset")}
+          >
             Забыли пароль?
           </Button>
         </Text>

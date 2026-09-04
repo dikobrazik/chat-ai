@@ -1,15 +1,18 @@
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "react-toastify/unstyled";
 import * as yup from "yup";
 import { postEmailSignIn } from "@/api";
 import Button from "@/components/ui/Button";
 import { Checkbox } from "@/components/ui/Checkbox";
 import { Text } from "@/components/ui/Text";
 import { TextField } from "@/components/ui/TextField";
+import { useAuthContext } from "@/providers/AuthProvider/hooks";
 import { useEmailAuth } from "@/providers/EmailAuthProvider/useEmailAuth";
 
 type Inputs = {
@@ -31,8 +34,12 @@ const schema = yup.object({
 
 export const Registration = () => {
   const router = useRouter();
+  const pathname = usePathname();
+
   const { email, setEmail, mailingConsent, setMailingConsent } = useEmailAuth();
   const [serverError, setServerError] = useState("");
+  const isSignInPage = pathname === "/auth/sign-in";
+  const { onGuestRegistered } = useAuthContext();
 
   const {
     register,
@@ -43,13 +50,23 @@ export const Registration = () => {
     defaultValues: { email },
   });
 
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    setEmail(data.email);
-    setServerError("");
-    try {
-      await postEmailSignIn(data.email, data.password);
-      router.replace("/auth/verify-code");
-    } catch (error) {
+  const { isPending, mutateAsync: signIn } = useMutation({
+    mutationKey: ["postEmailSignIn"],
+    mutationFn: ({ email, password }: Inputs) =>
+      postEmailSignIn(email, password),
+    onSuccess: (data) => {
+      if (data.authCodeSent) {
+        router.replace("/auth/verify-code");
+        toast.success("Отправили код подтверждения на вашу почту");
+      } else if (data.accessToken) {
+        onGuestRegistered(data.accessToken);
+
+        toast.success("Успешный вход в систему");
+
+        window.location.href = "/";
+      }
+    },
+    onError: (error) => {
       if (axios.isAxiosError(error) && error.response) {
         setServerError(
           error.response.data.code === "INVALID_CREDENTIALS"
@@ -57,21 +74,35 @@ export const Registration = () => {
             : "Ошибка при регистрации. Пожалуйста, попробуйте снова.",
         );
       }
-    }
+    },
+  });
+
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    setEmail(data.email);
+    setServerError("");
+
+    await signIn(data);
   };
 
   return (
     <div className="flex flex-col gap-8 px-16">
       <div className="flex flex-col gap-2 items-center">
         <Text as="h2" type="l">
-          Зарегистрируйтесь в Jonu AI
+          {isSignInPage ? "Войдите" : "Зарегистрируйтесь"} в Jonu AI
         </Text>
-        <Text className="text-center" type="s" style="regular" color="#6F6F6F">
-          Уже есть аккаунт?
-          <Link href="/login" className="ml-1">
-            Войдите
-          </Link>
-        </Text>
+        {!isSignInPage && (
+          <Text
+            className="text-center"
+            type="s"
+            style="regular"
+            color="#6F6F6F"
+          >
+            Уже есть аккаунт?
+            <Link href="/login" className="ml-1">
+              Войдите
+            </Link>
+          </Text>
+        )}
       </div>
 
       <form className="flex flex-col gap-6" onSubmit={handleSubmit(onSubmit)}>
@@ -81,6 +112,7 @@ export const Registration = () => {
           size="l"
           type="email"
           autoComplete="email"
+          readOnly={isPending}
           {...register("email")}
           error={errors.email?.message}
         ></TextField>
@@ -90,15 +122,24 @@ export const Registration = () => {
           size="l"
           type="password"
           autoComplete="new-password"
+          readOnly={isPending}
           {...register("password")}
           error={errors.password?.message}
         ></TextField>
-        <Button variant="primary" size="m" align="center" type="submit">
+        <Button
+          variant="primary"
+          size="m"
+          align="center"
+          type="submit"
+          loading={isPending}
+        >
           Продолжить
         </Button>
-        {/* <Text className="self-center" style="regular" color="#6F6F6F" type="s">
-          <Link href="/auth/password-reset">Забыли пароль?</Link>
-        </Text> */}
+        <Text className="self-center" style="regular" color="#6F6F6F" type="s">
+          <Link replace href="/auth/password-reset">
+            Забыли пароль?
+          </Link>
+        </Text>
         {serverError && (
           <Text className="self-center" style="regular" color="red" type="s">
             {serverError}

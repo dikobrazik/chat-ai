@@ -3,6 +3,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "react-toastify/unstyled";
 import * as yup from "yup";
 import { postResetPassword } from "@/api";
 import Button from "@/components/ui/Button";
@@ -24,7 +25,6 @@ const schema = yup.object({
 
 export const PasswordReset = () => {
   const router = useRouter();
-  const [isLetterSent, setIsLetterSent] = useState(false);
 
   const {
     register,
@@ -34,11 +34,17 @@ export const PasswordReset = () => {
     resolver: yupResolver(schema),
   });
 
-  const { isPending, mutateAsync: resetPassword } = useMutation({
+  const {
+    isPending,
+    isSuccess,
+    mutate: resetPassword,
+  } = useMutation({
     mutationKey: ["postResetPassword"],
     mutationFn: postResetPassword,
     onSuccess: () => {
-      setIsLetterSent(true);
+      toast.success(
+        "Письмо для восстановления пароля отправлено на вашу почту",
+      );
     },
   });
 
@@ -49,7 +55,7 @@ export const PasswordReset = () => {
     resetPassword(data.email);
   };
 
-  if (isLetterSent) {
+  if (isSuccess) {
     return (
       <div className="flex flex-col gap-8 px-16">
         <div className="flex flex-col gap-2 items-center">

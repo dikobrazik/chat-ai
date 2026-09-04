@@ -1,14 +1,13 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import axios from "axios";
+import { useMutation } from "@tanstack/react-query";
 import Link from "next/link";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify/unstyled";
 import * as yup from "yup";
-import { postEmailVerify, setAuthToken } from "@/api";
+import { postEmailVerify } from "@/api";
 import Button from "@/components/ui/Button";
 import { Text } from "@/components/ui/Text";
 import { TextField } from "@/components/ui/TextField";
-import { ACCESS_TOKEN_SOURCE_LOCAL_STORAGE_KEY } from "@/constants/auth";
 import { useAuthContext } from "@/providers/AuthProvider/hooks";
 import { useEmailAuth } from "@/providers/EmailAuthProvider/useEmailAuth";
 
@@ -36,14 +35,20 @@ export const VerifyCode = () => {
 
   const { email } = useEmailAuth();
 
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    await postEmailVerify(email, data.code).then((accessToken) => {
+  const { isPending, mutate: verifyCode } = useMutation({
+    mutationKey: ["postEmailVerify"],
+    mutationFn: (code: string) => postEmailVerify(email, code),
+    onSuccess: ({ accessToken }) => {
       onGuestRegistered(accessToken);
 
       toast.success("Успешный вход в систему");
 
       window.location.href = "/";
-    });
+    },
+  });
+
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    verifyCode(data.code);
   };
 
   return (
@@ -51,12 +56,6 @@ export const VerifyCode = () => {
       <div className="flex flex-col gap-2 items-center">
         <Text as="h2" type="l">
           Зарегистрируйтесь в Jonu AI
-        </Text>
-        <Text className="text-center" type="s" style="regular" color="#6F6F6F">
-          Уже есть аккаунт?
-          <Link href="/login" className="ml-1">
-            Войдите
-          </Link>
         </Text>
       </div>
 
@@ -67,15 +66,19 @@ export const VerifyCode = () => {
           size="l"
           type="text"
           autoComplete="off"
+          readOnly={isPending}
           {...register("code")}
           error={errors.code?.message}
         ></TextField>
-        <Button variant="primary" size="m" align="center" type="submit">
+        <Button
+          variant="primary"
+          size="m"
+          align="center"
+          type="submit"
+          loading={isPending}
+        >
           Продолжить
         </Button>
-        {/* <Text className="self-center" style="regular" color="#6F6F6F" type="s">
-          <Link href="/reset-password">Забыли пароль?</Link>
-        </Text> */}
       </form>
 
       <Text type="xs" style="regular" color="#9C9C9C" className="text-center">

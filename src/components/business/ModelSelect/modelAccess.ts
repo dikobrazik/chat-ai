@@ -3,7 +3,7 @@ import type { Model, Profile } from "@/api";
 const USER_STATUSES = [
   "guest",
   "active",
-  "subscription_base",
+  "verified",
   "subscription_plus",
   "subscription_pro",
 ];
