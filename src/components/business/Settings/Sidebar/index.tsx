@@ -6,10 +6,12 @@ import Button from "@/components/ui/Button";
 import Icon from "@/components/ui/Icon";
 import { Logo } from "@/components/ui/Logo";
 import { Text } from "@/components/ui/Text";
+import { useAuthContext } from "@/providers/AuthProvider/hooks";
 import styles from "./Sidebar.module.scss";
 
 export const SettingsSidebar = () => {
   const path = usePathname();
+  const { isGuest } = useAuthContext();
 
   return (
     <>
@@ -22,39 +24,43 @@ export const SettingsSidebar = () => {
       </div>
 
       <div className="flex flex-col gap-1">
-        <Button
-          className={path === "/settings/profile" ? styles.active : ""}
-          leftIcon={<Icon name="profile-circle" />}
-          as="a"
-          href="/settings/profile"
-          replace
-        >
-          Аккаунт
-        </Button>
-        <Button
-          className={path === "/settings/chat" ? styles.active : ""}
-          leftIcon={<Icon name="setting" />}
-          as="a"
-          href="/settings/chat"
-          replace
-        >
-          Управление&nbsp;данными
-        </Button>
-        <Button
-          disabled
-          className={path === "/settings/payment" ? styles.active : ""}
-          leftIcon={<Icon name="card" />}
-          rightIcon={
-            <Badge size="s" variant="secondary">
-              <Text type="s">Скоро</Text>
-            </Badge>
-          }
-          as="a"
-          href="/settings/payment"
-          replace
-        >
-          Оплата
-        </Button>
+        {!isGuest && (
+          <>
+            <Button
+              className={path === "/settings/profile" ? styles.active : ""}
+              leftIcon={<Icon name="profile-circle" />}
+              as="a"
+              href="/settings/profile"
+              replace
+            >
+              Аккаунт
+            </Button>
+            <Button
+              className={path === "/settings/chat" ? styles.active : ""}
+              leftIcon={<Icon name="setting" />}
+              as="a"
+              href="/settings/chat"
+              replace
+            >
+              Управление&nbsp;данными
+            </Button>
+            <Button
+              disabled
+              className={path === "/settings/payment" ? styles.active : ""}
+              leftIcon={<Icon name="card" />}
+              rightIcon={
+                <Badge size="s" variant="secondary">
+                  <Text type="s">Скоро</Text>
+                </Badge>
+              }
+              as="a"
+              href="/settings/payment"
+              replace
+            >
+              Оплата
+            </Button>
+          </>
+        )}
         <Button
           className={path === "/settings/about" ? styles.active : ""}
           leftIcon={<Icon name="info-circle" />}
