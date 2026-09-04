@@ -102,9 +102,11 @@ export const Login = () => {
         <Button variant="primary" size="m" align="center" type="submit">
           Продолжить
         </Button>
-        {/* <Text className="self-center" style="regular" color="#6F6F6F" type="s">
-          <Link href="/auth/password-reset">Забыли пароль?</Link>
-        </Text> */}
+        <Text className="self-center" style="regular" color="#6F6F6F" type="s">
+          <Button onClick={() => router.replace("/auth/password-reset")}>
+            Забыли пароль?
+          </Button>
+        </Text>
       </form>
 
       <div className="flex flex-col gap-4">

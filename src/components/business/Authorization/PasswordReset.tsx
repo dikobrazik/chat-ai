@@ -1,17 +1,14 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import axios from "axios";
-import Link from "next/link";
+import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
-import { toast } from "react-toastify/unstyled";
 import * as yup from "yup";
-import { postEmailVerify, setAuthToken } from "@/api";
+import { postResetPassword } from "@/api";
 import Button from "@/components/ui/Button";
 import { Divider } from "@/components/ui/Divider";
 import { Text } from "@/components/ui/Text";
 import { TextField } from "@/components/ui/TextField";
-import { ACCESS_TOKEN_SOURCE_LOCAL_STORAGE_KEY } from "@/constants/auth";
-import { useAuthContext } from "@/providers/AuthProvider/hooks";
 import { useEmailAuth } from "@/providers/EmailAuthProvider/useEmailAuth";
 
 type Inputs = {
@@ -27,7 +24,7 @@ const schema = yup.object({
 
 export const PasswordReset = () => {
   const router = useRouter();
-  const { setIsGuest } = useAuthContext();
+  const [isLetterSent, setIsLetterSent] = useState(false);
 
   const {
     register,
@@ -37,19 +34,48 @@ export const PasswordReset = () => {
     resolver: yupResolver(schema),
   });
 
-  const { email } = useEmailAuth();
+  const { isPending, mutateAsync: resetPassword } = useMutation({
+    mutationKey: ["postResetPassword"],
+    mutationFn: postResetPassword,
+    onSuccess: () => {
+      setIsLetterSent(true);
+    },
+  });
+
+  const { email, setEmail } = useEmailAuth();
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    // await postEmailVerify(email, data.code).then((accessToken) => {
-    //   setAuthToken(accessToken);
-    //   localStorage.removeItem(ACCESS_TOKEN_SOURCE_LOCAL_STORAGE_KEY);
-    //   setIsGuest(false);
-    //   axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
-    //   router.push("/");
-    //   router.refresh();
-    //   toast.success("Успешный вход в систему");
-    // });
+    setEmail(data.email);
+    resetPassword(data.email);
   };
+
+  if (isLetterSent) {
+    return (
+      <div className="flex flex-col gap-8 px-16">
+        <div className="flex flex-col gap-2 items-center">
+          <Text as="h2" type="l" className="text-center">
+            Для восстановления аккаунта перейдите по ссылке в письме
+          </Text>
+          <Text
+            className="text-center"
+            type="s"
+            style="regular"
+            color="#6F6F6F"
+          >
+            Отправили письмо на {email}
+          </Text>
+        </div>
+        <Button
+          size="m"
+          align="center"
+          variant="primary"
+          onClick={() => router.back()}
+        >
+          Отлично
+        </Button>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col gap-8 px-16">
@@ -70,9 +96,16 @@ export const PasswordReset = () => {
           type="email"
           autoComplete="email"
           {...register("email")}
+          readOnly={isPending}
           error={errors.email?.message}
         ></TextField>
-        <Button variant="primary" size="m" align="center" type="submit">
+        <Button
+          variant="primary"
+          size="m"
+          align="center"
+          type="submit"
+          loading={isPending}
+        >
           Сбросить пароль
         </Button>
       </form>

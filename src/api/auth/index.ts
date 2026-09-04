@@ -25,3 +25,13 @@ export const postEmailVerify = (email: string, code: string) =>
   axios
     .post<string>("auth/email/verify", { email, code })
     .then((response) => response.data);
+
+export const postResetPassword = (email: string) =>
+  axios
+    .post<string>("auth/email/reset", { email })
+    .then((response) => response.data);
+
+export const postResetNewPasswordVerify = (code: string, newPassword: string) =>
+  axios
+    .post<string>("auth/email/reset-verify", { code, password: newPassword })
+    .then((response) => response.data);
