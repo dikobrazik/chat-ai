@@ -88,7 +88,7 @@ export const Message = ({
   return (
     <>
       {!(SYSTEM_MESSAGES.includes(id) || id.startsWith(ERROR_MESSAGE_ID)) && (
-        <MessageActions text={message} role={role} />
+        <MessageActions id={id} text={message} role={role} />
       )}
       <div
         className={classNames(styles.message, styles[`${role}`], {

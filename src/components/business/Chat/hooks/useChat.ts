@@ -1,17 +1,11 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify/unstyled";
-import {
-  CHATS_QUERY_KEY,
-  type Chat,
-  createChat,
-  getChat,
-  type Model,
-  type Prompt,
-} from "@/api";
-import { useChatPrompts, useChat as useChatQuery } from "@/api/chat";
+import { CHATS_QUERY_KEY, type Chat, createChat } from "@/api";
+import { useChat as useChatQuery } from "@/api/chat";
+import { type Prompt, useChatPrompts } from "@/api/prompt";
 import { useModelContext } from "@/providers/ModelProvider/hooks";
 import { ERROR_MESSAGE_ID } from "../components/Message/constants";
 
@@ -81,12 +75,15 @@ export const useChat = (chatId: string | undefined) => {
 
   useEffect(() => {
     if (chat) {
-      if (prompts.length > 0) {
-        setMessages(prompts);
-      }
       setModel({ id: chat.model_id });
     }
-  }, [chat, prompts]);
+  }, [chat?.model_id]);
+
+  useEffect(() => {
+    if (prompts.length > 0) {
+      setMessages(prompts);
+    }
+  }, [prompts.length]);
 
   return {
     messages,

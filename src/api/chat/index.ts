@@ -1,6 +1,6 @@
 import EventSourceStream from "@server-sent-stream/web";
 import axios from "axios";
-import type { Chat, Prompt } from "./types";
+import type { Chat } from "./types";
 
 type SendPromptRequest = {
   input: string;
@@ -47,11 +47,6 @@ export const getChats = () =>
 
 export const getChat = (chatId: string) =>
   axios.get<Chat>(`chat/${chatId}`).then((response) => response.data);
-
-export const getChatPrompts = (chatId: string) =>
-  axios
-    .get<Prompt[]>(`chat/${chatId}/prompt`)
-    .then((response) => response.data);
 
 export const updateChat = (
   chatId: string,
