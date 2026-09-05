@@ -43,16 +43,8 @@ export const ChatActions = ({ chatId, hiddenActions }: Props) => {
         Закрепить
       </Button>
       <Button
-        disabled
-        rightIcon={
-          <Badge variant="secondary" size="s">
-            <Text type="xs" style="regular">
-              Скоро
-            </Text>
-          </Badge>
-        }
         leftIcon={<Icon name="edit-square" />}
-        onClick={preventDefault(() => {})}
+        href={`/chat/${chatId}/rename`}
       >
         Переименовать
       </Button>

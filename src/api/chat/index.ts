@@ -61,6 +61,7 @@ export type ChatResponse = {
 export type ChatInfo = {
   id: string;
   model: Model;
+  title: string;
 };
 
 type PromptFile = {
@@ -81,6 +82,11 @@ export type Prompt = {
 
 export const getChat = (chatId: string) =>
   axios.get<ChatResponse>(`chat/${chatId}`).then((response) => response.data);
+
+export const updateChat = (
+  chatId: string,
+  payload: Partial<Pick<Chat, "title">>,
+) => axios.patch(`chat/${chatId}`, payload);
 
 export const getImageUrl = ({
   chatId,
