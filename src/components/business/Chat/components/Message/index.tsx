@@ -50,7 +50,7 @@ const MessageContent = ({
 }) => {
   const { id: chatId } = useParams();
 
-  if (id === ERROR_MESSAGE_ID) {
+  if (id.startsWith(ERROR_MESSAGE_ID)) {
     return <span>{message}</span>;
   } else if (id === TOO_MANY_REQUESTS_MESSAGE_ID) {
     return <TooManyRequests />;
@@ -87,12 +87,12 @@ export const Message = ({
 }: Prompt) => {
   return (
     <>
-      {!SYSTEM_MESSAGES.includes(id) && (
+      {!(SYSTEM_MESSAGES.includes(id) || id.startsWith(ERROR_MESSAGE_ID)) && (
         <MessageActions text={message} role={role} />
       )}
       <div
         className={classNames(styles.message, styles[`${role}`], {
-          [styles.error]: id === ERROR_MESSAGE_ID,
+          [styles.error]: id.startsWith(ERROR_MESSAGE_ID),
           [styles.banner]: id === TOO_MANY_REQUESTS_MESSAGE_ID,
         })}
       >

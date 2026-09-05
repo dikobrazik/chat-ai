@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify/unstyled";
 import {
   CHATS_QUERY_KEY,
   type Chat,
@@ -29,13 +30,15 @@ export const useChat = (chatId: string | undefined) => {
             const response = error.response;
             setMessages((prevMessages) => [
               {
-                id: ERROR_MESSAGE_ID,
+                id: `${ERROR_MESSAGE_ID}-${Date.now()}`,
                 files: response?.data.files ?? [],
                 text: response?.data.message ?? error.message,
                 role: "model",
               },
               ...prevMessages.slice(1),
             ]);
+
+            toast.error(response?.data.message);
           }
         }
       },

@@ -75,7 +75,7 @@ export const useSendPromptStream = (
           } else if (value.type === "error") {
             setMessages((prevMessages) => [
               {
-                id: ERROR_MESSAGE_ID,
+                id: `${ERROR_MESSAGE_ID}-${Date.now()}`,
                 files: [],
                 text: "В последнем сообщении произошла ошибка. Попробуйте отправить его ещё раз или обновите страницу.",
                 role: "model",
@@ -105,7 +105,7 @@ export const useSendPromptStream = (
           } else {
             setMessages((prevMessages) => [
               {
-                id: ERROR_MESSAGE_ID,
+                id: `${ERROR_MESSAGE_ID}-${Date.now()}`,
                 files: [],
                 text: "В последнем сообщении произошла ошибка. Попробуйте отправить его ещё раз или обновите страницу.",
                 role: "model",
