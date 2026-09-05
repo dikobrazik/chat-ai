@@ -19,7 +19,7 @@ export const Header = () => {
   const isMobile = useIsMobile();
   const { isGuest } = useAuthContext();
 
-  const onShareClick = useShare();
+  const onShareClick = useShare(chatId as string);
   const isChatScreen = usePathname().startsWith("/chat/");
 
   return (
