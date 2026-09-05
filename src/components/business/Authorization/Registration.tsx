@@ -68,11 +68,20 @@ export const Registration = () => {
     },
     onError: (error) => {
       if (axios.isAxiosError(error) && error.response) {
-        setServerError(
-          error.response.data.code === "INVALID_CREDENTIALS"
-            ? "Неверные учетные данные"
-            : "Ошибка при регистрации. Пожалуйста, попробуйте снова.",
-        );
+        switch (error.response.data.code) {
+          case "INVALID_CREDENTIALS":
+            setServerError("Неверные учетные данные");
+            break;
+          case "NO_PASSWORD_SET":
+            setServerError(
+              'Учетная запись не имеет пароля. Пожалуйста, используйте "Забыли пароль?" для его установки.',
+            );
+            break;
+          default:
+            setServerError(
+              "Ошибка при регистрации. Пожалуйста, попробуйте снова.",
+            );
+        }
       }
     },
   });
@@ -98,7 +107,7 @@ export const Registration = () => {
             color="#6F6F6F"
           >
             Уже есть аккаунт?
-            <Link href="/login" className="ml-1">
+            <Link replace href="/login" className="ml-1">
               Войдите
             </Link>
           </Text>
