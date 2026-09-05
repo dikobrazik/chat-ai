@@ -1,3 +1,5 @@
+import { useMemo } from "react";
+import { useChats } from "@/api";
 import { Badge } from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
 import { Divider } from "@/components/ui/Divider";
@@ -5,6 +7,7 @@ import Icon from "@/components/ui/Icon";
 import { Text } from "@/components/ui/Text";
 import { preventDefault } from "@/utils";
 import { useDelete } from "./hooks/useDelete";
+import { usePin } from "./hooks/usePin";
 import { useShare } from "./hooks/useShare";
 
 type Actions = "share" | "pin" | "rename" | "move" | "archive" | "delete";
@@ -15,8 +18,15 @@ type Props = {
 };
 
 export const ChatActions = ({ chatId, hiddenActions }: Props) => {
-  const onShareClick = useShare();
+  const onShareClick = useShare(chatId);
+  const onPinClick = usePin(chatId);
   const onDeleteClick = useDelete(chatId);
+  const { chats } = useChats();
+
+  const isPinned = useMemo(() => {
+    const chat = chats?.find((chat) => chat.id === chatId);
+    return chat?.is_pinned ?? false;
+  }, [chats, chatId]);
 
   return (
     <div className="flex flex-col gap-1">
@@ -29,18 +39,10 @@ export const ChatActions = ({ chatId, hiddenActions }: Props) => {
         </Button>
       )}
       <Button
-        disabled
-        rightIcon={
-          <Badge variant="secondary" size="s">
-            <Text type="xs" style="regular">
-              Скоро
-            </Text>
-          </Badge>
-        }
-        leftIcon={<Icon name="pin" />}
-        onClick={preventDefault(() => {})}
+        leftIcon={<Icon name={isPinned ? "pinned-off" : "pin"} />}
+        onClick={preventDefault(onPinClick)}
       >
-        Закрепить
+        {isPinned ? "Открепить" : "Закрепить"}
       </Button>
       <Button
         leftIcon={<Icon name="edit-square" />}
@@ -58,7 +60,6 @@ export const ChatActions = ({ chatId, hiddenActions }: Props) => {
           </Badge>
         }
         leftIcon={<Icon name="add-square" />}
-        // rightIcon={<Icon name="arrow-right" />}
         onClick={preventDefault(() => {})}
       >
         Перенести в проект

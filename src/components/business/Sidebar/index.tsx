@@ -153,10 +153,7 @@ export const ChatSidebar = ({
                   .map((_, index) => (
                     <Skeleton
                       isLoading
-                      key={`s_${
-                        // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-                        index
-                      }`}
+                      key={`s_${index}`}
                       className="mb-2"
                       height={40}
                     />

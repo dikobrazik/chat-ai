@@ -159,7 +159,7 @@
   display: grid;
   grid-template-rows: 0fr;
 
-  & > div {
+  &>div {
     overflow: hidden;
     min-height: 0;
   }
@@ -207,6 +207,7 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
+
     svg,
     path {
       transition: none;
@@ -222,6 +223,7 @@
   }
 
   @media (hover: hover) {
+
     &:hover path:nth-of-type(2),
     &:hover path:nth-of-type(3) {
       transform: rotate(180deg) scale(1.1);

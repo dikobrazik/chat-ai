@@ -23,6 +23,9 @@
   "linter": {
     "enabled": true,
     "rules": {
+      "suspicious": {
+        "noArrayIndexKey": "info"
+      },
       "a11y": {
         "useKeyWithClickEvents": "off",
         "noStaticElementInteractions": "off"

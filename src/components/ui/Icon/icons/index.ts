@@ -44,6 +44,7 @@ import { MessageQuestionIcon } from "./MessageQuestionIcon";
 import { MoreIcon } from "./MoreIcon";
 import { PaperclipIcon } from "./PaperclipIcon";
 import { PinIcon } from "./PinIcon";
+import { PinnedOffIcon } from "./PinnedOffIcon";
 import { PlusIcon } from "./PlusIcon";
 import { ProfileCircleIcon } from "./ProfileCircleIcon";
 import { RefreshIcon } from "./Refresh2Icon";
@@ -60,6 +61,7 @@ import { YandexIcon } from "./YandexIcon";
 
 // Re-export all icons
 export {
+  PinnedOffIcon,
   FileUploadedIcon as File_uploadedIcon,
   EyeIcon,
   DislikeIcon,
@@ -121,6 +123,8 @@ export {
 
 // Icon registry for dynamic loading
 export const iconComponents = {
+  "pinned-off": PinnedOffIcon,
+
   "file-uploaded": FileUploadedIcon,
 
   eye: EyeIcon,

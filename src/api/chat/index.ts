@@ -46,6 +46,7 @@ export type Chat = {
   id: string;
   external_chat_id: string;
   user_id: string;
+  is_pinned: boolean;
   title: null | string;
   created_at: string;
 };
@@ -62,6 +63,7 @@ export type ChatInfo = {
   id: string;
   model: Model;
   title: string;
+  isPinned: string;
 };
 
 type PromptFile = {
@@ -85,7 +87,7 @@ export const getChat = (chatId: string) =>
 
 export const updateChat = (
   chatId: string,
-  payload: Partial<Pick<Chat, "title">>,
+  payload: Partial<Pick<Chat, "title" | "is_pinned">>,
 ) => axios.patch(`chat/${chatId}`, payload);
 
 export const getImageUrl = ({

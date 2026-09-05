@@ -1,10 +1,8 @@
-import { useParams } from "next/navigation";
 import { toast } from "react-toastify/unstyled";
 import { patchChatPublic } from "@/api";
 import { useCopy } from "@/hooks/useCopy";
 
-export const useShare = () => {
-  const { id: chatId } = useParams();
+export const useShare = (chatId: string) => {
   const copyToClipboard = useCopy();
 
   const onShareClick = async () => {
