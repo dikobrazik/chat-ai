@@ -15,6 +15,7 @@ import Button from "@/components/ui/Button";
 import Icon from "@/components/ui/Icon";
 import { Text } from "@/components/ui/Text";
 import { usePersistentState } from "@/hooks/usePersistenState";
+import { cn } from "@/lib/utils";
 import { useAuthContext } from "@/providers/AuthProvider/hooks";
 import type { Attachment } from "@/providers/FilesProvider";
 import { useFiles } from "@/providers/FilesProvider/useFiles";
@@ -171,11 +172,64 @@ export default function Page() {
     router.push(`/chat/${chatId}?query=${encodeURIComponent(filter.prompt)}`);
   };
 
+  const Ideas = () => {
+    return isImageChat ? null : (
+      <div className="flex gap-2 flex-col sm:flex-row justify-center items-start min-h-40">
+        <Button
+          onClick={() => {
+            setValue("Создай текст ");
+            promptRef.current?.focus();
+          }}
+          variant="outline"
+          borderRadius="full"
+          leftIcon={<Icon name="firstline" />}
+        >
+          Создать текст
+        </Button>
+        <Button
+          onClick={() => {
+            setValue("Помоги с домашним заданием ");
+            promptRef.current?.focus();
+          }}
+          variant="outline"
+          borderRadius="full"
+          leftIcon={<Icon name="book-saved" />}
+        >
+          Для учёбы
+        </Button>
+        <Button
+          onClick={() => {
+            setValue("Придумай идею ");
+            promptRef.current?.focus();
+          }}
+          variant="outline"
+          borderRadius="full"
+          leftIcon={<Icon name="lamp-on" />}
+        >
+          Придумать идею
+        </Button>
+        <Button
+          href="/image-chat"
+          variant="outline"
+          borderRadius="full"
+          leftIcon={<Icon name="image" />}
+        >
+          Создать картинку
+        </Button>
+      </div>
+    );
+  };
+
   return (
-    <div className="flex flex-col justify-between h-full">
+    <div
+      className={cn(`flex flex-col sm:justify-between h-full`, {
+        "justify-between": isImageChat,
+        "justify-end": !isImageChat,
+      })}
+    >
       <div></div>
       <div className="flex flex-col gap-6">
-        <div className="flex flex-col gap-2 text-center">
+        <div className="flex flex-col gap-2 text-left sm:text-center">
           <Text as="h1" type="xl" style="regular">
             {isImageChat
               ? "Изображения"
@@ -199,6 +253,10 @@ export default function Page() {
           )}
         </div>
 
+        <div className="block sm:hidden">
+          <Ideas />
+        </div>
+
         <PromptField
           ref={promptRef}
           value={value}
@@ -212,57 +270,14 @@ export default function Page() {
           onInputChange={setValue}
           onSendClick={sendClick}
         />
-
-        {/* высота одинаковая на обоих разделах, чтобы заголовок и поле ввода не прыгали при переключении */}
-        {isImageChat ? (
-          <div className="h-40">
+        {isImageChat && (
+          <div className="min-h-40">
             <ImageFilters onSelect={onFilterSelect} />
           </div>
-        ) : (
-          <div className="flex gap-2 justify-center items-start h-40">
-            <Button
-              onClick={() => {
-                setValue("Создай текст ");
-                promptRef.current?.focus();
-              }}
-              variant="outline"
-              borderRadius="full"
-              leftIcon={<Icon name="firstline" />}
-            >
-              Создать текст
-            </Button>
-            <Button
-              onClick={() => {
-                setValue("Помоги с домашним заданием ");
-                promptRef.current?.focus();
-              }}
-              variant="outline"
-              borderRadius="full"
-              leftIcon={<Icon name="book-saved" />}
-            >
-              Для учёбы
-            </Button>
-            <Button
-              onClick={() => {
-                setValue("Придумай идею ");
-                promptRef.current?.focus();
-              }}
-              variant="outline"
-              borderRadius="full"
-              leftIcon={<Icon name="lamp-on" />}
-            >
-              Придумать идею
-            </Button>
-            <Button
-              href="/image-chat"
-              variant="outline"
-              borderRadius="full"
-              leftIcon={<Icon name="image" />}
-            >
-              Создать картинку
-            </Button>
-          </div>
         )}
+        <div className="hidden sm:block">
+          <Ideas />
+        </div>
       </div>
 
       <Footer />
