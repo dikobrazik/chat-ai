@@ -57,7 +57,7 @@ export const PasswordReset = () => {
 
   if (isSuccess) {
     return (
-      <div className="flex flex-col gap-8 px-16">
+      <div className="flex flex-col gap-8 px-2 sm:px-16">
         <div className="flex flex-col gap-2 items-center">
           <Text as="h2" type="l" className="text-center">
             Для восстановления аккаунта перейдите по ссылке в письме
@@ -84,7 +84,7 @@ export const PasswordReset = () => {
   }
 
   return (
-    <div className="flex flex-col gap-8 px-16">
+    <div className="flex flex-col gap-8 px-2 sm:px-16">
       <div className="flex flex-col gap-2 items-center">
         <Text as="h2" type="l">
           Восстановление доступа

@@ -4,11 +4,13 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import Button from "@/components/ui/Button";
 import { Text } from "@/components/ui/Text";
+import { useIsMobile } from "@/hooks/useMobile";
 import styles from "./CookieBanner.module.scss";
 
 const COOKIE_APPROVED_KEY = "cookie-approved";
 
 export const CookieBanner = () => {
+  const isMobile = useIsMobile();
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -45,12 +47,22 @@ export const CookieBanner = () => {
 
       <Button
         onClick={onDeclineClick}
+        size={isMobile ? "m" : "x"}
+        fullWidth={isMobile}
         className="flex-1 text-nowrap"
         variant="base"
+        align="center"
       >
         Отклонить&nbsp;все
       </Button>
-      <Button onClick={onAcceptClick} className="flex-1" variant="primary">
+      <Button
+        size={isMobile ? "m" : "x"}
+        fullWidth={isMobile}
+        onClick={onAcceptClick}
+        className="flex-1"
+        variant="primary"
+        align="center"
+      >
         Принять&nbsp;все
       </Button>
     </div>
