@@ -1,5 +1,4 @@
-import { useMemo } from "react";
-import { useChats } from "@/api";
+import { useChat } from "@/api";
 import { Badge } from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
 import { Divider } from "@/components/ui/Divider";
@@ -21,12 +20,7 @@ export const ChatActions = ({ chatId, hiddenActions }: Props) => {
   const onShareClick = useShare(chatId);
   const onPinClick = usePin(chatId);
   const onDeleteClick = useDelete(chatId);
-  const { chats } = useChats();
-
-  const isPinned = useMemo(() => {
-    const chat = chats?.find((chat) => chat.id === chatId);
-    return chat?.is_pinned ?? false;
-  }, [chats, chatId]);
+  const { chat } = useChat(chatId);
 
   return (
     <div className="flex flex-col gap-1">
@@ -39,10 +33,10 @@ export const ChatActions = ({ chatId, hiddenActions }: Props) => {
         </Button>
       )}
       <Button
-        leftIcon={<Icon name={isPinned ? "pinned-off" : "pin"} />}
+        leftIcon={<Icon name={chat?.is_pinned ? "pinned-off" : "pin"} />}
         onClick={preventDefault(onPinClick)}
       >
-        {isPinned ? "Открепить" : "Закрепить"}
+        {chat?.is_pinned ? "Открепить" : "Закрепить"}
       </Button>
       <Button
         leftIcon={<Icon name="edit-square" />}

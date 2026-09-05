@@ -1,9 +1,8 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useParams, useRouter } from "next/navigation";
-import { useMemo } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
-import { useChats } from "@/api";
+import { useChat } from "@/api";
 import { useRenameChat } from "@/api/chat/hooks/useRenameChat";
 import Button from "@/components/ui/Button";
 import Modal from "@/components/ui/Modal";
@@ -23,14 +22,8 @@ const schema = yup.object({
 export const RenameChatModal = () => {
   const router = useRouter();
   const { id: chatId } = useParams();
-  const { chats, isLoading } = useChats();
   const { renameChat, isPending } = useRenameChat(chatId as string);
-
-  // TODO: брать из getChat
-  const chatTitle = useMemo(() => {
-    const chat = chats?.find((chat) => chat.id === chatId);
-    return chat?.title ?? "";
-  }, [chats, chatId]);
+  const { chat, isLoading } = useChat(chatId as string);
 
   const {
     register,
@@ -56,7 +49,7 @@ export const RenameChatModal = () => {
           size="l"
           readOnly={isPending || isLoading}
           type="text"
-          defaultValue={chatTitle}
+          defaultValue={chat?.title ?? ""}
           error={errors.newTitle?.message}
           {...register("newTitle")}
         />

@@ -11,6 +11,7 @@ import {
   type Model,
   type Prompt,
 } from "@/api";
+import { useChatPrompts, useChat as useChatQuery } from "@/api/chat";
 import { useModelContext } from "@/providers/ModelProvider/hooks";
 import { ERROR_MESSAGE_ID } from "../components/Message/constants";
 
@@ -56,6 +57,9 @@ export const useChat = (chatId: string | undefined) => {
                   user_id: "",
                   title: "Новый чат",
                   last_prompt: prompt,
+                  is_pinned: false,
+                  is_public: false,
+                  model_id: model?.id ?? 1,
                   created_at: new Date().toISOString(),
                 },
                 ...chats,
@@ -66,34 +70,27 @@ export const useChat = (chatId: string | undefined) => {
       },
     });
 
-  const { data: chat } = useQuery({
-    queryKey: ["chat", chatId],
-    enabled: !!chatId && chatId !== "new",
-    refetchInterval: false,
-    queryFn: () =>
-      getChat(chatId as string).catch((error) => {
+  const { chat, isError, error } = useChatQuery(chatId as string);
+  const { prompts = [] } = useChatPrompts(chatId as string);
+
+  useEffect(() => {
+    if (isError) {
+      if (axios.isAxiosError(error)) {
         if (error.status === 401 || error.status === 403) {
           router.replace("/");
         }
-
-        return {
-          prompts: [],
-          chat: {
-            id: "",
-            model: {} as Model,
-          },
-        };
-      }),
-  });
+      }
+    }
+  }, [isError, error]);
 
   useEffect(() => {
     if (chat) {
-      if (chat.prompts.length > 0) {
-        setMessages(chat.prompts);
+      if (prompts.length > 0) {
+        setMessages(prompts);
       }
-      setModel(chat.chat.model);
+      setModel({ id: chat.model_id });
     }
-  }, [chat]);
+  }, [chat, prompts]);
 
   return {
     messages,

@@ -1,6 +1,5 @@
 import EventSourceStream from "@server-sent-stream/web";
 import axios from "axios";
-import type { Model } from "../model/api";
 
 type SendPromptRequest = {
   input: string;
@@ -46,6 +45,8 @@ export type Chat = {
   id: string;
   external_chat_id: string;
   user_id: string;
+  is_public: boolean;
+  model_id: number;
   is_pinned: boolean;
   title: null | string;
   created_at: string;
@@ -54,19 +55,7 @@ export type Chat = {
 export const getChats = () =>
   axios.get<Chat[]>(`chat`).then((response) => response.data);
 
-export type ChatResponse = {
-  prompts: Prompt[];
-  chat: ChatInfo;
-};
-
-export type ChatInfo = {
-  id: string;
-  model: Model;
-  title: string;
-  isPinned: string;
-};
-
-type PromptFile = {
+export type PromptFile = {
   id: string;
   name: string;
   size: number;
@@ -83,7 +72,12 @@ export type Prompt = {
 };
 
 export const getChat = (chatId: string) =>
-  axios.get<ChatResponse>(`chat/${chatId}`).then((response) => response.data);
+  axios.get<Chat>(`chat/${chatId}`).then((response) => response.data);
+
+export const getChatPrompts = (chatId: string) =>
+  axios
+    .get<Prompt[]>(`chat/${chatId}/prompt`)
+    .then((response) => response.data);
 
 export const updateChat = (
   chatId: string,
