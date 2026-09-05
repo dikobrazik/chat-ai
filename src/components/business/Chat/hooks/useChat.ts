@@ -53,14 +53,10 @@ export const useChat = (chatId: string | undefined) => {
             ? [
                 {
                   id: chatId,
-                  external_chat_id: "",
-                  user_id: "",
                   title: "Новый чат",
                   last_prompt: prompt,
                   is_pinned: false,
-                  is_public: false,
                   model_id: model?.id ?? 1,
-                  created_at: new Date().toISOString(),
                 },
                 ...chats,
               ]

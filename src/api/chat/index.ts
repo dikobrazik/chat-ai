@@ -1,5 +1,6 @@
 import EventSourceStream from "@server-sent-stream/web";
 import axios from "axios";
+import type { Chat, Prompt } from "./types";
 
 type SendPromptRequest = {
   input: string;
@@ -41,35 +42,8 @@ export const sendStreamPrompt = ({
 export const createChat = (payload: { model_id: number }) =>
   axios.post<string>(`chat`, payload).then((response) => response.data);
 
-export type Chat = {
-  id: string;
-  external_chat_id: string;
-  user_id: string;
-  is_public: boolean;
-  model_id: number;
-  is_pinned: boolean;
-  title: null | string;
-  created_at: string;
-};
-
 export const getChats = () =>
   axios.get<Chat[]>(`chat`).then((response) => response.data);
-
-export type PromptFile = {
-  id: string;
-  name: string;
-  size: number;
-  type: string;
-};
-
-export type Prompt = {
-  id: string;
-  text: string;
-  isStreaming?: boolean;
-  thinking?: string;
-  files: PromptFile[];
-  role: string;
-};
 
 export const getChat = (chatId: string) =>
   axios.get<Chat>(`chat/${chatId}`).then((response) => response.data);
@@ -101,3 +75,4 @@ export const patchChatPublic = ({ chatId }: { chatId: string }) =>
     .then((response) => response.data);
 
 export * from "./hooks";
+export * from "./types";
