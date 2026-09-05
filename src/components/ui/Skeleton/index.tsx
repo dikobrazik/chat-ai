@@ -18,7 +18,7 @@ export const Skeleton = (props: SkeletonProps) => {
   return (
     <div className={cn(className, "animate-pulse")}>
       <div
-        className="w-full h-full bg-[#F7F7F7] rounded-xl"
+        className="w-full h-full bg-[#F7F7F7] dark:bg-[#292929] rounded-xl"
         style={{ width, height }}
       />
     </div>
