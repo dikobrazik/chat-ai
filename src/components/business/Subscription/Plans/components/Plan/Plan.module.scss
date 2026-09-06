@@ -5,14 +5,42 @@
   border-radius: 24px;
   padding: 24px;
   gap: 24px;
-  flex: 1;
-  scroll-snap-align: center;
+  flex: 0 1 320px;
+  min-width: 0;
 
   @include media-max(md) {
-    flex: 1 0 90%;
+    flex: none;
+    width: 100%;
   }
+}
 
-  & .selectButton {
-    margin-top: auto;
+// подсветка популярного тарифа: два размытых пятна из макета
+.plan-plus {
+  background-image:
+    radial-gradient(circle 188px at 53px 107px, rgba(15, 138, 255, 0.16), rgba(15, 138, 255, 0)),
+    radial-gradient(circle 188px at 267px 483px, rgba(255, 107, 52, 0.16), rgba(255, 107, 52, 0));
+
+  @include media-max(md) {
+    order: -2;
   }
+}
+
+.plan-pro {
+  @include media-max(md) {
+    order: -1;
+  }
+}
+
+// бейдж «Популярный» берёт высоту строки от родителя: гасим её, иначе пилюля
+// вырастает до 32px вместо 24px из макета
+.header {
+  line-height: 0;
+}
+
+.oldPrice {
+  text-decoration: line-through;
+}
+
+.cancelIcon {
+  color: #0F8AFF;
 }

@@ -2,9 +2,10 @@ import type { Plan as PlanType, Subscription } from "@/api/subscription";
 import { Badge } from "@/components/ui/Badge";
 import Button, { type ButtonVariant } from "@/components/ui/Button";
 import { Divider } from "@/components/ui/Divider";
-import { List, ListItem } from "@/components/ui/List";
+import { Icon } from "@/components/ui/Icon";
 import { Text } from "@/components/ui/Text";
 import { PLANS_MAP } from "@/constants/plans";
+import { cn } from "@/lib/utils";
 import { formatCurrency } from "@/utils/format-currency";
 import styles from "./Plan.module.scss";
 
@@ -55,74 +56,86 @@ export const Plan = ({
   }
 
   return (
-    <div key={plan.id} className={styles.plan}>
-      <div className="flex justify-between items-start h-7">
-        <Text className="inline" as="h3" style="regular" type="l">
+    <div key={plan.id} className={cn(styles.plan, styles[`plan-${plan.id}`])}>
+      <div
+        className={cn(
+          styles.header,
+          "flex justify-between items-center gap-3 h-7",
+        )}
+      >
+        <Text as="h3" style="regular" type="l">
           {plan.name}
         </Text>
 
         {plan.isPopular && (
           <Badge size="m" as="span" variant="success">
-            <Text type="xs">Популярный</Text>
+            <Text style="regular" type="xs">
+              Популярный
+            </Text>
           </Badge>
         )}
       </div>
 
-      <div className="gap-1 h-14">
-        <div>
+      <div className="flex flex-col gap-1">
+        <div className="flex items-baseline gap-2">
           {((isSixMonths && plan.price > 0) || finalPrice !== plan.price) && (
-            <>
-              <Text
-                color="#0F8AFF3D"
-                className="inline line-through"
-                as="h4"
-                style="regular"
-                type="xl"
-              >
-                {formatCurrency(plan.price)}
-              </Text>{" "}
-            </>
+            <Text
+              color="#0F8AFF3D"
+              className={styles.oldPrice}
+              as="span"
+              type="xl"
+            >
+              {formatCurrency(plan.price)}
+            </Text>
           )}
-          <Text className="inline" as="h4" style="regular" type="xl">
+          <Text as="span" type="xl">
             {formatCurrency(finalPrice)}
           </Text>
-          <Text color="#9C9C9C" as="span" style="regular" type="m">
-            {" "}
+          <Text color="#9C9C9C" as="span" style="regular" type="s">
             / {plan.freeDays ? `в течение ${plan.freeDays} дней` : "месяц"}
           </Text>
         </div>
         <Text color="#6F6F6F" style="regular" type="s">
-          {isSixMonths && finalPrice > 0 ? (
-            <>
-              <Text color="black">{formatCurrency(finalPrice * 6)}</Text> за 6
-              месяцев
-            </>
-          ) : (
-            plan.description
-          )}
+          {isSixMonths && finalPrice > 0
+            ? `${formatCurrency(finalPrice * 6)} за 6 месяцев`
+            : plan.description}
         </Text>
       </div>
 
-      <Button
-        variant={SUBSCRIPTION_BUTTON_VARIANT[plan.id]}
-        disabled={isActive}
-        size="m"
-        onClick={() => onPlanSelect(plan.id, isSixMonths)}
-      >
-        {buttonText}
-      </Button>
+      <div className="flex flex-col gap-3">
+        <Button
+          variant={SUBSCRIPTION_BUTTON_VARIANT[plan.id]}
+          disabled={isActive}
+          size="m"
+          align="center"
+          fullWidth
+          onClick={() => onPlanSelect(plan.id, isSixMonths)}
+        >
+          {buttonText}
+        </Button>
+
+        {plan.isPopular && (
+          <div className="flex items-center justify-center gap-2">
+            <Icon name="verify" className={styles.cancelIcon} />
+            <Text style="regular" type="xs">
+              Можно отменить в любое время
+            </Text>
+          </div>
+        )}
+      </div>
 
       <Divider />
 
-      <List>
-        <ListItem>
-          <Text type="m">{plan.features[0]}</Text>
-        </ListItem>
-        {plan.features.slice(1).map((feature, index) => (
-          // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-          <ListItem key={index}>{feature}</ListItem>
-        ))}
-      </List>
+      <div className="flex flex-col gap-3">
+        <Text type="s">{plan.features[0]}</Text>
+        <div className="flex flex-col gap-2">
+          {plan.features.slice(1).map((feature) => (
+            <Text key={feature} style="regular" type="s">
+              {feature}
+            </Text>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };

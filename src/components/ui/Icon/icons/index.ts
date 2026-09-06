@@ -55,12 +55,14 @@ import { SidebarToggleIcon } from "./SidebarToggleIcon";
 import { SidebarToggleOnIcon } from "./SidebarToggleOnIcon";
 import { SpinnerIcon } from "./SpinnerIcon";
 import { TrashIcon } from "./TrashIcon";
+import { VerifyIcon } from "./VerifyIcon";
 import { VideoPlayIcon } from "./VideoPlayIcon";
 import { XCircleIcon } from "./XCircleIcon";
 import { YandexIcon } from "./YandexIcon";
 
 // Re-export all icons
 export {
+  VerifyIcon,
   PinnedOffIcon,
   FileUploadedIcon as File_uploadedIcon,
   EyeIcon,
@@ -123,6 +125,8 @@ export {
 
 // Icon registry for dynamic loading
 export const iconComponents = {
+  verify: VerifyIcon,
+
   "pinned-off": PinnedOffIcon,
 
   "file-uploaded": FileUploadedIcon,
