@@ -1,0 +1,78 @@
+// экран оплаты занимает всё окно: колонка чата ограничена 768px, а чекауту
+// нужны две колонки. z-index намеренно не задаём — иначе фиксированный
+// cookie-баннер (у него z-index: auto и он ниже по DOM) уедет под страницу
+.page {
+  position: fixed;
+  inset: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: spacing(6);
+  // cookie-баннер прибит к низу окна и перекрывает конец страницы — оставляем
+  // под него запас, иначе юрблок и кнопка оплаты недостижимы у нового
+  // пользователя. Плюс safe-area, чтобы не уезжало под home indicator
+  // высота баннера: ~120px на десктопе и ~280px на мобиле, где он в колонку
+  padding-bottom: calc(140px + env(safe-area-inset-bottom));
+  background-color: var(--background);
+
+  @include media-max(md) {
+    padding: spacing(4);
+    padding-bottom: calc(300px + env(safe-area-inset-bottom));
+  }
+}
+
+.close {
+  position: absolute;
+  top: spacing(6);
+  left: spacing(6);
+
+  @include media-max(md) {
+    position: static;
+    margin-bottom: spacing(2);
+  }
+}
+
+// стрелки «назад» в ките нет — используем шеврон, как в фильтрах изображений
+.backIcon {
+  transform: rotate(90deg);
+}
+
+.checkout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: spacing(16);
+  align-items: start;
+  max-width: 1040px;
+  margin: 0 auto;
+  padding-top: spacing(12);
+
+  @include media-max(lg) {
+    gap: spacing(10);
+  }
+
+  @include media-max(md) {
+    grid-template-columns: minmax(0, 1fr);
+    gap: spacing(8);
+    padding-top: spacing(2);
+  }
+}
+
+.total {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: spacing(4);
+  border-top: 1px solid #EFEFEF;
+
+  @media (prefers-color-scheme: dark) {
+    border-top-color: rgba(255, 255, 255, 0.1);
+  }
+}
+
+.support {
+  padding-top: spacing(4);
+  border-top: 1px solid #EFEFEF;
+
+  @media (prefers-color-scheme: dark) {
+    border-top-color: rgba(255, 255, 255, 0.1);
+  }
+}

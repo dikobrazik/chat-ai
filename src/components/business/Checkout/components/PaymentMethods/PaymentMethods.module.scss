@@ -1,0 +1,83 @@
+.methods {
+  display: flex;
+  flex-direction: column;
+  gap: spacing(3);
+}
+
+.method {
+  border: 1px solid #EFEFEF;
+  border-radius: border-radius("2xl");
+  background-color: var(--background);
+  transition: border-color 0.2s ease;
+
+  &:hover {
+    border-color: #D7D7D7;
+  }
+
+  &.selected {
+    border-color: #0F8AFF;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    border-color: rgba(255, 255, 255, 0.1);
+
+    &:hover {
+      border-color: var(--foreground);
+    }
+  }
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  gap: spacing(3);
+  padding: spacing(4);
+  cursor: pointer;
+}
+
+// радио-точка: своей нет в DS, собрана по паттерну чекбокса (#0F8AFF при выборе)
+.radio {
+  position: relative;
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  border: 1.5px solid #D1D1D1;
+  border-radius: border-radius(full);
+  transition: border-color 0.15s ease-in-out;
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 3px;
+    border-radius: border-radius(full);
+    background-color: #0F8AFF;
+    opacity: 0;
+    transition: opacity 0.15s ease-in-out;
+  }
+}
+
+.head input:focus-visible + .radio {
+  outline: 2px solid #0F8AFF;
+  outline-offset: 2px;
+}
+
+.selected .radio {
+  border-color: #0F8AFF;
+
+  &::after {
+    opacity: 1;
+  }
+}
+
+.icon {
+  flex-shrink: 0;
+  color: #6F6F6F;
+}
+
+.selected .icon {
+  color: #0F8AFF;
+}
+
+.content {
+  padding: 0 spacing(4) spacing(4);
+}
