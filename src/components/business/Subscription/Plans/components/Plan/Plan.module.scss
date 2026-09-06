@@ -41,3 +41,11 @@
 .cancelIcon {
   color: #0F8AFF;
 }
+
+.cancelNoteHidden {
+  visibility: hidden;
+
+  @include media-max(md) {
+    display: none;
+  }
+}

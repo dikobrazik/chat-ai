@@ -93,14 +93,17 @@ export const Plan = ({
           {buttonText}
         </Button>
 
-        {plan.isPopular && (
-          <div className="flex items-center justify-center gap-2">
-            <Icon name="verify" className={styles.cancelIcon} />
-            <Text style="regular" type="xs">
-              {CANCEL_ANYTIME_TEXT}
-            </Text>
-          </div>
-        )}
+        <div
+          aria-hidden={!plan.isPopular}
+          className={cn("flex items-center justify-center gap-2", {
+            [styles.cancelNoteHidden]: !plan.isPopular,
+          })}
+        >
+          <Icon name="verify" className={styles.cancelIcon} />
+          <Text style="regular" type="xs">
+            {CANCEL_ANYTIME_TEXT}
+          </Text>
+        </div>
       </div>
 
       <Divider />
