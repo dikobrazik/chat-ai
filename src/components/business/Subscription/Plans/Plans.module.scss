@@ -9,9 +9,10 @@
 }
 
 .close {
-  position: absolute;
+  position: fixed;
   top: 24px;
   right: 24px;
+  z-index: 1;
 
   @include media-max(md) {
     top: 16px;
@@ -44,8 +45,6 @@ h1.title {
   }
 }
 
-// бейдж со скидкой берёт высоту строки от родителя: гасим её, иначе пилюля
-// вырастает до 32px вместо 24px из макета
 .tabLabel {
   display: flex;
   align-items: center;

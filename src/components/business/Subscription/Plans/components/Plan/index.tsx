@@ -1,27 +1,13 @@
 import type { Plan as PlanType, Subscription } from "@/api/subscription";
 import { Badge } from "@/components/ui/Badge";
-import Button, { type ButtonVariant } from "@/components/ui/Button";
+import Button from "@/components/ui/Button";
 import { Divider } from "@/components/ui/Divider";
 import { Icon } from "@/components/ui/Icon";
 import { Text } from "@/components/ui/Text";
-import { PLANS_MAP } from "@/constants/plans";
 import { cn } from "@/lib/utils";
-import { formatCurrency } from "@/utils/format-currency";
+import { CANCEL_ANYTIME_TEXT, POPULAR_BADGE_TEXT } from "./constants";
 import styles from "./Plan.module.scss";
-
-const CURRENT_PLAN_TEXT = "Текущий план";
-
-const SUBSCRIPTION_BUTTON_TEXT = {
-  [PLANS_MAP.base]: "Прошлый век",
-  [PLANS_MAP.plus]: "Перейти на Plus",
-  [PLANS_MAP.pro]: "Перейти на Pro",
-} as Record<string, string>;
-
-const SUBSCRIPTION_BUTTON_VARIANT = {
-  [PLANS_MAP.base]: "base",
-  [PLANS_MAP.plus]: "primary",
-  [PLANS_MAP.pro]: "pro",
-} as Record<string, ButtonVariant>;
+import { usePlan } from "./usePlan";
 
 type PlanProps = {
   isSixMonths?: boolean;
@@ -38,25 +24,20 @@ export const Plan = ({
   plan,
   onPlanSelect,
 }: PlanProps) => {
-  const isActive = activePlan === plan.id;
-  let buttonText = isActive
-    ? CURRENT_PLAN_TEXT
-    : SUBSCRIPTION_BUTTON_TEXT[plan.id];
-
-  const discountMultiplier = discount ? (100 - discount) / 100 : 1;
-  let finalPrice = plan.price * discountMultiplier;
-
-  if (plan.freeDays) {
-    finalPrice = 1;
-    buttonText = "Попробовать за 1 ₽";
-  }
-
-  if (activePlan === PLANS_MAP.pro && plan.id === PLANS_MAP.plus) {
-    buttonText = "Пройденный шаг";
-  }
+  const {
+    isActive,
+    buttonText,
+    buttonVariant,
+    price,
+    oldPrice,
+    period,
+    subtitle,
+    featuresTitle,
+    features,
+  } = usePlan({ plan, activePlan, discount, isSixMonths });
 
   return (
-    <div key={plan.id} className={cn(styles.plan, styles[`plan-${plan.id}`])}>
+    <div className={cn(styles.plan, styles[`plan-${plan.id}`])}>
       <div
         className={cn(
           styles.header,
@@ -70,7 +51,7 @@ export const Plan = ({
         {plan.isPopular && (
           <Badge size="m" as="span" variant="success">
             <Text style="regular" type="xs">
-              Популярный
+              {POPULAR_BADGE_TEXT}
             </Text>
           </Badge>
         )}
@@ -78,33 +59,31 @@ export const Plan = ({
 
       <div className="flex flex-col gap-1">
         <div className="flex items-baseline gap-2">
-          {((isSixMonths && plan.price > 0) || finalPrice !== plan.price) && (
+          {oldPrice && (
             <Text
               color="#0F8AFF3D"
               className={styles.oldPrice}
               as="span"
               type="xl"
             >
-              {formatCurrency(plan.price)}
+              {oldPrice}
             </Text>
           )}
           <Text as="span" type="xl">
-            {formatCurrency(finalPrice)}
+            {price}
           </Text>
           <Text color="#9C9C9C" as="span" style="regular" type="s">
-            / {plan.freeDays ? `в течение ${plan.freeDays} дней` : "месяц"}
+            / {period}
           </Text>
         </div>
         <Text color="#6F6F6F" style="regular" type="s">
-          {isSixMonths && finalPrice > 0
-            ? `${formatCurrency(finalPrice * 6)} за 6 месяцев`
-            : plan.description}
+          {subtitle}
         </Text>
       </div>
 
       <div className="flex flex-col gap-3">
         <Button
-          variant={SUBSCRIPTION_BUTTON_VARIANT[plan.id]}
+          variant={buttonVariant}
           disabled={isActive}
           size="m"
           align="center"
@@ -118,7 +97,7 @@ export const Plan = ({
           <div className="flex items-center justify-center gap-2">
             <Icon name="verify" className={styles.cancelIcon} />
             <Text style="regular" type="xs">
-              Можно отменить в любое время
+              {CANCEL_ANYTIME_TEXT}
             </Text>
           </div>
         )}
@@ -127,9 +106,9 @@ export const Plan = ({
       <Divider />
 
       <div className="flex flex-col gap-3">
-        <Text type="s">{plan.features[0]}</Text>
+        <Text type="s">{featuresTitle}</Text>
         <div className="flex flex-col gap-2">
-          {plan.features.slice(1).map((feature) => (
+          {features.map((feature) => (
             <Text key={feature} style="regular" type="s">
               {feature}
             </Text>
