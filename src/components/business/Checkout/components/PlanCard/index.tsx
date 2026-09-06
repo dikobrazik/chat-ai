@@ -5,12 +5,7 @@ import { Divider } from "@/components/ui/Divider";
 import Icon from "@/components/ui/Icon";
 import { Text } from "@/components/ui/Text";
 import { formatCurrency } from "@/utils/format-currency";
-import {
-  getBillingLabel,
-  getDaysLabel,
-  getEveryPeriodLabel,
-  getPeriodLabel,
-} from "../../constants";
+import { getDaysGenitiveLabel, getPeriodLabel } from "../../constants";
 import styles from "./PlanCard.module.scss";
 
 type Props = {
@@ -28,36 +23,22 @@ export const PlanCard = ({
   isPayDisabled,
   onPay,
 }: Props) => {
-  const { periodPrice, fullPeriodPrice, firstPayment, trialDays } =
-    getPlanPricing(plan, isSixMonths);
+  const { periodPrice, firstPayment, trialDays } = getPlanPricing(
+    plan,
+    isSixMonths,
+  );
 
+  // состав тарифа берём из /subscription/plans — тот же источник, что и у
+  // карточек на /plans: правки текстов на бэке меняют оба экрана
   const [featuresTitle, ...features] = plan.features;
 
   // дату первого списания отдаёт бэк; пока поля нет — обходимся сроком
-  const chargeDate = plan.nextChargeAt
-    ? `, ${new Intl.DateTimeFormat("ru-RU", { day: "numeric", month: "long" }).format(new Date(plan.nextChargeAt))}`
-    : "";
-
-  const rows = [
-    {
-      label: `Подписка ${getBillingLabel(isSixMonths)}`,
-      value: formatCurrency(fullPeriodPrice),
-    },
-  ];
-
-  if (fullPeriodPrice !== periodPrice) {
-    rows.push({
-      label: `Скидка ${plan.discount}%`,
-      value: `−${formatCurrency(fullPeriodPrice - periodPrice)}`,
-    });
-  }
-
-  if (trialDays) {
-    rows.push({
-      label: `Пробный период, ${getDaysLabel(trialDays)}`,
-      value: formatCurrency(firstPayment),
-    });
-  }
+  const nextChargeLabel = plan.nextChargeAt
+    ? new Intl.DateTimeFormat("ru-RU", {
+        day: "numeric",
+        month: "long",
+      }).format(new Date(plan.nextChargeAt))
+    : `После ${trialDays ? getDaysGenitiveLabel(trialDays) : getPeriodLabel(isSixMonths)}`;
 
   return (
     <div className={styles.card}>
@@ -86,49 +67,36 @@ export const PlanCard = ({
 
       <Divider />
 
-      <div className="flex flex-col gap-2">
-        {rows.map((row) => (
-          <div key={row.label} className={styles.row}>
-            <Text style="regular" type="s" color="#6F6F6F">
-              {row.label}
-            </Text>
-            <Text style="regular" type="s" color="#6F6F6F">
-              {row.value}
-            </Text>
-          </div>
-        ))}
+      <div className="flex flex-col gap-1">
         <div className={styles.row}>
           <Text type="m">К оплате сегодня</Text>
           <Text type="m">{formatCurrency(firstPayment)}</Text>
         </div>
-      </div>
-
-      <div className="flex flex-col gap-3">
-        <Button
-          variant="primary"
-          size="m"
-          align="center"
-          fullWidth
-          loading={isPaying}
-          disabled={isPayDisabled}
-          onClick={onPay}
-        >
-          <Text type="s" style="regular">
-            {trialDays
-              ? "Активировать пробную версию"
-              : `Оплатить ${formatCurrency(firstPayment)}`}
+        <div className={styles.row}>
+          <Text style="regular" type="s" color="#6F6F6F">
+            {nextChargeLabel}
           </Text>
-        </Button>
-
-        {/* сумма и периодичность будущих списаний обязаны быть у кнопки —
-            требование 376-ФЗ, общей ссылки на оферту недостаточно.
-            Дату первого списания отдаёт бэк; пока поля нет — только срок */}
-        <Text className="text-center" style="regular" type="xs" color="#6F6F6F">
-          {trialDays
-            ? `Следующее списание через ${getDaysLabel(trialDays)}${chargeDate} — ${formatCurrency(periodPrice)}, далее ${formatCurrency(periodPrice)} ${getEveryPeriodLabel(isSixMonths)}`
-            : `Следующее списание${chargeDate || ` через ${getPeriodLabel(isSixMonths)}`} — ${formatCurrency(periodPrice)}, далее ${getEveryPeriodLabel(isSixMonths)}`}
-        </Text>
+          <Text style="regular" type="s" color="#6F6F6F">
+            {formatCurrency(periodPrice)}
+          </Text>
+        </div>
       </div>
+
+      <Button
+        variant="primary"
+        size="m"
+        align="center"
+        fullWidth
+        loading={isPaying}
+        disabled={isPayDisabled}
+        onClick={onPay}
+      >
+        <Text type="s" style="regular">
+          {trialDays
+            ? "Активировать пробную версию"
+            : `Оплатить ${formatCurrency(firstPayment)}`}
+        </Text>
+      </Button>
     </div>
   );
 };

@@ -13,10 +13,12 @@ import {
   usePlans,
 } from "@/api";
 import { SIX_MONTHS_QUERY_KEY } from "@/components/business/Subscription/constants";
+import { getPlanPricing } from "@/components/business/Subscription/pricing";
 import Button from "@/components/ui/Button";
 import Icon from "@/components/ui/Icon";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { Text } from "@/components/ui/Text";
+import { formatCurrency } from "@/utils/format-currency";
 import styles from "./Checkout.module.scss";
 import { CheckoutMessage } from "./components/CheckoutMessage";
 import { PaymentMethods } from "./components/PaymentMethods";
@@ -24,6 +26,8 @@ import { PlanCard } from "./components/PlanCard";
 import { SbpBanks } from "./components/SbpBanks";
 import {
   DEFAULT_PAYMENT_METHOD,
+  getDaysLabel,
+  getPeriodLabel,
   PAYMENT_ERROR_TEXT,
   PAYMENT_METHODS_MAP,
   type PaymentMethodId,
@@ -206,11 +210,16 @@ export const Checkout = () => {
   }
 
   const isBankRequired = selectedMethod === PAYMENT_METHODS_MAP.sbp;
+  const { firstPayment, periodPrice, trialDays } = getPlanPricing(
+    plan,
+    isSixMonths,
+  );
 
   return (
     <div className={styles.page}>
       <div className={styles.header}>
         <Button
+          className={styles.back}
           leftIcon={<Icon name="chevron-down" className={styles.backIcon} />}
           aria-label="Вернуться к тарифам"
           onClick={onClose}
@@ -222,8 +231,8 @@ export const Checkout = () => {
 
       <div className={styles.checkout}>
         <div className="flex flex-col gap-4">
-          <Text type="s" color="#6F6F6F">
-            Оплатить через
+          <Text style="regular" type="m" color="#6F6F6F">
+            Выберите способ оплаты
           </Text>
 
           <PaymentMethods
@@ -238,12 +247,6 @@ export const Checkout = () => {
               ),
             }}
           />
-
-          {isBankRequired && !selectedBankId && (
-            <Text style="regular" type="xs" color="#6F6F6F">
-              Выберите банк, чтобы продолжить
-            </Text>
-          )}
         </div>
 
         <div className="flex flex-col gap-4">
@@ -255,9 +258,19 @@ export const Checkout = () => {
             onPay={onPay}
           />
 
-          <Text style="regular" type="xs" color="#6F6F6F">
-            Подписка продлевается автоматически, пока вы не отключите продление
-            — для этого напишите в поддержку. Кассовый чек придёт на вашу почту.
+          {/* сумма, периодичность и порядок отказа — обязательный минимум
+              у кнопки оплаты (376-ФЗ), одной ссылки на оферту мало */}
+          <Text
+            className="text-center"
+            style="regular"
+            type="xs"
+            color="#6F6F6F"
+          >
+            {trialDays
+              ? `${formatCurrency(firstPayment)} за ${getDaysLabel(trialDays)}, затем платная подписка — ${formatCurrency(periodPrice)} за ${getPeriodLabel(isSixMonths)}. `
+              : `${formatCurrency(periodPrice)} за ${getPeriodLabel(isSixMonths)}. `}
+            Продлевается автоматически до отмены — отключить продление можно в
+            любой момент в настройках. Кассовый чек придёт на вашу почту.
             Оплачивая, вы соглашаетесь с{" "}
             <Link target="_blank" href="/terms">
               офертой
@@ -269,7 +282,12 @@ export const Checkout = () => {
             .
           </Text>
 
-          <Text style="regular" type="s" color="#6F6F6F">
+          <Text
+            className="text-center"
+            style="regular"
+            type="s"
+            color="#6F6F6F"
+          >
             Проблемы с оплатой?{" "}
             <Link
               target="_blank"

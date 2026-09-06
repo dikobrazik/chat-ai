@@ -55,7 +55,8 @@ export const SbpBanks = ({ selectedBankId, onBankSelect }: Props) => {
         <TextField
           fullWidth
           type="search"
-          label="Поиск банка"
+          label="Выберите банк, чтобы продолжить"
+          placeholder="Сбербанк"
           value={search}
           onChange={(event) => setSearch(event.currentTarget.value)}
         />

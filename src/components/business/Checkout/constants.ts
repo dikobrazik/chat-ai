@@ -65,6 +65,16 @@ export const getBillingLabel = (isSixMonths: boolean) =>
 export const getEveryPeriodLabel = (isSixMonths: boolean) =>
   isSixMonths ? "каждые 6 месяцев" : "каждый месяц";
 
+/** родительный падеж для предлога: «после 1 дня» / «после 3 дней» */
+export const getDaysGenitiveLabel = (days: number) => {
+  const lastDigit = days % 10;
+  const lastTwoDigits = days % 100;
+
+  return lastDigit === 1 && lastTwoDigits !== 11
+    ? `${days} дня`
+    : `${days} дней`;
+};
+
 /** «1 день» / «3 дня» / «7 дней» */
 export const getDaysLabel = (days: number) => {
   const lastDigit = days % 10;
