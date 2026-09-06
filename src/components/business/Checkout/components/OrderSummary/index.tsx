@@ -74,8 +74,11 @@ export const OrderSummary = ({
         <Text as="h1" type="xl">
           Выберите способ оплаты
         </Text>
-        <Text style="regular" type="m" color="#6F6F6F">
-          Jonu AI {plan.name} — {plan.description}
+        <Text as="p" style="regular" type="m" color="#6F6F6F">
+          Jonu AI {plan.name}
+        </Text>
+        <Text as="p" style="regular" type="s" color="#9C9C9C">
+          {plan.description}
         </Text>
       </div>
 

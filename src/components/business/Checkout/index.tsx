@@ -185,8 +185,8 @@ export const Checkout = () => {
     return (
       <div className={styles.page}>
         <CheckoutMessage
-          title={`Тариф «${plan.name}» бесплатный`}
-          description="Оплачивать его не нужно — он уже доступен всем"
+          title="Этот тариф бесплатный"
+          description={`«${plan.name}» доступен без оплаты — платить не за что`}
           actionText="Посмотреть платные тарифы"
           actionHref="/plans"
         />

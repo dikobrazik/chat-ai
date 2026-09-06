@@ -1,6 +1,8 @@
 // ui/TextField светлый по фону и с чёрным лейблом — в тёмной теме поле поиска
 // было бы нечитаемо. Правим точечно у себя, чтобы не менять формы авторизации
-.search :global(label) > span {
+// лейбл TextField приходит с инлайновым color="#000000" — в тёмной теме
+// перебиваем, иначе «Поиск банка» чёрным по чёрному
+.search :global(label) span {
   @media (prefers-color-scheme: dark) {
     color: var(--foreground) !important;
   }
