@@ -27,6 +27,32 @@
   }
 }
 
+// способ ещё не подключён: показываем, но выбрать нельзя
+.coming {
+  background-color: #F7F7F7;
+
+  &:hover {
+    border-color: #EFEFEF;
+  }
+
+  .head {
+    cursor: not-allowed;
+  }
+
+  .radio,
+  .icon {
+    opacity: 0.4;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    background-color: color-mix(in srgb, var(--background), white 6%);
+
+    &:hover {
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+  }
+}
+
 .head {
   display: flex;
   align-items: center;

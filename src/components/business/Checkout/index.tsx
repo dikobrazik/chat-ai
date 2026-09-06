@@ -13,21 +13,17 @@ import {
   usePlans,
 } from "@/api";
 import { SIX_MONTHS_QUERY_KEY } from "@/components/business/Subscription/constants";
-import { getPlanPricing } from "@/components/business/Subscription/pricing";
 import Button from "@/components/ui/Button";
 import Icon from "@/components/ui/Icon";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { Text } from "@/components/ui/Text";
-import { formatCurrency } from "@/utils/format-currency";
 import styles from "./Checkout.module.scss";
-import { CardWidget } from "./components/CardWidget";
 import { CheckoutMessage } from "./components/CheckoutMessage";
-import { OrderSummary } from "./components/OrderSummary";
 import { PaymentMethods } from "./components/PaymentMethods";
+import { PlanCard } from "./components/PlanCard";
 import { SbpBanks } from "./components/SbpBanks";
 import {
-  getDaysLabel,
-  getEveryPeriodLabel,
+  DEFAULT_PAYMENT_METHOD,
   PAYMENT_ERROR_TEXT,
   PAYMENT_METHODS_MAP,
   type PaymentMethodId,
@@ -61,11 +57,10 @@ export const Checkout = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const [isSixMonths, setIsSixMonths] = useState(
-    searchParams.get(SIX_MONTHS_QUERY_KEY) === "true",
-  );
+  const isSixMonths = searchParams.get(SIX_MONTHS_QUERY_KEY) === "true";
+
   const [selectedMethod, setSelectedMethod] = useState<PaymentMethodId>(
-    PAYMENT_METHODS_MAP.card,
+    DEFAULT_PAYMENT_METHOD,
   );
   const [selectedBankId, setSelectedBankId] = useState<string>();
   const [isPaying, setIsPaying] = useState(false);
@@ -80,20 +75,6 @@ export const Checkout = () => {
   const plan = (isSixMonths ? sixMonthsPlans : plans).find(
     (item) => item.id === planId,
   );
-  const monthlyPlan = plans.find((item) => item.id === planId);
-  const sixMonthsPlan = sixMonthsPlans.find((item) => item.id === planId);
-
-  const onSixMonthsChange = (checked: boolean) => {
-    setIsSixMonths(checked);
-    // банк выбирался под другую сумму — заставляем выбрать заново
-    setSelectedBankId(undefined);
-
-    // держим ссылку честной, но без навигации: перерисовка страницы сбросила бы
-    // выбранный способ оплаты и уже загруженную форму карты
-    const params = new URLSearchParams(searchParams);
-    params.set(SIX_MONTHS_QUERY_KEY, String(checked));
-    window.history.replaceState(null, "", `?${params}`);
-  };
 
   const onClose = () => {
     // при заходе по прямой ссылке возвращаться некуда: history.length у свежей
@@ -147,8 +128,8 @@ export const Checkout = () => {
     return (
       <div className={styles.page}>
         <div className={styles.checkout}>
-          <Skeleton isLoading height={420} />
-          <Skeleton isLoading height={420} />
+          <Skeleton isLoading height={320} />
+          <Skeleton isLoading height={520} />
         </div>
       </div>
     );
@@ -179,8 +160,7 @@ export const Checkout = () => {
     );
   }
 
-  // бесплатный тариф на экран оплаты попадать не должен: карточка «Бесплатный»
-  // на /plans тоже ведёт сюда, а платить за него нечего
+  // страховка: бесплатный тариф на экран оплаты вести не должен
   if (plan.price === 0) {
     return (
       <div className={styles.page}>
@@ -225,68 +205,31 @@ export const Checkout = () => {
     );
   }
 
-  const { firstPayment, periodPrice, trialDays } = getPlanPricing(
-    plan,
-    isSixMonths,
-  );
-  const everyPeriodLabel = getEveryPeriodLabel(isSixMonths);
-
-  // у формы карты своя кнопка оплаты внутри виджета Т-Банка
-  const isCardMethod = selectedMethod === PAYMENT_METHODS_MAP.card;
   const isBankRequired = selectedMethod === PAYMENT_METHODS_MAP.sbp;
 
   return (
     <div className={styles.page}>
-      <Button
-        className={styles.close}
-        leftIcon={<Icon name="chevron-down" className={styles.backIcon} />}
-        aria-label="Вернуться к тарифам"
-        onClick={onClose}
-      />
+      <div className={styles.header}>
+        <Button
+          leftIcon={<Icon name="chevron-down" className={styles.backIcon} />}
+          aria-label="Вернуться к тарифам"
+          onClick={onClose}
+        />
+        <Text as="h1" type="xl">
+          Настройте свой план
+        </Text>
+      </div>
 
       <div className={styles.checkout}>
-        <OrderSummary
-          plan={plan}
-          isSixMonths={isSixMonths}
-          sixMonthsDiscount={sixMonthsPlan?.discount}
-          losesTrial={!!monthlyPlan?.freeDays && !sixMonthsPlan?.freeDays}
-          onSixMonthsChange={onSixMonthsChange}
-        />
-
-        <div className="flex flex-col gap-6">
-          <div className={styles.total}>
-            <Text type="m">К оплате сегодня</Text>
-            <Text type="l">{formatCurrency(firstPayment)}</Text>
-          </div>
-
-          {/* сумма, периодичность и порядок отказа обязаны быть на экране
-              оплаты явно и ВЫШЕ любой кнопки оплаты — в том числе выше кнопки
-              внутри виджета Т-Банка */}
-          <div className="flex flex-col gap-2">
-            <Text style="regular" type="s" color="#6F6F6F">
-              {trialDays
-                ? `Сегодня спишется ${formatCurrency(firstPayment)}. Через ${getDaysLabel(trialDays)} — ${formatCurrency(periodPrice)}, далее по ${formatCurrency(periodPrice)} ${everyPeriodLabel}, пока вы не отключите продление.`
-                : `Подписка продлевается автоматически: ${everyPeriodLabel} будет списываться ${formatCurrency(periodPrice)}, пока вы не отключите продление.`}
-            </Text>
-            <Text style="regular" type="xs" color="#6F6F6F">
-              Оплачивая, вы соглашаетесь с{" "}
-              <Link target="_blank" href="/terms">
-                офертой
-              </Link>{" "}
-              и даёте{" "}
-              <Link target="_blank" href="/personal-data-consent">
-                согласие на обработку персональных данных
-              </Link>
-              . Кассовый чек придёт на вашу почту. Отключить продление можно в
-              любой момент — напишите в поддержку.
-            </Text>
-          </div>
+        <div className="flex flex-col gap-4">
+          <Text type="s" color="#6F6F6F">
+            Оплатить через
+          </Text>
 
           <PaymentMethods
             selectedMethod={selectedMethod}
             onMethodSelect={setSelectedMethod}
             content={{
-              card: <CardWidget plan={planId} isSixMonths={isSixMonths} />,
               sbp: (
                 <SbpBanks
                   selectedBankId={selectedBankId}
@@ -296,46 +239,46 @@ export const Checkout = () => {
             }}
           />
 
-          {!isCardMethod && (
-            <div className="flex flex-col gap-2">
-              <Button
-                variant="primary"
-                size="m"
-                align="center"
-                fullWidth
-                loading={isPaying}
-                disabled={isBankRequired && !selectedBankId}
-                onClick={onPay}
-              >
-                <Text type="s" style="regular">
-                  Оплатить {formatCurrency(firstPayment)}
-                </Text>
-              </Button>
-              {isBankRequired && !selectedBankId && (
-                <Text
-                  className="text-center"
-                  style="regular"
-                  type="xs"
-                  color="#6F6F6F"
-                >
-                  Выберите банк, чтобы продолжить
-                </Text>
-              )}
-            </div>
-          )}
-
-          <div className={styles.support}>
-            <Text style="regular" type="s" color="#6F6F6F">
-              Проблемы с оплатой?{" "}
-              <Link
-                target="_blank"
-                rel="noopener noreferrer"
-                href={SUPPORT_TELEGRAM_URL}
-              >
-                Напишите нам
-              </Link>
+          {isBankRequired && !selectedBankId && (
+            <Text style="regular" type="xs" color="#6F6F6F">
+              Выберите банк, чтобы продолжить
             </Text>
-          </div>
+          )}
+        </div>
+
+        <div className="flex flex-col gap-4">
+          <PlanCard
+            plan={plan}
+            isSixMonths={isSixMonths}
+            isPaying={isPaying}
+            isPayDisabled={isBankRequired && !selectedBankId}
+            onPay={onPay}
+          />
+
+          <Text style="regular" type="xs" color="#6F6F6F">
+            Подписка продлевается автоматически, пока вы не отключите продление
+            — для этого напишите в поддержку. Кассовый чек придёт на вашу почту.
+            Оплачивая, вы соглашаетесь с{" "}
+            <Link target="_blank" href="/terms">
+              офертой
+            </Link>{" "}
+            и даёте{" "}
+            <Link target="_blank" href="/personal-data-consent">
+              согласие на обработку персональных данных
+            </Link>
+            .
+          </Text>
+
+          <Text style="regular" type="s" color="#6F6F6F">
+            Проблемы с оплатой?{" "}
+            <Link
+              target="_blank"
+              rel="noopener noreferrer"
+              href={SUPPORT_TELEGRAM_URL}
+            >
+              Напишите нам
+            </Link>
+          </Text>
         </div>
       </div>
     </div>

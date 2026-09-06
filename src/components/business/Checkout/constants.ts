@@ -14,12 +14,15 @@ export const PAYMENT_METHODS: {
   title: string;
   description: string;
   icon: IconName;
+  /** способ отрисован, но выбрать нельзя — с бейджем «Скоро» */
+  isComing?: boolean;
 }[] = [
   {
     id: PAYMENT_METHODS_MAP.card,
-    title: "Банковская карта",
+    title: "Карта",
     description: "МИР и российские карты",
     icon: "card",
+    isComing: true,
   },
   {
     id: PAYMENT_METHODS_MAP.tpay,
@@ -34,6 +37,10 @@ export const PAYMENT_METHODS: {
     icon: "lock",
   },
 ];
+
+export const DEFAULT_PAYMENT_METHOD = PAYMENT_METHODS.find(
+  (method) => !method.isComing,
+)?.id as PaymentMethodId;
 
 export const SUPPORT_TELEGRAM_URL = "https://t.me/jonu_support";
 export const SUPPORT_EMAIL = "support@jonu.ru";
@@ -50,11 +57,15 @@ export const SBP_BANKS_PREVIEW_COUNT = 6;
 export const getPeriodLabel = (isSixMonths: boolean) =>
   isSixMonths ? "6 месяцев" : "месяц";
 
+/** «ежемесячно» / «раз в 6 месяцев» — для строки в чеке */
+export const getBillingLabel = (isSixMonths: boolean) =>
+  isSixMonths ? "раз в 6 месяцев" : "ежемесячно";
+
 /** «каждый месяц» / «каждые 6 месяцев» */
 export const getEveryPeriodLabel = (isSixMonths: boolean) =>
   isSixMonths ? "каждые 6 месяцев" : "каждый месяц";
 
-/** «Через 1 день» / «Через 3 дня» / «Через 7 дней» */
+/** «1 день» / «3 дня» / «7 дней» */
 export const getDaysLabel = (days: number) => {
   const lastDigit = days % 10;
   const lastTwoDigits = days % 100;

@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { Badge } from "@/components/ui/Badge";
 import Icon from "@/components/ui/Icon";
 import { Text } from "@/components/ui/Text";
 import { cn } from "@/lib/utils";
@@ -23,7 +24,10 @@ export const PaymentMethods = ({
       return (
         <div
           key={method.id}
-          className={cn(styles.method, { [styles.selected]: isSelected })}
+          className={cn(styles.method, {
+            [styles.selected]: isSelected,
+            [styles.coming]: method.isComing,
+          })}
         >
           <label className={styles.head}>
             <input
@@ -32,6 +36,7 @@ export const PaymentMethods = ({
               className="sr-only"
               value={method.id}
               checked={isSelected}
+              disabled={method.isComing}
               onChange={() => onMethodSelect(method.id)}
             />
             <span className={styles.radio} aria-hidden="true" />
@@ -40,10 +45,17 @@ export const PaymentMethods = ({
               <Text as="span" type="m">
                 {method.title}
               </Text>
-              <Text as="span" style="regular" type="s" color="#6F6F6F">
+              <Text as="span" style="regular" type="s" color="#9C9C9C">
                 {method.description}
               </Text>
             </span>
+            {method.isComing && (
+              <Badge as="span" size="s" variant="secondary">
+                <Text style="regular" type="xs">
+                  Скоро
+                </Text>
+              </Badge>
+            )}
           </label>
 
           {isSelected && content[method.id] && (
