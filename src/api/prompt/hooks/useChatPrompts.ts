@@ -10,6 +10,7 @@ export const getChatPromptsQueryKey = (chatId: string) => [
 export const useChatPrompts = (chatId: string) => {
   const { data, isLoading, isError, error } = useQuery({
     refetchInterval: false,
+    enabled: !!chatId,
     queryKey: getChatPromptsQueryKey(chatId),
     queryFn: () => getChatPrompts(chatId),
   });
