@@ -17,10 +17,11 @@ type Props = {
 };
 
 export const ChatActions = ({ chatId, hiddenActions }: Props) => {
+  const { chat } = useChat(chatId);
+
   const onShareClick = useShare(chatId);
   const onPinClick = usePin(chatId);
   const onDeleteClick = useDelete(chatId);
-  const { chat } = useChat(chatId);
 
   return (
     <div className="flex flex-col gap-1">
