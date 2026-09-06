@@ -12,7 +12,12 @@
   // пользователя. Плюс safe-area, чтобы не уезжало под home indicator
   // высота баннера: ~120px на десктопе и ~280px на мобиле, где он в колонку
   padding-bottom: calc(140px + env(safe-area-inset-bottom));
-  background-color: var(--background);
+  // серый фон под белыми карточками — тот же приём, что на странице тарифов
+  background-color: #F7F7F7;
+
+  @media (prefers-color-scheme: dark) {
+    background-color: var(--background);
+  }
 
   @include media-max(md) {
     padding: spacing(4);

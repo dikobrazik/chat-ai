@@ -1,14 +1,24 @@
+// белая карточка на сером фоне + тень из DS — главный объект экрана.
+// Радиус 24 как у карточек тарифов на /plans
 .card {
   display: flex;
   flex-direction: column;
   gap: spacing(6);
   padding: spacing(6);
-  border: 1px solid #EFEFEF;
   border-radius: border-radius("3xl");
-  background-color: var(--background);
+  background-color: #FFFFFF;
+  // тот же приём, что подсвечивает карточку Plus на /plans: два мягких
+  // радиальных пятна фирменными цветами, позиции в процентах — карточка
+  // здесь шире
+  background-image:
+    radial-gradient(circle 240px at 12% 14%, rgba(15, 138, 255, 0.16), rgba(15, 138, 255, 0)),
+    radial-gradient(circle 240px at 88% 86%, rgba(255, 107, 52, 0.16), rgba(255, 107, 52, 0));
+  box-shadow: shadow(md);
 
   @media (prefers-color-scheme: dark) {
-    border-color: rgba(255, 255, 255, 0.1);
+    background-color: var(--background);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: none;
   }
 
   @include media-max(md) {

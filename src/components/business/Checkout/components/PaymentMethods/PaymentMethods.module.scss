@@ -4,35 +4,49 @@
   gap: spacing(3);
 }
 
+// белые карточки на сером фоне: рамки нет, глубину даёт лёгкая тень,
+// выбранный способ обведён синим с мягким ореолом
 .method {
-  border: 1px solid #EFEFEF;
+  border: 1px solid transparent;
   border-radius: border-radius("2xl");
-  background-color: var(--background);
-  transition: border-color 0.2s ease;
+  background-color: #FFFFFF;
+  box-shadow: shadow(sm);
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 
   &:hover {
-    border-color: #D7D7D7;
+    box-shadow: shadow(md);
   }
 
   &.selected {
     border-color: #0F8AFF;
+    box-shadow: 0 0 0 4px #0F8AFF14;
   }
 
   @media (prefers-color-scheme: dark) {
+    background-color: var(--background);
     border-color: rgba(255, 255, 255, 0.1);
+    box-shadow: none;
 
     &:hover {
       border-color: var(--foreground);
     }
+
+    &.selected {
+      border-color: #0F8AFF;
+      box-shadow: 0 0 0 4px #0F8AFF29;
+    }
   }
 }
 
-// способ ещё не подключён: показываем, но выбрать нельзя
+// способ ещё не подключён: утоплен в фон страницы, без тени
 .coming {
-  background-color: #F7F7F7;
+  background-color: #EFEFEF;
+  box-shadow: none;
 
   &:hover {
-    border-color: #EFEFEF;
+    box-shadow: none;
   }
 
   .head {
