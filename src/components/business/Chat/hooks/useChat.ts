@@ -8,6 +8,7 @@ import { useChat as useChatQuery } from "@/api/chat";
 import { type Prompt, useChatPrompts } from "@/api/prompt";
 import { useModelContext } from "@/providers/ModelProvider/hooks";
 import { ERROR_MESSAGE_ID } from "../components/Message/constants";
+import { createNewChat } from "./utils";
 
 export const useChat = (chatId: string | undefined) => {
   const queryClient = useQueryClient();
@@ -22,40 +23,26 @@ export const useChat = (chatId: string | undefined) => {
       onError: (error) => {
         if (axios.isAxiosError(error)) {
           if (error.status === 403) {
-            const response = error.response;
+            const errorResponse = error.response;
             setMessages((prevMessages) => [
               {
                 id: `${ERROR_MESSAGE_ID}-${Date.now()}`,
-                files: response?.data.files ?? [],
-                text: response?.data.message ?? error.message,
+                files: [],
+                text: errorResponse?.data.message ?? error.message,
                 role: "model",
               },
               ...prevMessages.slice(1),
             ]);
 
-            toast.error(response?.data.message);
+            toast.error(errorResponse?.data.message);
           }
         }
       },
-      onSuccess: (chatId, prompt) => {
-        // GET /chat не отдаёт чат, пока в нём нет ни одного промпта, поэтому
-        // инвалидация тут бесполезна — кладём чат в список сами, чтобы он
-        // появился в сайдбаре сразу по клику «отправить»; настоящий заголовок
-        // придёт с бэка, когда модель дочитает ответ (useSendPromptStream)
-        queryClient.setQueryData<Chat[]>(CHATS_QUERY_KEY, (chats) =>
-          chats
-            ? [
-                {
-                  id: chatId,
-                  title: "Новый чат",
-                  last_prompt: prompt,
-                  is_pinned: false,
-                  model_id: model?.id ?? 1,
-                },
-                ...chats,
-              ]
-            : chats,
-        );
+      onSuccess: (chatId) => {
+        queryClient.setQueryData<Chat[]>(CHATS_QUERY_KEY, (chats) => [
+          createNewChat(chatId, model?.id ?? 1),
+          ...(chats ?? []),
+        ]);
         window.history.replaceState({}, "", `/chat/${chatId}`);
       },
     });
