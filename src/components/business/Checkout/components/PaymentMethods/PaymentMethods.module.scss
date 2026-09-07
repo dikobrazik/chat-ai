@@ -1,0 +1,123 @@
+.methods {
+  display: flex;
+  flex-direction: column;
+  gap: spacing(3);
+}
+
+// белые карточки на сером фоне: рамки нет, глубину даёт лёгкая тень,
+// выбранный способ обведён синим с мягким ореолом
+.method {
+  border: 1px solid transparent;
+  border-radius: border-radius("2xl");
+  background-color: #FFFFFF;
+  box-shadow: shadow(sm);
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+
+  &:hover {
+    box-shadow: shadow(md);
+  }
+
+  &.selected {
+    border-color: #0F8AFF;
+    box-shadow: 0 0 0 4px #0F8AFF14;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    background-color: var(--background);
+    border-color: rgba(255, 255, 255, 0.1);
+    box-shadow: none;
+
+    &:hover {
+      border-color: var(--foreground);
+    }
+
+    &.selected {
+      border-color: #0F8AFF;
+      box-shadow: 0 0 0 4px #0F8AFF29;
+    }
+  }
+}
+
+// способ ещё не подключён: утоплен в фон страницы, без тени
+.coming {
+  background-color: #EFEFEF;
+  box-shadow: none;
+
+  &:hover {
+    box-shadow: none;
+  }
+
+  .head {
+    cursor: not-allowed;
+  }
+
+  .radio,
+  .icon {
+    opacity: 0.4;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    background-color: color-mix(in srgb, var(--background), white 6%);
+
+    &:hover {
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+  }
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  gap: spacing(3);
+  padding: spacing(4);
+  cursor: pointer;
+}
+
+// радио-точка: своей нет в DS, собрана по паттерну чекбокса (#0F8AFF при выборе)
+.radio {
+  position: relative;
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  border: 1.5px solid #D1D1D1;
+  border-radius: border-radius(full);
+  transition: border-color 0.15s ease-in-out;
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 3px;
+    border-radius: border-radius(full);
+    background-color: #0F8AFF;
+    opacity: 0;
+    transition: opacity 0.15s ease-in-out;
+  }
+}
+
+.head input:focus-visible + .radio {
+  outline: 2px solid #0F8AFF;
+  outline-offset: 2px;
+}
+
+.selected .radio {
+  border-color: #0F8AFF;
+
+  &::after {
+    opacity: 1;
+  }
+}
+
+.icon {
+  flex-shrink: 0;
+  color: #6F6F6F;
+}
+
+.selected .icon {
+  color: #0F8AFF;
+}
+
+.content {
+  padding: 0 spacing(4) spacing(4);
+}

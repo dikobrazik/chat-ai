@@ -27,7 +27,14 @@ export const usePlans = () => {
     queryFn: () => getPlans({ sixMonths: true }),
   });
 
-  return { plans, sixMonthsPlans, isLoading, isError };
+  // оба запроса ходят всегда, поэтому и флаги общие: иначе экран, которому
+  // нужны шестимесячные тарифы, успевает показать «не найдено»
+  return {
+    plans,
+    sixMonthsPlans,
+    isLoading: isLoading || isSixMonthsPlansLoading,
+    isError: isError || isSixMonthsPlansError,
+  };
 };
 
 export const CURRENT_SUBSCRIPTION_QUERY_KEY = ["current-subscription"];

@@ -12,6 +12,7 @@ type Props = {
   autoComplete?: HTMLInputElement["autocomplete"];
   fullWidth?: boolean;
   error?: string;
+  placeholder?: string;
   onValueChange?: (value: string) => void;
 } & Omit<HTMLAttributes<HTMLInputElement>, "value" | "readOnly">;
 

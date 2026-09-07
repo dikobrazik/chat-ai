@@ -10,6 +10,11 @@ export type Plan = {
   isPopular?: boolean;
   isCurrentPlan?: boolean;
   features: string[];
+  /**
+   * ISO-дата первого полного списания. Бэк пока не отдаёт — до этого строка
+   * «Следующее списание» на экране оплаты просто не рисуется
+   */
+  nextChargeAt?: string;
 };
 
 export const getPlans = (params?: { sixMonths?: boolean }) =>
