@@ -1,3 +1,14 @@
+.tabs {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  width: 100%;
+
+  @include media-max(md) {
+    gap: 24px;
+  }
+}
+
 .tabsSwitch {
   display: flex;
   gap: 12px;
@@ -6,5 +17,7 @@
   background-color: #fff;
   align-self: center;
 
-  & .activeTab {}
+  & .tab {
+    padding: 12px 24px;
+  }
 }

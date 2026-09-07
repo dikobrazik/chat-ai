@@ -1,5 +1,4 @@
 import { type Key, type ReactNode, useMemo, useState } from "react";
-import { cn } from "@/lib/utils";
 import Button from "../Button";
 import styles from "./Tabs.module.scss";
 
@@ -20,11 +19,12 @@ export const Tabs = ({ tabs }: Props) => {
   );
 
   return (
-    <div className="flex flex-col gap-8">
+    <div className={styles.tabs}>
       <div className={styles.tabsSwitch}>
         {tabs.map((tab) => (
           <Button
             key={tab.key}
+            className={styles.tab}
             borderRadius="full"
             variant={tab.key === activeTab ? "base" : undefined}
             onClick={() => setActiveTab(tab.key)}
@@ -33,7 +33,7 @@ export const Tabs = ({ tabs }: Props) => {
           </Button>
         ))}
       </div>
-      <div>{activeTabContent}</div>
+      <div className="w-full">{activeTabContent}</div>
     </div>
   );
 };
