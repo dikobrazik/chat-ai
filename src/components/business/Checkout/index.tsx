@@ -31,6 +31,7 @@ import {
   type PaymentMethodId,
   SUPPORT_TELEGRAM_URL,
 } from "./constants";
+import { useGuestRedirect } from "./useGuestRedirect";
 
 export const Checkout = () => {
   const { plan: planId } = useParams<{ plan: string }>();
@@ -51,6 +52,8 @@ export const Checkout = () => {
   const plan = (isSixMonths ? sixMonthsPlans : plans).find(
     (item) => item.id === planId,
   );
+
+  useGuestRedirect(profile?.status === "guest", planId, isSixMonths);
 
   const onClose = () => {
     // при заходе по прямой ссылке возвращаться некуда: history.length у свежей

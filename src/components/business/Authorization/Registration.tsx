@@ -14,6 +14,7 @@ import { Text } from "@/components/ui/Text";
 import { TextField } from "@/components/ui/TextField";
 import { useAuthContext } from "@/providers/AuthProvider/hooks";
 import { useEmailAuth } from "@/providers/EmailAuthProvider/useEmailAuth";
+import { takeAuthRedirect } from "@/utils/auth-redirect";
 
 type Inputs = {
   email: string;
@@ -63,7 +64,7 @@ export const Registration = () => {
 
         toast.success("Успешный вход в систему");
 
-        window.location.href = "/";
+        window.location.replace(takeAuthRedirect());
       }
     },
     onError: (error) => {

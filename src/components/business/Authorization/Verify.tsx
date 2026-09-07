@@ -10,6 +10,7 @@ import { Text } from "@/components/ui/Text";
 import { TextField } from "@/components/ui/TextField";
 import { useAuthContext } from "@/providers/AuthProvider/hooks";
 import { useEmailAuth } from "@/providers/EmailAuthProvider/useEmailAuth";
+import { takeAuthRedirect } from "@/utils/auth-redirect";
 
 type Inputs = {
   code: string;
@@ -43,7 +44,7 @@ export const VerifyCode = () => {
 
       toast.success("Успешный вход в систему");
 
-      window.location.href = "/";
+      window.location.replace(takeAuthRedirect());
     },
   });
 

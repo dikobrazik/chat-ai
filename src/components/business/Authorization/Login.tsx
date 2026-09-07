@@ -75,6 +75,7 @@ export const Login = () => {
       <div className="flex flex-col gap-3">
         <Button
           as="a"
+          replace
           variant="base"
           size="m"
           fullWidth
@@ -87,6 +88,7 @@ export const Login = () => {
         </Button>
         <Button
           as="a"
+          replace
           variant="base"
           fullWidth
           size="m"
