@@ -19,6 +19,7 @@ import { preventDefault, stopPropagation } from "@/utils";
 import { ChatActions } from "../ChatActions";
 import { Profile } from "../Profile";
 import styles from "./Sidebar.module.scss";
+import { useShowUpsell } from "./useShowUpsell";
 
 export const ChatSidebar = ({
   isOpen,
@@ -31,6 +32,7 @@ export const ChatSidebar = ({
 }) => {
   const { isGuest } = useAuthContext();
   const pathname = usePathname();
+  const showUpsell = useShowUpsell();
 
   const { chats, isLoading } = useChats();
   const { active: isChatsOpen, toggle: toggleChats } = useToggle(true);
@@ -67,7 +69,7 @@ export const ChatSidebar = ({
           />
         </div>
         {/* профиль прижат к низу, как в развёрнутом сайдбаре */}
-        <div className="mt-auto flex flex-col items-center">
+        <div className="mt-auto flex flex-col items-center gap-3">
           {isGuest ? (
             <Button
               href="/login"
@@ -76,7 +78,18 @@ export const ChatSidebar = ({
               leftIcon={<Icon name="profile-circle" />}
             />
           ) : (
-            <Profile collapsed />
+            <>
+              {showUpsell && (
+                <Button
+                  href="/plans"
+                  variant="primary"
+                  align="center"
+                  aria-label="Открыть полный доступ"
+                  leftIcon={<Icon name="flash-circle" />}
+                />
+              )}
+              <Profile collapsed />
+            </>
           )}
         </div>
       </>
@@ -211,10 +224,26 @@ export const ChatSidebar = ({
           />
         </div>
       ) : (
-        // pl-1.5: центр аватара (32px) на оси центров иконок — та же точка,
-        // что в свёрнутом рейле, поэтому аватар не прыгает при сворачивании
-        <div className="pl-1.5">
-          <Profile />
+        <div className="flex flex-col gap-4">
+          {showUpsell && (
+            <div className="-mx-1">
+              <Banner
+                variant="promo"
+                title="Откройте полный доступ без ограничений"
+                description="Создавайте быстрее — без лимитов и ожиданий"
+                action={
+                  <Button as="a" variant="secondary" href="/plans">
+                    <Text className="w-full text-center" type="s" as="div">
+                      Открыть полный доступ
+                    </Text>
+                  </Button>
+                }
+              />
+            </div>
+          )}
+          <div className="pl-1.5">
+            <Profile />
+          </div>
         </div>
       )}
     </>

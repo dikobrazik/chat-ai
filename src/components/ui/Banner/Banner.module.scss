@@ -1,6 +1,4 @@
 .banner {
-  background-color: #F7F7F7;
-
   display: flex;
   flex-direction: column;
 
@@ -13,4 +11,13 @@
     align-items: center;
     justify-content: space-between;
   }
+}
+
+.variant-base {
+  background-color: #F7F7F7;
+}
+
+.variant-promo {
+  color: #FFFFFF;
+  background-image: linear-gradient(122deg, #239EFF 12%, #0F8AFF 46%, #0076EB 79%);
 }
