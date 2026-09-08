@@ -1,19 +1,7 @@
 import axios from "axios";
+import type { InitialPaymentPayload } from "../types";
 
-type Bank = {
-  BankId: string;
-  NspkBankId: string;
-  BankName: string;
-  BankLogo: string;
-  BankOrder: number;
-};
-
-export const getSbpBanksList = () =>
+export const generateQr = (payload: InitialPaymentPayload) =>
   axios
-    .get<Bank[]>("/subscription/sbp/banks")
-    .then((response) => response.data);
-
-export const linkBank = ({ bankId }: { bankId: string }) =>
-  axios
-    .post<string>(`/subscription/sbp/${bankId}/link`)
+    .post<{ svg: string }>("/subscription/sbp/generate-qr", payload)
     .then((response) => response.data);

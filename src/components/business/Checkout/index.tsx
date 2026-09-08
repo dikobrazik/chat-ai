@@ -8,7 +8,6 @@ import { toast } from "react-toastify/unstyled";
 import {
   getProfile,
   getTPayLink,
-  linkBank,
   useCurrentSubscription,
   usePlans,
 } from "@/api";
@@ -23,7 +22,7 @@ import styles from "./Checkout.module.scss";
 import { CheckoutMessage } from "./components/CheckoutMessage";
 import { PaymentMethods } from "./components/PaymentMethods";
 import { PlanCard } from "./components/PlanCard";
-import { SbpBanks } from "./components/SbpBanks";
+import { SbpQrCode } from "./components/SbpBanks";
 import {
   DEFAULT_PAYMENT_METHOD,
   getDaysLabel,
@@ -33,28 +32,6 @@ import {
   type PaymentMethodId,
   SUPPORT_TELEGRAM_URL,
 } from "./constants";
-
-// контракт СБП-ручки не подтверждён (бэк объявляет просто string), а ссылка
-// на приложение банка приходит своей схемой — bank100000000111://... —
-// поэтому по протоколу не фильтруем
-const LINK_FIELDS = ["Data", "Payload", "link", "url", "RedirectUrl"];
-
-const resolvePaymentLink = (payload: unknown): string | undefined => {
-  if (typeof payload === "string") {
-    return payload.trim() || undefined;
-  }
-
-  if (payload && typeof payload === "object") {
-    const record = payload as Record<string, unknown>;
-    const field = LINK_FIELDS.find(
-      (key) => typeof record[key] === "string" && record[key],
-    );
-
-    return field ? (record[field] as string) : undefined;
-  }
-
-  return undefined;
-};
 
 export const Checkout = () => {
   const { plan: planId } = useParams<{ plan: string }>();
@@ -66,7 +43,6 @@ export const Checkout = () => {
   const [selectedMethod, setSelectedMethod] = useState<PaymentMethodId>(
     DEFAULT_PAYMENT_METHOD,
   );
-  const [selectedBankId, setSelectedBankId] = useState<string>();
   const [isPaying, setIsPaying] = useState(false);
 
   const { plans, sixMonthsPlans, isLoading, isError } = usePlans();
@@ -106,19 +82,6 @@ export const Checkout = () => {
         });
 
         window.location.href = RedirectUrl;
-        return;
-      }
-
-      if (selectedBankId) {
-        const link = resolvePaymentLink(
-          await linkBank({ bankId: selectedBankId }),
-        );
-
-        if (!link) {
-          throw new Error("СБП не вернул ссылку на оплату");
-        }
-
-        window.location.href = link;
         return;
       }
     } catch {
@@ -239,12 +202,7 @@ export const Checkout = () => {
             selectedMethod={selectedMethod}
             onMethodSelect={setSelectedMethod}
             content={{
-              sbp: (
-                <SbpBanks
-                  selectedBankId={selectedBankId}
-                  onBankSelect={setSelectedBankId}
-                />
-              ),
+              sbp: <SbpQrCode plan={plan.id} sixMonths={isSixMonths} />,
             }}
           />
         </div>
@@ -254,7 +212,7 @@ export const Checkout = () => {
             plan={plan}
             isSixMonths={isSixMonths}
             isPaying={isPaying}
-            isPayDisabled={isBankRequired && !selectedBankId}
+            isPayDisabled={isBankRequired}
             onPay={onPay}
           />
 

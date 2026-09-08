@@ -1,9 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
-import { getSbpBanksList } from "./api";
+import type { InitialPaymentPayload } from "../types";
+import { generateQr } from "./api";
 
-export const useSbpBanksList = () => {
-  return useQuery({
-    queryKey: ["sbpBanksList"],
-    queryFn: getSbpBanksList,
+export const useSbpQr = (payment: InitialPaymentPayload) => {
+  return useQuery<{ svg: string }>({
+    refetchInterval: false,
+    refetchOnWindowFocus: false,
+    queryKey: ["getQr"],
+    queryFn: () => generateQr(payment),
   });
 };
