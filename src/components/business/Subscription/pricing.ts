@@ -13,15 +13,10 @@ export const TRIAL_PRICE_BY_PAYMENT_METHOD = {
 };
 
 export type PlanPricing = {
-  /** цена за месяц со скидкой за 6 месяцев, если она есть */
   monthlyPrice: number;
-  /** сколько спишется за весь период — месяц или 6 месяцев */
   periodPrice: number;
-  /** цена периода без скидки, для зачёркивания */
   fullPeriodPrice: number;
-  /** сколько спишется прямо сейчас: 1 ₽ на пробном периоде */
   firstPayment: number;
-  /** сколько спишется после пробного периода */
   nextPayment: number;
   trialDays: number;
   months: number;

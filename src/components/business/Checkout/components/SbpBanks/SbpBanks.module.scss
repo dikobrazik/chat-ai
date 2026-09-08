@@ -1,7 +1,3 @@
-// ui/TextField светлый по фону и с чёрным лейблом — в тёмной теме поле поиска
-// было бы нечитаемо. Правим точечно у себя, чтобы не менять формы авторизации
-// лейбл TextField приходит с инлайновым color="#000000" — в тёмной теме
-// перебиваем, иначе «Поиск банка» чёрным по чёрному
 .search :global(label) span {
   @media (prefers-color-scheme: dark) {
     color: var(--foreground) !important;
@@ -19,7 +15,6 @@
   display: flex;
   flex-direction: column;
   gap: spacing(1);
-  // fieldset по умолчанию не сжимается во flex/grid и ломает overflow
   min-width: 0;
   max-height: min(320px, 45dvh);
   overflow-y: auto;
@@ -53,7 +48,6 @@
     outline-offset: -2px;
   }
 
-  // одной заливки 8% мало: на белом это 1,14:1 и выбранный банк не читается
   &.selected {
     background-color: #0F8AFF14;
     outline: 1.5px solid #0F8AFF;
