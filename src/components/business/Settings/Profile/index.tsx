@@ -1,5 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
-import { getProfile } from "@/api";
+import { useProfile } from "@/api";
 import Button from "@/components/ui/Button";
 import { Divider } from "@/components/ui/Divider";
 import Icon from "@/components/ui/Icon";
@@ -10,10 +9,7 @@ import { PlanDescription } from "./components/PlanDescription";
 import { SubscriptionBanner } from "./components/SubscriptionBanner";
 
 export const ProfileSettings = () => {
-  const { data: profile } = useQuery({
-    queryKey: ["profile"],
-    queryFn: getProfile,
-  });
+  const { data: profile } = useProfile();
 
   return (
     <div className="flex flex-col gap-6">

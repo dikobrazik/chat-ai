@@ -1,10 +1,9 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useProviders } from "@/api/model";
-import { getProfile } from "@/api/user";
+import { useProfile } from "@/api/user";
 import { useChat } from "@/components/business/Chat/hooks/useChat";
 import { Footer } from "@/components/business/Footer";
 import { ImageFilters } from "@/components/business/ImageFilters";
@@ -64,9 +63,7 @@ export default function Page() {
     null,
   );
 
-  const { data: profile } = useQuery({
-    queryKey: ["profile"],
-    queryFn: getProfile,
+  const { data: profile } = useProfile({
     enabled: !isGuest,
   });
 

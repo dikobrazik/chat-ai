@@ -1,11 +1,11 @@
 "use client";
 
-import { usePrefetchQuery, useQuery } from "@tanstack/react-query";
+import { usePrefetchQuery } from "@tanstack/react-query";
 import {
   getPlans,
-  getProfile,
   PLANS_QUERY_KEY,
   SIX_MONTHS_PLANS_QUERY_KEY,
+  useProfile,
 } from "@/api";
 import Button from "@/components/ui/Button";
 import Icon from "@/components/ui/Icon";
@@ -13,10 +13,7 @@ import { Text } from "@/components/ui/Text";
 import { SUBSCRIBED_USER_STATUSES } from "@/constants/user";
 
 export const SubscriptionButton = () => {
-  const { data: profile } = useQuery({
-    queryKey: ["profile"],
-    queryFn: getProfile,
-  });
+  const { data: profile } = useProfile();
 
   usePrefetchQuery({
     queryKey: PLANS_QUERY_KEY,

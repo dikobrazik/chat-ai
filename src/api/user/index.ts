@@ -1,13 +1,8 @@
 import axios from "axios";
-
-export type Profile = {
-  id: string;
-  email: string;
-  name: null;
-  photo: string;
-  status: string;
-  created_at: string;
-};
+import type { Profile } from "./types";
 
 export const getProfile = () =>
   axios.get<Profile>("user/profile").then((response) => response.data);
+
+export * from "./hooks";
+export * from "./types";

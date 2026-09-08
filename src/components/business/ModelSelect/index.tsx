@@ -1,11 +1,10 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
 import cn from "classnames";
 import Image from "next/image";
 import { useState } from "react";
 import Select, { components } from "react-select";
-import { getProfile, type Model } from "@/api";
+import { type Model, useProfile } from "@/api";
 import Icon from "@/components/ui/Icon";
 import { useIsMobile } from "@/hooks/useMobile";
 import styles from "./ModelSelect.module.scss";
@@ -14,11 +13,7 @@ import { getModelDisplay } from "./modelDisplay";
 import { useModel } from "./useModel";
 
 export const ModelSelect = () => {
-  const { data: profile } = useQuery({
-    queryKey: ["profile"],
-    queryFn: getProfile,
-    refetchInterval: false,
-  });
+  const { data: profile } = useProfile();
 
   const { providers, providersById, selectedModel, onModelChange } = useModel();
 

@@ -1,7 +1,6 @@
-import { useQuery } from "@tanstack/react-query";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef } from "react";
-import { getProfile, type Model } from "@/api";
+import { type Model, useProfile } from "@/api";
 import { useProviders } from "@/api/model";
 import { useModelContext } from "@/providers/ModelProvider/hooks";
 import { isOptionDisabled } from "./modelAccess";
@@ -26,11 +25,7 @@ export const useModel = () => {
   const { model, setModel } = useModelContext();
 
   const { data: providers } = useProviders();
-  const { data: profile, isPending: isProfilePending } = useQuery({
-    queryKey: ["profile"],
-    queryFn: getProfile,
-    refetchInterval: false,
-  });
+  const { data: profile, isLoading: isProfileLoading } = useProfile();
 
   const filteredProviders = useMemo(() => {
     if (!providers) return [];
@@ -110,7 +105,7 @@ export const useModel = () => {
     // гостя ведём в окно входа, залогиненному показываем тарифы
     if (selectedOption && isOptionDisabled(profile)(selectedOption)) {
       // пока профиль едет, права неизвестны — клик молчит, как disabled
-      if (isProfilePending) return;
+      if (isProfileLoading) return;
 
       router.push(profile && profile.status !== "guest" ? "/plans" : "/login");
       return;

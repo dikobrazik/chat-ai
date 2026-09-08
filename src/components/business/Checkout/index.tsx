@@ -1,15 +1,14 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-toastify/unstyled";
 import {
-  getProfile,
   getTPayLink,
   useCurrentSubscription,
   usePlans,
+  useProfile,
 } from "@/api";
 import { SIX_MONTHS_QUERY_KEY } from "@/components/business/Subscription/constants";
 import { getPlanPricing } from "@/components/business/Subscription/pricing";
@@ -47,10 +46,7 @@ export const Checkout = () => {
 
   const { plans, sixMonthsPlans, isLoading, isError } = usePlans();
   const { data: currentSubscription } = useCurrentSubscription();
-  const { data: profile } = useQuery({
-    queryKey: ["profile"],
-    queryFn: getProfile,
-  });
+  const { data: profile } = useProfile();
 
   const plan = (isSixMonths ? sixMonthsPlans : plans).find(
     (item) => item.id === planId,

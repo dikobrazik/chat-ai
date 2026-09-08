@@ -1,8 +1,7 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
-import { getProfile } from "@/api/user";
+import { useProfile } from "@/api/user";
 import { Divider } from "@/components/ui/Divider";
 import Icon from "@/components/ui/Icon";
 import Popover from "@/components/ui/Popover";
@@ -29,9 +28,7 @@ const USER_STATUS_COLOR_MAP: Record<string, string> = {
 const ProfileAvatar = () => {
   const { isGuest } = useAuthContext();
 
-  const { data: profile } = useQuery({
-    queryKey: ["profile"],
-    queryFn: getProfile,
+  const { data: profile } = useProfile({
     enabled: !isGuest,
   });
 
@@ -68,9 +65,7 @@ const AvatarTrigger = (props: ButtonProps) => (
 const ProfileInfo = () => {
   const { isGuest } = useAuthContext();
 
-  const { data: profile, isLoading } = useQuery({
-    queryKey: ["profile"],
-    queryFn: getProfile,
+  const { data: profile, isLoading } = useProfile({
     enabled: !isGuest,
   });
 
@@ -113,9 +108,7 @@ const ProfileInfo = () => {
 const ProfileMenu = () => {
   const { isGuest, onLogoutClick } = useAuthContext();
 
-  const { data: profile } = useQuery({
-    queryKey: ["profile"],
-    queryFn: getProfile,
+  const { data: profile } = useProfile({
     enabled: !isGuest,
   });
 
