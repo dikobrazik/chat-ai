@@ -68,8 +68,7 @@ export const PlanCard = ({
         </div>
         <div className={styles.row}>
           <Text style="regular" type="s" color="#6F6F6F">
-            {nextChargeDate ??
-              `После ${trialDays ? getDaysGenitiveLabel(trialDays) : getPeriodLabel(isSixMonths)}`}
+            {nextChargeDate}
           </Text>
           <Text style="regular" type="s" color="#6F6F6F">
             {formatCurrency(periodPrice)}
