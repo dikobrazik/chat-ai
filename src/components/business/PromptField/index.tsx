@@ -165,7 +165,7 @@ export const PromptField = forwardRef<HTMLTextAreaElement, PromptFieldProps>(
                 borderRadius="full"
                 className={styles.searchChip}
                 leftIcon={<Icon name="global" size={18} />}
-                rightIcon={<Icon name="close" size={16} />}
+                rightIcon={<Icon name="close" size={18} />}
                 onClick={() => setWithSearch(false)}
               >
                 <span className={styles.searchChipLabel}>Поиск</span>
