@@ -6,7 +6,7 @@ export const useSbpQr = (payment: InitialPaymentPayload) => {
   return useQuery<{ svg: string }>({
     refetchInterval: false,
     refetchOnWindowFocus: false,
-    queryKey: ["getQr"],
+    queryKey: ["getQr", payment.plan, payment.sixMonths],
     queryFn: () => generateQr(payment),
   });
 };
