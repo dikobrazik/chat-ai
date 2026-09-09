@@ -10,8 +10,14 @@
 
   & .control {
     border: none;
-    background: none;
     min-height: auto;
+    // в покое — Surface gray-2 кита, чтобы пилюля не висела на подложке поля;
+    // под курсором и при открытом меню — прежняя ghost-заливка 8%
+    background-color: #EFEFEF;
+
+    @media (prefers-color-scheme: dark) {
+      background-color: color-mix(in srgb, var(--background), white 10%);
+    }
     // по макету подсветка — полная «пилюля» с воздухом вокруг контента;
     // справа те же 4px, что и слева до кружка провайдера, иначе в покое
     // просвет до соседнего чипа поиска шире, чем просвет до «плюса»

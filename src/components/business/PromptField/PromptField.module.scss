@@ -52,7 +52,13 @@
     // и столько же справа до планеты
     align-self: center;
     padding: 8px 12px 8px 8px;
-    background-color: transparent;
+    // в покое — Surface gray-2 кита, ровно на ступень темнее подложки поля:
+    // без него контролы висят в воздухе. Ховер и нажатие прежние, 8 и 16%
+    background-color: #EFEFEF;
+
+    @media (prefers-color-scheme: dark) {
+      background-color: color-mix(in srgb, var(--background), white 10%);
+    }
 
     // Icon — inline-block с vertical-align: text-bottom, из-за чего крестик
     // 16px садится ниже планеты 20px и не совпадает по центру с «+»
@@ -83,17 +89,25 @@
       background-color: #00000029;
 
       @media (prefers-color-scheme: dark) {
-        background-color: color-mix(in srgb, var(--background), white 10%);
+        background-color: color-mix(in srgb, var(--background), white 30%);
       }
     }
   }
 
-  // подложка поля сама gray-1, поэтому у кнопки не белый фон, а прозрачный;
-  // ховер/нажатие — ghost-паттерн кита (solid 8/16%), сплошные серые тут не видны.
+  // подложка поля сама gray-1, поэтому у кнопки не белый фон, а ghost-заливка
+  // кита (solid 8/16/24%) — сплошные серые тут не видны. Круг, а не скругление
+  // 12: рядом две пилюли, и квадратная кнопка выбивается из ряда.
   // Подсветка держится, пока открыто меню «+» (aria-expanded от Popover) —
   // как у соседнего селекта модели (controlOpen) и у «...» в сайдбаре
   .plusButton {
-    background-color: transparent;
+    // 7px вместо 8: с глифом 22px это ровно 36px — высота соседних пилюль
+    padding: 7px;
+    border-radius: 999px;
+    background-color: #EFEFEF;
+
+    @media (prefers-color-scheme: dark) {
+      background-color: color-mix(in srgb, var(--background), white 10%);
+    }
 
     &:hover:not(:disabled),
     &[aria-expanded="true"] {
@@ -108,7 +122,7 @@
       background-color: #00000029;
 
       @media (prefers-color-scheme: dark) {
-        background-color: color-mix(in srgb, var(--background), white 10%);
+        background-color: color-mix(in srgb, var(--background), white 30%);
       }
     }
   }
