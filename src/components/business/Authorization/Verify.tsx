@@ -1,6 +1,7 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useMutation } from "@tanstack/react-query";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify/unstyled";
 import * as yup from "yup";
@@ -24,6 +25,7 @@ const schema = yup.object({
 });
 
 export const VerifyCode = () => {
+  const router = useRouter();
   const { onGuestRegistered } = useAuthContext();
 
   const {
@@ -44,7 +46,7 @@ export const VerifyCode = () => {
 
       toast.success("Успешный вход в систему");
 
-      window.location.replace(takeAuthRedirect());
+      router.replace(takeAuthRedirect());
     },
   });
 

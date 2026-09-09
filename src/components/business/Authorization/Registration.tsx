@@ -64,7 +64,7 @@ export const Registration = () => {
 
         toast.success("Успешный вход в систему");
 
-        window.location.replace(takeAuthRedirect());
+        router.replace(takeAuthRedirect());
       }
     },
     onError: (error) => {

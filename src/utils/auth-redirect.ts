@@ -20,11 +20,5 @@ export const takeAuthRedirect = () => {
 
   const { path, savedAt } = JSON.parse(stored);
 
-  if (Date.now() - savedAt > AUTH_REDIRECT_LIFETIME) {
-    return "/";
-  }
-
-  const { origin, pathname, search } = new URL(path, window.location.origin);
-
-  return origin === window.location.origin ? `${pathname}${search}` : "/";
+  return Date.now() - savedAt > AUTH_REDIRECT_LIFETIME ? "/" : path;
 };
