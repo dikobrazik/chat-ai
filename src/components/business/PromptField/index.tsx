@@ -162,7 +162,6 @@ export const PromptField = forwardRef<HTMLTextAreaElement, PromptFieldProps>(
             <ModelSelect />
             {withSearch && !attachOnly && (
               <Button
-                variant="outline"
                 borderRadius="full"
                 className={styles.searchChip}
                 leftIcon={<Icon name="global" />}
