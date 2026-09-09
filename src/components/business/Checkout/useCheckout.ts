@@ -11,7 +11,6 @@ import { SIX_MONTHS_QUERY_KEY } from "@/components/business/Subscription/constan
 import { getPlanPricing } from "@/components/business/Subscription/pricing";
 import {
   DEFAULT_PAYMENT_METHOD,
-  PAYMENT_ERROR_TEXT,
   PAYMENT_METHODS_MAP,
   type PaymentMethodId,
 } from "./constants";
@@ -68,7 +67,9 @@ export const useCheckout = () => {
         return;
       }
     } catch {
-      toast.error(PAYMENT_ERROR_TEXT);
+      toast.error(
+        "Не удалось начать оплату. Попробуйте ещё раз или напишите в поддержку",
+      );
     }
 
     setIsPaying(false);

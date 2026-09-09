@@ -43,9 +43,6 @@ export const DEFAULT_PAYMENT_METHOD = PAYMENT_METHODS.find(
 
 export const SUPPORT_TELEGRAM_URL = "https://t.me/jonu_support";
 
-export const PAYMENT_ERROR_TEXT =
-  "Не удалось начать оплату. Попробуйте ещё раз или напишите в поддержку";
-
 export const getPeriodLabel = (isSixMonths: boolean) =>
   isSixMonths ? "6 месяцев" : "месяц";
 
