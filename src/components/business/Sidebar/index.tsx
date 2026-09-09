@@ -226,7 +226,7 @@ export const ChatSidebar = ({
       ) : (
         <div className="flex flex-col gap-4">
           {showUpsell && (
-            <div className="-mx-1">
+            <div className={cn(styles.upsell, "-mx-1")}>
               <Banner
                 variant="promo"
                 title="Откройте полный доступ без ограничений"

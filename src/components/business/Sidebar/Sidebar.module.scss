@@ -84,6 +84,12 @@
   }
 }
 
+.upsell {
+  @media (max-height: 600px) {
+    display: none;
+  }
+}
+
 .logoLink {
   text-decoration: none;
 }
