@@ -112,7 +112,7 @@ export const PromptField = forwardRef<HTMLTextAreaElement, PromptFieldProps>(
         />
 
         <div className={styles.controls}>
-          <div className="flex gap-1">
+          <div className="flex gap-2">
             {attachOnly ? (
               Boolean(accept) && (
                 <Button
