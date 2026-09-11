@@ -24,7 +24,6 @@ export const sendStreamPrompt = ({
         input,
         files_ids: filesIds,
         with_thinking: false,
-        // false — как раньше: модель сама решает, включать ли поиск
         with_search: withSearch,
       },
       responseType: "stream",

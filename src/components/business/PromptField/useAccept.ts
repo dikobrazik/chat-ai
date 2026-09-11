@@ -1,11 +1,11 @@
 import { useMemo } from "react";
 import { useProviders } from "@/api/model";
-import { useModelContext } from "@/providers/ModelProvider/hooks";
+import { useChatSettingsContext } from "@/providers/ChatSettingsProvider/hooks";
 
 const DEFAULT_ACCEPT = "image/*,application/pdf,.doc,.docx,.txt,.md";
 
 export const useAccept = () => {
-  const { model } = useModelContext();
+  const { model } = useChatSettingsContext();
   const { data: providers } = useProviders();
 
   const currentModelId = model?.id;

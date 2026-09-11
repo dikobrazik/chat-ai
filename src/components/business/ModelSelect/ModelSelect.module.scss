@@ -1,26 +1,18 @@
 .select {
   min-height: auto;
   margin: auto 0;
-  // без собственных отступов: зазор между контролами задаёт gap строки,
-  // иначе пилюли расходятся на 16px вместо 8px
   padding: 0;
 
   & .control {
     border: none;
-    // react-select в фокусе рисует свою синюю обводку box-shadow’ом —
-    // border: none её не гасит, а в ките такого состояния нет
     box-shadow: none;
     min-height: auto;
-    // в покое — Surface gray-2 кита, чтобы пилюля не висела на подложке поля;
-    // под курсором и при открытом меню — прежняя ghost-заливка 8%
     background-color: #EFEFEF;
 
     @media (prefers-color-scheme: dark) {
       background-color: color-mix(in srgb, var(--background), white 10%);
     }
-    // по макету подсветка — полная «пилюля» с воздухом вокруг контента;
-    // справа те же 4px, что и слева до кружка провайдера, иначе в покое
-    // просвет до соседнего чипа поиска шире, чем просвет до «плюса»
+    // по макету подсветка — полная «пилюля» с воздухом вокруг контента
     border-radius: 999px;
     padding: 4px;
     cursor: pointer;
@@ -38,8 +30,6 @@
 
     // иконка провайдера в белом кружке, как в макете
     & .providerImage {
-      // без запрета на сжатие flex схлопывает логотип в ноль, когда строка
-      // контролов не помещается — на мобилке оставался пустой белый кружок
       flex-shrink: 0;
       padding: 4px;
       background-color: #FFFFFF;
@@ -54,8 +44,6 @@
       // padding: 0;
 
       & .dropdownIndicator {
-        // слева 2px — шеврон вплотную к названию модели (просьба дизайна),
-        // с ними визуальный зазор ровно 12px, как у крестика в чипе поиска
         margin: 0 spacing(2) 0 2px;
         transition: transform 150ms ease-in-out;
 
