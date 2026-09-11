@@ -17,14 +17,8 @@ export type Plan = {
   nextChargeAt?: string;
 };
 
-export const getPlans = (params?: { sixMonths?: boolean }) =>
-  axios
-    .get<Plan[]>("/subscription/plans", { params })
-    .then((response) => response.data);
-
-export type SubscriptionResponse = {
-  subscription: Subscription;
-};
+export const getTariffs = (params?: { sixMonths?: boolean }) =>
+  axios.get<Plan[]>("/tariffs", { params }).then((response) => response.data);
 
 export type Subscription = {
   id: string;
@@ -34,32 +28,8 @@ export type Subscription = {
   current_period_start: string;
   current_period_end: string;
   isSixMonths: boolean;
-  rebill_id: string;
   created_at: string;
 };
 
 export const getSubscription = () =>
-  axios
-    .get<SubscriptionResponse>("/subscription")
-    .then((response) => response.data);
-
-type InitPaymentPayload = {
-  plan: string;
-  sixMonths: boolean;
-};
-
-export const initPayment = (payload: InitPaymentPayload) =>
-  axios
-    .post<{ paymentId: string; paymentURL: string }>(
-      "/subscription/init",
-      payload,
-    )
-    .then((response) => response.data);
-
-export const getTPayLink = (payload: InitPaymentPayload) =>
-  axios
-    .post<{ RedirectUrl: string; WebQR: string }>(
-      `/subscription/t-pay-link`,
-      payload,
-    )
-    .then((response) => response.data);
+  axios.get<Subscription>("/subscription").then((response) => response.data);

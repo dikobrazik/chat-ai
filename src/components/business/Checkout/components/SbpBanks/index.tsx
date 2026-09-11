@@ -4,7 +4,7 @@ import { useSbpQr } from "@/api";
 import { Skeleton } from "@/components/ui/Skeleton";
 
 type Props = {
-  plan: string;
+  tariff: string;
   sixMonths: boolean;
 };
 

@@ -9,7 +9,7 @@ type Props = {
 };
 
 export const CancelSubscriptionModal = ({ isOpen, onClose }: Props) => {
-  const { data } = useCurrentSubscription();
+  const { data: subscription } = useCurrentSubscription();
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <div className="flex flex-col items-center">
@@ -19,7 +19,7 @@ export const CancelSubscriptionModal = ({ isOpen, onClose }: Props) => {
             Ваша подписка Plus будет отменена, но останется активной до конца
             расчётного периода —{" "}
             {new Date(
-              data?.subscription?.current_period_end ?? 0,
+              subscription?.current_period_end ?? 0,
             ).toLocaleDateString() ?? ""}
           </Text>
         </div>

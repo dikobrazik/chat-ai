@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getPlans, getSubscription } from "./api";
+import { getSubscription, getTariffs } from "./api";
 
 export const PLANS_QUERY_KEY = ["subscription", "plans"];
 export const SIX_MONTHS_PLANS_QUERY_KEY = [
@@ -15,7 +15,7 @@ export const usePlans = () => {
     isError,
   } = useQuery({
     queryKey: PLANS_QUERY_KEY,
-    queryFn: () => getPlans(),
+    queryFn: () => getTariffs(),
   });
 
   const {
@@ -24,7 +24,7 @@ export const usePlans = () => {
     isError: isSixMonthsPlansError,
   } = useQuery({
     queryKey: SIX_MONTHS_PLANS_QUERY_KEY,
-    queryFn: () => getPlans({ sixMonths: true }),
+    queryFn: () => getTariffs({ sixMonths: true }),
   });
 
   // оба запроса ходят всегда, поэтому и флаги общие: иначе экран, которому

@@ -6,5 +6,3 @@ export {
   useCurrentSubscription,
   usePlans,
 } from "./hooks";
-
-export * from "./sbp";

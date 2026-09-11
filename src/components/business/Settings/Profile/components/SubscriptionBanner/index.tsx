@@ -7,10 +7,9 @@ import { useToggle } from "@/hooks/useToggle";
 import { CancelSubscriptionModal } from "./CancelSubscriptionModal";
 
 export const SubscriptionBanner = () => {
-  const { data } = useCurrentSubscription();
+  const { data: subscription } = useCurrentSubscription();
   const { plans } = usePlans();
 
-  const subscription = data?.subscription;
   const activePlan = plans?.find((plan) => plan.id === subscription?.plan);
 
   const { active, toggle } = useToggle();

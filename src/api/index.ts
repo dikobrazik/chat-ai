@@ -12,6 +12,7 @@ export * from "./auth";
 export * from "./chat";
 export * from "./files";
 export * from "./model/api";
+export * from "./payment";
 export * from "./promotion";
 export * from "./prompt";
 export * from "./subscription";

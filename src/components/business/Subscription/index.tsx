@@ -2,7 +2,7 @@
 
 import { usePrefetchQuery } from "@tanstack/react-query";
 import {
-  getPlans,
+  getTariffs,
   PLANS_QUERY_KEY,
   SIX_MONTHS_PLANS_QUERY_KEY,
   useProfile,
@@ -17,11 +17,11 @@ export const SubscriptionButton = () => {
 
   usePrefetchQuery({
     queryKey: PLANS_QUERY_KEY,
-    queryFn: () => getPlans(),
+    queryFn: () => getTariffs(),
   });
   usePrefetchQuery({
     queryKey: SIX_MONTHS_PLANS_QUERY_KEY,
-    queryFn: () => getPlans({ sixMonths: true }),
+    queryFn: () => getTariffs({ sixMonths: true }),
   });
 
   // подписчику апселл не нужен; пока профиль едет, кнопку тоже не рисуем —

@@ -45,7 +45,7 @@ export const Checkout = () => {
   const [isPaying, setIsPaying] = useState(false);
 
   const { plans, sixMonthsPlans, isLoading, isError } = usePlans();
-  const { data: currentSubscription } = useCurrentSubscription();
+  const { data: activeSubscription } = useCurrentSubscription();
   const { data: profile } = useProfile();
 
   const plan = (isSixMonths ? sixMonthsPlans : plans).find(
@@ -73,7 +73,7 @@ export const Checkout = () => {
     try {
       if (selectedMethod === PAYMENT_METHODS_MAP.tpay) {
         const { RedirectUrl } = await getTPayLink({
-          plan: planId,
+          tariff: planId,
           sixMonths: isSixMonths,
         });
 
@@ -150,8 +150,6 @@ export const Checkout = () => {
     );
   }
 
-  const activeSubscription = currentSubscription?.subscription;
-
   if (
     activeSubscription?.plan === planId &&
     activeSubscription.status === "active"
@@ -198,7 +196,7 @@ export const Checkout = () => {
             selectedMethod={selectedMethod}
             onMethodSelect={setSelectedMethod}
             content={{
-              sbp: <SbpQrCode plan={plan.id} sixMonths={isSixMonths} />,
+              sbp: <SbpQrCode tariff={plan.id} sixMonths={isSixMonths} />,
             }}
           />
         </div>
