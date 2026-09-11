@@ -26,8 +26,6 @@
   height: 1.25rem;
   background-color: #F7F7F7;
   border-radius: 12px;
-  // без обводки выключенный тумблер на белом фоне — это 1,14:1, то есть белый
-  // кружок в пустоте. Тень внутренняя, чтобы не поехала геометрия ползунка
   box-shadow: inset 0 0 0 1px #D7D7D7;
   transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 

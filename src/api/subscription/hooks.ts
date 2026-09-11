@@ -27,8 +27,6 @@ export const usePlans = () => {
     queryFn: () => getTariffs({ sixMonths: true }),
   });
 
-  // оба запроса ходят всегда, поэтому и флаги общие: иначе экран, которому
-  // нужны шестимесячные тарифы, успевает показать «не найдено»
   return {
     plans,
     sixMonthsPlans,
