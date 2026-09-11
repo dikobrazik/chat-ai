@@ -173,6 +173,7 @@ export const Checkout = () => {
   const { firstPayment, periodPrice, trialDays } = getPlanPricing(
     plan,
     isSixMonths,
+    selectedMethod,
   );
 
   return (
@@ -206,6 +207,7 @@ export const Checkout = () => {
 
         <div className="flex flex-col gap-4">
           <PlanCard
+            paymentMethod={selectedMethod}
             plan={plan}
             isSixMonths={isSixMonths}
             isPaying={isPaying}

@@ -1,10 +1,16 @@
 import type { Plan } from "@/api/subscription";
+import {
+  PAYMENT_METHODS_MAP,
+  type PaymentMethodId,
+} from "../Checkout/constants";
 
 export const SIX_MONTHS_LENGTH = 6;
 
-// на пробном периоде списывается 1 ₽ — подтверждение карты и согласие
-// на рекуррентные платежи (п. 9.2 оферты)
-export const TRIAL_PRICE = 1;
+export const TRIAL_PRICE_BY_PAYMENT_METHOD = {
+  [PAYMENT_METHODS_MAP.card]: 1,
+  [PAYMENT_METHODS_MAP.tpay]: 1,
+  [PAYMENT_METHODS_MAP.sbp]: 10,
+};
 
 export type PlanPricing = {
   /** цена за месяц со скидкой за 6 месяцев, если она есть */
@@ -21,11 +27,10 @@ export type PlanPricing = {
   months: number;
 };
 
-// скидка на бэке приходит у обоих вариантов плана, но применяется только
-// к оплате за 6 месяцев — так же считает карточка тарифа (Plans/components/Plan)
 export const getPlanPricing = (
   plan: Plan,
   isSixMonths = false,
+  paymentMethod: PaymentMethodId,
 ): PlanPricing => {
   const months = isSixMonths ? SIX_MONTHS_LENGTH : 1;
   const discount = isSixMonths ? (plan.discount ?? 0) : 0;
@@ -38,7 +43,9 @@ export const getPlanPricing = (
     monthlyPrice,
     periodPrice,
     fullPeriodPrice: plan.price * months,
-    firstPayment: trialDays ? TRIAL_PRICE : periodPrice,
+    firstPayment: trialDays
+      ? TRIAL_PRICE_BY_PAYMENT_METHOD[paymentMethod]
+      : periodPrice,
     nextPayment: periodPrice,
     trialDays,
     months,

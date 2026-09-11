@@ -5,11 +5,12 @@ import { Divider } from "@/components/ui/Divider";
 import Icon from "@/components/ui/Icon";
 import { Text } from "@/components/ui/Text";
 import { formatCurrency } from "@/utils/format-currency";
-import { getDaysGenitiveLabel, getPeriodLabel } from "../../constants";
+import type { PaymentMethodId } from "../../constants";
 import styles from "./PlanCard.module.scss";
 
 type Props = {
   plan: Plan;
+  paymentMethod: PaymentMethodId;
   isSixMonths: boolean;
   isPaying: boolean;
   isPayDisabled: boolean;
@@ -18,6 +19,7 @@ type Props = {
 
 export const PlanCard = ({
   plan,
+  paymentMethod,
   isSixMonths,
   isPaying,
   isPayDisabled,
@@ -26,19 +28,16 @@ export const PlanCard = ({
   const { periodPrice, firstPayment, trialDays } = getPlanPricing(
     plan,
     isSixMonths,
+    paymentMethod,
   );
 
-  // состав тарифа берём из /subscription/plans — тот же источник, что и у
-  // карточек на /plans: правки текстов на бэке меняют оба экрана
   const [featuresTitle, ...features] = plan.features;
 
   // дату первого списания отдаёт бэк; пока поля нет — обходимся сроком
-  const nextChargeLabel = plan.nextChargeAt
-    ? new Intl.DateTimeFormat("ru-RU", {
-        day: "numeric",
-        month: "long",
-      }).format(new Date(plan.nextChargeAt))
-    : `После ${trialDays ? getDaysGenitiveLabel(trialDays) : getPeriodLabel(isSixMonths)}`;
+  const nextChargeLabel = new Intl.DateTimeFormat("ru-RU", {
+    day: "numeric",
+    month: "long",
+  }).format(new Date(plan.nextChargeAt));
 
   return (
     <div className={styles.card}>
