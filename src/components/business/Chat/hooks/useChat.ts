@@ -6,7 +6,7 @@ import { toast } from "react-toastify/unstyled";
 import { CHATS_QUERY_KEY, type Chat, createChat } from "@/api";
 import { useChat as useChatQuery } from "@/api/chat";
 import { type Prompt, useChatPrompts } from "@/api/prompt";
-import { useModelContext } from "@/providers/ModelProvider/hooks";
+import { useChatSettingsContext } from "@/providers/ChatSettingsProvider/hooks";
 import { ERROR_MESSAGE_ID } from "../components/Message/constants";
 import { createNewChat } from "./utils";
 
@@ -15,7 +15,7 @@ export const useChat = (chatId: string | undefined) => {
   const router = useRouter();
 
   const [messages, setMessages] = useState<Prompt[]>([]);
-  const { model, setModel } = useModelContext();
+  const { model, setModel } = useChatSettingsContext();
 
   const { mutateAsync: createChatMutation, isPending: isCreateChatPending } =
     useMutation({

@@ -16,9 +16,9 @@ import { Text } from "@/components/ui/Text";
 import { usePersistentState } from "@/hooks/usePersistenState";
 import { cn } from "@/lib/utils";
 import { useAuthContext } from "@/providers/AuthProvider/hooks";
+import { useChatSettingsContext } from "@/providers/ChatSettingsProvider/hooks";
 import type { Attachment } from "@/providers/FilesProvider";
 import { useFiles } from "@/providers/FilesProvider/useFiles";
-import { useModelContext } from "@/providers/ModelProvider/hooks";
 
 // черновик гостя на «/image-chat»: переживает уход на логин,
 // после входа возвращаем промпт, вложения и модель
@@ -55,7 +55,7 @@ export default function Page() {
 
   const { createChat } = useChat(undefined);
   const { attachments, restoreFiles } = useFiles();
-  const { model, setModel } = useModelContext();
+  const { model, setModel } = useChatSettingsContext();
   const { data: providers } = useProviders();
 
   const [draft, setDraft] = usePersistentState<ImageChatDraft>(

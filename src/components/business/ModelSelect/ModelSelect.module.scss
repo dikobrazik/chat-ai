@@ -1,25 +1,21 @@
 .select {
   min-height: auto;
   margin: auto 0;
-  padding: 0 12px;
-
-  // на узких экранах отступы съедают место у названия модели
-  @include for-mobile {
-    padding: 0 4px;
-  }
+  padding: 0;
 
   & .control {
     border: none;
-    background: none;
+    box-shadow: none;
     min-height: auto;
+    background-color: #EFEFEF;
+
+    @media (prefers-color-scheme: dark) {
+      background-color: color-mix(in srgb, var(--background), white 10%);
+    }
     // по макету подсветка — полная «пилюля» с воздухом вокруг контента
     border-radius: 999px;
-    padding: 4px 12px 4px 4px;
+    padding: 4px;
     cursor: pointer;
-
-    @include for-mobile {
-      padding-right: 8px;
-    }
 
     // как у кнопок на серой подложке поля ввода;
     // держится и при открытом меню (controlOpen), не только под курсором
@@ -34,6 +30,7 @@
 
     // иконка провайдера в белом кружке, как в макете
     & .providerImage {
+      flex-shrink: 0;
       padding: 4px;
       background-color: #FFFFFF;
       border-radius: 999px;
@@ -47,9 +44,7 @@
       // padding: 0;
 
       & .dropdownIndicator {
-        // слева 1px — шеврон вплотную к названию модели (просьба дизайна),
-        // визуальный зазор ~11px даёт паддинг value-контейнера
-        margin: 0 spacing(2) 0 1px;
+        margin: 0 spacing(2) 0 2px;
         transition: transform 150ms ease-in-out;
 
         @include for-mobile {
