@@ -33,7 +33,7 @@ export const usePlansPage = () => {
     plans,
     sixMonthsPlans,
     sixMonthsDiscount: sixMonthsPlans.find((plan) => plan.discount)?.discount,
-    activePlan: currentSubscription?.subscription?.plan,
+    activePlan: currentSubscription?.plan,
     onPlanSelect,
     onClose,
   };
