@@ -22,7 +22,7 @@ type Props = {
   ) => ReactNode;
   padding?: number;
   popoverClassName?: string;
-  position?: PopoverPosition;
+  position?: PopoverPosition | PopoverPosition[];
   align?: PopoverAlign;
 };
 

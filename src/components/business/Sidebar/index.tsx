@@ -197,7 +197,7 @@ export const ChatSidebar = ({
                           leftIcon={<Icon name="more" />}
                         />
                       )}
-                      position="right"
+                      position={["right", "bottom"]}
                       align="start"
                     >
                       <ChatActions chatId={chat.id} />

@@ -99,7 +99,7 @@ export const PromptField = forwardRef<HTMLTextAreaElement, PromptFieldProps>(
         <textarea
           id="prompt"
           name="prompt"
-          // biome-ignore lint/a11y/noAutofocus: ввод с клавиатуры сразу после загрузки страницы
+          enterKeyHint="send"
           autoFocus
           placeholder={placeholder}
           ref={mergeRefs([inputRef, ref])}

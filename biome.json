@@ -27,6 +27,7 @@
         "noArrayIndexKey": "info"
       },
       "a11y": {
+        "noAutofocus": "off",
         "useKeyWithClickEvents": "off",
         "noStaticElementInteractions": "off"
       },
