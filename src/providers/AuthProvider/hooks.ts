@@ -21,11 +21,15 @@ export const useAuth = () => {
   const [isReady, setIsReady] = useState<boolean>(false);
   const [isGuest, setIsGuest] = useState<boolean>(true);
 
-  const onGuestRegistered = useCallback((token: string) => {
-    setAuthToken(token);
-    localStorage.removeItem(ACCESS_TOKEN_SOURCE_LOCAL_STORAGE_KEY);
-    setIsGuest(false);
-  }, []);
+  const onGuestRegistered = useCallback(
+    (token: string) => {
+      setAuthToken(token);
+      localStorage.removeItem(ACCESS_TOKEN_SOURCE_LOCAL_STORAGE_KEY);
+      setIsGuest(false);
+      queryClient.invalidateQueries();
+    },
+    [queryClient],
+  );
 
   const { mutateAsync: mutateCreateGuest } = useMutation({
     mutationFn: createGuest,

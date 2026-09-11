@@ -1,6 +1,7 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useMutation } from "@tanstack/react-query";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify/unstyled";
 import * as yup from "yup";
@@ -10,6 +11,7 @@ import { Text } from "@/components/ui/Text";
 import { TextField } from "@/components/ui/TextField";
 import { useAuthContext } from "@/providers/AuthProvider/hooks";
 import { useEmailAuth } from "@/providers/EmailAuthProvider/useEmailAuth";
+import { takeAuthRedirect } from "@/utils/auth-redirect";
 
 type Inputs = {
   code: string;
@@ -23,6 +25,7 @@ const schema = yup.object({
 });
 
 export const VerifyCode = () => {
+  const router = useRouter();
   const { onGuestRegistered } = useAuthContext();
 
   const {
@@ -43,7 +46,7 @@ export const VerifyCode = () => {
 
       toast.success("Успешный вход в систему");
 
-      window.location.href = "/";
+      router.replace(takeAuthRedirect());
     },
   });
 

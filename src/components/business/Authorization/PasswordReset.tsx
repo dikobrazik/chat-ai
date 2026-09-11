@@ -124,7 +124,7 @@ export const PasswordReset = () => {
         <Divider></Divider>
       </div>
 
-      <Button href="/login" align="center" size="m" variant="base">
+      <Button replace href="/login" align="center" size="m" variant="base">
         Войти по-другому
       </Button>
     </div>
