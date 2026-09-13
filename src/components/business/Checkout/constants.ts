@@ -1,5 +1,3 @@
-import type { IconName } from "@/components/ui/Icon/icons";
-
 export const PAYMENT_METHODS_MAP = {
   card: "card",
   tpay: "tpay",
@@ -9,37 +7,7 @@ export const PAYMENT_METHODS_MAP = {
 export type PaymentMethodId =
   (typeof PAYMENT_METHODS_MAP)[keyof typeof PAYMENT_METHODS_MAP];
 
-export const PAYMENT_METHODS: {
-  id: PaymentMethodId;
-  title: string;
-  description: string;
-  icon: IconName;
-  isComing?: boolean;
-}[] = [
-  {
-    id: PAYMENT_METHODS_MAP.card,
-    title: "Карта",
-    description: "МИР и российские карты",
-    icon: "card",
-    isComing: true,
-  },
-  {
-    id: PAYMENT_METHODS_MAP.tpay,
-    title: "TPay",
-    description: "Оплата в один клик через Т-Банк",
-    icon: "flash-circle",
-  },
-  {
-    id: PAYMENT_METHODS_MAP.sbp,
-    title: "Оплата по СБП",
-    description: "Через приложение вашего банка",
-    icon: "lock",
-  },
-];
-
-export const DEFAULT_PAYMENT_METHOD = PAYMENT_METHODS.find(
-  (method) => !method.isComing,
-)?.id as PaymentMethodId;
+export const DEFAULT_PAYMENT_METHOD: PaymentMethodId = PAYMENT_METHODS_MAP.tpay;
 
 export const SUPPORT_TELEGRAM_URL = "https://t.me/jonu_support";
 
