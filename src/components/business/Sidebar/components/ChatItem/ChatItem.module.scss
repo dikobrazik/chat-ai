@@ -1,0 +1,98 @@
+.chatItem {
+  --actions-width: 0rem;
+
+  position: relative;
+  margin: 1px 0;
+  padding: calc(0.5rem - 1px) 0.75rem;
+  min-height: calc(2.5rem - 2px);
+  white-space: nowrap;
+  overflow: hidden;
+
+  &.pinned {
+    --actions-width: 2.25rem;
+  }
+
+  &:hover,
+  &:focus-within,
+  &:has([aria-expanded="true"]) {
+    --actions-width: 2.25rem;
+  }
+
+  &.pinned:hover,
+  &.pinned:focus-within,
+  &.pinned:has([aria-expanded="true"]) {
+    --actions-width: 4.5rem;
+  }
+
+  @media (hover: none) {
+    --actions-width: 2.25rem;
+
+    &.pinned {
+      --actions-width: 4.5rem;
+    }
+  }
+
+  &:has([aria-expanded="true"]) {
+    background-color: #F7F7F7;
+
+    @media (prefers-color-scheme: dark) {
+      background-color: color-mix(in srgb, var(--background), white 20%);
+    }
+  }
+
+  .title {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    margin-right: -0.75rem;
+    mask-image: linear-gradient(to right, black calc(100% - 6.75rem), transparent calc(100% - 4.5rem));
+    mask-size: calc(100% + 4.5rem) 100%;
+    mask-repeat: no-repeat;
+    mask-position: calc(-1 * var(--actions-width)) 0;
+    transition: mask-position 0.2s ease;
+  }
+
+  .actions {
+    position: absolute;
+    top: 50%;
+    right: 2px;
+    transform: translateY(-50%);
+  }
+
+  .action {
+    color: #9C9C9C;
+    background-color: transparent;
+    transition: color 0.2s ease, opacity 0.2s ease;
+
+    &:hover:not(:disabled),
+    &:active:not(:disabled),
+    &[aria-expanded="true"] {
+      color: #000;
+      background-color: transparent;
+
+      @media (prefers-color-scheme: dark) {
+        color: var(--foreground);
+      }
+    }
+  }
+
+  .more {
+    @media (hover: hover) {
+      opacity: 0;
+    }
+  }
+
+  &:hover .more,
+  &:focus-within .more,
+  .more[aria-expanded="true"] {
+    opacity: 1;
+  }
+}
+
+.active {
+  background-color: #F7F7F7;
+
+  @media (prefers-color-scheme: dark) {
+    background-color: color-mix(in srgb, var(--background), white 20%);
+  }
+}

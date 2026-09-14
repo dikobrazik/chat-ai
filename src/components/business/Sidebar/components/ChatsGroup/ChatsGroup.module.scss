@@ -1,0 +1,48 @@
+.header {
+  cursor: pointer;
+  padding: 0.5rem 0.75rem;
+  color: #9C9C9C;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: #6F6F6F;
+
+    @media (prefers-color-scheme: dark) {
+      color: #D7D7D7;
+    }
+  }
+
+  .chevron {
+    transition: transform 0.3s ease, opacity 0.2s ease, color 0.2s ease;
+    transform: rotate(-90deg);
+    color: #9C9C9C;
+  }
+
+  &.open .chevron {
+    transform: none;
+
+    @media (hover: hover) {
+      opacity: 0;
+    }
+  }
+
+  &:hover .chevron {
+    opacity: 1;
+    color: inherit;
+  }
+}
+
+.collapse {
+  display: grid;
+  grid-template-rows: 0fr;
+
+  &>div {
+    overflow: hidden;
+    min-height: 0;
+  }
+
+  &.open {
+    grid-template-rows: 1fr;
+    transition: grid-template-rows 0.3s ease;
+  }
+}

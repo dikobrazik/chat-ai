@@ -1,4 +1,4 @@
-import { useChat } from "@/api";
+import { useChat, usePinChat } from "@/api";
 import { Badge } from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
 import { Divider } from "@/components/ui/Divider";
@@ -6,7 +6,6 @@ import Icon from "@/components/ui/Icon";
 import { Text } from "@/components/ui/Text";
 import { preventDefault } from "@/utils";
 import { useDelete } from "./hooks/useDelete";
-import { usePin } from "./hooks/usePin";
 import { useShare } from "./hooks/useShare";
 
 type Actions = "share" | "pin" | "rename" | "move" | "archive" | "delete";
@@ -18,10 +17,12 @@ type Props = {
 
 export const ChatActions = ({ chatId, hiddenActions }: Props) => {
   const { chat } = useChat(chatId);
+  const { pinChat } = usePinChat(chatId);
 
   const onShareClick = useShare(chatId);
-  const onPinClick = usePin(chatId);
   const onDeleteClick = useDelete(chatId);
+
+  const isPinned = chat?.is_pinned ?? false;
 
   return (
     <div className="flex flex-col gap-1">
@@ -34,10 +35,10 @@ export const ChatActions = ({ chatId, hiddenActions }: Props) => {
         </Button>
       )}
       <Button
-        leftIcon={<Icon name={chat?.is_pinned ? "pinned-off" : "pin"} />}
-        onClick={preventDefault(onPinClick)}
+        leftIcon={<Icon name={isPinned ? "pinned-off" : "pin"} />}
+        onClick={preventDefault(() => pinChat(!isPinned))}
       >
-        {chat?.is_pinned ? "Открепить" : "Закрепить"}
+        {isPinned ? "Открепить" : "Закрепить"}
       </Button>
       <Button
         leftIcon={<Icon name="edit-square" />}

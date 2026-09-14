@@ -2,23 +2,20 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useChats } from "@/api";
 import { Banner } from "@/components/ui/Banner";
 import Button from "@/components/ui/Button";
 import Icon from "@/components/ui/Icon";
 import { Logo } from "@/components/ui/Logo";
-import Popover from "@/components/ui/Popover";
 import { Sidebar as UISidebar } from "@/components/ui/Sidebar";
 import { useSidebarState } from "@/components/ui/Sidebar/useSidebarState";
-import { Skeleton } from "@/components/ui/Skeleton";
 import { Text } from "@/components/ui/Text";
-import { useToggle } from "@/hooks/useToggle";
 import { cn } from "@/lib/utils";
 import { useAuthContext } from "@/providers/AuthProvider/hooks";
-import { preventDefault, stopPropagation } from "@/utils";
-import { ChatActions } from "../ChatActions";
+import { stopPropagation } from "@/utils";
 import { Profile } from "../Profile";
+import { ChatsGroup } from "./components/ChatsGroup";
 import styles from "./Sidebar.module.scss";
+import { useChatGroups } from "./useChatGroups";
 import { useShowUpsell } from "./useShowUpsell";
 
 export const ChatSidebar = ({
@@ -34,8 +31,7 @@ export const ChatSidebar = ({
   const pathname = usePathname();
   const showUpsell = useShowUpsell();
 
-  const { chats, isLoading } = useChats();
-  const { active: isChatsOpen, toggle: toggleChats } = useToggle(true);
+  const { pinnedChats, unpinnedChats, isLoading } = useChatGroups();
 
   const handleSidebarClick = () => {
     if (forMobile) {
@@ -172,72 +168,20 @@ export const ChatSidebar = ({
           Изображения
         </Button>
       </div>
-      <div className={cn(styles.chatsSection, "flex-1 flex flex-col")}>
-        <button
-          type="button"
-          onClick={toggleChats}
-          className={cn(
-            styles.chatsHeader,
-            "flex items-center gap-1 self-start",
-            {
-              [styles.open]: isChatsOpen,
-            },
-          )}
-        >
-          <Text style="regular">Чаты</Text>
-          <Icon name="chevron-down" className={styles.chatsChevron} />
-        </button>
-        <div
-          className={cn(styles.chatsCollapse, { [styles.open]: isChatsOpen })}
-        >
-          <div className="flex flex-col">
-            {isLoading
-              ? Array(30)
-                  .fill(undefined)
-                  .map((_, index) => (
-                    <Skeleton
-                      isLoading
-                      key={`s_${index}`}
-                      className="mb-2"
-                      height={40}
-                    />
-                  ))
-              : chats?.map((chat) => (
-                  <Button
-                    key={chat.id}
-                    href={`/chat/${chat.id}`}
-                    onClick={handleSidebarClick}
-                    className={cn(styles.chatItem, "shrink-0", {
-                      [styles.active]: pathname === `/chat/${chat.id}`,
-                    })}
-                    title={chat.title || ""}
-                  >
-                    <Text className={styles.chatItemTitle} style="regular">
-                      {chat.title}
-                    </Text>
-
-                    <Popover
-                      Trigger={(props) => (
-                        <Button
-                          {...props}
-                          className={cn(props.className, styles.chatItemMore)}
-                          onClick={
-                            props.onClick
-                              ? preventDefault(stopPropagation(props.onClick))
-                              : props.onClick
-                          }
-                          leftIcon={<Icon name="more" />}
-                        />
-                      )}
-                      position={["right", "bottom"]}
-                      align="start"
-                    >
-                      <ChatActions chatId={chat.id} />
-                    </Popover>
-                  </Button>
-                ))}
-          </div>
-        </div>
+      <div className={cn(styles.chatsSection, "flex-1 flex flex-col gap-2")}>
+        {pinnedChats.length > 0 && (
+          <ChatsGroup
+            title="Закреплённые"
+            chats={pinnedChats}
+            onChatClick={handleSidebarClick}
+          />
+        )}
+        <ChatsGroup
+          title="Чаты"
+          chats={unpinnedChats}
+          isLoading={isLoading}
+          onChatClick={handleSidebarClick}
+        />
       </div>
       {isGuest ? (
         // -mx-1: внутренний паддинг баннера (16px) минус вынос за колонку (4px)
