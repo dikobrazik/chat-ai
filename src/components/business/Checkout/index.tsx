@@ -1,17 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { useParams, useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
-import { toast } from "react-toastify/unstyled";
-import {
-  getTPayLink,
-  useCurrentSubscription,
-  usePlans,
-  useProfile,
-} from "@/api";
-import { SIX_MONTHS_QUERY_KEY } from "@/components/business/Subscription/constants";
-import { getPlanPricing } from "@/components/business/Subscription/pricing";
 import Button from "@/components/ui/Button";
 import Icon from "@/components/ui/Icon";
 import { Skeleton } from "@/components/ui/Skeleton";
@@ -23,72 +12,29 @@ import { PaymentMethods } from "./components/PaymentMethods";
 import { PlanCard } from "./components/PlanCard";
 import { SbpQrCode } from "./components/SbpBanks";
 import {
-  DEFAULT_PAYMENT_METHOD,
   getDaysLabel,
   getPeriodLabel,
-  PAYMENT_ERROR_TEXT,
-  PAYMENT_METHODS_MAP,
-  type PaymentMethodId,
   SUPPORT_TELEGRAM_URL,
 } from "./constants";
-import { useGuestRedirect } from "./useGuestRedirect";
+import { useCheckout } from "./useCheckout";
 
 export const Checkout = () => {
-  const { plan: planId } = useParams<{ plan: string }>();
-  const router = useRouter();
-  const searchParams = useSearchParams();
-
-  const isSixMonths = searchParams.get(SIX_MONTHS_QUERY_KEY) === "true";
-
-  const [selectedMethod, setSelectedMethod] = useState<PaymentMethodId>(
-    DEFAULT_PAYMENT_METHOD,
-  );
-  const [isPaying, setIsPaying] = useState(false);
-
-  const { plans, sixMonthsPlans, isLoading, isError } = usePlans();
-  const { data: activeSubscription } = useCurrentSubscription();
-  const { data: profile } = useProfile();
-
-  const plan = (isSixMonths ? sixMonthsPlans : plans).find(
-    (item) => item.id === planId,
-  );
-
-  useGuestRedirect(profile?.status === "guest", planId, isSixMonths);
-
-  const onClose = () => {
-    // при заходе по прямой ссылке возвращаться некуда: history.length у свежей
-    // вкладки уже 2 (about:blank + страница), и router.back() уводит в пустоту
-    const cameFromApp =
-      window.history.length > 2 ||
-      document.referrer.startsWith(window.location.origin);
-
-    if (cameFromApp) {
-      router.back();
-      return;
-    }
-
-    router.push("/plans");
-  };
-
-  const onPay = async () => {
-    setIsPaying(true);
-
-    try {
-      if (selectedMethod === PAYMENT_METHODS_MAP.tpay) {
-        const { RedirectUrl } = await getTPayLink({
-          tariff: planId,
-          sixMonths: isSixMonths,
-        });
-
-        window.location.href = RedirectUrl;
-        return;
-      }
-    } catch {
-      toast.error(PAYMENT_ERROR_TEXT);
-    }
-
-    setIsPaying(false);
-  };
+  const {
+    plan,
+    isSixMonths,
+    isLoading,
+    isError,
+    isFreePlan,
+    isGuest,
+    isPlanActive,
+    isPaying,
+    isPayDisabled,
+    pricing,
+    selectedMethod,
+    onMethodSelect,
+    onClose,
+    onPay,
+  } = useCheckout();
 
   if (isLoading) {
     return (
@@ -114,7 +60,7 @@ export const Checkout = () => {
     );
   }
 
-  if (!plan) {
+  if (!plan || !pricing) {
     return (
       <div className={styles.page}>
         <CheckoutMessage
@@ -126,8 +72,7 @@ export const Checkout = () => {
     );
   }
 
-  // страховка: бесплатный тариф на экран оплаты вести не должен
-  if (plan.price === 0) {
+  if (isFreePlan) {
     return (
       <div className={styles.page}>
         <CheckoutMessage
@@ -140,7 +85,7 @@ export const Checkout = () => {
     );
   }
 
-  if (profile?.status === "guest") {
+  if (isGuest) {
     return (
       <div className={styles.page}>
         <CheckoutMessage
@@ -153,10 +98,7 @@ export const Checkout = () => {
     );
   }
 
-  if (
-    activeSubscription?.plan === planId &&
-    activeSubscription.status === "active"
-  ) {
+  if (isPlanActive) {
     return (
       <div className={styles.page}>
         <CheckoutMessage
@@ -168,13 +110,6 @@ export const Checkout = () => {
       </div>
     );
   }
-
-  const isBankRequired = selectedMethod === PAYMENT_METHODS_MAP.sbp;
-  const { firstPayment, periodPrice, trialDays } = getPlanPricing(
-    plan,
-    isSixMonths,
-    selectedMethod,
-  );
 
   return (
     <div className={styles.page}>
@@ -198,7 +133,7 @@ export const Checkout = () => {
 
           <PaymentMethods
             selectedMethod={selectedMethod}
-            onMethodSelect={setSelectedMethod}
+            onMethodSelect={onMethodSelect}
             content={{
               sbp: <SbpQrCode tariff={plan.id} sixMonths={isSixMonths} />,
             }}
@@ -211,21 +146,19 @@ export const Checkout = () => {
             plan={plan}
             isSixMonths={isSixMonths}
             isPaying={isPaying}
-            isPayDisabled={isBankRequired}
+            isPayDisabled={isPayDisabled}
             onPay={onPay}
           />
 
-          {/* сумма, периодичность и порядок отказа — обязательный минимум
-              у кнопки оплаты (376-ФЗ), одной ссылки на оферту мало */}
           <Text
             className="text-center"
             style="regular"
             type="xs"
             color="#6F6F6F"
           >
-            {trialDays
-              ? `${formatCurrency(firstPayment)} за ${getDaysLabel(trialDays)}, затем платная подписка — ${formatCurrency(periodPrice)} за ${getPeriodLabel(isSixMonths)}. `
-              : `${formatCurrency(periodPrice)} за ${getPeriodLabel(isSixMonths)}. `}
+            {pricing.trialDays
+              ? `${formatCurrency(pricing.firstPayment)} за ${getDaysLabel(pricing.trialDays)}, затем платная подписка — ${formatCurrency(pricing.periodPrice)} за ${getPeriodLabel(isSixMonths)}. `
+              : `${formatCurrency(pricing.periodPrice)} за ${getPeriodLabel(isSixMonths)}. `}
             Продлевается автоматически до отмены — отключить продление можно в
             любой момент в настройках. Кассовый чек придёт на вашу почту.
             Оплачивая, вы соглашаетесь с{" "}

@@ -1,5 +1,4 @@
 import type { Plan } from "@/api/subscription";
-import { getPlanPricing } from "@/components/business/Subscription/pricing";
 import Button from "@/components/ui/Button";
 import { Divider } from "@/components/ui/Divider";
 import Icon from "@/components/ui/Icon";
@@ -7,6 +6,7 @@ import { Text } from "@/components/ui/Text";
 import { formatCurrency } from "@/utils/format-currency";
 import type { PaymentMethodId } from "../../constants";
 import styles from "./PlanCard.module.scss";
+import { usePlanCard } from "./usePlanCard";
 
 type Props = {
   plan: Plan;
@@ -25,19 +25,14 @@ export const PlanCard = ({
   isPayDisabled,
   onPay,
 }: Props) => {
-  const { periodPrice, firstPayment, trialDays } = getPlanPricing(
-    plan,
-    isSixMonths,
-    paymentMethod,
-  );
-
-  const [featuresTitle, ...features] = plan.features;
-
-  // дату первого списания отдаёт бэк; пока поля нет — обходимся сроком
-  const nextChargeLabel = new Intl.DateTimeFormat("ru-RU", {
-    day: "numeric",
-    month: "long",
-  }).format(new Date(plan.nextChargeAt));
+  const {
+    featuresTitle,
+    features,
+    periodPrice,
+    firstPayment,
+    trialDays,
+    nextChargeDate,
+  } = usePlanCard(plan, isSixMonths, paymentMethod);
 
   return (
     <div className={styles.card}>
@@ -73,7 +68,7 @@ export const PlanCard = ({
         </div>
         <div className={styles.row}>
           <Text style="regular" type="s" color="#6F6F6F">
-            {nextChargeLabel}
+            {nextChargeDate}
           </Text>
           <Text style="regular" type="s" color="#6F6F6F">
             {formatCurrency(periodPrice)}

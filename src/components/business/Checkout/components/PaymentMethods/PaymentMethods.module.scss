@@ -4,8 +4,6 @@
   gap: spacing(3);
 }
 
-// белые карточки на сером фоне: рамки нет, глубину даёт лёгкая тень,
-// выбранный способ обведён синим с мягким ореолом
 .method {
   border: 1px solid transparent;
   border-radius: border-radius("2xl");
@@ -40,7 +38,6 @@
   }
 }
 
-// способ ещё не подключён: утоплен в фон страницы, без тени
 .coming {
   background-color: #EFEFEF;
   box-shadow: none;
@@ -75,7 +72,6 @@
   cursor: pointer;
 }
 
-// радио-точка: своей нет в DS, собрана по паттерну чекбокса (#0F8AFF при выборе)
 .radio {
   position: relative;
   flex-shrink: 0;
