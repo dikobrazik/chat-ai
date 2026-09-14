@@ -17,6 +17,7 @@ export const Chat = () => {
   const { attachments } = useFiles();
 
   const messagesContainerRef = useRef<HTMLDivElement>(null);
+  const promptToScrollRef = useRef<string | null>(null);
   const [value, setValue] = useState("");
 
   const { messages, isChatCreating, setMessages } = useChat(chatId as string);
@@ -28,12 +29,34 @@ export const Chat = () => {
 
   useEffect(() => {
     const query = searchParams.get("query");
-    window.history.replaceState({}, "", `/chat/${chatId}`);
+    const promptId = searchParams.get("promptId");
+
+    const url = new URL(window.location.href);
+
+    url.searchParams.delete("query");
+    url.searchParams.delete("promptId");
+
+    if (promptId) {
+      promptToScrollRef.current = decodeURIComponent(promptId);
+    }
+
+    window.history.replaceState({}, "", url.toString());
 
     if (query) {
       onSendClick(decodeURIComponent(query));
     }
   }, []);
+
+  // после поиска скроллим к нужному сообщению
+  useEffect(() => {
+    const promptId = promptToScrollRef.current;
+    const prompt = document.getElementById(`prompt-user-${promptId}`);
+
+    if (prompt) {
+      prompt.scrollIntoView({ behavior: "smooth", block: "start" });
+      promptToScrollRef.current = null;
+    }
+  }, [messages]);
 
   const onSendClick = async (input?: string) => {
     if (isChatCreating || isPromptSending) return;

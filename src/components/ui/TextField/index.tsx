@@ -14,6 +14,7 @@ type Props = {
   error?: string;
   placeholder?: string;
   onValueChange?: (value: string) => void;
+  leftIcon?: React.ReactNode;
 } & Omit<HTMLAttributes<HTMLInputElement>, "value" | "readOnly">;
 
 export const TextField = ({
@@ -24,30 +25,40 @@ export const TextField = ({
   type = "text",
   fullWidth = false,
   error,
+  leftIcon,
+  className,
+  onChange,
+  onValueChange,
   ...other
 }: Props) => {
   const textFieldId = useRef(crypto.randomUUID());
 
   return (
-    <label htmlFor={textFieldId.current} className={styles.label}>
-      <div className="mb-2 flex items-center gap-2">
-        {label && (
-          <Text as="span" className="mb-2" type="s" color="#000000">
-            {label}
-          </Text>
-        )}
-        {error && (
-          <Text
-            as="span"
-            style="regular"
-            className="mb-2"
-            type="xs"
-            color="#FC3F1D"
-          >
-            {error}
-          </Text>
-        )}
-      </div>
+    <label
+      htmlFor={textFieldId.current}
+      className={cn(styles.label, className)}
+    >
+      {Boolean(label || error) && (
+        <div className="mb-2 flex items-center gap-2">
+          {label && (
+            <Text as="span" className="mb-2" type="s" color="#000000">
+              {label}
+            </Text>
+          )}
+          {error && (
+            <Text
+              as="span"
+              style="regular"
+              className="mb-2"
+              type="xs"
+              color="#FC3F1D"
+            >
+              {error}
+            </Text>
+          )}
+        </div>
+      )}
+      {leftIcon && <div className={styles.leftIcon}>{leftIcon}</div>}
       <input
         type={type}
         id={textFieldId.current}
@@ -58,6 +69,10 @@ export const TextField = ({
         value={value}
         readOnly={readOnly}
         autoComplete={other.autoComplete}
+        onChange={(e) => {
+          onChange?.(e);
+          onValueChange?.(e.target.value);
+        }}
         {...other}
       />
     </label>

@@ -15,3 +15,9 @@ type PromptFile = {
 };
 
 type PromptRole = "user" | "model";
+
+export type SearchResult = {
+  id: string;
+  chatId: string;
+  preview: string;
+};

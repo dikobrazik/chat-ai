@@ -7,7 +7,7 @@
   line-height: 20px;
 
   &.size-m {
-    padding: 8px 16px;
+    padding: 8px 14px;
   }
 
   &.size-l {
@@ -43,4 +43,44 @@
     }
   }
 
+  @media (prefers-color-scheme: dark) {
+    color: #9C9C9C;
+
+    &::placeholder {
+      color: #9C9C9C;
+      opacity: 1;
+    }
+  }
+}
+
+.label {
+  position: relative;
+  display: block;
+  padding: 2px;
+}
+
+.leftIcon {
+  position: absolute;
+
+  &:has(+.input.size-m) {
+    left: 18px;
+
+    top: 50%;
+    transform: translateY(-50%);
+
+    &+.input {
+      padding-left: 40px;
+    }
+  }
+
+  &:has(+.input.size-l) {
+    left: 18px;
+
+    top: 50%;
+    transform: translateY(-50%);
+
+    &+.input {
+      padding-left: 52px;
+    }
+  }
 }

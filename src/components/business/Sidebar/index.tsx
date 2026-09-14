@@ -60,6 +60,14 @@ export const ChatSidebar = ({
             leftIcon={<Icon name="message-create" />}
           />
           <Button
+            href="/search"
+            align="center"
+            className={cn(styles.collapsedNavButton, styles.newChatButton, {
+              [styles.active]: pathname === "/search",
+            })}
+            leftIcon={<Icon name="search" />}
+          />
+          <Button
             href="/image-chat"
             align="center"
             className={cn(styles.collapsedNavButton, styles.imagesButton, {
@@ -130,6 +138,15 @@ export const ChatSidebar = ({
           href="/"
         >
           Новый чат
+        </Button>
+        <Button
+          className={cn(styles.newChatButton, {
+            [styles.active]: pathname === "/search",
+          })}
+          leftIcon={<Icon name="search" />}
+          href="/search"
+        >
+          Поиск в чатах
         </Button>
         <Button
           className={cn(styles.imagesButton, {

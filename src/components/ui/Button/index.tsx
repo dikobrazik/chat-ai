@@ -6,6 +6,7 @@ import React, {
   forwardRef,
   type ReactNode,
 } from "react";
+import type { UrlObject } from "url";
 import { cn } from "@/lib/utils";
 import { Icon } from "../Icon";
 import styles from "./Button.module.scss";
@@ -34,7 +35,7 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   rightIcon?: ReactNode;
   borderRadius?: "full" | "rounded" | "none";
   as?: "button" | "a" | "span" | "div";
-  href?: string;
+  href?: string | UrlObject;
   target?: string;
   rel?: string;
   replace?: boolean;

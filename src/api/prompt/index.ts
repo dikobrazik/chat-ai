@@ -1,5 +1,12 @@
 import axios from "axios";
-import type { Prompt } from "./types";
+import type { Prompt, SearchResult } from "./types";
+
+export const searchPrompts = (search: string) =>
+  axios
+    .get<SearchResult[]>(
+      `chat/prompt/search?search=${encodeURIComponent(search)}`,
+    )
+    .then((response) => response.data);
 
 export const getChatPrompt = (chatId: string, promptId: string) =>
   axios

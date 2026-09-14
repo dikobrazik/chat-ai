@@ -91,6 +91,7 @@ export const Message = ({
         <MessageActions id={id} text={message} role={role} />
       )}
       <div
+        id={`prompt-${id}`}
         className={classNames(styles.message, styles[`${role}`], {
           [styles.error]: id.startsWith(ERROR_MESSAGE_ID),
           [styles.banner]: id === TOO_MANY_REQUESTS_MESSAGE_ID,

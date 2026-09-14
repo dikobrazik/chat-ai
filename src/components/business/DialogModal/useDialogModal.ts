@@ -1,6 +1,6 @@
 import { type ReactNode, useContext } from "react";
 import type { ButtonProps } from "@/components/ui/Button";
-import { DialogModalContext } from "./context";
+import { DialogModalContext, type DialogModalProps } from "./context";
 
 type DialogModalOptions = {
   title: ReactNode;
@@ -8,18 +8,30 @@ type DialogModalOptions = {
   actions: ButtonProps[];
 };
 
+type ContentModalOptions = DialogModalProps & {
+  content: ReactNode;
+};
+
 export const useDialogModal = () => {
   const dialogModalContext = useContext(DialogModalContext);
 
   return {
     showDialogModal: (options: DialogModalOptions) => {
+      dialogModalContext.setContent(null);
+      dialogModalContext.setModalProps({});
       dialogModalContext.setTitle(options.title);
       dialogModalContext.setDescription(options.description);
       dialogModalContext.setActions(options.actions);
-      dialogModalContext.toggle();
+      dialogModalContext.show();
     },
-    hideDialogModal: () => {
-      dialogModalContext.toggle();
+    showModal: ({ content, ...modalProps }: ContentModalOptions) => {
+      dialogModalContext.setTitle(null);
+      dialogModalContext.setDescription(null);
+      dialogModalContext.setActions([]);
+      dialogModalContext.setContent(content);
+      dialogModalContext.setModalProps(modalProps);
+      dialogModalContext.show();
     },
+    hideDialogModal: dialogModalContext.hide,
   };
 };
