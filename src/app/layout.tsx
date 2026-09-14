@@ -9,6 +9,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { Bounce, ToastContainer } from "react-toastify/unstyled";
 import "./globals.css";
 import "./globals.scss";
+import { Metrica } from "@/components/business/Metrica";
 import styles from "./layout.module.scss";
 
 const rubik = Rubik({
@@ -62,6 +63,7 @@ export default async function RootLayout({
           name="google-site-verification"
           content="kOMBcuVi1F7zH0Rj3nyl0v3HiIyN2OUJwcvY99xFYpY"
         />
+        <Metrica />
       </head>
       <body className={`${rubik.variable}`}>
         <Providers>
