@@ -43,12 +43,57 @@
     }
   }
 
+  .searchChip {
+    align-self: center;
+    min-height: 36px;
+    padding: 8px 12px 8px 8px;
+    background-color: #EFEFEF;
+
+    @media (prefers-color-scheme: dark) {
+      background-color: color-mix(in srgb, var(--background), white 10%);
+    }
+
+    svg {
+      display: block;
+    }
+
+    .searchChipLabel {
+      line-height: 20px;
+
+      @include for-mobile {
+        display: none;
+      }
+    }
+
+    &:hover:not(:disabled) {
+      background-color: #00000014;
+
+      @media (prefers-color-scheme: dark) {
+        background-color: color-mix(in srgb, var(--background), white 20%);
+      }
+    }
+
+    &:active:not(:disabled) {
+      background-color: #00000029;
+
+      @media (prefers-color-scheme: dark) {
+        background-color: color-mix(in srgb, var(--background), white 30%);
+      }
+    }
+  }
+
   // подложка поля сама gray-1, поэтому у кнопки не белый фон, а прозрачный;
   // ховер/нажатие — ghost-паттерн кита (solid 8/16%), сплошные серые тут не видны.
   // Подсветка держится, пока открыто меню «+» (aria-expanded от Popover) —
   // как у соседнего селекта модели (controlOpen) и у «...» в сайдбаре
   .plusButton {
-    background-color: transparent;
+    padding: 7px;
+    border-radius: 999px;
+    background-color: #EFEFEF;
+
+    @media (prefers-color-scheme: dark) {
+      background-color: color-mix(in srgb, var(--background), white 10%);
+    }
 
     &:hover:not(:disabled),
     &[aria-expanded="true"] {
@@ -63,7 +108,7 @@
       background-color: #00000029;
 
       @media (prefers-color-scheme: dark) {
-        background-color: color-mix(in srgb, var(--background), white 10%);
+        background-color: color-mix(in srgb, var(--background), white 30%);
       }
     }
   }

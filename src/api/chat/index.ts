@@ -6,12 +6,14 @@ type SendPromptRequest = {
   input: string;
   chat_id?: string;
   filesIds?: string[];
+  withSearch?: boolean;
 };
 
 export const sendStreamPrompt = ({
   chat_id,
   input,
   filesIds,
+  withSearch = false,
 }: SendPromptRequest) =>
   axios
     .get(`chat/${chat_id}/prompt-stream`, {
@@ -22,7 +24,7 @@ export const sendStreamPrompt = ({
         input,
         files_ids: filesIds,
         with_thinking: false,
-        with_search: false,
+        with_search: withSearch,
       },
       responseType: "stream",
       adapter: "fetch", // <- this option can also be set in axios.create()

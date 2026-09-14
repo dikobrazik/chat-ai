@@ -2,7 +2,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef } from "react";
 import { type Model, useProfile } from "@/api";
 import { useProviders } from "@/api/model";
-import { useModelContext } from "@/providers/ModelProvider/hooks";
+import { useChatSettingsContext } from "@/providers/ChatSettingsProvider/hooks";
 import { isOptionDisabled } from "./modelAccess";
 
 // пути интерсепт-модалок (@modal/(.)*): рендерятся ПОВЕРХ текущей страницы,
@@ -22,7 +22,7 @@ export const useModel = () => {
   }
   const basePathname = basePathnameRef.current;
 
-  const { model, setModel } = useModelContext();
+  const { model, setModel } = useChatSettingsContext();
 
   const { data: providers } = useProviders();
   const { data: profile, isLoading: isProfileLoading } = useProfile();

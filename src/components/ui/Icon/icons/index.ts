@@ -29,6 +29,7 @@ import { FirstlineIcon } from "./FirstlineIcon";
 import { FlashCircleIcon } from "./FlashCircleIcon";
 import { GalleryEditIcon } from "./GalleryEditIcon";
 import { GalleryIcon } from "./GalleryIcon";
+import { GlobalIcon } from "./GlobalIcon";
 import { GoogleIcon } from "./GoogleIcon";
 import { HeartIcon } from "./HeartIcon";
 import { HelpCircleIcon } from "./HelpCircleIcon";
@@ -66,6 +67,7 @@ export {
 SearchIcon,
   VerifyIcon,
   PinnedOffIcon,
+  GlobalIcon,
   FileUploadedIcon as File_uploadedIcon,
   EyeIcon,
   DislikeIcon,
@@ -132,6 +134,8 @@ export const iconComponents = {
   verify: VerifyIcon,
 
   "pinned-off": PinnedOffIcon,
+
+  global: GlobalIcon,
 
   "file-uploaded": FileUploadedIcon,
 
