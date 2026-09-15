@@ -57,7 +57,7 @@
   .action {
     color: #9C9C9C;
     background-color: transparent;
-    transition: color 0.2s ease, opacity 0.2s ease;
+    transition: color 0.2s ease;
 
     @media (hover: hover) {
       opacity: 0;
