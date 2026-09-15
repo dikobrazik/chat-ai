@@ -1,5 +1,4 @@
 // Import all icons
-import { SearchIcon } from "./SearchIcon";
 
 import { AddSquareIcon } from "./AddSquareIcon";
 import { AlertTriangleIcon } from "./AlertTriangleIcon";
@@ -50,6 +49,7 @@ import { PinnedOffIcon } from "./PinnedOffIcon";
 import { PlusIcon } from "./PlusIcon";
 import { ProfileCircleIcon } from "./ProfileCircleIcon";
 import { RefreshIcon } from "./Refresh2Icon";
+import { SearchIcon } from "./SearchIcon";
 import { SettingIcon } from "./SettingIcon";
 import { SettingsIcon } from "./SettingsIcon";
 import { ShareIcon } from "./ShareIcon";
@@ -59,12 +59,14 @@ import { SpinnerIcon } from "./SpinnerIcon";
 import { TrashIcon } from "./TrashIcon";
 import { VerifyIcon } from "./VerifyIcon";
 import { VideoPlayIcon } from "./VideoPlayIcon";
+import { VKIcon } from "./VkIcon";
 import { XCircleIcon } from "./XCircleIcon";
 import { YandexIcon } from "./YandexIcon";
 
 // Re-export all icons
 export {
-SearchIcon,
+  SearchIcon,
+  VKIcon,
   VerifyIcon,
   PinnedOffIcon,
   GlobalIcon,
@@ -129,22 +131,15 @@ SearchIcon,
 
 // Icon registry for dynamic loading
 export const iconComponents = {
-  "search": SearchIcon,
-
+  search: SearchIcon,
+  vk: VKIcon,
   verify: VerifyIcon,
-
   "pinned-off": PinnedOffIcon,
-
   global: GlobalIcon,
-
   "file-uploaded": FileUploadedIcon,
-
   eye: EyeIcon,
-
   dislike: DislikeIcon,
-
   like: LikeIcon,
-
   refresh: RefreshIcon,
   document: DocumentIcon,
   "gallery-edit": GalleryEditIcon,

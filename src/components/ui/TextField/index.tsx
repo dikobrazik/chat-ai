@@ -41,7 +41,7 @@ export const TextField = ({
       {Boolean(label || error) && (
         <div className="mb-2 flex items-center gap-2">
           {label && (
-            <Text as="span" className="mb-2" type="s" color="#000000">
+            <Text as="span" className="mb-2" type="s">
               {label}
             </Text>
           )}

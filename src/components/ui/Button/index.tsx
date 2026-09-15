@@ -113,6 +113,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           rel={rel}
           className={buttonClasses}
           replace={replace}
+          onClick={onClick}
           {...(props as any)}
         >
           {buttonContent}

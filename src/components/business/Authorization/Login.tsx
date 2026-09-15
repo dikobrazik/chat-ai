@@ -63,7 +63,7 @@ export const Login = () => {
   return (
     <div className="flex flex-col gap-8 px-2 sm:px-16">
       <div className="flex flex-col gap-2 items-center">
-        <Text as="h2" type="l">
+        <Text as="h2" type="l" className="text-center">
           Войти или зарегистрироваться
         </Text>
         <Text className="text-center" type="s" style="regular" color="#6F6F6F">
@@ -82,7 +82,7 @@ export const Login = () => {
           align="center"
           disabled={isPending}
           leftIcon={<Icon name="google" />}
-          href={`${BASE_URL}/api/auth/g${oauthQuery}`}
+          href={`${BASE_URL}/api/auth/google${oauthQuery}`}
         >
           Продолжить с Google
         </Button>
@@ -94,8 +94,21 @@ export const Login = () => {
           size="m"
           align="center"
           disabled={isPending}
+          leftIcon={<Icon color="black" name="vk" />}
+          href={`${BASE_URL}/api/auth/vk${oauthQuery}`}
+        >
+          Продолжить с VK
+        </Button>
+        <Button
+          as="a"
+          replace
+          variant="base"
+          fullWidth
+          size="m"
+          align="center"
+          disabled={isPending}
           leftIcon={<Icon name="yandex" />}
-          href={`${BASE_URL}/api/auth/ya${oauthQuery}`}
+          href={`${BASE_URL}/api/auth/yandex${oauthQuery}`}
         >
           Продолжить с Yandex
         </Button>
