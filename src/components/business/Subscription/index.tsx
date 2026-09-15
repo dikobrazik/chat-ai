@@ -11,9 +11,11 @@ import Button from "@/components/ui/Button";
 import Icon from "@/components/ui/Icon";
 import { Text } from "@/components/ui/Text";
 import { SUBSCRIBED_USER_STATUSES } from "@/constants/user";
+import { useIsMobile } from "@/hooks/useMobile";
 
 export const SubscriptionButton = () => {
   const { data: profile } = useProfile();
+  const isMobile = useIsMobile();
 
   usePrefetchQuery({
     queryKey: PLANS_QUERY_KEY,
@@ -37,9 +39,11 @@ export const SubscriptionButton = () => {
       href="/plans"
       leftIcon={<Icon name="flash-circle" />}
     >
-      <Text type="s" style="regular">
-        Улучшить
-      </Text>
+      {isMobile ? null : (
+        <Text type="s" style="regular">
+          Улучшить
+        </Text>
+      )}
     </Button>
   );
 };

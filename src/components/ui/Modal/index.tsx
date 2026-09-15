@@ -90,6 +90,7 @@ export const Modal: ModalComponent = ({
   // Handle overlay click
   const handleOverlayClick = (event: React.MouseEvent<HTMLDivElement>) => {
     if (closeOnOverlayClick && event.target === event.currentTarget) {
+      event.stopPropagation();
       onClose();
     }
   };

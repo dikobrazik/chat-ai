@@ -64,7 +64,7 @@ export const Header = () => {
             leftIcon={<Icon name="export" />}
             onClick={onShareClick}
           >
-            Поделиться
+            {isMobile ? "" : "Поделиться"}
           </Button>
         )}
         {(isChatScreen || isGuest) && (

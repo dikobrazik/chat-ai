@@ -37,6 +37,12 @@ export const ChatSidebar = ({
   const { chats, isLoading } = useChats();
   const { active: isChatsOpen, toggle: toggleChats } = useToggle(true);
 
+  const handleSidebarClick = () => {
+    if (forMobile) {
+      toggleSidebar();
+    }
+  };
+
   if (!isOpen)
     return (
       <>
@@ -54,6 +60,7 @@ export const ChatSidebar = ({
           <Button
             href="/"
             align="center"
+            onClick={handleSidebarClick}
             className={cn(styles.collapsedNavButton, styles.newChatButton, {
               [styles.active]: pathname === "/",
             })}
@@ -62,6 +69,7 @@ export const ChatSidebar = ({
           <Button
             href="/search"
             align="center"
+            onClick={handleSidebarClick}
             className={cn(styles.collapsedNavButton, styles.newChatButton, {
               [styles.active]: pathname === "/search",
             })}
@@ -70,6 +78,7 @@ export const ChatSidebar = ({
           <Button
             href="/image-chat"
             align="center"
+            onClick={handleSidebarClick}
             className={cn(styles.collapsedNavButton, styles.imagesButton, {
               [styles.active]: pathname === "/image-chat",
             })}
@@ -82,6 +91,7 @@ export const ChatSidebar = ({
             <Button
               href="/login"
               align="center"
+              onClick={handleSidebarClick}
               className={styles.collapsedProfileButton}
               leftIcon={<Icon name="profile-circle" />}
             />
@@ -109,6 +119,7 @@ export const ChatSidebar = ({
         {/* pl-1: центр лого (36px) на оси центров иконок навигации (паддинг кнопки 12 + половина иконки 10) */}
         <Link
           href="/"
+          onClick={handleSidebarClick}
           className={cn(
             styles.logoLink,
             "flex flex-row items-center gap-3 pl-1",
@@ -134,6 +145,7 @@ export const ChatSidebar = ({
           className={cn(styles.newChatButton, {
             [styles.active]: pathname === "/",
           })}
+          onClick={handleSidebarClick}
           leftIcon={<Icon name="message-create" />}
           href="/"
         >
@@ -143,6 +155,7 @@ export const ChatSidebar = ({
           className={cn(styles.newChatButton, {
             [styles.active]: pathname === "/search",
           })}
+          onClick={handleSidebarClick}
           leftIcon={<Icon name="search" />}
           href="/search"
         >
@@ -152,6 +165,7 @@ export const ChatSidebar = ({
           className={cn(styles.imagesButton, {
             [styles.active]: pathname === "/image-chat",
           })}
+          onClick={handleSidebarClick}
           leftIcon={<Icon name="gallery" />}
           href="/image-chat"
         >
@@ -192,6 +206,7 @@ export const ChatSidebar = ({
                   <Button
                     key={chat.id}
                     href={`/chat/${chat.id}`}
+                    onClick={handleSidebarClick}
                     className={cn(styles.chatItem, "shrink-0", {
                       [styles.active]: pathname === `/chat/${chat.id}`,
                     })}
@@ -232,7 +247,12 @@ export const ChatSidebar = ({
             title="Получайте ответы, адаптированные специально для вас"
             description="Войдите в систему, чтобы использовать историю чатов, создавать изображения и загружать файлы."
             action={
-              <Button as="a" variant="primary" href="/login">
+              <Button
+                onClick={handleSidebarClick}
+                as="a"
+                variant="primary"
+                href="/login"
+              >
                 <Text className="w-full text-center" type="s" as="div">
                   Войти
                 </Text>
@@ -249,7 +269,12 @@ export const ChatSidebar = ({
                 title="Откройте полный доступ без ограничений"
                 description="Создавайте быстрее — без лимитов и ожиданий"
                 action={
-                  <Button as="a" variant="secondary" href="/plans">
+                  <Button
+                    onClick={handleSidebarClick}
+                    as="a"
+                    variant="secondary"
+                    href="/plans"
+                  >
                     <Text className="w-full text-center" type="s" as="div">
                       Открыть полный доступ
                     </Text>
