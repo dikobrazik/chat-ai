@@ -2,7 +2,6 @@
   cursor: pointer;
   padding: 0.5rem 0.75rem;
   color: #9C9C9C;
-  transition: color 0.2s ease;
 
   &:hover {
     color: #6F6F6F;
@@ -13,7 +12,7 @@
   }
 
   .chevron {
-    transition: transform 0.3s ease, opacity 0.2s ease, color 0.2s ease;
+    transition: transform 0.3s ease, opacity 0.2s ease;
     transform: rotate(-90deg);
     color: #9C9C9C;
   }
