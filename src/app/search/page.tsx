@@ -29,7 +29,7 @@ export default function SearchPage() {
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex gap-3">
+      <div className="flex gap-3 py-5">
         <TextField
           className="flex-1"
           value={search}
