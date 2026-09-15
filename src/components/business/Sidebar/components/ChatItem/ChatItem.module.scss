@@ -8,10 +8,6 @@
   white-space: nowrap;
   overflow: hidden;
 
-  &.pinned {
-    --actions-width: 2.25rem;
-  }
-
   &:hover,
   &:focus-within,
   &:has([aria-expanded="true"]) {
@@ -64,6 +60,10 @@
     background-color: transparent;
     transition: color 0.2s ease, opacity 0.2s ease;
 
+    @media (hover: hover) {
+      opacity: 0;
+    }
+
     &:hover:not(:disabled),
     &:active:not(:disabled),
     &[aria-expanded="true"] {
@@ -76,15 +76,9 @@
     }
   }
 
-  .more {
-    @media (hover: hover) {
-      opacity: 0;
-    }
-  }
-
-  &:hover .more,
-  &:focus-within .more,
-  .more[aria-expanded="true"] {
+  &:hover .action,
+  &:focus-within .action,
+  &:has([aria-expanded="true"]) .action {
     opacity: 1;
   }
 }

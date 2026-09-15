@@ -48,7 +48,7 @@ export const ChatItem = ({ chat, onClick }: Props) => {
           Trigger={(props) => (
             <Button
               {...props}
-              className={cn(props.className, styles.action, styles.more)}
+              className={cn(props.className, styles.action)}
               onClick={
                 props.onClick
                   ? preventDefault(stopPropagation(props.onClick))
