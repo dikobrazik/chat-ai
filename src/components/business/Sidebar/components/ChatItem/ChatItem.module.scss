@@ -45,7 +45,6 @@
     mask-size: calc(100% + 4.5rem) 100%;
     mask-repeat: no-repeat;
     mask-position: calc(-1 * var(--actions-width)) 0;
-    transition: mask-position 0.2s ease;
   }
 
   .actions {
