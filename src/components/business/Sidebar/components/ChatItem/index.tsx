@@ -1,12 +1,12 @@
 import { usePathname } from "next/navigation";
 import { type Chat, usePinChat } from "@/api";
+import { ChatActions } from "@/components/business/ChatActions";
 import Button from "@/components/ui/Button";
 import Icon from "@/components/ui/Icon";
 import Popover from "@/components/ui/Popover";
 import { Text } from "@/components/ui/Text";
 import { cn } from "@/lib/utils";
 import { preventDefault, stopPropagation } from "@/utils";
-import { ChatActions } from "../../../ChatActions";
 import styles from "./ChatItem.module.scss";
 
 type Props = {
