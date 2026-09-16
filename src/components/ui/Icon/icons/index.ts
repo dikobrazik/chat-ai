@@ -1,4 +1,5 @@
 // Import all icons
+import { ImportIcon } from "./ImportIcon";
 
 import { AddSquareIcon } from "./AddSquareIcon";
 import { AlertTriangleIcon } from "./AlertTriangleIcon";
@@ -65,6 +66,7 @@ import { YandexIcon } from "./YandexIcon";
 
 // Re-export all icons
 export {
+ImportIcon,
   SearchIcon,
   VKIcon,
   VerifyIcon,
@@ -131,6 +133,8 @@ export {
 
 // Icon registry for dynamic loading
 export const iconComponents = {
+  "import": ImportIcon,
+
   search: SearchIcon,
   vk: VKIcon,
   verify: VerifyIcon,

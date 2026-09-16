@@ -1,10 +1,9 @@
 import { code } from "@streamdown/code";
 import { math } from "@streamdown/math";
-import { useQuery } from "@tanstack/react-query";
 import classNames from "classnames";
 import { useParams } from "next/navigation";
 import { Streamdown } from "streamdown";
-import { getImageUrl, type Prompt } from "@/api";
+import type { Prompt } from "@/api";
 import { cn } from "@/lib/utils";
 import {
   ERROR_MESSAGE_ID,
@@ -17,27 +16,8 @@ import { MessageActions } from "./MessageActions";
 import { ModelTyping } from "./ModelTyping";
 import { TooManyRequests } from "./TooManyRequests";
 import "streamdown/styles.css";
+import { ImageContent } from "./ImageContent";
 import { MessageFiles } from "./MessageFiles";
-
-const ImageContent = ({
-  chatId,
-  promptId,
-}: {
-  chatId: string;
-  promptId: string;
-}) => {
-  const { data, isLoading } = useQuery({
-    queryKey: ["image", chatId, promptId],
-    queryFn: () => getImageUrl({ chatId, promptId }),
-  });
-
-  if (isLoading) {
-    return <ModelTyping />;
-  }
-
-  // biome-ignore lint/performance/noImgElement: <explanation>
-  return <img src={data} alt="AI response" width="20%" />;
-};
 
 const MessageContent = ({
   id,

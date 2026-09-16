@@ -39,6 +39,7 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   target?: string;
   rel?: string;
   replace?: boolean;
+  download?: boolean;
 }
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
@@ -61,6 +62,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       onClick,
       align = "left",
       replace,
+      download,
       ...props
     },
     ref,
@@ -114,6 +116,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           className={buttonClasses}
           replace={replace}
           onClick={onClick}
+          download={download}
           {...(props as any)}
         >
           {buttonContent}
