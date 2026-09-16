@@ -95,8 +95,8 @@ export const PromptField = forwardRef<HTMLTextAreaElement, PromptFieldProps>(
             "flex w-full overflow-scroll gap-2",
           )}
         >
-          {(attachments ?? []).map((file) => (
-            <File key={file.name} fileId={file.id} />
+          {(attachments ?? []).map((file, index) => (
+            <File key={`${index}-${file.name}`} fileId={file.id} />
           ))}
         </div>
 
