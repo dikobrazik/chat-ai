@@ -10,6 +10,10 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
+        hostname: "*.vkuserphoto.ru",
+      },
+      {
+        protocol: "https",
         hostname: "nspk.ru",
       },
       {
