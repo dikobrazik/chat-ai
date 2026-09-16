@@ -6,7 +6,6 @@ import { useToggle } from "@/hooks/useToggle";
 import { cn } from "@/lib/utils";
 import { ChatItem } from "../ChatItem";
 import styles from "./ChatsGroup.module.scss";
-import { SKELETON_KEYS } from "./constants";
 
 type Props = {
   title: string;
@@ -32,13 +31,16 @@ export const ChatsGroup = ({ title, chats, isLoading, onChatClick }: Props) => {
       </button>
       <div className={cn(styles.collapse, { [styles.open]: isOpen })}>
         <div className="flex flex-col">
-          {isLoading
-            ? SKELETON_KEYS.map((key) => (
-                <Skeleton isLoading key={key} className="mb-2" height={40} />
-              ))
-            : chats.map((chat) => (
-                <ChatItem key={chat.id} chat={chat} onClick={onChatClick} />
-              ))}
+          {chats.map((chat) => (
+            <Skeleton
+              key={chat.id}
+              isLoading={isLoading}
+              className="mb-2"
+              height={40}
+            >
+              <ChatItem chat={chat} onClick={onChatClick} />
+            </Skeleton>
+          ))}
         </div>
       </div>
     </div>

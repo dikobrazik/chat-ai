@@ -170,6 +170,7 @@ export const ChatSidebar = ({
           <ChatsGroup
             title="Закреплённые"
             chats={pinnedChats}
+            isLoading={isLoading}
             onChatClick={handleSidebarClick}
           />
         )}
