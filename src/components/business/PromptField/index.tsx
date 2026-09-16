@@ -2,6 +2,7 @@ import { forwardRef, useRef } from "react";
 import { mergeRefs } from "react-merge-refs";
 import { ModelSelect } from "@/components/business/ModelSelect";
 import Popover from "@/components/ui/Popover";
+import { useIsMobile } from "@/hooks/useMobile";
 import { cn } from "@/lib/utils";
 import { useFiles } from "@/providers/FilesProvider/useFiles";
 import Button from "../../ui/Button";
@@ -37,6 +38,7 @@ export const PromptField = forwardRef<HTMLTextAreaElement, PromptFieldProps>(
     },
     ref,
   ) => {
+    const isMobile = useIsMobile();
     const accept = useAccept();
     const { isSearchAvailable, withSearch, setWithSearch } = useSearch();
 
@@ -102,7 +104,7 @@ export const PromptField = forwardRef<HTMLTextAreaElement, PromptFieldProps>(
           id="prompt"
           name="prompt"
           enterKeyHint="send"
-          autoFocus
+          autoFocus={!isMobile}
           placeholder={placeholder}
           ref={mergeRefs([inputRef, ref])}
           className={styles.textfield}
