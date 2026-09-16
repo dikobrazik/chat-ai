@@ -15,12 +15,7 @@ type Props = {
   onChatClick: () => void;
 };
 
-export const ChatsGroup = ({
-  title,
-  chats,
-  isLoading,
-  onChatClick,
-}: Props) => {
+export const ChatsGroup = ({ title, chats, isLoading, onChatClick }: Props) => {
   const { active: isOpen, toggle } = useToggle(true);
 
   return (

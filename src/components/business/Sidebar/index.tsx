@@ -42,7 +42,6 @@ export const ChatSidebar = ({
   if (!isOpen)
     return (
       <>
-        {/* onClick на карточке, а не на кнопке — чтобы клик срабатывал и во время переворота, пока сверху ещё логотип */}
         <div className={styles.card} onClick={toggleSidebar}>
           <div className={cn(styles.cardInner)}>
             <Logo className={styles.cardFront} />
@@ -81,7 +80,6 @@ export const ChatSidebar = ({
             leftIcon={<Icon name="gallery" />}
           />
         </div>
-        {/* профиль прижат к низу, как в развёрнутом сайдбаре */}
         <div className="mt-auto flex flex-col items-center gap-3">
           {isGuest ? (
             <Button
@@ -112,7 +110,6 @@ export const ChatSidebar = ({
   return (
     <>
       <div className="flex flex-row justify-between items-center">
-        {/* pl-1: центр лого (36px) на оси центров иконок навигации (паддинг кнопки 12 + половина иконки 10) */}
         <Link
           href="/"
           onClick={handleSidebarClick}
@@ -184,8 +181,6 @@ export const ChatSidebar = ({
         />
       </div>
       {isGuest ? (
-        // -mx-1: внутренний паддинг баннера (16px) минус вынос за колонку (4px)
-        // ставит текст на ось контента кнопок, фон выступает как ховер у кнопок
         <div className="-mx-1">
           <Banner
             title="Получайте ответы, адаптированные специально для вас"
