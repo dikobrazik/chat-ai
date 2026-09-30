@@ -54,7 +54,11 @@ export const Registration = () => {
   const { isPending, mutateAsync: signIn } = useMutation({
     mutationKey: ["postEmailSignIn"],
     mutationFn: ({ email, password }: Inputs) =>
-      postEmailSignIn(email, password),
+      postEmailSignIn({
+        email,
+        password,
+        mailingConsent: mailingConsent ? "1" : undefined,
+      }),
     onSuccess: (data) => {
       if (data.authCodeSent) {
         router.replace("/auth/verify-code");

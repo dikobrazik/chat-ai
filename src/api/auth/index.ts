@@ -23,9 +23,26 @@ export const checkIsEmailRegistered = (email: string) =>
 
 type SignInResponse = { accessToken: string; authCodeSent: boolean };
 
-export const postEmailSignIn = (email: string, password: string) =>
+type PostEmailSignInParams = {
+  email: string;
+  password: string;
+  mailingConsent?: string;
+};
+
+export const postEmailSignIn = ({
+  email,
+  password,
+  mailingConsent,
+}: PostEmailSignInParams) =>
   axios
-    .post<SignInResponse>("auth/email/sign-in", { email, password })
+    .post<SignInResponse>(
+      "auth/email/sign-in",
+      {
+        email,
+        password,
+      },
+      { params: { mailing_consent: mailingConsent } },
+    )
     .then((response) => response.data);
 
 export const postEmailVerify = (email: string, code: string) =>
