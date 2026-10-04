@@ -10,11 +10,11 @@ import { checkIsEmailRegistered } from "@/api";
 import Button from "@/components/ui/Button";
 import { Checkbox } from "@/components/ui/Checkbox";
 import { Divider } from "@/components/ui/Divider";
-import Icon from "@/components/ui/Icon";
 import { Text } from "@/components/ui/Text";
 import { TextField } from "@/components/ui/TextField";
 import { BASE_URL } from "@/config";
 import { useEmailAuth } from "@/providers/EmailAuthProvider/useEmailAuth";
+import { ProviderButton } from "./components/ProviderButton";
 import styles from "./Login.module.scss";
 
 type Inputs = {
@@ -74,45 +74,27 @@ export const Login = () => {
 
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-3">
-          <Button
-            as="a"
-            replace
-            variant="base"
-            fullWidth
-            size="m"
-            align="center"
+          <ProviderButton
+            icon="vk"
             disabled={isPending}
-            leftIcon={<Icon name="vk" size={24} />}
             href={`${BASE_URL}/api/auth/vk${oauthQuery}`}
           >
-            <Text style="regular">Продолжить с VK ID</Text>
-          </Button>
-          <Button
-            as="a"
-            replace
-            variant="base"
-            fullWidth
-            size="m"
-            align="center"
+            Продолжить с VK ID
+          </ProviderButton>
+          <ProviderButton
+            icon="yandex"
             disabled={isPending}
-            leftIcon={<Icon name="yandex" size={24} />}
             href={`${BASE_URL}/api/auth/yandex${oauthQuery}`}
           >
-            <Text style="regular">Продолжить с Яндекс</Text>
-          </Button>
-          <Button
-            as="a"
-            replace
-            variant="base"
-            fullWidth
-            size="m"
-            align="center"
+            Продолжить с Яндекс
+          </ProviderButton>
+          <ProviderButton
+            icon="mail-ru"
             disabled={isPending}
-            leftIcon={<Icon name="mail-ru" size={24} />}
             href={`${BASE_URL}/api/auth/mailru${oauthQuery}`}
           >
-            <Text style="regular">Продолжить с Mail.ru</Text>
-          </Button>
+            Продолжить с Mail.ru
+          </ProviderButton>
 
           <div className="flex items-center gap-3">
             <Divider></Divider>
