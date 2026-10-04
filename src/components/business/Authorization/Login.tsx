@@ -8,7 +8,6 @@ import { type SubmitHandler, useForm } from "react-hook-form";
 import * as yup from "yup";
 import { checkIsEmailRegistered } from "@/api";
 import Button from "@/components/ui/Button";
-import { Checkbox } from "@/components/ui/Checkbox";
 import { Divider } from "@/components/ui/Divider";
 import { Text } from "@/components/ui/Text";
 import { TextField } from "@/components/ui/TextField";
@@ -39,9 +38,7 @@ export const Login = () => {
     resolver: yupResolver(schema),
   });
 
-  const { setEmail, mailingConsent, setMailingConsent } = useEmailAuth();
-
-  const oauthQuery = mailingConsent ? "?mailing_consent=1" : "";
+  const { setEmail } = useEmailAuth();
 
   const { isPending, mutate } = useMutation({
     mutationKey: ["check-email-registered"],
@@ -77,21 +74,21 @@ export const Login = () => {
           <ProviderButton
             icon="vk"
             disabled={isPending}
-            href={`${BASE_URL}/api/auth/vk${oauthQuery}`}
+            href={`${BASE_URL}/api/auth/vk`}
           >
             Продолжить с VK ID
           </ProviderButton>
           <ProviderButton
             icon="yandex"
             disabled={isPending}
-            href={`${BASE_URL}/api/auth/yandex${oauthQuery}`}
+            href={`${BASE_URL}/api/auth/yandex`}
           >
             Продолжить с Яндекс
           </ProviderButton>
           <ProviderButton
             icon="mail-ru"
             disabled={isPending}
-            href={`${BASE_URL}/api/auth/mailru${oauthQuery}`}
+            href={`${BASE_URL}/api/auth/mailru`}
           >
             Продолжить с Mail.ru
           </ProviderButton>
@@ -157,20 +154,6 @@ export const Login = () => {
               согласие на обработку персональных данных
             </Link>
           </Text>
-
-          <Checkbox
-            className="self-center"
-            checked={mailingConsent}
-            onChange={(event) => setMailingConsent(event.target.checked)}
-          >
-            <Text type="xs" style="regular" color="#9C9C9C">
-              Хочу получать{" "}
-              <Link target="_blank" href="/mailing-consent">
-                рассылку
-              </Link>{" "}
-              об обновлениях продукта и акциях
-            </Text>
-          </Checkbox>
         </div>
       </div>
     </div>

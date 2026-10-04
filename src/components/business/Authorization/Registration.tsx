@@ -57,7 +57,7 @@ export const Registration = () => {
       postEmailSignIn({
         email,
         password,
-        mailingConsent: mailingConsent ? "1" : undefined,
+        mailingConsent: !isSignInPage && mailingConsent ? "1" : undefined,
       }),
     onSuccess: (data) => {
       if (data.authCodeSent) {
@@ -161,21 +161,13 @@ export const Registration = () => {
         )}
       </form>
 
-      <div className="flex flex-col gap-4">
-        <Checkbox
-          checked={mailingConsent}
-          onChange={(event) => setMailingConsent(event.target.checked)}
+      <div className="flex flex-col gap-3">
+        <Text
+          type="xs"
+          style="regular"
+          color="#9C9C9C"
+          className="text-center text-pretty"
         >
-          <Text type="xs" style="regular" color="#6F6F6F">
-            Хочу получать{" "}
-            <Link target="_blank" href="/mailing-consent">
-              рассылку
-            </Link>{" "}
-            об обновлениях продукта и акциях
-          </Text>
-        </Checkbox>
-
-        <Text type="xs" style="regular" color="#9C9C9C" className="text-center">
           Продолжая, вы соглашаетесь с{" "}
           <Link href="/terms">Условиями использования</Link> и{" "}
           <Link target="_blank" href="/privacy">
@@ -186,6 +178,22 @@ export const Registration = () => {
             согласие на обработку персональных данных
           </Link>
         </Text>
+
+        {!isSignInPage && (
+          <Checkbox
+            className="self-center"
+            checked={mailingConsent}
+            onChange={(event) => setMailingConsent(event.target.checked)}
+          >
+            <Text type="xs" style="regular" color="#9C9C9C">
+              Хочу получать{" "}
+              <Link target="_blank" href="/mailing-consent">
+                рассылку
+              </Link>{" "}
+              об обновлениях продукта и акциях
+            </Text>
+          </Checkbox>
+        )}
       </div>
     </div>
   );
