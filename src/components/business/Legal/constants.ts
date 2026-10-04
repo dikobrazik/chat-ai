@@ -1264,10 +1264,6 @@ export const TERMS: LegalDocumentData = {
               items: ["support@jonu.ru"],
             },
             {
-              label: "Новости и соцсети",
-              items: ["Telegram: @jonu_support"],
-            },
-            {
               label: "Сайт",
               items: ["https://jonu.ru"],
             },
