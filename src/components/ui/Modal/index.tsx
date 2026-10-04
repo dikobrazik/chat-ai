@@ -17,7 +17,7 @@ export interface ModalProps {
   closeOnOverlayClick?: boolean;
   closeOnEscape?: boolean;
   showCloseButton?: boolean;
-  size?: "small" | "medium" | "large" | "fullscreen";
+  size?: "compact" | "small" | "medium" | "large" | "fullscreen";
 }
 
 type ModalComponent = React.FC<ModalProps> & {

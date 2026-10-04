@@ -1,7 +1,7 @@
 import { BaseIcon, type IconComponent } from "..";
 
 export const VKIcon: IconComponent = ({ ...props }) => (
-  <BaseIcon viewBox="-2 -2 28 28" {...props}>
+  <BaseIcon viewBox="0 0 24 24" {...props}>
     <path
       fillRule="evenodd"
       clipRule="evenodd"

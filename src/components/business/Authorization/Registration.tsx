@@ -99,7 +99,7 @@ export const Registration = () => {
   };
 
   return (
-    <div className="flex flex-col gap-8 px-2 sm:px-16">
+    <div className="flex flex-col gap-8 px-2 sm:px-10">
       <div className="flex flex-col gap-2 items-center">
         <Text as="h2" type="l">
           {isSignInPage ? "Войдите" : "Зарегистрируйтесь"} в Jonu AI

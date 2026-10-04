@@ -10,11 +10,11 @@ import { checkIsEmailRegistered } from "@/api";
 import Button from "@/components/ui/Button";
 import { Checkbox } from "@/components/ui/Checkbox";
 import { Divider } from "@/components/ui/Divider";
+import Icon from "@/components/ui/Icon";
 import { Text } from "@/components/ui/Text";
 import { TextField } from "@/components/ui/TextField";
 import { BASE_URL } from "@/config";
 import { useEmailAuth } from "@/providers/EmailAuthProvider/useEmailAuth";
-import { ProviderLogo } from "./components/ProviderLogo";
 import styles from "./Login.module.scss";
 
 type Inputs = {
@@ -61,7 +61,7 @@ export const Login = () => {
   };
 
   return (
-    <div className="flex flex-col gap-6 sm:gap-8 px-2 sm:px-16">
+    <div className="flex flex-col gap-6 sm:gap-8 px-2 sm:px-10">
       <div className="flex flex-col gap-2 items-center">
         <Text as="h2" type="l" className="text-center">
           Войти или зарегистрироваться
@@ -72,113 +72,124 @@ export const Login = () => {
         </Text>
       </div>
 
-      <div className="flex flex-col gap-3">
-        <Button
-          as="a"
-          replace
-          variant="base"
-          fullWidth
-          size="m"
-          align="center"
-          disabled={isPending}
-          leftIcon={<ProviderLogo name="vk" />}
-          href={`${BASE_URL}/api/auth/vk${oauthQuery}`}
-        >
-          <Text style="regular">Продолжить с VK ID</Text>
-        </Button>
-        <Button
-          as="a"
-          replace
-          variant="base"
-          fullWidth
-          size="m"
-          align="center"
-          disabled={isPending}
-          leftIcon={<ProviderLogo name="yandex" />}
-          href={`${BASE_URL}/api/auth/yandex${oauthQuery}`}
-        >
-          <Text style="regular">Продолжить с Яндекс</Text>
-        </Button>
-        <Button
-          as="a"
-          replace
-          variant="base"
-          fullWidth
-          size="m"
-          align="center"
-          disabled={isPending}
-          leftIcon={<ProviderLogo name="mail-ru" />}
-          href={`${BASE_URL}/api/auth/mailru${oauthQuery}`}
-        >
-          <Text style="regular">Продолжить с Mail.ru</Text>
-        </Button>
-      </div>
-
-      <div className="flex items-center gap-3">
-        <Divider></Divider>
-        <Text color="#9C9C9C" style="regular" type="s">
-          или
-        </Text>
-        <Divider></Divider>
-      </div>
-
-      <form className="flex flex-col gap-6" onSubmit={handleSubmit(onSubmit)}>
-        <TextField
-          aria-label="E-mail"
-          placeholder="Введите почту"
-          className={styles.emailField}
-          fullWidth
-          size="l"
-          readOnly={isPending}
-          {...register("email")}
-          error={errors.email?.message}
-        />
-        <Button
-          variant="primary"
-          size="m"
-          align="center"
-          type="submit"
-          loading={isPending}
-        >
-          Продолжить
-        </Button>
-        <Text className="self-center" style="regular" type="s">
-          <Link
-            replace
-            href="/auth/password-reset"
-            className={styles.forgotPassword}
-          >
-            Забыли пароль?
-          </Link>
-        </Text>
-      </form>
-
       <div className="flex flex-col gap-4">
-        <Checkbox
-          className="self-center"
-          checked={mailingConsent}
-          onChange={(event) => setMailingConsent(event.target.checked)}
-        >
-          <Text type="xs" style="regular" color="#9C9C9C">
-            Хочу получать{" "}
-            <Link target="_blank" href="/mailing-consent">
-              рассылку
-            </Link>{" "}
-            об обновлениях продукта и акциях
-          </Text>
-        </Checkbox>
+        <div className="flex flex-col gap-3">
+          <Button
+            as="a"
+            replace
+            variant="base"
+            fullWidth
+            size="m"
+            align="center"
+            disabled={isPending}
+            leftIcon={<Icon name="vk" size={24} />}
+            href={`${BASE_URL}/api/auth/vk${oauthQuery}`}
+          >
+            <Text style="regular">Продолжить с VK ID</Text>
+          </Button>
+          <Button
+            as="a"
+            replace
+            variant="base"
+            fullWidth
+            size="m"
+            align="center"
+            disabled={isPending}
+            leftIcon={<Icon name="yandex" size={24} />}
+            href={`${BASE_URL}/api/auth/yandex${oauthQuery}`}
+          >
+            <Text style="regular">Продолжить с Яндекс</Text>
+          </Button>
+          <Button
+            as="a"
+            replace
+            variant="base"
+            fullWidth
+            size="m"
+            align="center"
+            disabled={isPending}
+            leftIcon={<Icon name="mail-ru" size={24} />}
+            href={`${BASE_URL}/api/auth/mailru${oauthQuery}`}
+          >
+            <Text style="regular">Продолжить с Mail.ru</Text>
+          </Button>
 
-        <Text type="xs" style="regular" color="#9C9C9C" className="text-center">
-          Продолжая, вы соглашаетесь с{" "}
-          <Link href="/terms">Условиями использования</Link> и{" "}
-          <Link target="_blank" href="/privacy">
-            Политикой конфиденциальности
-          </Link>
-          ,<br />а также даёте{" "}
-          <Link target="_blank" href="/personal-data-consent">
-            согласие на обработку персональных данных
-          </Link>
-        </Text>
+          <div className="flex items-center gap-3">
+            <Divider></Divider>
+            <Text color="#9C9C9C" style="regular" type="s">
+              или
+            </Text>
+            <Divider></Divider>
+          </div>
+
+          <form
+            className="flex flex-col gap-3"
+            onSubmit={handleSubmit(onSubmit)}
+          >
+            <TextField
+              aria-label="E-mail"
+              placeholder="Введите почту"
+              className={styles.emailField}
+              fullWidth
+              size="l"
+              readOnly={isPending}
+              {...register("email")}
+              error={errors.email?.message}
+            />
+            <Button
+              variant="primary"
+              size="m"
+              align="center"
+              type="submit"
+              loading={isPending}
+            >
+              Продолжить
+            </Button>
+          </form>
+        </div>
+
+        <div className="flex flex-col gap-3">
+          <Text className="self-center" style="regular" type="s">
+            <Link
+              replace
+              href="/auth/password-reset"
+              className={styles.forgotPassword}
+            >
+              Забыли пароль?
+            </Link>
+          </Text>
+
+          <Text
+            type="xs"
+            style="regular"
+            color="#9C9C9C"
+            className="text-center text-pretty"
+          >
+            Продолжая, вы соглашаетесь с{" "}
+            <Link href="/terms">Условиями использования</Link> и{" "}
+            <Link target="_blank" href="/privacy">
+              Политикой конфиденциальности
+            </Link>
+            ,<br />а также даёте{" "}
+            <Link target="_blank" href="/personal-data-consent">
+              согласие на обработку персональных данных
+            </Link>
+          </Text>
+
+          <Checkbox
+            className="self-center"
+            checked={mailingConsent}
+            onChange={(event) => setMailingConsent(event.target.checked)}
+          >
+            <Text type="xs" style="regular" color="#9C9C9C">
+              Хочу получать{" "}
+              <Link target="_blank" href="/mailing-consent">
+                рассылку
+              </Link>{" "}
+              об обновлениях продукта и акциях
+            </Text>
+          </Checkbox>
+        </div>
       </div>
     </div>
   );
