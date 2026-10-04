@@ -10,11 +10,12 @@ import { checkIsEmailRegistered } from "@/api";
 import Button from "@/components/ui/Button";
 import { Checkbox } from "@/components/ui/Checkbox";
 import { Divider } from "@/components/ui/Divider";
-import Icon from "@/components/ui/Icon";
 import { Text } from "@/components/ui/Text";
 import { TextField } from "@/components/ui/TextField";
 import { BASE_URL } from "@/config";
 import { useEmailAuth } from "@/providers/EmailAuthProvider/useEmailAuth";
+import { ProviderLogo } from "./components/ProviderLogo";
+import styles from "./Login.module.scss";
 
 type Inputs = {
   email: string;
@@ -40,7 +41,6 @@ export const Login = () => {
 
   const { setEmail, mailingConsent, setMailingConsent } = useEmailAuth();
 
-  // бэкенд может игнорировать параметр, пока не начнёт его принимать
   const oauthQuery = mailingConsent ? "?mailing_consent=1" : "";
 
   const { isPending, mutate } = useMutation({
@@ -77,27 +77,14 @@ export const Login = () => {
           as="a"
           replace
           variant="base"
-          size="m"
-          fullWidth
-          align="center"
-          disabled={isPending}
-          leftIcon={<Icon name="google" />}
-          href={`${BASE_URL}/api/auth/google${oauthQuery}`}
-        >
-          Продолжить с Google
-        </Button>
-        <Button
-          as="a"
-          replace
-          variant="base"
           fullWidth
           size="m"
           align="center"
           disabled={isPending}
-          leftIcon={<Icon color="black" name="vk" />}
+          leftIcon={<ProviderLogo name="vk" />}
           href={`${BASE_URL}/api/auth/vk${oauthQuery}`}
         >
-          Продолжить с VK
+          <Text style="regular">Продолжить с VK ID</Text>
         </Button>
         <Button
           as="a"
@@ -107,10 +94,23 @@ export const Login = () => {
           size="m"
           align="center"
           disabled={isPending}
-          leftIcon={<Icon name="yandex" />}
+          leftIcon={<ProviderLogo name="yandex" />}
           href={`${BASE_URL}/api/auth/yandex${oauthQuery}`}
         >
-          Продолжить с Yandex
+          <Text style="regular">Продолжить с Яндекс</Text>
+        </Button>
+        <Button
+          as="a"
+          replace
+          variant="base"
+          fullWidth
+          size="m"
+          align="center"
+          disabled={isPending}
+          leftIcon={<ProviderLogo name="mail-ru" />}
+          href={`${BASE_URL}/api/auth/mailru${oauthQuery}`}
+        >
+          <Text style="regular">Продолжить с Mail.ru</Text>
         </Button>
       </div>
 
@@ -124,7 +124,9 @@ export const Login = () => {
 
       <form className="flex flex-col gap-6" onSubmit={handleSubmit(onSubmit)}>
         <TextField
-          label="E-mail"
+          aria-label="E-mail"
+          placeholder="Введите почту"
+          className={styles.emailField}
           fullWidth
           size="l"
           readOnly={isPending}
@@ -140,22 +142,24 @@ export const Login = () => {
         >
           Продолжить
         </Button>
-        <Text className="self-center" style="regular" color="#6F6F6F" type="s">
-          <Button
-            disabled={isPending}
-            onClick={() => router.replace("/auth/password-reset")}
+        <Text className="self-center" style="regular" type="s">
+          <Link
+            replace
+            href="/auth/password-reset"
+            className={styles.forgotPassword}
           >
             Забыли пароль?
-          </Button>
+          </Link>
         </Text>
       </form>
 
       <div className="flex flex-col gap-4">
         <Checkbox
+          className="self-center"
           checked={mailingConsent}
           onChange={(event) => setMailingConsent(event.target.checked)}
         >
-          <Text type="xs" style="regular" color="#6F6F6F">
+          <Text type="xs" style="regular" color="#9C9C9C">
             Хочу получать{" "}
             <Link target="_blank" href="/mailing-consent">
               рассылку
