@@ -19,6 +19,7 @@ import { takeAuthRedirect } from "@/utils/auth-redirect";
 type Inputs = {
   email: string;
   password: string;
+  mailingConsent: boolean;
 };
 
 const schema = yup.object({
@@ -31,13 +32,15 @@ const schema = yup.object({
     .string()
     .min(6, "Пароль должен быть не менее 6 символов")
     .required("Пароль обязателен"),
+
+  mailingConsent: yup.boolean().default(false),
 });
 
 export const Registration = () => {
   const router = useRouter();
   const pathname = usePathname();
 
-  const { email, setEmail, mailingConsent, setMailingConsent } = useEmailAuth();
+  const { email, setEmail } = useEmailAuth();
   const [serverError, setServerError] = useState("");
   const isSignInPage = pathname === "/auth/sign-in";
   const { onGuestRegistered } = useAuthContext();
@@ -53,7 +56,7 @@ export const Registration = () => {
 
   const { isPending, mutateAsync: signIn } = useMutation({
     mutationKey: ["postEmailSignIn"],
-    mutationFn: ({ email, password }: Inputs) =>
+    mutationFn: ({ email, password, mailingConsent }: Inputs) =>
       postEmailSignIn({
         email,
         password,
@@ -180,11 +183,7 @@ export const Registration = () => {
         </Text>
 
         {!isSignInPage && (
-          <Checkbox
-            className="self-center"
-            checked={mailingConsent}
-            onChange={(event) => setMailingConsent(event.target.checked)}
-          >
+          <Checkbox className="self-center" {...register("mailingConsent")}>
             <Text type="xs" style="regular" color="#9C9C9C">
               Хочу получать{" "}
               <Link target="_blank" href="/mailing-consent">
