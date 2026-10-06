@@ -11,11 +11,7 @@ import { CheckoutMessage } from "./components/CheckoutMessage";
 import { PaymentMethods } from "./components/PaymentMethods";
 import { PlanCard } from "./components/PlanCard";
 import { SbpQrCode } from "./components/SbpBanks";
-import {
-  getDaysLabel,
-  getPeriodLabel,
-  SUPPORT_TELEGRAM_URL,
-} from "./constants";
+import { getDaysLabel, getPeriodLabel, SUPPORT_EMAIL_URL } from "./constants";
 import { useCheckout } from "./useCheckout";
 
 export const Checkout = () => {
@@ -179,13 +175,7 @@ export const Checkout = () => {
             color="#6F6F6F"
           >
             Проблемы с оплатой?{" "}
-            <Link
-              target="_blank"
-              rel="noopener noreferrer"
-              href={SUPPORT_TELEGRAM_URL}
-            >
-              Напишите нам
-            </Link>
+            <Link href={SUPPORT_EMAIL_URL}>Напишите нам</Link>
           </Text>
         </div>
       </div>

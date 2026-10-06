@@ -1261,15 +1261,7 @@ export const TERMS: LegalDocumentData = {
             },
             {
               label: "Email поддержки",
-              items: ["support@jonu.ru (будние дни, с 9:00 до 18:00)"],
-            },
-            {
-              label: "Telegram поддержки",
-              items: ["https://t.me/jonu_support"],
-            },
-            {
-              label: "Новости и соцсети",
-              items: ["Telegram: @jonu_support"],
+              items: ["support@jonu.ru"],
             },
             {
               label: "Сайт",
