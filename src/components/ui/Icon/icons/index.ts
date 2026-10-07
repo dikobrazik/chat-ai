@@ -1,5 +1,4 @@
 // Import all icons
-import { ImportIcon } from "./ImportIcon";
 
 import { AddSquareIcon } from "./AddSquareIcon";
 import { AlertTriangleIcon } from "./AlertTriangleIcon";
@@ -34,12 +33,14 @@ import { GoogleIcon } from "./GoogleIcon";
 import { HeartIcon } from "./HeartIcon";
 import { HelpCircleIcon } from "./HelpCircleIcon";
 import { ImageIcon } from "./ImageIcon";
+import { ImportIcon } from "./ImportIcon";
 import { InfoCircleIcon } from "./InfoCircleIcon";
 import { InfoIcon } from "./InfoIcon";
 import { LampOnIcon } from "./LampOnIcon";
 import { LikeIcon } from "./LikeIcon";
 import { LockIcon } from "./LockIcon";
 import { LogoutIcon } from "./LogoutIcon";
+import { MailRuIcon } from "./MailRuIcon";
 import { MenuIcon } from "./MenuIcon";
 import { MessageCreateIcon } from "./MessageCreateIcon";
 import { MessageQuestionIcon } from "./MessageQuestionIcon";
@@ -66,7 +67,8 @@ import { YandexIcon } from "./YandexIcon";
 
 // Re-export all icons
 export {
-ImportIcon,
+  MailRuIcon,
+  ImportIcon,
   SearchIcon,
   VKIcon,
   VerifyIcon,
@@ -133,7 +135,9 @@ ImportIcon,
 
 // Icon registry for dynamic loading
 export const iconComponents = {
-  "import": ImportIcon,
+  "mail-ru": MailRuIcon,
+
+  import: ImportIcon,
 
   search: SearchIcon,
   vk: VKIcon,

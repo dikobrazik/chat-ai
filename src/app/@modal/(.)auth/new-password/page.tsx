@@ -8,7 +8,12 @@ export default function VerifyCodePage() {
   const router = useRouter();
 
   return (
-    <Modal onClose={() => router.back()} isOpen headerBorder={false}>
+    <Modal
+      onClose={() => router.back()}
+      isOpen
+      headerBorder={false}
+      size="compact"
+    >
       <NewPassword />
     </Modal>
   );

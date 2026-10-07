@@ -7,6 +7,7 @@ $modal-border-radius: border-radius(xl);
 $modal-border-radius-mobile: border-radius(lg);
 
 $modal-sizes: (
+  compact: 560px,
   small: 40dvw,
   medium: 60dvw,
   large: 80dvw,
@@ -137,6 +138,7 @@ $modal-sizes: (
     max-height: 95dvh;
   }
 
+  .compact,
   .small,
   .medium,
   .large {

@@ -19,6 +19,7 @@ import { takeAuthRedirect } from "@/utils/auth-redirect";
 type Inputs = {
   email: string;
   password: string;
+  mailingConsent: boolean;
 };
 
 const schema = yup.object({
@@ -31,13 +32,15 @@ const schema = yup.object({
     .string()
     .min(6, "Пароль должен быть не менее 6 символов")
     .required("Пароль обязателен"),
+
+  mailingConsent: yup.boolean().default(false),
 });
 
 export const Registration = () => {
   const router = useRouter();
   const pathname = usePathname();
 
-  const { email, setEmail, mailingConsent, setMailingConsent } = useEmailAuth();
+  const { email, setEmail } = useEmailAuth();
   const [serverError, setServerError] = useState("");
   const isSignInPage = pathname === "/auth/sign-in";
   const { onGuestRegistered } = useAuthContext();
@@ -53,11 +56,11 @@ export const Registration = () => {
 
   const { isPending, mutateAsync: signIn } = useMutation({
     mutationKey: ["postEmailSignIn"],
-    mutationFn: ({ email, password }: Inputs) =>
+    mutationFn: ({ email, password, mailingConsent }: Inputs) =>
       postEmailSignIn({
         email,
         password,
-        mailingConsent: mailingConsent ? "1" : undefined,
+        mailingConsent: !isSignInPage && mailingConsent ? "1" : undefined,
       }),
     onSuccess: (data) => {
       if (data.authCodeSent) {
@@ -99,7 +102,7 @@ export const Registration = () => {
   };
 
   return (
-    <div className="flex flex-col gap-8 px-2 sm:px-16">
+    <div className="flex flex-col gap-8 px-2 sm:px-10">
       <div className="flex flex-col gap-2 items-center">
         <Text as="h2" type="l">
           {isSignInPage ? "Войдите" : "Зарегистрируйтесь"} в Jonu AI
@@ -161,21 +164,13 @@ export const Registration = () => {
         )}
       </form>
 
-      <div className="flex flex-col gap-4">
-        <Checkbox
-          checked={mailingConsent}
-          onChange={(event) => setMailingConsent(event.target.checked)}
+      <div className="flex flex-col gap-3">
+        <Text
+          type="xs"
+          style="regular"
+          color="#9C9C9C"
+          className="text-center text-pretty"
         >
-          <Text type="xs" style="regular" color="#6F6F6F">
-            Хочу получать{" "}
-            <Link target="_blank" href="/mailing-consent">
-              рассылку
-            </Link>{" "}
-            об обновлениях продукта и акциях
-          </Text>
-        </Checkbox>
-
-        <Text type="xs" style="regular" color="#9C9C9C" className="text-center">
           Продолжая, вы соглашаетесь с{" "}
           <Link href="/terms">Условиями использования</Link> и{" "}
           <Link target="_blank" href="/privacy">
@@ -186,6 +181,18 @@ export const Registration = () => {
             согласие на обработку персональных данных
           </Link>
         </Text>
+
+        {!isSignInPage && (
+          <Checkbox className="self-center" {...register("mailingConsent")}>
+            <Text type="xs" style="regular" color="#9C9C9C">
+              Хочу получать{" "}
+              <Link target="_blank" href="/mailing-consent">
+                рассылку
+              </Link>{" "}
+              об обновлениях продукта и акциях
+            </Text>
+          </Checkbox>
+        )}
       </div>
     </div>
   );
