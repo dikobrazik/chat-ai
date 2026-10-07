@@ -14,7 +14,6 @@ import { TextField } from "@/components/ui/TextField";
 import { BASE_URL } from "@/config";
 import { useEmailAuth } from "@/providers/EmailAuthProvider/useEmailAuth";
 import { ProviderButton } from "./components/ProviderButton";
-import styles from "./Login.module.scss";
 
 type Inputs = {
   email: string;
@@ -108,7 +107,6 @@ export const Login = () => {
             <TextField
               aria-label="E-mail"
               placeholder="Введите почту"
-              className={styles.emailField}
               fullWidth
               size="l"
               readOnly={isPending}
@@ -128,12 +126,13 @@ export const Login = () => {
         </div>
 
         <div className="flex flex-col gap-3">
-          <Text className="self-center" style="regular" type="s">
-            <Link
-              replace
-              href="/auth/password-reset"
-              className={styles.forgotPassword}
-            >
+          <Text
+            className="self-center"
+            style="regular"
+            color="#6F6F6F"
+            type="s"
+          >
+            <Link replace href="/auth/password-reset">
               Забыли пароль?
             </Link>
           </Text>
