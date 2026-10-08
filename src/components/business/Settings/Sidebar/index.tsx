@@ -44,21 +44,6 @@ export const SettingsSidebar = () => {
             >
               Управление&nbsp;данными
             </Button>
-            <Button
-              disabled
-              className={path === "/settings/payment" ? styles.active : ""}
-              leftIcon={<Icon name="card" />}
-              rightIcon={
-                <Badge size="s" variant="secondary">
-                  <Text type="s">Скоро</Text>
-                </Badge>
-              }
-              as="a"
-              href="/settings/payment"
-              replace
-            >
-              Оплата
-            </Button>
           </>
         )}
         <Button

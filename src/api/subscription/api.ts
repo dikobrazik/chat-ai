@@ -1,7 +1,9 @@
 import axios from "axios";
 
+export type PlanId = "base" | "plus" | "pro";
+
 export type Plan = {
-  id: string;
+  id: PlanId;
   name: string;
   description: string;
   price: number;
@@ -19,7 +21,7 @@ export const getTariffs = (params?: { sixMonths?: boolean }) =>
 export type Subscription = {
   id: string;
   user_id: string;
-  plan: "base" | "plus" | "pro";
+  plan: PlanId;
   status: string;
   current_period_start: string;
   current_period_end: string;

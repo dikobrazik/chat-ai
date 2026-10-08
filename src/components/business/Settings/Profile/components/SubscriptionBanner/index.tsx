@@ -1,4 +1,4 @@
-import { useCurrentSubscription, usePlans } from "@/api";
+import { useCurrentPlan, useCurrentSubscription } from "@/api";
 import { Banner } from "@/components/ui/Banner";
 import Button from "@/components/ui/Button";
 import Icon from "@/components/ui/Icon";
@@ -8,9 +8,7 @@ import { CancelSubscriptionModal } from "./CancelSubscriptionModal";
 
 export const SubscriptionBanner = () => {
   const { data: subscription } = useCurrentSubscription();
-  const { plans } = usePlans();
-
-  const activePlan = plans?.find((plan) => plan.id === subscription?.plan);
+  const { data: activePlan } = useCurrentPlan();
 
   const { active, toggle } = useToggle();
 

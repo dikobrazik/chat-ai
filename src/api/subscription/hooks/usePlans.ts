@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getSubscription, getTariffs } from "./api";
+import { getTariffs } from "../api";
 
 export const PLANS_QUERY_KEY = ["subscription", "plans"];
 export const SIX_MONTHS_PLANS_QUERY_KEY = [
@@ -33,15 +33,4 @@ export const usePlans = () => {
     isLoading: isLoading || isSixMonthsPlansLoading,
     isError: isError || isSixMonthsPlansError,
   };
-};
-
-export const CURRENT_SUBSCRIPTION_QUERY_KEY = ["current-subscription"];
-
-export const useCurrentSubscription = () => {
-  const { data, isLoading, isError } = useQuery({
-    queryKey: CURRENT_SUBSCRIPTION_QUERY_KEY,
-    queryFn: () => getSubscription(),
-  });
-
-  return { data, isLoading, isError };
 };
