@@ -19,7 +19,7 @@ export const SettingsModal = ({ children }: PropsWithChildren) => {
       className={styles.modal}
       title={SETTINGS_TITLE[pathname as keyof SETTINGS_TITLE]}
     >
-      <Modal.Sidebar className="flex flex-col gap-6">
+      <Modal.Sidebar>
         <SettingsSidebar />
       </Modal.Sidebar>
       {children}

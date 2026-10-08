@@ -1,66 +1,105 @@
-@use "../../../styles/variables" as *;
-
-// Modal Variables
-$modal-z-index: z-index(modal);
-$modal-backdrop-blur: 4px;
-$modal-border-radius: border-radius(xl);
-$modal-border-radius-mobile: border-radius(lg);
-
-$modal-sizes: (
-  compact: 560px,
-  small: 40dvw,
-  medium: 60dvw,
-  large: 80dvw,
-);
-
-// Mixins
-@mixin modal-size($max-width) {
-  width: 100%;
-  max-width: $max-width;
-}
-
-@mixin hover-background($light-color, $dark-color) {
-  &:hover {
-    background: $light-color;
-
-    @media (prefers-color-scheme: dark) {
-      background: $dark-color;
-    }
-  }
-}
-
-// Modal Overlay
 .overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur($modal-backdrop-blur);
+  inset: 0;
+  z-index: 1400;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: $modal-z-index;
-  padding: 1rem;
   box-sizing: border-box;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
 }
 
-// Modal Container
 .modal {
-  background: var(--background, #ffffff);
-  border-radius: $modal-border-radius;
-  box-shadow: shadow(xl);
+  position: relative;
+  display: flex;
   max-height: 90dvh;
   overflow: hidden;
-  display: flex;
-  position: relative;
-  animation: modalEnter 0.2s ease-out;
+  background: var(--background, #FFFFFF);
   border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.75rem;
+  box-shadow:
+    0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  animation: modalEnter 0.2s ease-out;
 
   &:focus {
     outline: none;
   }
+}
+
+.compact {
+  width: 100%;
+  max-width: 560px;
+}
+
+.small {
+  width: 100%;
+  max-width: 40dvw;
+}
+
+.medium {
+  width: 100%;
+  max-width: 60dvw;
+}
+
+.large {
+  width: 100%;
+  max-width: 80dvw;
+}
+
+.fullscreen {
+  width: 95dvw;
+  height: 95dvh;
+  max-width: none;
+  max-height: none;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 70%;
+  min-height: 0;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+  padding: 1.5rem 1.5rem 0.5rem;
+  border-bottom: 1px solid #F7F7F7;
+
+  &.withoutBorder {
+    border-bottom: none;
+  }
+}
+
+.title {
+  margin: 0;
+  color: var(--foreground, #171717);
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.5rem;
+  color: var(--foreground, #171717);
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 30%;
+  flex-shrink: 0;
+  padding: 1.5rem;
+  border-right: 1px solid #F7F7F7;
 }
 
 @keyframes modalEnter {
@@ -75,67 +114,22 @@ $modal-sizes: (
   }
 }
 
-// Modal Sizes
-@each $size, $width in $modal-sizes {
-  .#{$size} {
-    @include modal-size($width);
-  }
-}
-
-.fullscreen {
-  width: 95dvw;
-  height: 95dvh;
-  max-width: none;
-  max-height: none;
-}
-
-// Modal Header
-.header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1.5rem 1.5rem 0.5rem;
-  flex-shrink: 0;
-  border-bottom: 1px solid #F7F7F7;
-
-  @media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: dark) {
+  .header {
     border-bottom-color: rgba(255, 255, 255, 0.1);
   }
-
-  &.withoutBorder {
-    border-bottom: none;
-  }
 }
 
-.title {
-  margin: 0;
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: var(--foreground, #171717);
-  line-height: 1.4;
-}
-
-// Modal Content
-.content {
-  padding: 1.5rem;
-  overflow-y: auto;
-  flex: 1;
-  color: var(--foreground, #171717);
-}
-
-.sidebar {
-  border-right: 1px solid #F7F7F7;
-}
-
-// Responsive Design
 @media (max-width: 768px) {
   .overlay {
     padding: 0.5rem;
   }
 
   .modal {
-    border-radius: $modal-border-radius-mobile;
+    flex-direction: column;
+    height: 95dvh;
     max-height: 95dvh;
+    border-radius: 0.5rem;
   }
 
   .compact,
@@ -146,20 +140,48 @@ $modal-sizes: (
     max-width: none;
   }
 
-  .header {
-    padding: 1rem 1rem 0 1rem;
+  .main {
+    display: contents;
   }
 
-  .content {
+  .header {
+    order: 1;
     padding: 1rem;
   }
 
+  .content {
+    order: 3;
+    min-height: 0;
+    padding: 1rem;
+  }
+
+  .withSidebar {
+    .sidebar {
+      position: absolute;
+      top: 4.5rem;
+      left: 0;
+      z-index: 1;
+      order: 2;
+      width: calc(100% - 2rem);
+      margin: 1rem;
+      overflow: visible;
+      padding: 1rem;
+      background: var(--background, #FFFFFF);
+      border: none;
+      border-radius: 0.75rem;
+      box-shadow: 0 16px 32px #0C0C0D1A;
+    }
+
+    .content {
+      padding-top: 7rem;
+    }
+  }
+
   .title {
-    font-size: 1.125rem;
+    font-size: 1.25rem;
   }
 }
 
-// Accessibility
 @media (prefers-reduced-motion: reduce) {
   .modal {
     animation: none;

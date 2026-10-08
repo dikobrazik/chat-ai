@@ -1,3 +1,37 @@
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.navigation {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
 .active {
   background-color: #F7F7F7;
+}
+
+@media (max-width: 768px) {
+  .brand {
+    display: none;
+  }
+
+  .navigation {
+    flex-direction: row;
+    width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    > * {
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+  }
 }

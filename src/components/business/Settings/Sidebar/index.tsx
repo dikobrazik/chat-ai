@@ -1,7 +1,6 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { Badge } from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
 import Icon from "@/components/ui/Icon";
 import { Logo } from "@/components/ui/Logo";
@@ -15,7 +14,7 @@ export const SettingsSidebar = () => {
 
   return (
     <>
-      <div className="flex flex-row items-center gap-3">
+      <div className={styles.brand}>
         <Logo />
 
         <Text type="s" as="h1">
@@ -23,7 +22,7 @@ export const SettingsSidebar = () => {
         </Text>
       </div>
 
-      <div className="flex flex-col gap-1">
+      <nav className={styles.navigation}>
         {!isGuest && (
           <>
             <Button
@@ -64,7 +63,7 @@ export const SettingsSidebar = () => {
         >
           Справка{" "}
         </Button>
-      </div>
+      </nav>
     </>
   );
 };

@@ -118,10 +118,9 @@ export const Modal: ModalComponent = ({
       onClick={handleOverlayClick}
       aria-hidden="true"
     >
-      {/** biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
       <div
         ref={modalRef}
-        className={`${styles.modal} ${styles[size]} ${className}`}
+        className={`${styles.modal} ${styles[size]} ${sidebarItem.length ? styles.withSidebar : ""} ${className}`}
         role="dialog"
         aria-modal="true"
         aria-labelledby={title ? "modal-title" : undefined}
@@ -129,7 +128,7 @@ export const Modal: ModalComponent = ({
         onClick={(e) => e.stopPropagation()}
       >
         {sidebarItem}
-        <main className="w-full min-w-[70%] flex flex-col">
+        <main className={styles.main}>
           {(title || showCloseButton) && (
             <div
               className={`${styles.header} ${!headerBorder ? styles.withoutBorder : ""}`}
@@ -166,9 +165,7 @@ Modal.Sidebar = ({
   className?: string;
 }) => {
   return (
-    <aside className={`w-[30%] p-6 ${styles.sidebar} ${className}`}>
-      {children}
-    </aside>
+    <aside className={`${styles.sidebar} ${className ?? ""}`}>{children}</aside>
   );
 };
 
