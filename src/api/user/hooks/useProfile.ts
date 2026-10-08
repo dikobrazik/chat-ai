@@ -4,7 +4,7 @@ import {
 } from "@tanstack/react-query";
 import { getProfile, type Profile } from "..";
 
-const USE_PROFILE_QUERY_KEY = ["profile"];
+export const PROFILE_QUERY_KEY = ["profile"];
 
 export const useProfile = (
   options?: Omit<
@@ -14,7 +14,7 @@ export const useProfile = (
 ) => {
   return useQuery({
     ...options,
-    queryKey: USE_PROFILE_QUERY_KEY,
+    queryKey: PROFILE_QUERY_KEY,
     queryFn: getProfile,
     refetchInterval: false,
   });
