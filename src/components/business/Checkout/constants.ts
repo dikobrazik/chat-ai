@@ -1,3 +1,5 @@
+import * as yup from "yup";
+
 export const PAYMENT_METHODS_MAP = {
   card: "card",
   tpay: "tpay",
@@ -24,3 +26,5 @@ export const getDaysLabel = (days: number) => {
 
   return `${days} дней`;
 };
+
+export const RECEIPT_EMAIL_SCHEMA = yup.string().email().required();

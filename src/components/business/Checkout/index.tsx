@@ -10,6 +10,7 @@ import styles from "./Checkout.module.scss";
 import { CheckoutMessage } from "./components/CheckoutMessage";
 import { PaymentMethods } from "./components/PaymentMethods";
 import { PlanCard } from "./components/PlanCard";
+import { ReceiptEmail } from "./components/ReceiptEmail";
 import { SbpQrCode } from "./components/SbpBanks";
 import { getDaysLabel, getPeriodLabel, SUPPORT_EMAIL_URL } from "./constants";
 import { useCheckout } from "./useCheckout";
@@ -27,6 +28,13 @@ export const Checkout = () => {
     isPayDisabled,
     pricing,
     selectedMethod,
+    receiptEmail,
+    receiptEmailPayload,
+    isReceiptEmailRequired,
+    isReceiptEmailReady,
+    hasReceiptEmailError,
+    onReceiptEmailChange,
+    onReceiptEmailBlur,
     onMethodSelect,
     onClose,
     onPay,
@@ -123,6 +131,15 @@ export const Checkout = () => {
 
       <div className={styles.checkout}>
         <div className="flex flex-col gap-4">
+          {isReceiptEmailRequired && (
+            <ReceiptEmail
+              value={receiptEmail}
+              hasError={hasReceiptEmailError}
+              onChange={onReceiptEmailChange}
+              onBlur={onReceiptEmailBlur}
+            />
+          )}
+
           <Text style="regular" type="m" color="#6F6F6F">
             Выберите способ оплаты
           </Text>
@@ -131,7 +148,17 @@ export const Checkout = () => {
             selectedMethod={selectedMethod}
             onMethodSelect={onMethodSelect}
             content={{
-              sbp: <SbpQrCode tariff={plan.id} sixMonths={isSixMonths} />,
+              sbp: isReceiptEmailReady ? (
+                <SbpQrCode
+                  tariff={plan.id}
+                  sixMonths={isSixMonths}
+                  email={receiptEmailPayload}
+                />
+              ) : (
+                <Text type="s" color="#6F6F6F" style="regular">
+                  Укажите почту для чеков — после этого покажем QR-код
+                </Text>
+              ),
             }}
           />
         </div>
