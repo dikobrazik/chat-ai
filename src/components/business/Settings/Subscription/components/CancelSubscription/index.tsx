@@ -1,12 +1,12 @@
 import Button from "@/components/ui/Button";
 import Icon from "@/components/ui/Icon";
-import { Text } from "@/components/ui/Text";
 import { useToggle } from "@/hooks/useToggle";
 import { useSubscriptionState } from "../../hooks/useSubscriptionState";
+import { Section } from "../Section";
 import { CancelSubscriptionModal } from "./CancelSubscriptionModal";
 
 export const CancelSubscription = () => {
-  const { isActive, isTrial } = useSubscriptionState();
+  const { periodEnd, isActive, isTrial } = useSubscriptionState();
   const { active, toggle } = useToggle();
 
   if (!isActive) {
@@ -15,19 +15,20 @@ export const CancelSubscription = () => {
 
   return (
     <>
-      <div className="flex justify-between items-center gap-3">
-        <Text color="#6F6F6F" type="xs">
-          {isTrial ? "Отменить пробный период" : "Отменить подписку"}
-        </Text>
-
-        <Button
-          variant="danger"
-          leftIcon={<Icon name="close-square" />}
-          onClick={toggle}
-        >
-          Отменить
-        </Button>
-      </div>
+      <Section
+        title={isTrial ? "Отмена пробного периода" : "Отмена подписки"}
+        description={`Автопродление отключится, доступ сохранится до ${periodEnd}`}
+        actions={
+          <Button
+            variant="danger"
+            align="center"
+            leftIcon={<Icon name="close-square" />}
+            onClick={toggle}
+          >
+            Отменить
+          </Button>
+        }
+      />
 
       <CancelSubscriptionModal isOpen={active} onClose={toggle} />
     </>

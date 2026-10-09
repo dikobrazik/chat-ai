@@ -7,14 +7,7 @@ type Props = {
 
 export const QrCode = ({ svg, isLoading }: Props) => {
   if (isLoading) {
-    return (
-      <div className="flex flex-col gap-2 pt-2">
-        {Array.from({ length: 4 }, (_, index) => (
-          // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-          <Skeleton key={index} isLoading height={176} width={176} />
-        ))}
-      </div>
-    );
+    return <Skeleton className="pt-2" isLoading height={176} width={176} />;
   }
 
   return (

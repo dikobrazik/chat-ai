@@ -4,6 +4,7 @@ import { Skeleton } from "@/components/ui/Skeleton";
 import { Text } from "@/components/ui/Text";
 import { formatKopecks } from "@/utils/format-currency";
 import { formatDate } from "@/utils/format-date";
+import { Section } from "../Section";
 import { PAYMENT_STATUS_COLOR } from "./constants";
 import styles from "./PaymentHistory.module.scss";
 import { usePaymentHistory } from "./usePaymentHistory";
@@ -21,16 +22,10 @@ export const PaymentHistory = () => {
   }
 
   return (
-    <section className="flex flex-col gap-3">
-      <div className="flex flex-col gap-1">
-        <Text type="s">История платежей</Text>
-        {email && (
-          <Text type="xs" color="#6F6F6F" style="regular">
-            Кассовые чеки приходят на {email}
-          </Text>
-        )}
-      </div>
-
+    <Section
+      title="История платежей"
+      description={email && `Кассовые чеки приходят на ${email}`}
+    >
       <div className={styles.table}>
         <div className={styles.head}>
           <Text type="xs" color="#6F6F6F" style="regular">
@@ -100,6 +95,6 @@ export const PaymentHistory = () => {
           Показать ещё
         </Button>
       )}
-    </section>
+    </Section>
   );
 };
