@@ -6,11 +6,13 @@ import styles from "./Message.module.scss";
 
 type Props = Pick<ButtonProps, "pressed" | "loading" | "onClick"> & {
   icon: IconName;
+  activeIcon?: IconName;
   isActive?: boolean;
 };
 
 export const MessageActionButton = ({
   icon,
+  activeIcon,
   isActive = false,
   ...props
 }: Props) => (
@@ -18,13 +20,28 @@ export const MessageActionButton = ({
     size="x"
     className={styles.actionButton}
     leftIcon={
-      <Icon
-        name={icon}
-        size="16"
+      <span
         className={classNames(styles.actionIcon, {
-          [styles.actionIconPop]: isActive,
+          [styles.actionIconPop]: isActive && !activeIcon,
         })}
-      />
+      >
+        <Icon
+          name={icon}
+          size="16"
+          className={classNames(styles.actionIconLayer, {
+            [styles.actionIconHidden]: isActive && Boolean(activeIcon),
+          })}
+        />
+        {activeIcon && (
+          <Icon
+            name={activeIcon}
+            size="16"
+            className={classNames(styles.actionIconLayer, {
+              [styles.actionIconHidden]: !isActive,
+            })}
+          />
+        )}
+      </span>
     }
     {...props}
   />

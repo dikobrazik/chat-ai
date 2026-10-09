@@ -115,10 +115,29 @@
 }
 
 .actionIcon {
-  transition: transform 0.15s ease, color 0.2s ease;
+  position: relative;
+  display: inline-flex;
+  width: 16px;
+  height: 16px;
+  transition: transform 0.15s ease;
+
+  & .actionIconLayer {
+    position: absolute;
+    inset: 0;
+    transition: opacity 0.2s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.2s ease;
+  }
+
+  & .actionIconHidden {
+    opacity: 0;
+    transform: scale(0.5);
+  }
 
   @media (prefers-reduced-motion: reduce) {
     transition: none;
+
+    & .actionIconLayer {
+      transition: none;
+    }
   }
 }
 

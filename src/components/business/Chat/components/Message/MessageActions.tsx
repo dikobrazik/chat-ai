@@ -17,27 +17,26 @@ export const MessageActions = ({
   return (
     <div className={styles[role]}>
       <MessageActionButton
-        icon={isCopied ? "check" : "copy"}
+        icon="copy"
+        activeIcon="check"
         isActive={isCopied}
         pressed={isCopied}
         onClick={onCopyClick}
       />
       {role === "model" && (
         <>
-          {reaction !== "dislike" && (
-            <MessageActionButton
-              icon={reaction === "like" ? "like-fill" : "like"}
-              isActive={reaction === "like"}
-              onClick={onLikeClick}
-            />
-          )}
-          {reaction !== "like" && (
-            <MessageActionButton
-              icon={reaction === "dislike" ? "dislike-fill" : "dislike"}
-              isActive={reaction === "dislike"}
-              onClick={onDislikeClick}
-            />
-          )}
+          <MessageActionButton
+            icon="like"
+            activeIcon="like-fill"
+            isActive={reaction === "like"}
+            onClick={onLikeClick}
+          />
+          <MessageActionButton
+            icon="dislike"
+            activeIcon="dislike-fill"
+            isActive={reaction === "dislike"}
+            onClick={onDislikeClick}
+          />
           <MessageActionButton
             icon="export"
             isActive={isShared}
