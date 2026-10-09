@@ -1,0 +1,57 @@
+.table {
+  display: flex;
+  flex-direction: column;
+}
+
+.head,
+.row {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr 1.2fr;
+  grid-template-areas: "date amount status receipt";
+  align-items: center;
+  column-gap: 12px;
+}
+
+.head {
+  padding-bottom: 8px;
+}
+
+.row {
+  padding: 12px 0;
+  border-top: 1px solid #EFEFEF;
+}
+
+.date {
+  grid-area: date;
+}
+
+.amount {
+  grid-area: amount;
+}
+
+.status {
+  grid-area: status;
+}
+
+.receipt {
+  grid-area: receipt;
+}
+
+@include for-mobile {
+  .head {
+    display: none;
+  }
+
+  .row {
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "date amount"
+      "status receipt";
+    row-gap: 4px;
+  }
+
+  .amount,
+  .receipt {
+    justify-self: end;
+  }
+}

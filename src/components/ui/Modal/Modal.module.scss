@@ -140,6 +140,13 @@
     max-width: none;
   }
 
+  .small,
+  .medium {
+    height: auto;
+    align-self: flex-end;
+    border-radius: 1.5rem;
+  }
+
   .main {
     display: contents;
   }
