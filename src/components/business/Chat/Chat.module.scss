@@ -1,4 +1,10 @@
+@use "sass:map";
 @use "@/styles/variables" as *;
+
+main:has(> .container) {
+  max-width: none;
+  padding: 0;
+}
 
 .container {
   display: flex;
@@ -13,4 +19,45 @@
   flex: 1;
   overflow-y: auto;
   margin-bottom: spacing(2);
+
+  @media (hover: hover) {
+    scrollbar-gutter: stable both-edges;
+
+    @supports not selector(::-webkit-scrollbar) {
+      scrollbar-width: thin;
+      scrollbar-color: #EFEFEF transparent;
+
+      @media (prefers-color-scheme: dark) {
+        scrollbar-color: color-mix(in srgb, var(--background), white 10%) transparent;
+      }
+    }
+
+    &::-webkit-scrollbar {
+      width: 12px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      border: 4px solid transparent;
+      border-radius: 8px;
+      background-color: #EFEFEF;
+      background-clip: padding-box;
+
+      @media (prefers-color-scheme: dark) {
+        background-color: color-mix(in srgb, var(--background), white 10%);
+      }
+    }
+  }
+}
+
+.thread,
+.chatInput {
+  width: 100%;
+  max-width: map.get($breakpoints, md);
+  margin: 0 auto;
+  padding: 0 spacing(4);
+}
+
+.thread {
+  display: flex;
+  flex-direction: column-reverse;
 }
