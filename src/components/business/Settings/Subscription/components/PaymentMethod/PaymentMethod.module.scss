@@ -1,0 +1,13 @@
+.method {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+@include for-mobile {
+  .method {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

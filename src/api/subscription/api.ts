@@ -26,8 +26,16 @@ export type Subscription = {
   current_period_start: string;
   current_period_end: string;
   isSixMonths: boolean;
+  next_payment_amount?: number;
+  is_trial?: boolean;
   created_at: string;
 };
 
 export const getSubscription = () =>
   axios.get<Subscription>("/subscription").then((response) => response.data);
+
+export const cancelSubscription = () =>
+  axios.post<void>("/subscription/cancel").then((response) => response.data);
+
+export const resumeSubscription = () =>
+  axios.post<void>("/subscription/resume").then((response) => response.data);
