@@ -1,10 +1,12 @@
+@use "@/styles/variables" as *;
+
 :root {
-  --toastify-color-light: #E7F9EC;
+  --toastify-color-light: #EFEFEF;
   --toastify-color-dark: #121212;
-  --toastify-color-info: #3498db;
+  --toastify-color-info: #EFEFEF;
   --toastify-color-success: #E7F9EC;
-  --toastify-color-warning: #f1c40f;
-  --toastify-color-error: hsl(6, 78%, 57%);
+  --toastify-color-warning: #EFEFEF;
+  --toastify-color-error: #FFECE8;
   --toastify-color-transparent: rgba(255, 255, 255, 0.7);
 
   --toastify-icon-color-info: var(--toastify-color-info);
@@ -20,21 +22,21 @@
   --toastify-toast-left: max(var(--toastify-toast-offset), env(safe-area-inset-left));
   --toastify-toast-bottom: max(var(--toastify-toast-offset), env(safe-area-inset-bottom));
   --toastify-toast-background: #fff;
-  --toastify-toast-padding: 14px;
-  --toastify-toast-min-height: 64px;
+  --toastify-toast-padding: 12px 16px;
+  --toastify-toast-min-height: 48px;
   --toastify-toast-max-height: 800px;
-  --toastify-toast-bd-radius: 6px;
-  --toastify-toast-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-  --toastify-font-family: sans-serif;
-  --toastify-z-index: 9999;
+  --toastify-toast-bd-radius: 12px;
+  --toastify-toast-shadow: 0 4px 4px -4px rgba(12, 12, 13, 0.05), 0 16px 32px -4px rgba(12, 12, 13, 0.1);
+  --toastify-font-family: inherit;
+  --toastify-z-index: #{z-index(toast)};
   --toastify-text-color-light: #000000;
   --toastify-text-color-dark: #fff;
 
   /* Used only for colored theme */
-  --toastify-text-color-info: #fff;
+  --toastify-text-color-info: #000000;
   --toastify-text-color-success: #000000;
-  --toastify-text-color-warning: #fff;
-  --toastify-text-color-error: #fff;
+  --toastify-text-color-warning: #000000;
+  --toastify-text-color-error: #000000;
 
   --toastify-spinner-color: #616161;
   --toastify-spinner-color-empty-area: #e0e0e0;
@@ -46,4 +48,48 @@
   --toastify-color-progress-error: var(--toastify-color-error);
   /* used to control the opacity of the progress trail */
   --toastify-color-progress-bgo: 0.2;
+}
+
+.Toastify {
+  position: sticky;
+  top: spacing(2);
+  z-index: var(--toastify-z-index);
+  height: 0;
+}
+
+.Toastify__toast-container--top-center {
+  position: relative;
+  top: 0;
+  left: 0;
+  max-width: calc(100% - 2 * var(--toastify-toast-offset));
+  margin-inline: auto;
+  transform: none;
+}
+
+.Toastify__toast-icon {
+  width: 20px;
+  margin-inline-end: spacing(3);
+  color: #9C9C9C;
+}
+
+.Toastify__toast--success .Toastify__toast-icon {
+  color: #14C240;
+}
+
+.Toastify__toast--error .Toastify__toast-icon {
+  color: #FC3F1D;
+}
+
+@include for-mobile {
+  .Toastify__toast-container--top-center {
+    width: min(100%, 100vw - 2 * var(--toastify-toast-offset));
+    max-width: none;
+    gap: spacing(2);
+
+    & .Toastify__toast {
+      --toastify-toast-width: 100%;
+      margin-bottom: 0;
+      border-radius: var(--toastify-toast-bd-radius);
+    }
+  }
 }

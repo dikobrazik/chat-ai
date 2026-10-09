@@ -11,6 +11,7 @@ import { CheckCircleIcon } from "./CheckCircleIcon";
 import { CheckIcon } from "./CheckIcon";
 import { ChevronDownIcon } from "./ChevronDownIcon";
 import { ClipboardIcon } from "./ClipboardIcon";
+import { CloseCircleIcon } from "./CloseCircleIcon";
 import { CloseIcon } from "./CloseIcon";
 import { CloseSquareIcon } from "./CloseSquareIcon";
 import { CopyIcon } from "./CopyIcon";
@@ -37,6 +38,7 @@ import { ImageIcon } from "./ImageIcon";
 import { ImportIcon } from "./ImportIcon";
 import { InfoCircleIcon } from "./InfoCircleIcon";
 import { InfoIcon } from "./InfoIcon";
+import { InformationIcon } from "./InformationIcon";
 import { LampOnIcon } from "./LampOnIcon";
 import { LikeFillIcon } from "./LikeFillIcon";
 import { LikeIcon } from "./LikeIcon";
@@ -60,6 +62,7 @@ import { ShareIcon } from "./ShareIcon";
 import { SidebarToggleIcon } from "./SidebarToggleIcon";
 import { SidebarToggleOnIcon } from "./SidebarToggleOnIcon";
 import { SpinnerIcon } from "./SpinnerIcon";
+import { TickCircleIcon } from "./TickCircleIcon";
 import { TrashIcon } from "./TrashIcon";
 import { VerifyIcon } from "./VerifyIcon";
 import { VideoPlayIcon } from "./VideoPlayIcon";
@@ -69,6 +72,9 @@ import { YandexIcon } from "./YandexIcon";
 
 // Re-export all icons
 export {
+  InformationIcon,
+  CloseCircleIcon,
+  TickCircleIcon,
   DislikeFillIcon,
   LikeFillIcon,
   MailRuIcon,
@@ -139,6 +145,12 @@ export {
 
 // Icon registry for dynamic loading
 export const iconComponents = {
+  information: InformationIcon,
+
+  "close-circle": CloseCircleIcon,
+
+  "tick-circle": TickCircleIcon,
+
   "dislike-fill": DislikeFillIcon,
 
   "like-fill": LikeFillIcon,
