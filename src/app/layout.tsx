@@ -4,9 +4,9 @@ import { CookieBanner } from "@/components/business/CookieBanner";
 import { DialogModal } from "@/components/business/DialogModal";
 import { Header } from "@/components/business/Header";
 import { Sidebar } from "@/components/business/Sidebar";
+import { Toaster } from "@/components/business/Toaster";
 import { Providers } from "@/providers";
 import "react-toastify/dist/ReactToastify.css";
-import { Bounce, ToastContainer } from "react-toastify/unstyled";
 import "./globals.css";
 import "./globals.scss";
 import { Metrica } from "@/components/business/Metrica";
@@ -73,19 +73,7 @@ export default async function RootLayout({
               <Header />
 
               <main className={styles.main}>
-                <ToastContainer
-                  position="top-center"
-                  autoClose={5000}
-                  hideProgressBar
-                  newestOnTop={false}
-                  closeOnClick={false}
-                  rtl={false}
-                  pauseOnFocusLoss
-                  draggable
-                  pauseOnHover
-                  theme="light"
-                  transition={Bounce}
-                />
+                <Toaster />
                 {children}
               </main>
             </div>
