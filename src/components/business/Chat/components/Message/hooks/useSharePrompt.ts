@@ -22,7 +22,9 @@ export const useSharePrompt = (promptId: string) => {
     makePromptPublic(undefined, {
       onSuccess: () => {
         copyToClipboard(`${window.location.origin}/p/${promptId}`);
-        toast.success("Ссылка на промпт скопирована в буфер обмена");
+        toast.success(
+          "Ссылка скопирована — она доступна всем, у кого есть ссылка",
+        );
         toggleOn();
       },
     });
