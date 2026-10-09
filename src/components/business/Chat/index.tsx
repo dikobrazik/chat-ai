@@ -87,28 +87,32 @@ export const Chat = () => {
   return (
     <div className={css.container}>
       <div ref={messagesContainerRef} className={css.messages}>
-        {messages.map((message) => (
-          <Message
-            key={`${message.id}`}
-            id={message.id}
-            text={message.text}
-            files={message.files}
-            role={message.role}
-            isStreaming={message.isStreaming}
-          />
-        ))}
+        <div className={css.thread}>
+          {messages.map((message) => (
+            <Message
+              key={`${message.id}`}
+              id={message.id}
+              text={message.text}
+              files={message.files}
+              role={message.role}
+              isStreaming={message.isStreaming}
+            />
+          ))}
+        </div>
       </div>
 
-      <PromptField
-        value={value}
-        placeholder="Спросите о чём угодно"
-        isPromptSending={isPromptSending}
-        isChatCreating={isChatCreating}
-        onInputChange={setValue}
-        onSendClick={onSendClick}
-      />
+      <div className={css.chatInput}>
+        <PromptField
+          value={value}
+          placeholder="Спросите о чём угодно"
+          isPromptSending={isPromptSending}
+          isChatCreating={isChatCreating}
+          onInputChange={setValue}
+          onSendClick={onSendClick}
+        />
 
-      <Footer />
+        <Footer />
+      </div>
     </div>
   );
 };
