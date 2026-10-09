@@ -1,7 +1,7 @@
 export const MONTH_TAB_KEY = "1-month";
 export const SIX_MONTHS_TAB_KEY = "6-months";
 
-export const PLANS_TITLE = "Попробуйте Плюс за 1 ₽";
+export const PLANS_TITLE = "Попробуйте Плюс за 10 ₽";
 
 export const MONTH_TAB_LABEL = "Месяц";
 export const SIX_MONTHS_TAB_LABEL = "6 месяцев";
