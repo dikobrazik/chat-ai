@@ -14,6 +14,7 @@ import { ClipboardIcon } from "./ClipboardIcon";
 import { CloseIcon } from "./CloseIcon";
 import { CloseSquareIcon } from "./CloseSquareIcon";
 import { CopyIcon } from "./CopyIcon";
+import { DislikeFillIcon } from "./DislikeFillIcon";
 import { DislikeIcon } from "./DislikeIcon";
 import { DocumentIcon } from "./DocumentIcon";
 import { DownloadIcon } from "./DownloadIcon";
@@ -37,6 +38,7 @@ import { ImportIcon } from "./ImportIcon";
 import { InfoCircleIcon } from "./InfoCircleIcon";
 import { InfoIcon } from "./InfoIcon";
 import { LampOnIcon } from "./LampOnIcon";
+import { LikeFillIcon } from "./LikeFillIcon";
 import { LikeIcon } from "./LikeIcon";
 import { LockIcon } from "./LockIcon";
 import { LogoutIcon } from "./LogoutIcon";
@@ -67,6 +69,8 @@ import { YandexIcon } from "./YandexIcon";
 
 // Re-export all icons
 export {
+  DislikeFillIcon,
+  LikeFillIcon,
   MailRuIcon,
   ImportIcon,
   SearchIcon,
@@ -135,6 +139,10 @@ export {
 
 // Icon registry for dynamic loading
 export const iconComponents = {
+  "dislike-fill": DislikeFillIcon,
+
+  "like-fill": LikeFillIcon,
+
   "mail-ru": MailRuIcon,
 
   import: ImportIcon,

@@ -44,7 +44,8 @@
     }
   }
 
-  &:active:not(.disabled) {
+  &:active:not(.disabled),
+  &.pressed:not(.disabled) {
     background-color: #EFEFEF;
 
     @media (prefers-color-scheme: dark) {
@@ -65,7 +66,8 @@
     background-color: #000;
   }
 
-  &:active:not(.disabled) {
+  &:active:not(.disabled),
+  &.pressed:not(.disabled) {
     background-color: #000;
   }
 }
@@ -78,7 +80,8 @@
     background-color: #239EFF;
   }
 
-  &:active:not(.disabled) {
+  &:active:not(.disabled),
+  &.pressed:not(.disabled) {
     background-color: #0076EB;
   }
 
@@ -103,7 +106,8 @@
     background-color: #EFEFEF;
   }
 
-  &:active:not(.disabled) {
+  &:active:not(.disabled),
+  &.pressed:not(.disabled) {
     background-color: #EFEFEF;
   }
 }
@@ -116,7 +120,8 @@
     background-color: #FC3F1D29;
   }
 
-  &:active:not(.disabled) {
+  &:active:not(.disabled),
+  &.pressed:not(.disabled) {
     background-color: #FC3F1D3D;
   }
 }
@@ -130,7 +135,8 @@
     background-color: #F7F7F7;
   }
 
-  &:active:not(.disabled) {
+  &:active:not(.disabled),
+  &.pressed:not(.disabled) {
     background-color: #EFEFEF;
   }
 }
@@ -143,7 +149,8 @@
     background-color: #F7F7F7;
   }
 
-  &:active:not(.disabled) {
+  &:active:not(.disabled),
+  &.pressed:not(.disabled) {
     background-color: #EFEFEF;
   }
 
