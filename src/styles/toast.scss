@@ -81,13 +81,10 @@
 }
 
 @include for-mobile {
-  .Toastify__toast-container--bottom-center {
-    left: var(--toastify-toast-left);
-    right: var(--toastify-toast-right);
-    bottom: calc(var(--toastify-toast-bottom) + spacing(16));
-    width: auto;
+  .Toastify__toast-container--top-center {
+    width: min(100%, 100vw - 2 * var(--toastify-toast-offset));
+    max-width: none;
     gap: spacing(2);
-    transform: none;
 
     & .Toastify__toast {
       --toastify-toast-width: 100%;

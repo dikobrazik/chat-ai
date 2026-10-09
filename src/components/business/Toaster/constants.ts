@@ -1,6 +1,5 @@
 import type { TypeOptions } from "react-toastify/unstyled";
 import type { IconName } from "@/components/ui/Icon/icons";
-import { MOBILE_BREAKPOINT } from "@/hooks/useMobile";
 
 export const TOAST_ICONS: Record<TypeOptions, IconName> = {
   success: "tick-circle",
@@ -9,5 +8,3 @@ export const TOAST_ICONS: Record<TypeOptions, IconName> = {
   warning: "information",
   default: "information",
 };
-
-export const MOBILE_MEDIA_QUERY = `(max-width: ${MOBILE_BREAKPOINT - 1}px)`;
