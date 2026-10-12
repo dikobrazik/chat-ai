@@ -1,4 +1,4 @@
-import { createContext, useRef, useState } from "react";
+import { createContext, useCallback, useRef, useState } from "react";
 
 export const FilesContext = createContext<{
   attachments: Attachment[];
@@ -73,10 +73,10 @@ export const FilesProvider = ({ children }: { children: React.ReactNode }) => {
     setAttachments(files.filter((file) => file.isUploaded));
   };
 
-  const clearFiles = () => {
+  const clearFiles = useCallback(() => {
     setAttachments([]);
     filesRef.current.clear();
-  };
+  }, []);
 
   const onUploaded = (fileId: string, uploadedFileId: string) => {
     const file = filesRef.current.get(fileId);
