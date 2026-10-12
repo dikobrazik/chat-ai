@@ -60,7 +60,7 @@ const ProfileInfo = () => {
   });
 
   return (
-    <div className="w-full flex items-center gap-3">
+    <div className="w-full min-w-0 flex items-center gap-3">
       <Skeleton
         isLoading={isLoading}
         width={32}
@@ -70,9 +70,9 @@ const ProfileInfo = () => {
         <ProfileAvatar />
       </Skeleton>
 
-      <div className="flex flex-col items-start gap-0.5 w-auto">
+      <div className="flex flex-col items-start gap-0.5 w-auto min-w-0">
         <Skeleton isLoading={isLoading} height={20} width={150}>
-          <Text type="s" style="medium" className="truncate">
+          <Text type="s" style="medium" className="truncate max-w-full">
             {profile?.name ?? profile?.email}
           </Text>
         </Skeleton>
