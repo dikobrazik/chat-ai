@@ -1,4 +1,6 @@
-.name {
+.name,
+.details {
+  max-width: 100%;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -6,6 +8,7 @@
 }
 
 .progress {
+  flex-shrink: 0;
   background-color: #F7F7F7;
   border-radius: 8px;
   height: 32px;

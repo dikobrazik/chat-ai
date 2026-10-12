@@ -1,5 +1,6 @@
 .button {
   flex-shrink: 0;
+  max-width: 100%;
 
   & .buttonIcon {
     visibility: hidden;

@@ -63,7 +63,7 @@ export const PasswordReset = () => {
             Для восстановления аккаунта перейдите по ссылке в письме
           </Text>
           <Text
-            className="text-center"
+            className="text-center wrap-anywhere"
             type="s"
             style="regular"
             color="#6F6F6F"
