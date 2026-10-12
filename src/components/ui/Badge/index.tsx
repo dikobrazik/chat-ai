@@ -1,11 +1,13 @@
 import { cn } from "@/lib/utils";
 import styles from "./Badge.module.scss";
 
+export type BadgeVariant = "primary" | "success" | "secondary" | "danger";
+
 type Props = {
   as?: React.ElementType;
   children: React.ReactNode;
   size?: "s" | "m" | "l";
-  variant?: "primary" | "success" | "secondary" | "danger";
+  variant?: BadgeVariant;
 };
 
 export const Badge = ({
