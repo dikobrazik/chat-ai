@@ -1,60 +1,25 @@
 "use client";
 
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useMutation } from "@tanstack/react-query";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { type SubmitHandler, useForm } from "react-hook-form";
-import * as yup from "yup";
-import { checkIsEmailRegistered } from "@/api";
 import Button from "@/components/ui/Button";
+import { Checkbox } from "@/components/ui/Checkbox";
 import { Divider } from "@/components/ui/Divider";
 import { Text } from "@/components/ui/Text";
 import { TextField } from "@/components/ui/TextField";
 import { BASE_URL } from "@/config";
-import { useEmailAuth } from "@/providers/EmailAuthProvider/useEmailAuth";
 import { ProviderButton } from "./components/ProviderButton";
-
-type Inputs = {
-  email: string;
-};
-
-const schema = yup.object({
-  email: yup
-    .string()
-    .email("Введите корректный email")
-    .required("Email обязателен"),
-});
+import { useLogin } from "./useLogin";
 
 export const Login = () => {
-  const router = useRouter();
-
   const {
     register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<Inputs>({
-    resolver: yupResolver(schema),
-  });
-
-  const { setEmail } = useEmailAuth();
-
-  const { isPending, mutate } = useMutation({
-    mutationKey: ["check-email-registered"],
-    mutationFn: checkIsEmailRegistered,
-    onSuccess: ({ isRegistered }) => {
-      if (isRegistered) {
-        router.replace("/auth/sign-in");
-      } else {
-        router.replace("/auth/sign-up");
-      }
-    },
-  });
-
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
-    setEmail(data.email);
-    mutate(data.email);
-  };
+    errors,
+    isPending,
+    consentField,
+    consentRef,
+    onProviderClick,
+    onSubmit,
+  } = useLogin();
 
   return (
     <div className="flex flex-col gap-6 sm:gap-8 px-2 sm:px-10">
@@ -73,6 +38,7 @@ export const Login = () => {
           <ProviderButton
             icon="vk"
             disabled={isPending}
+            onClick={onProviderClick}
             href={`${BASE_URL}/api/auth/vk`}
           >
             Продолжить с VK ID
@@ -80,6 +46,7 @@ export const Login = () => {
           <ProviderButton
             icon="yandex"
             disabled={isPending}
+            onClick={onProviderClick}
             href={`${BASE_URL}/api/auth/yandex`}
           >
             Продолжить с Яндекс
@@ -87,6 +54,7 @@ export const Login = () => {
           <ProviderButton
             icon="mail-ru"
             disabled={isPending}
+            onClick={onProviderClick}
             href={`${BASE_URL}/api/auth/mailru`}
           >
             Продолжить с Mail.ru
@@ -100,10 +68,7 @@ export const Login = () => {
             <Divider></Divider>
           </div>
 
-          <form
-            className="flex flex-col gap-3"
-            onSubmit={handleSubmit(onSubmit)}
-          >
+          <form className="flex flex-col gap-3" onSubmit={onSubmit}>
             <TextField
               aria-label="E-mail"
               placeholder="Введите почту"
@@ -148,11 +113,28 @@ export const Login = () => {
             <Link target="_blank" href="/privacy">
               Политикой конфиденциальности
             </Link>
-            ,<br />а также даёте{" "}
-            <Link target="_blank" href="/personal-data-consent">
-              согласие на обработку персональных данных
-            </Link>
           </Text>
+
+          <div ref={consentRef} className="flex flex-col gap-1 items-center">
+            <Checkbox {...consentField}>
+              <Text type="xs" style="regular" color="#9C9C9C">
+                Даю{" "}
+                <Link target="_blank" href="/personal-data-consent">
+                  согласие на обработку персональных данных
+                </Link>
+              </Text>
+            </Checkbox>
+            {errors.personalDataConsent && (
+              <Text
+                className="text-center"
+                type="xs"
+                style="regular"
+                color="#FC3F1D"
+              >
+                {errors.personalDataConsent.message}
+              </Text>
+            )}
+          </div>
         </div>
       </div>
     </div>

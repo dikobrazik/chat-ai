@@ -90,10 +90,6 @@ export const VerifyCode = () => {
         <Link target="_blank" href="/privacy">
           Политикой конфиденциальности
         </Link>
-        ,<br />а также даёте{" "}
-        <Link target="_blank" href="/personal-data-consent">
-          согласие на обработку персональных данных
-        </Link>
       </Text>
     </div>
   );
