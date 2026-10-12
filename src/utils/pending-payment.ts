@@ -29,6 +29,3 @@ export const getPendingPayment = (): PendingPayment | null => {
 
   return Date.now() - savedAt > PENDING_PAYMENT_LIFETIME ? null : payment;
 };
-
-export const clearPendingPayment = () =>
-  localStorage.removeItem(PENDING_PAYMENT_LOCAL_STORAGE_KEY);
