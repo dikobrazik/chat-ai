@@ -3,6 +3,7 @@
 import { DialogModalProvider } from "@/components/business/DialogModal/context";
 import { AuthProvider } from "./AuthProvider/Provider";
 import { ChatSettingsProvider } from "./ChatSettingsProvider/Provider";
+import { CookieConsentProvider } from "./CookieConsentProvider/Provider";
 import { EmailAuthProvider } from "./EmailAuthProvider";
 import { FilesProvider } from "./FilesProvider";
 import { QueryProvider } from "./QueryProvider/Provider";
@@ -14,7 +15,9 @@ export const Providers = ({ children }: { children: React.ReactNode }) => {
         <EmailAuthProvider>
           <ChatSettingsProvider>
             <DialogModalProvider>
-              <FilesProvider>{children}</FilesProvider>
+              <FilesProvider>
+                <CookieConsentProvider>{children}</CookieConsentProvider>
+              </FilesProvider>
             </DialogModalProvider>
           </ChatSettingsProvider>
         </EmailAuthProvider>
