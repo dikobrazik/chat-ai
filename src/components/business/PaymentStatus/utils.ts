@@ -15,7 +15,9 @@ export const formatChargeDate = (date: string) =>
     day: "numeric",
     month: "long",
     timeZone: "Europe/Moscow",
-  }).format(new Date(date));
+  })
+    .format(new Date(date))
+    .replace(" ", "\u00A0");
 
 export const maskEmail = (email: string) => {
   const [name, domain] = email.split("@");

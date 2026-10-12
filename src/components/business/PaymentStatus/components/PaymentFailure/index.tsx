@@ -4,6 +4,7 @@ import { Text } from "@/components/ui/Text";
 import { usePaymentRetry } from "../../hooks/usePaymentRetry";
 import { StatusLayout } from "../StatusLayout";
 import { SupportHint } from "../SupportHint";
+import styles from "./PaymentFailure.module.scss";
 
 export const PaymentFailure = () => {
   const { isRetryAvailable, retryPath } = usePaymentRetry();
@@ -11,7 +12,7 @@ export const PaymentFailure = () => {
   return (
     <StatusLayout
       live="assertive"
-      icon={<Icon name="close-circle" size={48} color="#FC3F1D" />}
+      icon={<Icon name="close-circle" size={48} className={styles.errorIcon} />}
       title="Оплата не прошла"
       description="Попробуйте ещё раз или выберите другой способ оплаты"
     >

@@ -6,6 +6,7 @@ import { ChargeSummary } from "../ChargeSummary";
 import { PaymentPending } from "../PaymentPending";
 import { StatusLayout } from "../StatusLayout";
 import { SupportHint } from "../SupportHint";
+import styles from "./PaymentSuccess.module.scss";
 
 export const PaymentSuccess = () => {
   const {
@@ -22,7 +23,7 @@ export const PaymentSuccess = () => {
   if (isGuest) {
     return (
       <StatusLayout
-        icon={<Icon name="info-circle" size={48} color="#9C9C9C" />}
+        icon={<Icon name="info-circle" size={48} className={styles.infoIcon} />}
         title="Войдите в аккаунт"
         description="Подписка появится в аккаунте, с которого вы её оформляли"
       >
@@ -48,7 +49,9 @@ export const PaymentSuccess = () => {
   return (
     <StatusLayout
       live="polite"
-      icon={<Icon name="tick-circle" size={48} color="#14C240" />}
+      icon={
+        <Icon name="tick-circle" size={48} className={styles.successIcon} />
+      }
       title={
         <>
           {kind === "trial" && `Пробный период Jonu AI ${planName} начался`}
