@@ -25,8 +25,10 @@ import { prepareMarkdown, splitMarkdownIntoBlocks } from "./markdown";
 import { TooManyRequests } from "./TooManyRequests";
 import "streamdown/styles.css";
 import "katex/dist/katex.min.css";
+import { useMessageText } from "./hooks/useMessageText";
 import { ImageContent } from "./ImageContent";
 import { MessageFiles } from "./MessageFiles";
+import { useMessageSources } from "./MessageSources/useMessageSources";
 
 const MessageContent = ({
   id,
@@ -87,12 +89,22 @@ export const Message = ({
   role,
   files,
   text: message,
+  sources,
   isStreaming,
 }: Prompt) => {
+  const content = useMessageText(message, role, Boolean(isStreaming));
+  const messageSources = useMessageSources(message, sources);
+
   return (
     <>
       {!(SYSTEM_MESSAGES.includes(id) || id.startsWith(ERROR_MESSAGE_ID)) && (
-        <MessageActions id={id} text={message} role={role} />
+        <MessageActions
+          id={id}
+          text={content}
+          role={role}
+          sources={messageSources}
+          isStreaming={isStreaming}
+        />
       )}
       <div
         id={`prompt-${id}`}
@@ -104,7 +116,7 @@ export const Message = ({
         <MessageContent
           id={id}
           role={role}
-          message={message}
+          message={content}
           isStreaming={Boolean(isStreaming)}
         />
       </div>

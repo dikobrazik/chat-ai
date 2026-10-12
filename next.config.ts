@@ -20,6 +20,11 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "*.nspk.ru",
       },
+      {
+        protocol: "https",
+        hostname: "favicon.yandex.net",
+        pathname: "/favicon/v2/**",
+      },
       // аватарки пользователей с Google-логином
       {
         protocol: "https",

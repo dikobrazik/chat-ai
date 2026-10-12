@@ -3,6 +3,7 @@ export type Prompt = {
   text: string;
   isStreaming?: boolean;
   thinking?: string;
+  sources?: PromptSource[];
   files: PromptFile[];
   role: PromptRole;
 };
@@ -12,6 +13,11 @@ type PromptFile = {
   name: string;
   size: number;
   type: string;
+};
+
+type PromptSource = {
+  url: string;
+  title?: string;
 };
 
 type PromptRole = "user" | "model";

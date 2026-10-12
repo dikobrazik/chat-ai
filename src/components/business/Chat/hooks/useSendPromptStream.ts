@@ -53,6 +53,7 @@ export const useSendPromptStream = (
               {
                 id: data.promptId || randomId,
                 text: data.content,
+                sources: data.sources,
                 isStreaming: false,
                 role: "model",
                 files: [],

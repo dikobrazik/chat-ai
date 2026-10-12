@@ -102,6 +102,7 @@ export const Chat = () => {
               text={message.text}
               files={message.files}
               role={message.role}
+              sources={message.sources}
               isStreaming={message.isStreaming}
             />
           ))}
