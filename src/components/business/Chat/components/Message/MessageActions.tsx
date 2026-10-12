@@ -15,7 +15,7 @@ export const MessageActions = ({
   const { isShared, isSharing, onShareClick } = useSharePrompt(id);
 
   return (
-    <div className={styles[role]}>
+    <div className={styles[`${role}Actions`]}>
       <MessageActionButton
         icon="copy"
         activeIcon="check"

@@ -80,6 +80,15 @@
   color: #000000;
 }
 
+.modelActions {
+  align-self: flex-start;
+  margin-left: -0.5rem;
+}
+
+.userActions {
+  align-self: flex-end;
+}
+
 .typingIndicator {
   display: inline-flex;
   align-items: center;
