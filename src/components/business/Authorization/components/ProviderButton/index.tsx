@@ -1,5 +1,5 @@
 import type { PropsWithChildren } from "react";
-import Button from "@/components/ui/Button";
+import Button, { type ButtonProps } from "@/components/ui/Button";
 import Icon from "@/components/ui/Icon";
 import type { IconName } from "@/components/ui/Icon/icons";
 import { Text } from "@/components/ui/Text";
@@ -8,12 +8,14 @@ type Props = {
   icon: IconName;
   href: string;
   disabled?: boolean;
+  onClick?: ButtonProps["onClick"];
 };
 
 export const ProviderButton = ({
   icon,
   href,
   disabled,
+  onClick,
   children,
 }: PropsWithChildren<Props>) => (
   <Button
@@ -24,6 +26,7 @@ export const ProviderButton = ({
     size="m"
     disabled={disabled}
     href={href}
+    onClick={onClick}
   >
     <span className="grid w-full grid-cols-[24px_1fr_24px] items-center gap-3">
       <Icon name={icon} size={24} />

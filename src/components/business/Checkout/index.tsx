@@ -160,10 +160,6 @@ export const Checkout = () => {
             Оплачивая, вы соглашаетесь с{" "}
             <Link target="_blank" href="/terms">
               офертой
-            </Link>{" "}
-            и даёте{" "}
-            <Link target="_blank" href="/personal-data-consent">
-              согласие на обработку персональных данных
             </Link>
             .
           </Text>
