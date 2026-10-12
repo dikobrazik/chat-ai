@@ -10,6 +10,10 @@
     background-color: color(warning);
   }
 
+  &.model:not(.error) {
+    padding-inline: 0;
+  }
+
   &.banner {
     align-self: auto;
   }
