@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useProfile } from "@/api/user";
+import { Badge } from "@/components/ui/Badge";
 import { Divider } from "@/components/ui/Divider";
 import Icon from "@/components/ui/Icon";
 import Popover from "@/components/ui/Popover";
@@ -11,19 +12,8 @@ import { SUBSCRIBED_USER_STATUSES } from "@/constants/user";
 import { cn } from "@/lib/utils";
 import { useAuthContext } from "@/providers/AuthProvider/hooks";
 import Button, { type ButtonProps } from "@/ui/Button";
+import { USER_STATUS_BADGE_VARIANT_MAP, USER_STATUS_MAP } from "./constants";
 import styles from "./Profile.module.scss";
-
-const USER_STATUS_MAP: Record<string, string> = {
-  active: "Бесплатный",
-  subscription_plus: "Плюс",
-  subscription_pro: "Профессиональный",
-};
-
-const USER_STATUS_COLOR_MAP: Record<string, string> = {
-  active: "#9C9C9C",
-  subscription_plus: "#0F8AFF",
-  subscription_pro: "#FF6B34",
-};
 
 const ProfileAvatar = () => {
   const { isGuest } = useAuthContext();
@@ -70,7 +60,7 @@ const ProfileInfo = () => {
   });
 
   return (
-    <div className="w-full flex items-center gap-3">
+    <div className="w-full min-w-0 flex items-center gap-3">
       <Skeleton
         isLoading={isLoading}
         width={32}
@@ -80,25 +70,21 @@ const ProfileInfo = () => {
         <ProfileAvatar />
       </Skeleton>
 
-      <div className="flex flex-col w-auto">
-        <Skeleton
-          isLoading={isLoading}
-          height={20}
-          width={150}
-          className="mb-1"
-        >
-          <Text type="s" style="medium" className="truncate">
+      <div className="flex flex-col items-start gap-0.5 w-auto min-w-0">
+        <Skeleton isLoading={isLoading} height={20} width={150}>
+          <Text type="s" style="medium" className="truncate max-w-full">
             {profile?.name ?? profile?.email}
           </Text>
         </Skeleton>
-        <Skeleton isLoading={isLoading} height={16} width={100}>
-          <Text
-            type="xs"
-            style="regular"
-            color={USER_STATUS_COLOR_MAP[profile?.status ?? "active"]}
+        <Skeleton isLoading={isLoading} height={20} width={100}>
+          <Badge
+            size="s"
+            variant={USER_STATUS_BADGE_VARIANT_MAP[profile?.status ?? "active"]}
           >
-            {USER_STATUS_MAP[profile?.status ?? "active"]}
-          </Text>
+            <Text as="div" type="xs" style="regular">
+              {USER_STATUS_MAP[profile?.status ?? "active"]}
+            </Text>
+          </Badge>
         </Skeleton>
       </div>
     </div>
