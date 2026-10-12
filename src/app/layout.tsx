@@ -19,7 +19,7 @@ const rubik = Rubik({
 });
 
 export const metadata: Metadata = {
-  title: "JonuAI",
+  title: "Jonu AI",
   description: "Best AI assistant for your daily life.",
 };
 

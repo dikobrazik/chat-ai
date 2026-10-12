@@ -1,6 +1,6 @@
 "use client";
 
-import { useParams, useSearchParams } from "next/navigation";
+import { useParams, usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { PromptField } from "@/components/business/PromptField";
 import { useFiles } from "@/providers/FilesProvider/useFiles";
@@ -9,10 +9,12 @@ import css from "./Chat.module.scss";
 import { Message } from "./components/Message";
 import { WAITING_RESPONSE_MESSAGE_ID } from "./components/Message/constants";
 import { useChat } from "./hooks/useChat";
+import { useChatTitle } from "./hooks/useChatTitle";
 import { useSendPromptStream } from "./hooks/useSendPromptStream";
 
 export const Chat = () => {
   const { id: chatId } = useParams();
+  const pathname = usePathname();
   const searchParams = useSearchParams();
   const { attachments } = useFiles();
 
@@ -21,6 +23,7 @@ export const Chat = () => {
   const [value, setValue] = useState("");
 
   const { messages, isChatCreating, setMessages } = useChat(chatId as string);
+  const title = useChatTitle(chatId as string);
 
   const { sendPrompt, isPromptSending } = useSendPromptStream(
     chatId as string,
@@ -86,6 +89,7 @@ export const Chat = () => {
 
   return (
     <div className={css.container}>
+      <title key={pathname}>{title || "Jonu AI"}</title>
       <div ref={messagesContainerRef} className={css.messages}>
         <div className={css.thread}>
           {messages.map((message) => (
