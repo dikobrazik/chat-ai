@@ -1,12 +1,12 @@
 "use client";
 
 import Script from "next/script";
-import { useCookieConsentContext } from "@/providers/CookieConsentProvider/hooks";
+import { useIsMetricaEnabled } from "./useIsMetricaEnabled";
 
 export const Metrica = () => {
-  const { isAnalyticsAllowed } = useCookieConsentContext();
+  const isMetricaEnabled = useIsMetricaEnabled();
 
-  if (!isAnalyticsAllowed) return null;
+  if (!isMetricaEnabled) return null;
 
   return (
     <Script id="yandex-metrica" type="text/javascript">
@@ -17,7 +17,7 @@ export const Metrica = () => {
         k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
     })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=112550340', 'ym');
 
-    ym(112550340, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});`}
+    ym(112550340, 'init', {ssr:true, webvisor:false, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: (function(u){u.searchParams.delete('query');return u.href})(new URL(location.href)), accurateTrackBounce:true, trackLinks:false, sendTitle:false});`}
     </Script>
   );
 };
