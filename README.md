@@ -16,6 +16,14 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+API requests and OAuth links use same-origin `/api/...` URLs. No
+`NEXT_PUBLIC_*` configuration is needed for the backend address, and Docker builds
+exclude `.env*`. In production, nginx forwards `/api` to the backend.
+
+For frontend-only local development, set `DEV_API_PROXY=https://jonu.ru` in an
+uncommitted `.env` file before starting the dev server. Use another backend URL
+if needed. The proxy is disabled in production.
+
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
