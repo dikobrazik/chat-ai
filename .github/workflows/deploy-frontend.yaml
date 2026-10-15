@@ -18,10 +18,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: "Create env file"
-        run: |
-          echo "${{ secrets.ENV }}" > .env
-
       - name: Login to Dockerhub
         uses: docker/login-action@v3
         with:
@@ -40,42 +36,43 @@ jobs:
           push: true
           tags: ${{ env.FRONTEND_IMAGE }}
 
-  update-yc:
+  deploy:
     needs: [build-frontend]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Copy docker-compose
+      - name: Copy deployment config
         uses: appleboy/scp-action@master
         with:
-          host: ${{ secrets.YC_HOST }}
-          username: ${{ secrets.YC_USERNAME }}
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USERNAME }}
           key: ${{ secrets.ID_RSA }}
-          source: "configs/yc/*"
-          target: "~/frontend"
+          source: "configs/deploy/docker-compose.yaml"
+          target: "/home/github/chat-ai"
+          strip_components: 2
 
       - name: executing remote ssh commands using password
         uses: appleboy/ssh-action@v1.0.0
         with:
-          host: ${{ secrets.YC_HOST }}
-          username: ${{ secrets.YC_USERNAME }}
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USERNAME }}
           key: ${{ secrets.ID_RSA }}
           script: |
-            cd ~/frontend && 
+            cd /home/github/chat-ai &&
             docker login -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }} ghcr.io &&
-            docker compose -f configs/yc/docker-compose.yaml stop frontend && 
-            docker compose -f configs/yc/docker-compose.yaml pull frontend && 
-            docker compose -f configs/yc/docker-compose.yaml up -d frontend &&
+            docker compose stop frontend &&
+            docker compose pull frontend &&
+            docker compose up -d frontend &&
             docker system prune -f
 
   notify:
-    needs: [update-yc]
+    needs: [deploy]
     if: always()
     uses: ./.github/workflows/telegram-notify.yaml
     with:
-      status: ${{ needs.update-yc.result }}
+      status: ${{ needs.deploy.result }}
     secrets:
       TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
       TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
