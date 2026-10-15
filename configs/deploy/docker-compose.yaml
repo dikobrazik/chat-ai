@@ -37,6 +37,10 @@ services:
             - shared-volume:/var/tmp/shared-docker
         env_file:
             - ./backend.env
+        environment:
+            DB_HOST: postgres
+            DB_PORT: 5432
+            DB_SSL: 'false'
         depends_on:
             postgres:
                 condition: service_healthy
@@ -47,6 +51,8 @@ services:
         container_name: postgres
         env_file:
             - ./backend.env
+        ports:
+            - '5432:5432'
         volumes:
             - postgres-data:/var/lib/postgresql/data
         healthcheck:
