@@ -8,7 +8,12 @@ export default function PaymentSuccess() {
   const router = useRouter();
 
   return (
-    <Modal headerBorder={false} isOpen onClose={() => router.push("/")}>
+    <Modal
+      size="compact"
+      headerBorder={false}
+      isOpen
+      onClose={() => router.push("/")}
+    >
       <PaymentStatus status="success" />
     </Modal>
   );
