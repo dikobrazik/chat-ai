@@ -6,14 +6,20 @@ import { Streamdown } from "streamdown";
 import type { Prompt } from "@/api";
 import { cn } from "@/lib/utils";
 import {
+  CONTROLS,
   ERROR_MESSAGE_ID,
+  LINK_SAFETY,
+  MARKDOWN_COMPONENTS,
+  REMEND_OPTIONS,
   SYSTEM_MESSAGES,
   TOO_MANY_REQUESTS_MESSAGE_ID,
+  TRANSLATIONS,
   WAITING_RESPONSE_MESSAGE_ID,
 } from "./constants";
 import styles from "./Message.module.scss";
 import { MessageActions } from "./MessageActions";
 import { ModelTyping } from "./ModelTyping";
+import { prepareMarkdown } from "./markdown";
 import { TooManyRequests } from "./TooManyRequests";
 import "streamdown/styles.css";
 import { ImageContent } from "./ImageContent";
@@ -52,8 +58,14 @@ const MessageContent = ({
       animated={{ animation: "fadeIn", duration: 250, easing: "ease-out" }}
       isAnimating={isStreaming}
       plugins={{ math, code }}
+      remend={REMEND_OPTIONS}
+      controls={CONTROLS}
+      linkSafety={LINK_SAFETY}
+      tableMaxHeight={0}
+      components={MARKDOWN_COMPONENTS}
+      translations={TRANSLATIONS}
     >
-      {message.replace(/[$]([^$])/g, "$$$$$1")}
+      {prepareMarkdown(message, isStreaming)}
     </Streamdown>
   );
 };
