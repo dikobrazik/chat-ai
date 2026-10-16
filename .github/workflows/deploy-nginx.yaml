@@ -62,7 +62,7 @@ jobs:
             docker login -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }} ghcr.io &&
             docker compose stop nginx &&
             docker compose pull nginx &&
-            docker compose up -d nginx &&
+            docker compose up -d nginx dozzle &&
             docker system prune -f
 
   notify:
