@@ -15,6 +15,7 @@ import {
   type PaymentMethodId,
 } from "./constants";
 import { useGuestRedirect } from "./useGuestRedirect";
+import { useReceiptEmail } from "./useReceiptEmail";
 
 export const useCheckout = () => {
   const { plan: planId } = useParams<{ plan: string }>();
@@ -37,6 +38,7 @@ export const useCheckout = () => {
   );
 
   const isGuest = profile?.status === "guest";
+  const receiptEmail = useReceiptEmail(profile?.email);
 
   useGuestRedirect(isGuest, planId, isSixMonths);
 
@@ -61,6 +63,7 @@ export const useCheckout = () => {
         const { RedirectUrl } = await getTPayLink({
           tariff: planId,
           sixMonths: isSixMonths,
+          email: receiptEmail.receiptEmailPayload,
         });
 
         window.location.href = RedirectUrl;
@@ -86,7 +89,10 @@ export const useCheckout = () => {
       activeSubscription?.plan === planId &&
       activeSubscription?.status === "active",
     isPaying,
-    isPayDisabled: selectedMethod === PAYMENT_METHODS_MAP.sbp,
+    isPayDisabled:
+      selectedMethod === PAYMENT_METHODS_MAP.sbp ||
+      !receiptEmail.isReceiptEmailReady,
+    ...receiptEmail,
     pricing: plan && getPlanPricing(plan, isSixMonths, selectedMethod),
     selectedMethod,
     onMethodSelect: setSelectedMethod,

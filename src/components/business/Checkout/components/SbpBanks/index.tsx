@@ -6,6 +6,7 @@ import { Skeleton } from "@/components/ui/Skeleton";
 type Props = {
   tariff: string;
   sixMonths: boolean;
+  email?: string;
 };
 
 export const SbpQrCode = (props: Props) => {
