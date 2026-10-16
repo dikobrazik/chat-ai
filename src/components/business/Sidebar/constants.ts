@@ -3,7 +3,7 @@ import type { Chat } from "@/api";
 const createLoadingChats = (count: number): Chat[] =>
   Array.from({ length: count }, (_, index) => ({
     id: `loading-${index}`,
-    model_id: 0,
+    model_id: "",
     is_pinned: false,
     title: "",
   }));

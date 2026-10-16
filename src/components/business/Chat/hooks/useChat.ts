@@ -19,7 +19,8 @@ export const useChat = (chatId: string | undefined) => {
 
   const { mutateAsync: createChatMutation, isPending: isCreateChatPending } =
     useMutation({
-      mutationFn: (_prompt: string) => createChat({ model_id: model?.id ?? 1 }),
+      mutationFn: (_prompt: string) =>
+        createChat({ model_id: model?.id ?? "" }),
       onError: (error) => {
         if (axios.isAxiosError(error)) {
           if (error.status === 403) {
@@ -40,7 +41,7 @@ export const useChat = (chatId: string | undefined) => {
       },
       onSuccess: (chatId) => {
         queryClient.setQueryData<Chat[]>(CHATS_QUERY_KEY, (chats) => [
-          createNewChat(chatId, model?.id ?? 1),
+          createNewChat(chatId, model?.id ?? ""),
           ...(chats ?? []),
         ]);
         window.history.replaceState({}, "", `/chat/${chatId}`);
