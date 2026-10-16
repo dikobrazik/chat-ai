@@ -10,6 +10,10 @@
     background-color: color(warning);
   }
 
+  &.model:not(.error) {
+    padding-inline: 0;
+  }
+
   &.banner {
     align-self: auto;
   }
@@ -74,6 +78,15 @@
 .user {
   align-self: flex-end;
   color: #000000;
+}
+
+.modelActions {
+  align-self: flex-start;
+  margin-left: -0.5rem;
+}
+
+.userActions {
+  align-self: flex-end;
 }
 
 .typingIndicator {
