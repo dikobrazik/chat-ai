@@ -5,6 +5,7 @@
   margin-bottom: 8px;
 
   max-width: 80%;
+  overflow-wrap: break-word;
 
   &.error {
     background-color: color(warning);

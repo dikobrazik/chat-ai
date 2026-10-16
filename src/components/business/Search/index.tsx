@@ -65,7 +65,7 @@ export const Search = () => {
               }}
             >
               <span
-                className="text-xs text-gray-500 text-left"
+                className="text-xs text-gray-500 text-left wrap-anywhere"
                 // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
                 dangerouslySetInnerHTML={{ __html: item.preview }}
               />

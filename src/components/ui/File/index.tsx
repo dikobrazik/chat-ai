@@ -44,12 +44,17 @@ export const FileComponent = (props: Props) => {
           )}
         </div>
       </div>
-      <div className="flex flex-col items-start gap-1">
+      <div className="flex flex-col items-start gap-1 min-w-0">
         <Text className={styles.name} type="xs" style="regular">
           {name}
         </Text>
         {isUploaded ? (
-          <Text type="xs" style="regular" color="#9C9C9C">
+          <Text
+            className={styles.details}
+            type="xs"
+            style="regular"
+            color="#9C9C9C"
+          >
             {type && type in FILE_TYPES_MAP
               ? FILE_TYPES_MAP[type as keyof typeof FILE_TYPES_MAP]
               : type}
@@ -57,7 +62,12 @@ export const FileComponent = (props: Props) => {
             {((size ?? 0) / 1024).toFixed(2)} КБ
           </Text>
         ) : (
-          <Text type="xs" style="regular" color="#9C9C9C">
+          <Text
+            className={styles.details}
+            type="xs"
+            style="regular"
+            color="#9C9C9C"
+          >
             {uploadingText}
           </Text>
         )}
