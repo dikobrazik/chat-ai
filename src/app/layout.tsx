@@ -63,7 +63,6 @@ export default async function RootLayout({
           name="google-site-verification"
           content="kOMBcuVi1F7zH0Rj3nyl0v3HiIyN2OUJwcvY99xFYpY"
         />
-        <Metrica />
       </head>
       <body className={`${rubik.variable}`}>
         <Providers>
@@ -80,9 +79,9 @@ export default async function RootLayout({
           </div>
           {modal}
           <DialogModal />
+          <CookieBanner />
+          <Metrica />
         </Providers>
-
-        <CookieBanner />
       </body>
     </html>
   );
