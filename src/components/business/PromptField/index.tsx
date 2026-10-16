@@ -57,8 +57,10 @@ export const PromptField = forwardRef<HTMLTextAreaElement, PromptFieldProps>(
       if (!value || !areAllFilesUploaded) return;
 
       if (
-        event?.key === "Enter" &&
-        (!event?.shiftKey || !event?.altKey || !event?.ctrlKey)
+        event.key === "Enter" &&
+        !event.shiftKey &&
+        !event.altKey &&
+        !event.ctrlKey
       ) {
         event.preventDefault();
         onSendClick();
