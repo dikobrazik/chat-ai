@@ -1,7 +1,7 @@
 services:
     nginx:
         image: ghcr.io/dikobrazik/chat-ai-nginx-front:latest
-        container_name: modseccrs
+        container_name: nginx
         environment:
             MODSEC_AUDIT_LOG: /var/log/modsec/audit.log
             MODSEC_DEBUG_LOG: /var/log/modsec/debug.log
