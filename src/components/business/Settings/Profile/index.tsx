@@ -7,8 +7,6 @@ import { Switch } from "@/components/ui/Switch";
 import { Text } from "@/components/ui/Text";
 import { TextField } from "@/components/ui/TextField";
 import { EditableField } from "./components/EditableField";
-import { PlanDescription } from "./components/PlanDescription";
-import { SubscriptionBanner } from "./components/SubscriptionBanner";
 
 export const ProfileSettings = () => {
   const { data: profile } = useProfile();
@@ -25,12 +23,6 @@ export const ProfileSettings = () => {
 
   return (
     <div className="flex flex-col gap-6">
-      <SubscriptionBanner />
-
-      <PlanDescription />
-
-      <Divider />
-
       <EditableField
         label="Имя"
         value={profile?.name ?? ""}

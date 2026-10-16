@@ -1,6 +1,7 @@
 export const SETTINGS_TITLE = {
   "/settings/profile": "Аккаунт",
   "/settings/chat": "Управление данными",
+  "/settings/subscription": "Управление подпиской",
   "/settings/about": "О программе",
   "/settings/help": "Справка",
 };
