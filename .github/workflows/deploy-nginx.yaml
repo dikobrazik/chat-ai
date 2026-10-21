@@ -47,7 +47,7 @@ jobs:
           host: ${{ secrets.DEPLOY_HOST }}
           username: ${{ secrets.DEPLOY_USERNAME }}
           key: ${{ secrets.ID_RSA }}
-          source: "configs/deploy/docker-compose.yaml"
+          source: "configs/deploy/docker-compose.yaml,configs/deploy/seaweedfs-entrypoint.sh"
           target: "/home/github/chat-ai"
           strip_components: 2
 
@@ -59,10 +59,11 @@ jobs:
           key: ${{ secrets.ID_RSA }}
           script: |
             cd /home/github/chat-ai &&
+            test -s storage.env &&
             docker login -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }} ghcr.io &&
-            docker compose stop nginx &&
-            docker compose pull nginx &&
-            docker compose up -d nginx dozzle &&
+            docker compose config --quiet &&
+            docker compose pull nginx seaweedfs backend &&
+            docker compose up -d --wait seaweedfs backend nginx dozzle &&
             docker system prune -f
 
   notify:
