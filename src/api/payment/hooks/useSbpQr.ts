@@ -6,7 +6,12 @@ export const useSbpQr = (tariffInfo: TariffInfoPayload) => {
   return useQuery<{ svg: string }>({
     refetchInterval: false,
     refetchOnWindowFocus: false,
-    queryKey: ["getQr", tariffInfo.tariff, tariffInfo.sixMonths],
+    queryKey: [
+      "getQr",
+      tariffInfo.tariff,
+      tariffInfo.sixMonths,
+      tariffInfo.email,
+    ],
     queryFn: () => generateQr(tariffInfo),
   });
 };
