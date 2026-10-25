@@ -7,7 +7,7 @@ export type ModelProvider = {
 };
 
 export type Model = {
-  id: number;
+  id: string;
   provider_id: number;
   name: string;
   description: string;

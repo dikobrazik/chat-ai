@@ -10,6 +10,7 @@ import { Message } from "./components/Message";
 import { WAITING_RESPONSE_MESSAGE_ID } from "./components/Message/constants";
 import { useChat } from "./hooks/useChat";
 import { useChatTitle } from "./hooks/useChatTitle";
+import { useResetAttachments } from "./hooks/useResetAttachments";
 import { useSendPromptStream } from "./hooks/useSendPromptStream";
 
 export const Chat = () => {
@@ -24,6 +25,8 @@ export const Chat = () => {
 
   const { messages, isChatCreating, setMessages } = useChat(chatId as string);
   const title = useChatTitle(chatId as string);
+
+  useResetAttachments(chatId as string);
 
   const { sendPrompt, isPromptSending } = useSendPromptStream(
     chatId as string,

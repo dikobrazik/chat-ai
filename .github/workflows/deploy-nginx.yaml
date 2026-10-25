@@ -3,7 +3,7 @@ name: Nginx deployment
 on:
   push:
     branches: ["main"]
-    paths: ["configs/nginx/**", "configs/yc/**"]
+    paths: ["configs/nginx/**", "configs/deploy/docker-compose.yaml"]
   workflow_dispatch:
 
 env:
@@ -34,42 +34,44 @@ jobs:
           push: true
           tags: ${{ env.NGINX_IMAGE }}
 
-  update-yc:
+  deploy:
     needs: [build]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Copy docker-compose
+      - name: Copy deployment config
         uses: appleboy/scp-action@master
         with:
-          host: ${{ secrets.YC_HOST }}
-          username: ${{ secrets.YC_USERNAME }}
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USERNAME }}
           key: ${{ secrets.ID_RSA }}
-          source: "configs/yc/docker-compose.yaml"
-          target: "~/frontend"
+          source: "configs/deploy/docker-compose.yaml,configs/deploy/seaweedfs-entrypoint.sh"
+          target: "/home/github/chat-ai"
+          strip_components: 2
 
       - name: executing remote ssh commands using password
         uses: appleboy/ssh-action@v1.0.0
         with:
-          host: ${{ secrets.YC_HOST }}
-          username: ${{ secrets.YC_USERNAME }}
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USERNAME }}
           key: ${{ secrets.ID_RSA }}
           script: |
-            cd ~/frontend && 
+            cd /home/github/chat-ai &&
+            test -s storage.env &&
             docker login -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }} ghcr.io &&
-            docker compose -f configs/yc/docker-compose.yaml stop nginx && 
-            docker compose -f configs/yc/docker-compose.yaml pull nginx && 
-            docker compose -f configs/yc/docker-compose.yaml up -d nginx &&
+            docker compose config --quiet &&
+            docker compose pull nginx seaweedfs backend &&
+            docker compose up -d --wait seaweedfs backend nginx dozzle &&
             docker system prune -f
 
   notify:
-    needs: [update-yc]
+    needs: [deploy]
     if: always()
     uses: ./.github/workflows/telegram-notify.yaml
     with:
-      status: ${{ needs.update-yc.result }}
+      status: ${{ needs.deploy.result }}
     secrets:
       TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
       TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}

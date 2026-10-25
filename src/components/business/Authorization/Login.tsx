@@ -6,7 +6,6 @@ import { Checkbox } from "@/components/ui/Checkbox";
 import { Divider } from "@/components/ui/Divider";
 import { Text } from "@/components/ui/Text";
 import { TextField } from "@/components/ui/TextField";
-import { BASE_URL } from "@/config";
 import { ProviderButton } from "./components/ProviderButton";
 import { useLogin } from "./useLogin";
 
@@ -39,7 +38,7 @@ export const Login = () => {
             icon="vk"
             disabled={isPending}
             onClick={onProviderClick}
-            href={`${BASE_URL}/api/auth/vk`}
+            href="/api/auth/vk"
           >
             Продолжить с VK ID
           </ProviderButton>
@@ -47,7 +46,7 @@ export const Login = () => {
             icon="yandex"
             disabled={isPending}
             onClick={onProviderClick}
-            href={`${BASE_URL}/api/auth/yandex`}
+            href="/api/auth/yandex"
           >
             Продолжить с Яндекс
           </ProviderButton>
@@ -55,7 +54,7 @@ export const Login = () => {
             icon="mail-ru"
             disabled={isPending}
             onClick={onProviderClick}
-            href={`${BASE_URL}/api/auth/mailru`}
+            href="/api/auth/mailru"
           >
             Продолжить с Mail.ru
           </ProviderButton>

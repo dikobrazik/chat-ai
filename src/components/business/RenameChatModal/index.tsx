@@ -2,8 +2,9 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useParams, useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
-import { useChat } from "@/api";
+import { useChats } from "@/api";
 import { useRenameChat } from "@/api/chat/hooks/useRenameChat";
+import { useChatTitle } from "@/components/business/Chat/hooks/useChatTitle";
 import Button from "@/components/ui/Button";
 import Modal from "@/components/ui/Modal";
 import { TextField } from "@/components/ui/TextField";
@@ -23,7 +24,8 @@ export const RenameChatModal = () => {
   const router = useRouter();
   const { id: chatId } = useParams();
   const { renameChat, isPending } = useRenameChat(chatId as string);
-  const { chat, isLoading } = useChat(chatId as string);
+  const { isLoading } = useChats();
+  const title = useChatTitle(chatId as string);
 
   const {
     register,
@@ -31,6 +33,8 @@ export const RenameChatModal = () => {
     formState: { errors },
   } = useForm<Inputs>({
     resolver: yupResolver(schema),
+    values: { newTitle: title ?? "" },
+    resetOptions: { keepDirtyValues: true },
   });
 
   const onSubmit = (data: Inputs) => {
@@ -49,7 +53,6 @@ export const RenameChatModal = () => {
           size="l"
           readOnly={isPending || isLoading}
           type="text"
-          defaultValue={chat?.title ?? ""}
           error={errors.newTitle?.message}
           {...register("newTitle")}
         />
