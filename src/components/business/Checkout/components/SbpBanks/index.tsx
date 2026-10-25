@@ -2,6 +2,7 @@
 
 import { useSbpQr } from "@/api";
 import { Skeleton } from "@/components/ui/Skeleton";
+import { Text } from "@/components/ui/Text";
 
 type Props = {
   tariff: string;
@@ -23,10 +24,15 @@ export const SbpQrCode = (props: Props) => {
   }
 
   return (
-    <div
-      className="flex flex-col gap-3 pt-2 bg-white"
-      // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
-      dangerouslySetInnerHTML={{ __html: data?.svg ?? "" }}
-    ></div>
+    <div className="flex flex-col gap-3 pt-2">
+      <div
+        className="bg-white"
+        // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
+        dangerouslySetInnerHTML={{ __html: data?.svg ?? "" }}
+      ></div>
+      <Text style="regular" type="s" color="#6F6F6F">
+        После оплаты в приложении банка эта страница обновится сама
+      </Text>
+    </div>
   );
 };

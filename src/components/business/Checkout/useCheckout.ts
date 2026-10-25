@@ -9,12 +9,16 @@ import {
 } from "@/api";
 import { SIX_MONTHS_QUERY_KEY } from "@/components/business/Subscription/constants";
 import { getPlanPricing } from "@/components/business/Subscription/pricing";
+import { isSubscriptionActive } from "@/components/business/Subscription/utils";
+import { savePendingPayment } from "@/utils/pending-payment";
 import {
   DEFAULT_PAYMENT_METHOD,
   PAYMENT_METHODS_MAP,
   type PaymentMethodId,
 } from "./constants";
 import { useGuestRedirect } from "./useGuestRedirect";
+import { useSbpPaymentRedirect } from "./useSbpPaymentRedirect";
+import { createPendingPayment } from "./utils";
 
 export const useCheckout = () => {
   const { plan: planId } = useParams<{ plan: string }>();
@@ -28,8 +32,15 @@ export const useCheckout = () => {
   );
   const [isPaying, setIsPaying] = useState(false);
 
+  const isSbpSelected = selectedMethod === PAYMENT_METHODS_MAP.sbp;
+
   const { plans, sixMonthsPlans, isLoading, isError } = usePlans();
-  const { data: activeSubscription } = useCurrentSubscription();
+  const { data: activeSubscription } = useCurrentSubscription({
+    refetchInterval: (query) =>
+      isSbpSelected && !isSubscriptionActive(query.state.data, planId)
+        ? 1000 * 3
+        : false,
+  });
   const { data: profile } = useProfile();
 
   const plan = (isSixMonths ? sixMonthsPlans : plans).find(
@@ -37,8 +48,26 @@ export const useCheckout = () => {
   );
 
   const isGuest = profile?.status === "guest";
+  const isPlanActive = isSubscriptionActive(activeSubscription, planId);
 
   useGuestRedirect(isGuest, planId, isSixMonths);
+  useSbpPaymentRedirect(isSbpSelected && isPlanActive);
+
+  const rememberPayment = (paymentMethod: PaymentMethodId) => {
+    if (plan) {
+      savePendingPayment(
+        createPendingPayment(plan, isSixMonths, paymentMethod),
+      );
+    }
+  };
+
+  const onMethodSelect = (paymentMethod: PaymentMethodId) => {
+    setSelectedMethod(paymentMethod);
+
+    if (paymentMethod === PAYMENT_METHODS_MAP.sbp) {
+      rememberPayment(paymentMethod);
+    }
+  };
 
   const onClose = () => {
     const cameFromApp =
@@ -63,6 +92,7 @@ export const useCheckout = () => {
           sixMonths: isSixMonths,
         });
 
+        rememberPayment(selectedMethod);
         window.location.href = RedirectUrl;
         return;
       }
@@ -82,14 +112,12 @@ export const useCheckout = () => {
     isError,
     isFreePlan: plan?.price === 0,
     isGuest,
-    isPlanActive:
-      activeSubscription?.plan === planId &&
-      activeSubscription?.status === "active",
+    isPlanActive,
     isPaying,
-    isPayDisabled: selectedMethod === PAYMENT_METHODS_MAP.sbp,
+    isPayDisabled: isSbpSelected,
     pricing: plan && getPlanPricing(plan, isSixMonths, selectedMethod),
     selectedMethod,
-    onMethodSelect: setSelectedMethod,
+    onMethodSelect,
     onClose,
     onPay,
   };
