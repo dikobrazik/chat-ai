@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { formatChargeDate } from "@/components/business/PaymentStatus/utils";
 import Button from "@/components/ui/Button";
 import Icon from "@/components/ui/Icon";
 import { Skeleton } from "@/components/ui/Skeleton";
@@ -153,7 +154,7 @@ export const Checkout = () => {
             color="#6F6F6F"
           >
             {pricing.trialDays
-              ? `${formatCurrency(pricing.firstPayment)} за ${getDaysLabel(pricing.trialDays)}, затем платная подписка — ${formatCurrency(pricing.periodPrice)} за ${getPeriodLabel(isSixMonths)}. `
+              ? `${formatCurrency(pricing.firstPayment)} — плата за пробный период ${getDaysLabel(pricing.trialDays)}. Если не отключить автопродление до ${formatChargeDate(plan.nextChargeAt)}, дальше ${formatCurrency(pricing.periodPrice)} за ${getPeriodLabel(isSixMonths)}. `
               : `${formatCurrency(pricing.periodPrice)} за ${getPeriodLabel(isSixMonths)}. `}
             Продлевается автоматически до отмены — отключить продление можно в
             любой момент в настройках. Кассовый чек придёт на вашу почту.

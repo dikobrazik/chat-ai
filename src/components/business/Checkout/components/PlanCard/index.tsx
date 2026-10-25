@@ -72,7 +72,9 @@ export const PlanCard = ({
         </div>
         <div className={styles.row}>
           <Text style="regular" type="s" color="#6F6F6F">
-            {nextChargeDate}
+            {trialDays
+              ? `Первое списание ${nextChargeDate}`
+              : `Следующее списание ${nextChargeDate}`}
           </Text>
           <Text style="regular" type="s" color="#6F6F6F">
             {formatCurrency(periodPrice)}
@@ -91,7 +93,7 @@ export const PlanCard = ({
       >
         <Text type="s" style="regular">
           {trialDays
-            ? "Активировать пробную версию"
+            ? `Начать пробный период за ${formatCurrency(firstPayment)}`
             : `Оплатить ${formatCurrency(firstPayment)}`}
         </Text>
       </Button>
