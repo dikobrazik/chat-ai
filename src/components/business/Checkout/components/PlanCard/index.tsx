@@ -4,7 +4,7 @@ import { Divider } from "@/components/ui/Divider";
 import Icon from "@/components/ui/Icon";
 import { Text } from "@/components/ui/Text";
 import { formatCurrency } from "@/utils/format-currency";
-import type { PaymentMethodId } from "../../constants";
+import { getDaysLabel, type PaymentMethodId } from "../../constants";
 import styles from "./PlanCard.module.scss";
 import { usePlanCard } from "./usePlanCard";
 
@@ -63,7 +63,11 @@ export const PlanCard = ({
 
       <div className="flex flex-col gap-1">
         <div className={styles.row}>
-          <Text type="m">К оплате сегодня</Text>
+          <Text type="m">
+            {trialDays
+              ? `К оплате сегодня за пробный период ${getDaysLabel(trialDays)}`
+              : "К оплате сегодня"}
+          </Text>
           <Text type="m">{formatCurrency(firstPayment)}</Text>
         </div>
         <div className={styles.row}>
