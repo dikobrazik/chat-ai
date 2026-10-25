@@ -24,7 +24,7 @@ import { useFiles } from "@/providers/FilesProvider/useFiles";
 // после входа возвращаем промпт, вложения и модель
 type ImageChatDraft = {
   prompt: string;
-  modelId: number | null;
+  modelId: string | null;
   attachments: Attachment[];
 } | null;
 

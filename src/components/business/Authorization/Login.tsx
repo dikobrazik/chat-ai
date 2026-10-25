@@ -11,7 +11,6 @@ import Button from "@/components/ui/Button";
 import { Divider } from "@/components/ui/Divider";
 import { Text } from "@/components/ui/Text";
 import { TextField } from "@/components/ui/TextField";
-import { BASE_URL } from "@/config";
 import { useEmailAuth } from "@/providers/EmailAuthProvider/useEmailAuth";
 import { ProviderButton } from "./components/ProviderButton";
 
@@ -70,24 +69,20 @@ export const Login = () => {
 
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-3">
-          <ProviderButton
-            icon="vk"
-            disabled={isPending}
-            href={`${BASE_URL}/api/auth/vk`}
-          >
+          <ProviderButton icon="vk" disabled={isPending} href="/api/auth/vk">
             Продолжить с VK ID
           </ProviderButton>
           <ProviderButton
             icon="yandex"
             disabled={isPending}
-            href={`${BASE_URL}/api/auth/yandex`}
+            href="/api/auth/yandex"
           >
             Продолжить с Яндекс
           </ProviderButton>
           <ProviderButton
             icon="mail-ru"
             disabled={isPending}
-            href={`${BASE_URL}/api/auth/mailru`}
+            href="/api/auth/mailru"
           >
             Продолжить с Mail.ru
           </ProviderButton>

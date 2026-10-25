@@ -1,35 +1,25 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
 import Button from "@/components/ui/Button";
 import { Text } from "@/components/ui/Text";
 import { useIsMobile } from "@/hooks/useMobile";
+import { useCookieConsentContext } from "@/providers/CookieConsentProvider/hooks";
 import styles from "./CookieBanner.module.scss";
-
-const COOKIE_APPROVED_KEY = "cookie-approved";
 
 export const CookieBanner = () => {
   const isMobile = useIsMobile();
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      setIsVisible(!window.localStorage.getItem(COOKIE_APPROVED_KEY));
-    }
-  }, []);
+  const { isConsentRequired, saveConsent } = useCookieConsentContext();
 
   const onDeclineClick = () => {
-    setIsVisible(false);
-    window.localStorage.setItem(COOKIE_APPROVED_KEY, "0");
+    saveConsent(false);
   };
 
   const onAcceptClick = () => {
-    setIsVisible(false);
-    window.localStorage.setItem(COOKIE_APPROVED_KEY, "1");
+    saveConsent(true);
   };
 
-  if (!isVisible) return null;
+  if (!isConsentRequired) return null;
 
   return (
     <div className={styles.container}>
@@ -39,8 +29,8 @@ export const CookieBanner = () => {
         </Text>
         <Text as="h6" type="s" color="#6F6F6F" style="regular">
           Обязательные cookie-файлы нужны для входа в аккаунт и сохранения
-          настроек. Аналитические cookie, помогающие понимать, как используется
-          сервис, применяются только с вашего согласия. Подробнее — в{" "}
+          настроек. Аналитические cookie Яндекс Метрики применяются только с
+          вашего <Link href="/cookie-consent">согласия</Link>. Подробнее — в{" "}
           <Link href="/privacy">Политике конфиденциальности</Link>.
         </Text>
       </div>

@@ -29,6 +29,7 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   size?: "x" | "m" | "l" | "xl";
   align?: "left" | "center" | "right";
   loading?: boolean;
+  pressed?: boolean;
   disabled?: boolean;
   fullWidth?: boolean;
   leftIcon?: ReactNode;
@@ -49,6 +50,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       variant = "empty",
       size = "x",
       loading = false,
+      pressed = false,
       disabled = false,
       fullWidth = false,
       borderRadius = "rounded",
@@ -77,6 +79,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       !children && styles.iconOnly,
       fullWidth && styles.fullWidth,
       loading && styles.loading,
+      pressed && styles.pressed,
       isDisabled && styles.disabled,
       styles[`borderRadius-${borderRadius}`],
       className,
