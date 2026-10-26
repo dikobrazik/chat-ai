@@ -1,4 +1,5 @@
 import type { Plan } from "@/api/subscription";
+import { formatChargeDate } from "@/components/business/PaymentStatus/utils";
 import { getPlanPricing } from "@/components/business/Subscription/pricing";
 import type { PaymentMethodId } from "../../constants";
 
@@ -21,9 +22,6 @@ export const usePlanCard = (
     periodPrice,
     firstPayment,
     trialDays,
-    nextChargeDate: new Intl.DateTimeFormat("ru-RU", {
-      day: "numeric",
-      month: "long",
-    }).format(new Date(plan.nextChargeAt)),
+    nextChargeDate: formatChargeDate(plan.nextChargeAt),
   };
 };
