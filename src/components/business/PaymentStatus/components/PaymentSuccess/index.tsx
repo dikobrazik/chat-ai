@@ -88,7 +88,7 @@ export const PaymentSuccess = () => {
           size="m"
           align="center"
           fullWidth
-          href="/settings/profile"
+          href="/settings/subscription"
         >
           <Text type="s" style="regular">
             Управление подпиской

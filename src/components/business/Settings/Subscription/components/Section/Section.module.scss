@@ -1,0 +1,23 @@
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.actions {
+  display: flex;
+  flex-shrink: 0;
+  gap: 8px;
+}
+
+@include for-mobile {
+  .head {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .actions > * {
+    flex: 1;
+  }
+}

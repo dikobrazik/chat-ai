@@ -3,3 +3,15 @@
 .modal {
   height: clamp(480px, 75dvh, 720px);
 }
+
+@include for-mobile {
+  .overlay {
+    padding: 0;
+  }
+
+  .modal {
+    height: 100dvh;
+    max-height: 100dvh;
+    border-radius: 0;
+  }
+}

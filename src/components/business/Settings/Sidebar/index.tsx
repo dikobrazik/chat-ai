@@ -43,6 +43,15 @@ export const SettingsSidebar = () => {
             >
               Управление&nbsp;данными
             </Button>
+            <Button
+              className={path === "/settings/subscription" ? styles.active : ""}
+              leftIcon={<Icon name="card" />}
+              as="a"
+              href="/settings/subscription"
+              replace
+            >
+              Управление&nbsp;подпиской
+            </Button>
           </>
         )}
         <Button

@@ -17,6 +17,7 @@ export const SettingsModal = ({ children }: PropsWithChildren) => {
       isOpen
       onClose={() => router.back()}
       className={styles.modal}
+      overlayClassName={styles.overlay}
       title={SETTINGS_TITLE[pathname as keyof SETTINGS_TITLE]}
     >
       <Modal.Sidebar>
