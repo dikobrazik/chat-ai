@@ -1,6 +1,7 @@
 "use client";
 
 import { useSbpQr } from "@/api";
+import Button from "@/components/ui/Button";
 import { Text } from "@/components/ui/Text";
 import { QrCode } from "../QrCode";
 
@@ -10,7 +11,23 @@ type Props = {
 };
 
 export const SbpQrCode = (props: Props) => {
-  const { data, isLoading } = useSbpQr(props);
+  const { data, isPending, isFetching, isError, refetch } = useSbpQr(props);
+  const isLoading = isPending || isFetching;
+
+  if (!isLoading && isError) {
+    return (
+      <div className="flex flex-col items-start gap-3">
+        <Text style="regular" type="s" color="#6F6F6F">
+          Не удалось получить QR-код
+        </Text>
+        <Button variant="base" size="m" onClick={() => refetch()}>
+          <Text type="s" style="regular">
+            Обновить
+          </Text>
+        </Button>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col gap-3">

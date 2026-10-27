@@ -13,7 +13,6 @@ type Props = {
   paymentMethod: PaymentMethodId;
   isSixMonths: boolean;
   isPaying: boolean;
-  isPayDisabled: boolean;
   onPay: () => void;
 };
 
@@ -22,7 +21,6 @@ export const PlanCard = ({
   paymentMethod,
   isSixMonths,
   isPaying,
-  isPayDisabled,
   onPay,
 }: Props) => {
   const {
@@ -88,7 +86,6 @@ export const PlanCard = ({
         align="center"
         fullWidth
         loading={isPaying}
-        disabled={isPayDisabled}
         onClick={onPay}
       >
         <Text type="s" style="regular">

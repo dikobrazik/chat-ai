@@ -55,6 +55,7 @@ import { PinnedOffIcon } from "./PinnedOffIcon";
 import { PlusIcon } from "./PlusIcon";
 import { ProfileCircleIcon } from "./ProfileCircleIcon";
 import { RefreshIcon } from "./Refresh2Icon";
+import { SbpIcon } from "./SbpIcon";
 import { SearchIcon } from "./SearchIcon";
 import { SettingIcon } from "./SettingIcon";
 import { SettingsIcon } from "./SettingsIcon";
@@ -78,6 +79,7 @@ export {
   DislikeFillIcon,
   LikeFillIcon,
   MailRuIcon,
+  SbpIcon,
   ImportIcon,
   SearchIcon,
   VKIcon,
@@ -161,6 +163,7 @@ export const iconComponents = {
 
   search: SearchIcon,
   vk: VKIcon,
+  sbp: SbpIcon,
   verify: VerifyIcon,
   "pinned-off": PinnedOffIcon,
   global: GlobalIcon,

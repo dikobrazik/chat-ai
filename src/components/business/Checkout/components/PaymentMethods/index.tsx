@@ -1,5 +1,3 @@
-import type { ReactNode } from "react";
-import { Badge } from "@/components/ui/Badge";
 import Icon from "@/components/ui/Icon";
 import type { IconName } from "@/components/ui/Icon/icons";
 import { Text } from "@/components/ui/Text";
@@ -13,7 +11,6 @@ type MethodProps = {
   title: string;
   description: string;
   selectedMethod: PaymentMethodId;
-  children?: ReactNode;
   onMethodSelect: (method: PaymentMethodId) => void;
 };
 
@@ -23,7 +20,6 @@ const Method = ({
   title,
   description,
   selectedMethod,
-  children,
   onMethodSelect,
 }: MethodProps) => {
   const isSelected = id === selectedMethod;
@@ -54,25 +50,16 @@ const Method = ({
           </Text>
         </span>
       </label>
-
-      {isSelected && children && (
-        <div className={styles.content}>{children}</div>
-      )}
     </div>
   );
 };
 
 type Props = {
   selectedMethod: PaymentMethodId;
-  content: Partial<Record<PaymentMethodId, ReactNode>>;
   onMethodSelect: (method: PaymentMethodId) => void;
 };
 
-export const PaymentMethods = ({
-  selectedMethod,
-  content,
-  onMethodSelect,
-}: Props) => (
+export const PaymentMethods = ({ selectedMethod, onMethodSelect }: Props) => (
   <div role="radiogroup" aria-label="Способ оплаты" className={styles.methods}>
     <Method
       id={PAYMENT_METHODS_MAP.tbank}
@@ -81,9 +68,7 @@ export const PaymentMethods = ({
       description="МИР и российские карты"
       selectedMethod={selectedMethod}
       onMethodSelect={onMethodSelect}
-    >
-      {content[PAYMENT_METHODS_MAP.card]}
-    </Method>
+    />
     <Method
       id={PAYMENT_METHODS_MAP.tpay}
       icon="flash-circle"
@@ -91,18 +76,14 @@ export const PaymentMethods = ({
       description="Оплата в один клик через Т-Банк"
       selectedMethod={selectedMethod}
       onMethodSelect={onMethodSelect}
-    >
-      {content[PAYMENT_METHODS_MAP.tpay]}
-    </Method>
+    />
     <Method
       id={PAYMENT_METHODS_MAP.sbp}
-      icon="lock"
-      title="Оплата по СБП"
+      icon="sbp"
+      title="Оплата через СБП"
       description="Через приложение вашего банка"
       selectedMethod={selectedMethod}
       onMethodSelect={onMethodSelect}
-    >
-      {content[PAYMENT_METHODS_MAP.sbp]}
-    </Method>
+    />
   </div>
 );

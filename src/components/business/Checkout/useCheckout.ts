@@ -11,6 +11,7 @@ import {
 import { SIX_MONTHS_QUERY_KEY } from "@/components/business/Subscription/constants";
 import { getPlanPricing } from "@/components/business/Subscription/pricing";
 import { isSubscriptionActive } from "@/components/business/Subscription/utils";
+import { useToggle } from "@/hooks/useToggle";
 import { savePendingPayment } from "@/utils/pending-payment";
 import {
   DEFAULT_PAYMENT_METHOD,
@@ -32,13 +33,18 @@ export const useCheckout = () => {
     DEFAULT_PAYMENT_METHOD,
   );
   const [isPaying, setIsPaying] = useState(false);
-
-  const isSbpSelected = selectedMethod === PAYMENT_METHODS_MAP.sbp;
+  const {
+    active: isSbpQrOpen,
+    toggleOn: openSbpQr,
+    toggleOff: closeSbpQr,
+  } = useToggle();
+  const { active: isSbpPaymentStarted, toggleOn: startSbpPayment } =
+    useToggle();
 
   const { plans, sixMonthsPlans, isLoading, isError } = usePlans();
   const { data: activeSubscription } = useCurrentSubscription({
     refetchInterval: (query) =>
-      isSbpSelected && !isSubscriptionActive(query.state.data, planId)
+      isSbpPaymentStarted && !isSubscriptionActive(query.state.data, planId)
         ? 1000 * 3
         : false,
   });
@@ -52,21 +58,13 @@ export const useCheckout = () => {
   const isPlanActive = isSubscriptionActive(activeSubscription, planId);
 
   useGuestRedirect(isGuest, planId, isSixMonths);
-  useSbpPaymentRedirect(isSbpSelected && isPlanActive);
+  useSbpPaymentRedirect(isSbpPaymentStarted && isPlanActive);
 
   const rememberPayment = (paymentMethod: PaymentMethodId) => {
     if (plan) {
       savePendingPayment(
         createPendingPayment(plan, isSixMonths, paymentMethod),
       );
-    }
-  };
-
-  const onMethodSelect = (paymentMethod: PaymentMethodId) => {
-    setSelectedMethod(paymentMethod);
-
-    if (paymentMethod === PAYMENT_METHODS_MAP.sbp) {
-      rememberPayment(paymentMethod);
     }
   };
 
@@ -84,6 +82,13 @@ export const useCheckout = () => {
   };
 
   const onPay = async () => {
+    if (selectedMethod === PAYMENT_METHODS_MAP.sbp) {
+      rememberPayment(selectedMethod);
+      startSbpPayment();
+      openSbpQr();
+      return;
+    }
+
     setIsPaying(true);
 
     try {
@@ -125,10 +130,11 @@ export const useCheckout = () => {
     isGuest,
     isPlanActive,
     isPaying,
-    isPayDisabled: isSbpSelected,
+    isSbpQrOpen,
     pricing: plan && getPlanPricing(plan, isSixMonths, selectedMethod),
     selectedMethod,
-    onMethodSelect,
+    onMethodSelect: setSelectedMethod,
+    onSbpQrClose: closeSbpQr,
     onClose,
     onPay,
   };
