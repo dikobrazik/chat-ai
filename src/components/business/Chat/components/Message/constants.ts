@@ -4,8 +4,13 @@ import {
   defaultRemarkPlugins,
   type StreamdownProps,
 } from "streamdown";
+import type { Prompt } from "@/api";
 import { MarkdownLink } from "./MarkdownLink";
-import { rehypeLiteralTags, remarkCollapseBreaks } from "./plugins";
+import {
+  rehypeLiteralTags,
+  remarkCollapseBreaks,
+  remarkHtmlAsText,
+} from "./plugins";
 import { TableCell } from "./TableCell";
 
 export const ERROR_MESSAGE_ID = "this-is-error-message";
@@ -33,6 +38,21 @@ export const REMARK_PLUGINS: StreamdownProps["remarkPlugins"] = [
   remarkBreaks,
   remarkCollapseBreaks,
 ];
+
+export const REMARK_PLUGINS_USER: StreamdownProps["remarkPlugins"] = [
+  ...Object.values(defaultRemarkPlugins),
+  remarkHtmlAsText,
+  remarkBreaks,
+  remarkCollapseBreaks,
+];
+
+export const REMARK_PLUGINS_BY_ROLE: Record<
+  Prompt["role"],
+  StreamdownProps["remarkPlugins"]
+> = {
+  model: REMARK_PLUGINS,
+  user: REMARK_PLUGINS_USER,
+};
 
 export const REHYPE_PLUGINS: StreamdownProps["rehypePlugins"] = [
   defaultRehypePlugins.raw,

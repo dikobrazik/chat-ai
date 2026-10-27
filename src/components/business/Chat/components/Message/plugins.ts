@@ -285,3 +285,26 @@ export const remarkCollapseBreaks = () => (tree: TreeNode) => {
 export const rehypeLiteralTags = () => (tree: TreeNode, file: SourceFile) => {
   replaceLiteralTags(tree, String(file.value), new Set());
 };
+
+const FLOW_PARENT_TYPES = new Set([
+  "root",
+  "blockquote",
+  "listItem",
+  "footnoteDefinition",
+]);
+
+const htmlToText = (node: TreeNode) => {
+  if (!node.children) return;
+  node.children = node.children.map((child) => {
+    htmlToText(child);
+    if (child.type !== "html") return child;
+    const text = { type: "text", value: child.value ?? "" };
+    return FLOW_PARENT_TYPES.has(node.type)
+      ? { type: "paragraph", children: [text] }
+      : text;
+  });
+};
+
+export const remarkHtmlAsText = () => (tree: TreeNode) => {
+  htmlToText(tree);
+};

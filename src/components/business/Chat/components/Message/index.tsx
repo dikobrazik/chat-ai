@@ -11,7 +11,7 @@ import {
   LINK_SAFETY,
   MARKDOWN_COMPONENTS,
   REHYPE_PLUGINS,
-  REMARK_PLUGINS,
+  REMARK_PLUGINS_BY_ROLE,
   REMEND_OPTIONS,
   SYSTEM_MESSAGES,
   TOO_MANY_REQUESTS_MESSAGE_ID,
@@ -24,15 +24,18 @@ import { ModelTyping } from "./ModelTyping";
 import { prepareMarkdown, splitMarkdownIntoBlocks } from "./markdown";
 import { TooManyRequests } from "./TooManyRequests";
 import "streamdown/styles.css";
+import "katex/dist/katex.min.css";
 import { ImageContent } from "./ImageContent";
 import { MessageFiles } from "./MessageFiles";
 
 const MessageContent = ({
   id,
+  role,
   message,
   isStreaming,
 }: {
   id: string;
+  role: Prompt["role"];
   message: string;
   isStreaming: boolean;
 }) => {
@@ -60,12 +63,13 @@ const MessageContent = ({
       animated={{ animation: "fadeIn", duration: 250, easing: "ease-out" }}
       isAnimating={isStreaming}
       plugins={{ math, code }}
-      remarkPlugins={REMARK_PLUGINS}
+      remarkPlugins={REMARK_PLUGINS_BY_ROLE[role]}
       rehypePlugins={REHYPE_PLUGINS}
       remend={REMEND_OPTIONS}
       controls={CONTROLS}
       linkSafety={LINK_SAFETY}
       tableMaxHeight={0}
+      lineNumbers={false}
       components={MARKDOWN_COMPONENTS}
       translations={TRANSLATIONS}
       parseMarkdownIntoBlocksFn={
@@ -98,6 +102,7 @@ export const Message = ({
       >
         <MessageContent
           id={id}
+          role={role}
           message={message}
           isStreaming={Boolean(isStreaming)}
         />
