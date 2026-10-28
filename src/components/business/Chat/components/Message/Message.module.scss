@@ -71,6 +71,10 @@
       margin-bottom: 12px;
     }
 
+    & p:last-child {
+      margin-bottom: 0;
+    }
+
     & strong,
     & [data-streamdown="strong"] {
       font-weight: 500;
@@ -100,10 +104,6 @@
     & li > p {
       display: block;
       margin-bottom: 8px;
-    }
-
-    & li > p:last-child {
-      margin-bottom: 0;
     }
 
     & :global(.contains-task-list) {
