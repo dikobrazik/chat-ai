@@ -58,7 +58,6 @@ const MessageContent = ({
       className={cn(
         "size-full [&>*:first-child]:mt-0 [&>*:last-child]:mb-0",
         styles.messageContent,
-        isStreaming && styles.streaming,
       )}
       parseIncompleteMarkdown={isStreaming}
       animated={{ animation: "fadeIn", duration: 250, easing: "ease-out" }}
