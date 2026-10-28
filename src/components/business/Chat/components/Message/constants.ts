@@ -9,6 +9,7 @@ import {
 import type { Prompt } from "@/api";
 import { AlertTitle } from "./AlertTitle";
 import { MarkdownLink } from "./MarkdownLink";
+import { MermaidDiagram } from "./MermaidDiagram";
 import { getFootnoteBackLabel } from "./markdown";
 import {
   rehypeAlerts,
@@ -78,7 +79,24 @@ export const MATH_PLUGIN: MathPlugin = {
   ],
 };
 
-export const PLUGINS: StreamdownProps["plugins"] = { math: MATH_PLUGIN, code };
+export const PLUGINS: StreamdownProps["plugins"] = {
+  math: MATH_PLUGIN,
+  code,
+  renderers: [{ language: "mermaid", component: MermaidDiagram }],
+};
+
+export const PLUGINS_USER: StreamdownProps["plugins"] = {
+  math: MATH_PLUGIN,
+  code,
+};
+
+export const PLUGINS_BY_ROLE: Record<
+  Prompt["role"],
+  StreamdownProps["plugins"]
+> = {
+  model: PLUGINS,
+  user: PLUGINS_USER,
+};
 
 export const REMARK_REHYPE_OPTIONS: StreamdownProps["remarkRehypeOptions"] = {
   footnoteLabel: "Сноски",

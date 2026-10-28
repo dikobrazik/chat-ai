@@ -8,7 +8,7 @@ import {
   ERROR_MESSAGE_ID,
   LINK_SAFETY,
   MARKDOWN_COMPONENTS,
-  PLUGINS,
+  PLUGINS_BY_ROLE,
   REHYPE_PLUGINS,
   REMARK_PLUGINS_BY_ROLE,
   REMEND_OPTIONS,
@@ -64,7 +64,7 @@ const MessageContent = ({
       parseIncompleteMarkdown={isStreaming}
       animated={{ animation: "fadeIn", duration: 250, easing: "ease-out" }}
       isAnimating={isStreaming}
-      plugins={PLUGINS}
+      plugins={PLUGINS_BY_ROLE[role]}
       remarkPlugins={REMARK_PLUGINS_BY_ROLE[role]}
       rehypePlugins={REHYPE_PLUGINS}
       remarkRehypeOptions={remarkRehypeOptions}
