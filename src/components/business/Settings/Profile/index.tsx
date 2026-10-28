@@ -2,13 +2,13 @@ import { toast } from "react-toastify/unstyled";
 import { useProfile, useUpdateProfile } from "@/api";
 import Button from "@/components/ui/Button";
 import { Divider } from "@/components/ui/Divider";
-import Icon from "@/components/ui/Icon";
 import { Switch } from "@/components/ui/Switch";
 import { Text } from "@/components/ui/Text";
-import { TextField } from "@/components/ui/TextField";
+import { useAuthContext } from "@/providers/AuthProvider/hooks";
 import { EditableField } from "./components/EditableField";
 
 export const ProfileSettings = () => {
+  const { onLogoutClick } = useAuthContext();
   const { data: profile } = useProfile();
   const { mutateAsync: updateProfile, isPending } = useUpdateProfile();
 
@@ -31,19 +31,14 @@ export const ProfileSettings = () => {
 
       <Divider />
 
-      <div className="flex justify-between items-center">
-        <Text color="#6F6F6F" type="xs">
+      <div className="flex justify-between items-center gap-4">
+        <Text color="#6F6F6F" type="xs" className="shrink-0">
           E-mail
         </Text>
 
-        <div className="flex gap-2">
-          <TextField readOnly value={profile?.email ?? ""} />
-          <Button
-            aria-label="Изменить E-mail"
-            variant="base"
-            leftIcon={<Icon name="edit" />}
-          />
-        </div>
+        <Text type="s" style="regular" className="truncate">
+          {profile?.email}
+        </Text>
       </div>
 
       <Divider />
@@ -65,23 +60,12 @@ export const ProfileSettings = () => {
 
       <div className="flex justify-between items-center">
         <Text color="#6F6F6F" type="xs">
-          Пароль
-        </Text>
-
-        <div className="flex gap-2">
-          <TextField readOnly />
-          <Button variant="base" leftIcon={<Icon name="edit" />} />
-        </div>
-      </div>
-
-      <Divider />
-
-      <div className="flex justify-between items-center">
-        <Text color="#6F6F6F" type="xs">
           Выйти из этого устройства
         </Text>
 
-        <Button variant="base">Выйти</Button>
+        <Button variant="base" onClick={onLogoutClick}>
+          Выйти
+        </Button>
       </div>
     </div>
   );

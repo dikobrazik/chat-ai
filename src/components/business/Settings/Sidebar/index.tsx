@@ -35,15 +35,6 @@ export const SettingsSidebar = () => {
               Аккаунт
             </Button>
             <Button
-              className={path === "/settings/chat" ? styles.active : ""}
-              leftIcon={<Icon name="setting" />}
-              as="a"
-              href="/settings/chat"
-              replace
-            >
-              Управление&nbsp;данными
-            </Button>
-            <Button
               className={path === "/settings/subscription" ? styles.active : ""}
               leftIcon={<Icon name="card" />}
               as="a"
