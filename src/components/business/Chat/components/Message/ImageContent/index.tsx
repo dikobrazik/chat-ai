@@ -1,11 +1,11 @@
-import { useQuery } from "@tanstack/react-query";
-import { getImageUrl } from "@/api";
 import Button from "@/components/ui/Button";
 import Icon from "@/components/ui/Icon";
 import Modal from "@/components/ui/Modal";
+import { Text } from "@/components/ui/Text";
 import { useToggle } from "@/hooks/useToggle";
 import { ModelTyping } from "../ModelTyping";
 import styles from "./ImageContent.module.scss";
+import { useImageUrl } from "./useImageUrl";
 
 type ImageContentProps = {
   chatId: string;
@@ -14,13 +14,21 @@ type ImageContentProps = {
 
 export const ImageContent = ({ chatId, promptId }: ImageContentProps) => {
   const { active: isPreviewOpen, toggleOff, toggleOn } = useToggle();
-  const { data, isLoading } = useQuery({
-    queryKey: ["image", chatId, promptId],
-    queryFn: () => getImageUrl({ chatId, promptId }),
-  });
+  const { imageUrl, isLoading, isUnavailable, onImageError } = useImageUrl(
+    chatId,
+    promptId,
+  );
 
   if (isLoading) {
     return <ModelTyping />;
+  }
+
+  if (isUnavailable) {
+    return (
+      <Text style="regular" className={styles.unavailable}>
+        Не удалось загрузить изображение
+      </Text>
+    );
   }
 
   return (
@@ -33,14 +41,15 @@ export const ImageContent = ({ chatId, promptId }: ImageContentProps) => {
         >
           {/* biome-ignore lint/performance/noImgElement: тут впадлу использовать компонент Image, так как он не поддерживает динамические src */}
           <img
-            src={data}
+            src={imageUrl}
             alt="AI response"
             width="100%"
             className="rounded-3xl"
+            onError={onImageError}
           />
         </button>
         <Button
-          href={data}
+          href={imageUrl}
           download
           className="absolute bottom-4 right-4"
           leftIcon={<Icon color="black" name="import" />}
@@ -61,7 +70,7 @@ export const ImageContent = ({ chatId, promptId }: ImageContentProps) => {
           onClick={() => toggleOff()}
         />
         {/* biome-ignore lint/performance/noImgElement: тут впадлу использовать компонент Image, так как он не поддерживает динамические src */}
-        <img src={data} alt="AI response" className={styles.previewImage} />
+        <img src={imageUrl} alt="AI response" className={styles.previewImage} />
       </Modal>
     </>
   );

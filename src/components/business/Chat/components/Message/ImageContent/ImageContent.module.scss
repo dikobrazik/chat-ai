@@ -32,6 +32,10 @@
   pointer-events: auto;
 }
 
+.unavailable {
+  color: var(--muted);
+}
+
 .previewClose {
   position: absolute;
   top: 1rem;

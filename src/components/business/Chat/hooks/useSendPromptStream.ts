@@ -5,9 +5,12 @@ import { CHATS_QUERY_KEY, type Prompt, sendStreamPrompt } from "@/api";
 import { useSearch } from "@/components/business/PromptField/useSearch";
 import { useFiles } from "@/providers/FilesProvider/useFiles";
 import {
-  ERROR_MESSAGE_ID,
+  THINKING_MESSAGE_ID,
   TOO_MANY_REQUESTS_MESSAGE_ID,
+  WAITING_RESPONSE_MESSAGE_ID,
 } from "../components/Message/constants";
+import { useStreamBuffer } from "./useStreamBuffer";
+import { createErrorMessage, createInterruptedMessage } from "./utils";
 
 export const useSendPromptStream = (
   chatId: string,
@@ -18,6 +21,27 @@ export const useSendPromptStream = (
   const [isPromptSending, setIsPromptSending] = useState(false);
   const { clearFiles } = useFiles();
   const { withSearch } = useSearch();
+  const streamBuffer = useStreamBuffer(setMessages);
+
+  const showThinking = () =>
+    setMessages((prevMessages) =>
+      prevMessages[0]?.id === WAITING_RESPONSE_MESSAGE_ID
+        ? [
+            { ...prevMessages[0], id: THINKING_MESSAGE_ID },
+            ...prevMessages.slice(1),
+          ]
+        : prevMessages,
+    );
+
+  const interruptAnswer = () => {
+    streamBuffer.flush();
+    setMessages((prevMessages) => [
+      prevMessages[0]?.text.trim()
+        ? createInterruptedMessage(prevMessages[0].text)
+        : createErrorMessage(),
+      ...prevMessages.slice(1),
+    ]);
+  };
 
   const sendPrompt = (payload: {
     input: string;
@@ -29,6 +53,9 @@ export const useSendPromptStream = (
     clearFiles();
     isSendingRef.current = true;
     setIsPromptSending(true);
+
+    let isFinished = false;
+    let isThinking = false;
 
     sendStreamPrompt({
       chat_id: payload.newChatId ?? (chatId as string),
@@ -49,6 +76,8 @@ export const useSendPromptStream = (
           const data = JSON.parse(value.data);
 
           if (value.type === "complete") {
+            isFinished = true;
+            streamBuffer.cancel();
             setMessages((prevMessages) => [
               {
                 id: data.promptId || randomId,
@@ -62,63 +91,37 @@ export const useSendPromptStream = (
 
             clearFiles();
           } else if (value.type === "delta") {
-            setMessages((prevMessages) => [
-              {
-                id: data.promptId || randomId,
-                text: (prevMessages[0].text ?? "") + data.content,
-                role: "model",
-                isStreaming: true,
-                thinking: data.isThinking
-                  ? prevMessages[0].thinking + data.content
-                  : prevMessages[0].thinking,
-                files: [],
-              },
-              ...prevMessages.slice(1),
-            ]);
+            streamBuffer.push(data.promptId || randomId, data.content);
+          } else if (value.type === "thinking" && !isThinking) {
+            isThinking = true;
+            showThinking();
           } else if (value.type === "error") {
-            setMessages((prevMessages) => [
-              {
-                id: `${ERROR_MESSAGE_ID}-${Date.now()}`,
-                files: [],
-                text: "В последнем сообщении произошла ошибка. Попробуйте отправить его ещё раз или обновите страницу.",
-                role: "model",
-              },
-              ...prevMessages.slice(1),
-            ]);
+            isFinished = true;
+            interruptAnswer();
           }
         }
 
-        // заголовок и last_prompt бэк проставляет по завершении ответа —
-        // забираем их вместо оптимистичной записи в списке чатов
-        queryClient.invalidateQueries({ queryKey: CHATS_QUERY_KEY });
+        if (!isFinished) interruptAnswer();
       })
       .catch((error) => {
-        if (isAxiosError(error)) {
-          if (error.status === 429) {
-            setMessages((prevMessages) => [
-              {
-                id: TOO_MANY_REQUESTS_MESSAGE_ID,
-                text: "",
-                role: "model",
-                isStreaming: false,
-                files: [],
-              },
-              ...prevMessages.slice(1),
-            ]);
-          } else {
-            setMessages((prevMessages) => [
-              {
-                id: `${ERROR_MESSAGE_ID}-${Date.now()}`,
-                files: [],
-                text: "В последнем сообщении произошла ошибка. Попробуйте отправить его ещё раз или обновите страницу.",
-                role: "model",
-              },
-              ...prevMessages.slice(1),
-            ]);
-          }
+        if (isAxiosError(error) && error.status === 429) {
+          setMessages((prevMessages) => [
+            {
+              id: TOO_MANY_REQUESTS_MESSAGE_ID,
+              text: "",
+              role: "model",
+              isStreaming: false,
+              files: [],
+            },
+            ...prevMessages.slice(1),
+          ]);
+        } else if (!isFinished) {
+          interruptAnswer();
         }
       })
       .finally(() => {
+        streamBuffer.cancel();
+        queryClient.invalidateQueries({ queryKey: CHATS_QUERY_KEY });
         isSendingRef.current = false;
         setIsPromptSending(false);
       });

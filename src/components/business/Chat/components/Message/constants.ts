@@ -22,13 +22,18 @@ import {
 import { TableCell } from "./TableCell";
 
 export const ERROR_MESSAGE_ID = "this-is-error-message";
+export const INTERRUPTED_MESSAGE_ID = "interrupted-message";
 export const WAITING_RESPONSE_MESSAGE_ID = "AI is typing...";
+export const THINKING_MESSAGE_ID = "AI is thinking...";
 export const TOO_MANY_REQUESTS_MESSAGE_ID = "too-many-requests";
 
 export const SYSTEM_MESSAGES = [
   WAITING_RESPONSE_MESSAGE_ID,
+  THINKING_MESSAGE_ID,
   TOO_MANY_REQUESTS_MESSAGE_ID,
 ];
+
+export const STREAM_RENDER_INTERVAL = 50;
 
 export const ACTION_FEEDBACK_DURATION = 3 * 1000;
 

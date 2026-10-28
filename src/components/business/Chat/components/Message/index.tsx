@@ -2,6 +2,7 @@ import classNames from "classnames";
 import { useParams } from "next/navigation";
 import { Streamdown } from "streamdown";
 import type { Prompt } from "@/api";
+import { Text } from "@/components/ui/Text";
 import { cn } from "@/lib/utils";
 import {
   ANIMATION,
@@ -12,12 +13,13 @@ import {
   PLUGINS_BY_ROLE,
   REHYPE_PLUGINS,
   REMARK_PLUGINS_BY_ROLE,
-  SYSTEM_MESSAGES,
+  THINKING_MESSAGE_ID,
   TOO_MANY_REQUESTS_MESSAGE_ID,
   TRANSLATIONS,
   WAITING_RESPONSE_MESSAGE_ID,
 } from "./constants";
 import { useMessageMarkdown } from "./hooks/useMessageMarkdown";
+import { useMessageState } from "./hooks/useMessageState";
 import { useRemarkRehypeOptions } from "./hooks/useRemarkRehypeOptions";
 import styles from "./Message.module.scss";
 import { MessageActions } from "./MessageActions";
@@ -34,25 +36,39 @@ const MessageContent = ({
   role,
   message,
   isStreaming,
+  isEmpty,
+  isInterrupted,
 }: {
   id: string;
   role: Prompt["role"];
   message: string;
   isStreaming: boolean;
+  isEmpty: boolean;
+  isInterrupted: boolean;
 }) => {
   const { id: chatId } = useParams();
   const remarkRehypeOptions = useRemarkRehypeOptions(id);
   const { markdown, splitIntoBlocks } = useMessageMarkdown(
     message,
-    isStreaming,
+    isStreaming || isInterrupted,
   );
 
   if (id.startsWith(ERROR_MESSAGE_ID)) {
     return <span>{message}</span>;
   } else if (id === TOO_MANY_REQUESTS_MESSAGE_ID) {
     return <TooManyRequests />;
-  } else if (id === WAITING_RESPONSE_MESSAGE_ID) {
-    return <ModelTyping />;
+  } else if (id === WAITING_RESPONSE_MESSAGE_ID || id === THINKING_MESSAGE_ID) {
+    return <ModelTyping isThinking={id === THINKING_MESSAGE_ID} />;
+  }
+
+  if (isEmpty) {
+    return isStreaming ? (
+      <ModelTyping />
+    ) : (
+      <Text style="regular" className={styles.notice}>
+        Модель не прислала ответ. Попробуйте отправить вопрос ещё раз.
+      </Text>
+    );
   }
 
   if (message === "[Image response]") {
@@ -93,15 +109,19 @@ export const Message = ({
   text: message,
   isStreaming,
 }: Prompt) => {
+  const { isError, isInterrupted, isEmpty, hasActions } = useMessageState({
+    id,
+    role,
+    text: message,
+  });
+
   return (
     <>
-      {!(SYSTEM_MESSAGES.includes(id) || id.startsWith(ERROR_MESSAGE_ID)) && (
-        <MessageActions id={id} text={message} role={role} />
-      )}
+      {hasActions && <MessageActions id={id} text={message} role={role} />}
       <div
         id={`prompt-${id}`}
         className={classNames(styles.message, styles[`${role}`], {
-          [styles.error]: id.startsWith(ERROR_MESSAGE_ID),
+          [styles.error]: isError,
           [styles.banner]: id === TOO_MANY_REQUESTS_MESSAGE_ID,
         })}
       >
@@ -110,7 +130,20 @@ export const Message = ({
           role={role}
           message={message}
           isStreaming={Boolean(isStreaming)}
+          isEmpty={isEmpty}
+          isInterrupted={isInterrupted}
         />
+        {isInterrupted && (
+          <Text
+            as="p"
+            type="s"
+            style="regular"
+            className={styles.interruptedNotice}
+          >
+            Ответ прервался и не сохранился. Попробуйте отправить вопрос ещё
+            раз.
+          </Text>
+        )}
       </div>
       <MessageFiles files={files} role={role} />
     </>

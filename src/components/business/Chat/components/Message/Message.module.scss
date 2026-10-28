@@ -328,6 +328,15 @@
 }
 
 
+.notice {
+  color: var(--muted);
+}
+
+.interruptedNotice {
+  margin-top: 8px;
+  color: var(--muted);
+}
+
 .modelActions {
   align-self: flex-start;
   margin-left: -0.5rem;

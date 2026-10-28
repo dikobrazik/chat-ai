@@ -13,7 +13,11 @@ const TYPING_MESSAGES = [
   "Почти готово",
 ];
 
-export const ModelTyping = () => {
+type ModelTypingProps = {
+  isThinking?: boolean;
+};
+
+export const ModelTyping = ({ isThinking = false }: ModelTypingProps) => {
   const [messageIndex, setMessageIndex] = useState(0);
 
   useEffect(() => {
@@ -29,7 +33,7 @@ export const ModelTyping = () => {
       <Logo size="small" />
 
       <Text style="regular" type="s" color="#9C9C9C">
-        {TYPING_MESSAGES[messageIndex]}&nbsp;
+        {isThinking ? "Размышляю" : TYPING_MESSAGES[messageIndex]}&nbsp;
         <span className={styles.typingIndicator}>
           <span className={styles.dot}></span>
           <span className={styles.dot}></span>
