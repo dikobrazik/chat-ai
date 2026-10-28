@@ -412,3 +412,59 @@ export const rehypeAlerts = () => (tree: TreeNode) => {
 
 export const getAlertType = (node?: TreeNode) =>
   toAlertType(String(node?.properties?.dataAlert));
+
+const HTTP_PROTOCOLS = new Set(["http:", "https:"]);
+
+const parseHttpUrl = (value: unknown) => {
+  try {
+    const url = new URL(String(value));
+    return HTTP_PROTOCOLS.has(url.protocol) ? url : undefined;
+  } catch {
+    return undefined;
+  }
+};
+
+const hasImage = (node: TreeNode): boolean =>
+  isElement(node, "img") || Boolean(node.children?.some(hasImage));
+
+const hasText = (node: TreeNode): boolean =>
+  Boolean(node.value?.trim()) || Boolean(node.children?.some(hasText));
+
+const getAlt = (node: TreeNode) => String(node.properties?.alt ?? "").trim();
+
+const toImageLink = (node: TreeNode, url: URL): TreeNode => ({
+  type: "element",
+  tagName: "a",
+  properties: {
+    href: url.href,
+    title: node.properties?.title,
+    dataImageLink: true,
+  },
+  children: toText(getAlt(node) || url.hostname),
+});
+
+const replaceImage = (node: TreeNode, isInLink: boolean) => {
+  const url = parseHttpUrl(node.properties?.src);
+  return url && !isInLink ? [toImageLink(node, url)] : toText(getAlt(node));
+};
+
+const replaceImages = (node: TreeNode, isInLink: boolean): TreeNode[] => {
+  if (isElement(node, "img")) return replaceImage(node, isInLink);
+  if (!node.children) return [node];
+  const isLink = isElement(node, "a");
+  const hadImage = isLink && node.children.some(hasImage);
+  node.children = node.children.flatMap((child) =>
+    replaceImages(child, isInLink || isLink),
+  );
+  if (hadImage && !hasText(node)) {
+    node.children = toText(
+      parseHttpUrl(node.properties?.href)?.hostname ??
+        String(node.properties?.href ?? ""),
+    );
+  }
+  return [node];
+};
+
+export const rehypeImageLinks = () => (tree: TreeNode) => {
+  replaceImages(tree, false);
+};

@@ -12,6 +12,7 @@ import { MarkdownLink } from "./MarkdownLink";
 import { getFootnoteBackLabel } from "./markdown";
 import {
   rehypeAlerts,
+  rehypeImageLinks,
   rehypeLiteralTags,
   rehypeSafeKatex,
   remarkCollapseBreaks,
@@ -65,6 +66,7 @@ export const REHYPE_PLUGINS: StreamdownProps["rehypePlugins"] = [
   rehypeLiteralTags,
   defaultRehypePlugins.sanitize,
   rehypeAlerts,
+  rehypeImageLinks,
   defaultRehypePlugins.harden,
 ];
 
@@ -103,6 +105,4 @@ export const TRANSLATIONS: StreamdownProps["translations"] = {
   exitFullscreen: "Свернуть",
   copied: "Скопировано",
   close: "Закрыть",
-  downloadImage: "Скачать изображение",
-  imageNotAvailable: "Изображение недоступно",
 };
