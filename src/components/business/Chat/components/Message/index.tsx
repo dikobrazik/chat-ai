@@ -18,6 +18,7 @@ import {
   TRANSLATIONS,
   WAITING_RESPONSE_MESSAGE_ID,
 } from "./constants";
+import { useRemarkRehypeOptions } from "./hooks/useRemarkRehypeOptions";
 import styles from "./Message.module.scss";
 import { MessageActions } from "./MessageActions";
 import { ModelTyping } from "./ModelTyping";
@@ -40,6 +41,7 @@ const MessageContent = ({
   isStreaming: boolean;
 }) => {
   const { id: chatId } = useParams();
+  const remarkRehypeOptions = useRemarkRehypeOptions(id);
 
   if (id.startsWith(ERROR_MESSAGE_ID)) {
     return <span>{message}</span>;
@@ -65,6 +67,7 @@ const MessageContent = ({
       plugins={{ math, code }}
       remarkPlugins={REMARK_PLUGINS_BY_ROLE[role]}
       rehypePlugins={REHYPE_PLUGINS}
+      remarkRehypeOptions={remarkRehypeOptions}
       remend={REMEND_OPTIONS}
       controls={CONTROLS}
       linkSafety={LINK_SAFETY}

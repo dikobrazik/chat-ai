@@ -147,6 +147,8 @@ const FULL_REFERENCE_PATTERN = /\[[^\]\n]*[^\]\d\n][^\]\n]*\]\[[^\]\n]*\]/;
 
 const INCOMPLETE_LINK_HREF = "streamdown:incomplete-link";
 
+const ID_UNSAFE_PATTERN = /[^\w-]/g;
+
 const toColumns = (line: string) => line.replace(/\t/g, "    ");
 
 const getIndent = (line: string) =>
@@ -762,6 +764,17 @@ export const isIncompleteLink = (href?: string) =>
   href === INCOMPLETE_LINK_HREF;
 
 export const isAnchorLink = (href?: string) => Boolean(href?.startsWith("#"));
+
+export const toFootnotePrefix = (id: string) =>
+  `prompt-${id.replace(ID_UNSAFE_PATTERN, "_")}-`;
+
+export const getFootnoteBackLabel = (
+  referenceIndex: number,
+  rereferenceIndex: number,
+) =>
+  rereferenceIndex > 1
+    ? `Вернуться к тексту, сноска ${referenceIndex + 1}, ссылка ${rereferenceIndex}`
+    : `Вернуться к тексту, сноска ${referenceIndex + 1}`;
 
 const getText = (node?: HastNode): string =>
   node?.type === "text"

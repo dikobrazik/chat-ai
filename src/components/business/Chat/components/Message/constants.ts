@@ -6,6 +6,7 @@ import {
 } from "streamdown";
 import type { Prompt } from "@/api";
 import { MarkdownLink } from "./MarkdownLink";
+import { getFootnoteBackLabel } from "./markdown";
 import {
   rehypeLiteralTags,
   remarkCollapseBreaks,
@@ -60,6 +61,11 @@ export const REHYPE_PLUGINS: StreamdownProps["rehypePlugins"] = [
   defaultRehypePlugins.sanitize,
   defaultRehypePlugins.harden,
 ];
+
+export const REMARK_REHYPE_OPTIONS: StreamdownProps["remarkRehypeOptions"] = {
+  footnoteLabel: "Сноски",
+  footnoteBackLabel: getFootnoteBackLabel,
+};
 
 export const MARKDOWN_COMPONENTS: StreamdownProps["components"] = {
   a: MarkdownLink,
