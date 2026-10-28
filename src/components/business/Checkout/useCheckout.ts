@@ -2,6 +2,7 @@ import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-toastify/unstyled";
 import {
+  getTbankLink,
   getTPayLink,
   useCurrentSubscription,
   usePlans,
@@ -95,8 +96,18 @@ export const useCheckout = () => {
         rememberPayment(selectedMethod);
         window.location.href = RedirectUrl;
         return;
+      } else if (selectedMethod === PAYMENT_METHODS_MAP.tbank) {
+        const { PaymentURL } = await getTbankLink({
+          tariff: planId,
+          sixMonths: isSixMonths,
+        });
+
+        rememberPayment(selectedMethod);
+        window.location.href = PaymentURL;
       }
-    } catch {
+    } catch (e) {
+      console.log(e);
+
       toast.error(
         "Не удалось начать оплату. Попробуйте ещё раз или напишите в поддержку",
       );
