@@ -32,6 +32,8 @@
   }
 
   & .messageContent {
+    --color-muted-foreground: var(--muted);
+
     font-size: 16px;
 
     & h1,
@@ -209,6 +211,10 @@
 
     & [data-streamdown="horizontal-rule"] {
       border-color: var(--line);
+    }
+
+    & [data-streamdown="image-fallback"] {
+      color: var(--muted);
     }
 
     & section[data-footnotes] {
