@@ -155,6 +155,8 @@
     & [data-streamdown="table-wrapper"] {
       --table-cover: var(--background);
 
+      width: fit-content;
+      max-width: 100%;
       gap: 4px;
       padding: 0;
       border: none;
@@ -245,6 +247,10 @@
   align-self: flex-start;
   max-width: 100%;
   background-color: transparent;
+
+  &:not(.error) {
+    align-self: stretch;
+  }
 }
 
 .user {
