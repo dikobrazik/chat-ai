@@ -69,6 +69,10 @@ const TRAILING_PUNCTUATION_PATTERN = /^([.,;:!?…]*)[ \t]*(.*)$/;
 
 const LIST_MARKER_TAIL_PATTERN = /(?:[-*+]|\d+[.)])[ \t]+$/;
 
+const MATH_FENCE_LINE = "$$";
+
+const TRAILING_OPENER_PATTERN = /(?<![\p{L}\p{N}])(?:\*\*|__|~~|\*|_|`)$/u;
+
 const BRACKET_INLINE_PATTERN =
   /(?<!\\)\\\[((?:(?!(?<!\\)\\[[\]])[^\n])+?)(?<!\\)\\\]/g;
 
@@ -678,11 +682,43 @@ const prepareMathTail = (text: string) => {
     : prepareText(tail);
 };
 
+const stripTrailingOpener = (text: string) =>
+  text.replace(TRAILING_OPENER_PATTERN, "");
+
+const getItemContentIndent = (line: string) => {
+  const match = line.match(LIST_ITEM_PATTERN);
+  return match && line.length > match[0].length
+    ? " ".repeat(match[0].length)
+    : "";
+};
+
+const attachMathToListItems = (text: string) => {
+  const lines = text.split("\n");
+  let index = 1;
+  while (index < lines.length) {
+    const indent =
+      lines[index] === MATH_FENCE_LINE
+        ? getItemContentIndent(lines[index - 1])
+        : "";
+    if (!indent) {
+      index += 1;
+      continue;
+    }
+    const closer = lines.indexOf(MATH_FENCE_LINE, index + 1);
+    const end = closer < 0 ? lines.length - 1 : closer;
+    for (let line = index; line <= end; line += 1) {
+      lines[line] = `${indent}${lines[line]}`;
+    }
+    index = end + 1;
+  }
+  return lines.join("\n");
+};
+
 const prepareStreamingTail = (part: string) => {
   const text = holdBackTableHeader(part);
   const codeStart = findOpenInlineCode(text);
   return codeStart < 0
-    ? prepareMathTail(text)
+    ? stripTrailingOpener(prepareMathTail(text))
     : `${prepareText(text.slice(0, codeStart))}${text.slice(codeStart)}`;
 };
 
@@ -692,9 +728,11 @@ export const prepareMarkdown = (text: string, isStreaming: boolean) => {
   return segments
     .map((segment, index) => {
       if (segment.isCode) return segment.text;
-      return isStreaming && index === segments.length - 1
-        ? prepareStreamingTail(segment.text)
-        : prepareText(segment.text);
+      return attachMathToListItems(
+        isStreaming && index === segments.length - 1
+          ? prepareStreamingTail(segment.text)
+          : prepareText(segment.text),
+      );
     })
     .join("\n");
 };
