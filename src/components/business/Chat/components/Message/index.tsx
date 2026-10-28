@@ -58,6 +58,7 @@ const MessageContent = ({
       className={cn(
         "size-full [&>*:first-child]:mt-0 [&>*:last-child]:mb-0",
         styles.messageContent,
+        isStreaming && styles.streaming,
       )}
       parseIncompleteMarkdown={isStreaming}
       animated={{ animation: "fadeIn", duration: 250, easing: "ease-out" }}
@@ -69,6 +70,7 @@ const MessageContent = ({
       controls={CONTROLS}
       linkSafety={LINK_SAFETY}
       tableMaxHeight={0}
+      codeBlockMaxHeight={0}
       lineNumbers={false}
       components={MARKDOWN_COMPONENTS}
       translations={TRANSLATIONS}

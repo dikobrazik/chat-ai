@@ -235,6 +235,10 @@
       overflow-x: auto;
       overflow-y: hidden;
     }
+
+    &.streaming :global(.katex-error) {
+      opacity: 0;
+    }
   }
 
   &.attachment {

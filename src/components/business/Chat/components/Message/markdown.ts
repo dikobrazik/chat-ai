@@ -71,7 +71,7 @@ const LIST_MARKER_TAIL_PATTERN = /(?:[-*+]|\d+[.)])[ \t]+$/;
 
 const MATH_FENCE_LINE = "$$";
 
-const TRAILING_OPENER_PATTERN = /(?<![\p{L}\p{N}])(?:\*\*|__|~~|\*|_|`)$/u;
+const TRAILING_OPENER_PATTERN = /(?<![\p{L}\p{N}])(?:\*\*|__|~~|\*|_|`|\\)$/u;
 
 const BRACKET_INLINE_PATTERN =
   /(?<!\\)\\\[((?:(?!(?<!\\)\\[[\]])[^\n])+?)(?<!\\)\\\]/g;
@@ -719,7 +719,7 @@ const prepareStreamingTail = (part: string) => {
   const codeStart = findOpenInlineCode(text);
   return codeStart < 0
     ? stripTrailingOpener(prepareMathTail(text))
-    : `${prepareText(text.slice(0, codeStart))}${text.slice(codeStart)}`;
+    : `${prepareText(stripTrailingOpener(text.slice(0, codeStart)))}${text.slice(codeStart)}`;
 };
 
 export const prepareMarkdown = (text: string, isStreaming: boolean) => {
