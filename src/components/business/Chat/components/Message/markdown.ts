@@ -128,6 +128,11 @@ const PERCENT_PATTERN = /(?<!\\)%/g;
 
 const COMPARISON_PATTERN = /^ {0,3}>(?:=|[−-]?\d)/;
 
+const LIST_COMPARISON_PATTERN =
+  /^([ \t]*(?:[-*+]|\d+[.)])[ \t]+)>(?=(?:=|[ \t]*\$?[−-]?\d))/;
+
+const SINGLE_TILDE_PATTERN = /([\p{L}\p{N}_])~(?!~)(?=[\p{L}\p{N}_])/gu;
+
 const QUOTE_LINE_PATTERN = /^ {0,3}>/;
 
 const INCOMPLETE_TAG_TAIL_PATTERN =
@@ -555,9 +560,18 @@ const escapeComparisons = (text: string) =>
       !isQuoteLine(lines[index - 1]) &&
       !isQuoteLine(lines[index + 1])
         ? line.replace(">", "\\>")
-        : line,
+        : line.replace(LIST_COMPARISON_PATTERN, "$1\\>"),
     )
     .join("\n");
+
+const escapeTildes = (text: string) =>
+  mapUnprotected(text, CODE_URL_PATTERN, (part) =>
+    mapUnprotected(part, DISPLAY_MATH_SPAN_PATTERN, (span) =>
+      mapUnprotected(span, LINK_DESTINATION_PATTERN, (plain) =>
+        plain.replace(SINGLE_TILDE_PATTERN, "$1\\~"),
+      ),
+    ),
+  );
 
 const fixInlineBrackets = (text: string) =>
   text
@@ -581,7 +595,7 @@ const fixMath = (text: string) =>
   );
 
 const prepareText = (text: string) =>
-  fixMath(escapeComparisons(normalizeTables(text)));
+  escapeTildes(fixMath(escapeComparisons(normalizeTables(text))));
 
 const isPipeLed = (line = "") => line.trimStart().startsWith("|");
 
