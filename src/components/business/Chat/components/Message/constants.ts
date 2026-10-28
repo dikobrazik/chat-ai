@@ -32,7 +32,11 @@ export const SYSTEM_MESSAGES = [
 
 export const ACTION_FEEDBACK_DURATION = 3 * 1000;
 
-export const REMEND_OPTIONS: StreamdownProps["remend"] = { htmlTags: false };
+export const ANIMATION: StreamdownProps["animated"] = {
+  animation: "fadeIn",
+  duration: 250,
+  easing: "ease-out",
+};
 
 export const CONTROLS: StreamdownProps["controls"] = {
   table: { copy: true, download: true, fullscreen: false },

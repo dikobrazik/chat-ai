@@ -1,3 +1,4 @@
+import remend, { type RemendOptions } from "remend";
 import type { ExtraProps } from "streamdown";
 import { parseMarkdownIntoBlocks } from "streamdown";
 
@@ -87,8 +88,15 @@ const WORD_CHAR_PATTERN = /[\p{L}\p{N}]/u;
 
 const DISPLAY_MATH_SPAN_PATTERN = /\$\$[\s\S]*?\$\$/g;
 
-const OPEN_BRACKET_PATTERN =
-  /(?<!\\)\\\[(?![\s\S]*(?<!\\)\\\])|(?<!\\)\\\((?![\s\S]*(?<!\\)\\\))/;
+const SQUARE_OPENER_PATTERN = /(?<!\\)\\\[/g;
+
+const SQUARE_CLOSER_PATTERN = /(?<!\\)\\\]/g;
+
+const PAREN_OPENER_PATTERN = /(?<!\\)\\\(/g;
+
+const PAREN_CLOSER_PATTERN = /(?<!\\)\\\)/g;
+
+const REMEND_OPTIONS: RemendOptions = { htmlTags: false };
 
 const DISPLAY_DOLLAR_PATTERN = /(?<![\\$])\$\$(?!\$)/g;
 
@@ -638,14 +646,31 @@ const holdBackTableHeader = (text: string) => {
   return header < 0 ? text : lines.slice(0, header).join("\n");
 };
 
+const getLastMatchIndex = (text: string, pattern: RegExp) => {
+  let index = -1;
+  for (const match of text.matchAll(pattern)) index = match.index;
+  return index;
+};
+
+const findUnclosedOpener = (
+  text: string,
+  opener: RegExp,
+  closer: RegExp,
+): OpenMath | undefined => {
+  const pattern = new RegExp(opener.source, "g");
+  pattern.lastIndex = getLastMatchIndex(text, closer) + 1;
+  const match = pattern.exec(text);
+  return match ? { index: match.index, opener: match[0] } : undefined;
+};
+
 const findOpenMath = (text: string) => {
   const masked = maskProtected(text);
-  const bracket = masked.match(OPEN_BRACKET_PATTERN);
   const dollars = [...masked.matchAll(DISPLAY_DOLLAR_PATTERN)];
   const dollar = dollars.length % 2 === 1 ? dollars.at(-1) : undefined;
 
   return [
-    bracket && { index: bracket.index ?? 0, opener: bracket[0] },
+    findUnclosedOpener(masked, SQUARE_OPENER_PATTERN, SQUARE_CLOSER_PATTERN),
+    findUnclosedOpener(masked, PAREN_OPENER_PATTERN, PAREN_CLOSER_PATTERN),
     dollar && { index: dollar.index, opener: "$$" },
   ]
     .filter((candidate): candidate is OpenMath => Boolean(candidate))
@@ -759,6 +784,20 @@ export const splitMarkdownIntoBlocks = (markdown: string) =>
     FULL_REFERENCE_PATTERN.test(markdown))
     ? [markdown]
     : parseMarkdownIntoBlocks(markdown);
+
+const trimLexerNewline = (block: string, markdown: string) =>
+  block.endsWith("\n") && !markdown.endsWith("\n") ? block.slice(0, -1) : block;
+
+export const splitStreamingMarkdownIntoBlocks = (markdown: string) => {
+  const blocks = parseMarkdownIntoBlocks(markdown);
+  const last = blocks.at(-1);
+  return last === undefined
+    ? blocks
+    : [
+        ...blocks.slice(0, -1),
+        remend(trimLexerNewline(last, markdown), REMEND_OPTIONS),
+      ];
+};
 
 export const isIncompleteLink = (href?: string) =>
   href === INCOMPLETE_LINK_HREF;

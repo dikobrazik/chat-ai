@@ -181,6 +181,8 @@ const WRAPPER_TAG_PATTERN =
 const SERVICE_TAG_PATTERN =
   /^(?:eos|bos|pad|unk|sep|cls|mask|ctrl\d+|unused\d+)$/;
 
+const CLOSING_TAG_MAX_PADDING = 64;
+
 const BREAK_TAG_PATTERN = /^<\/?br\s*\/?>$/i;
 
 const ATTRIBUTES_SOURCE =
@@ -211,9 +213,10 @@ const findOwnClosingTag = (
   used: Set<number>,
 ) => {
   const end = node.position?.end.offset ?? 0;
+  const name = node.tagName ?? "";
   const match = source
-    .slice(0, end)
-    .match(new RegExp(`</${escapeRegExp(node.tagName ?? "")}\\s*>$`, "i"));
+    .slice(Math.max(0, end - name.length - CLOSING_TAG_MAX_PADDING), end)
+    .match(new RegExp(`</${escapeRegExp(name)}\\s*>$`, "i"));
   if (!match || used.has(end)) return "";
   used.add(end);
   return match[0];

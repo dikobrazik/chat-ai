@@ -4,6 +4,7 @@ import { Streamdown } from "streamdown";
 import type { Prompt } from "@/api";
 import { cn } from "@/lib/utils";
 import {
+  ANIMATION,
   CONTROLS,
   ERROR_MESSAGE_ID,
   LINK_SAFETY,
@@ -11,17 +12,16 @@ import {
   PLUGINS_BY_ROLE,
   REHYPE_PLUGINS,
   REMARK_PLUGINS_BY_ROLE,
-  REMEND_OPTIONS,
   SYSTEM_MESSAGES,
   TOO_MANY_REQUESTS_MESSAGE_ID,
   TRANSLATIONS,
   WAITING_RESPONSE_MESSAGE_ID,
 } from "./constants";
+import { useMessageMarkdown } from "./hooks/useMessageMarkdown";
 import { useRemarkRehypeOptions } from "./hooks/useRemarkRehypeOptions";
 import styles from "./Message.module.scss";
 import { MessageActions } from "./MessageActions";
 import { ModelTyping } from "./ModelTyping";
-import { prepareMarkdown, splitMarkdownIntoBlocks } from "./markdown";
 import { TooManyRequests } from "./TooManyRequests";
 import "streamdown/styles.css";
 import "katex/dist/katex.min.css";
@@ -42,6 +42,10 @@ const MessageContent = ({
 }) => {
   const { id: chatId } = useParams();
   const remarkRehypeOptions = useRemarkRehypeOptions(id);
+  const { markdown, splitIntoBlocks } = useMessageMarkdown(
+    message,
+    isStreaming,
+  );
 
   if (id.startsWith(ERROR_MESSAGE_ID)) {
     return <span>{message}</span>;
@@ -61,14 +65,13 @@ const MessageContent = ({
         "size-full [&>*:first-child]:mt-0 [&>*:last-child]:mb-0",
         styles.messageContent,
       )}
-      parseIncompleteMarkdown={isStreaming}
-      animated={{ animation: "fadeIn", duration: 250, easing: "ease-out" }}
+      parseIncompleteMarkdown={false}
+      animated={ANIMATION}
       isAnimating={isStreaming}
       plugins={PLUGINS_BY_ROLE[role]}
       remarkPlugins={REMARK_PLUGINS_BY_ROLE[role]}
       rehypePlugins={REHYPE_PLUGINS}
       remarkRehypeOptions={remarkRehypeOptions}
-      remend={REMEND_OPTIONS}
       controls={CONTROLS}
       linkSafety={LINK_SAFETY}
       tableMaxHeight={0}
@@ -76,11 +79,9 @@ const MessageContent = ({
       lineNumbers={false}
       components={MARKDOWN_COMPONENTS}
       translations={TRANSLATIONS}
-      parseMarkdownIntoBlocksFn={
-        isStreaming ? undefined : splitMarkdownIntoBlocks
-      }
+      parseMarkdownIntoBlocksFn={splitIntoBlocks}
     >
-      {prepareMarkdown(message, isStreaming)}
+      {markdown}
     </Streamdown>
   );
 };
