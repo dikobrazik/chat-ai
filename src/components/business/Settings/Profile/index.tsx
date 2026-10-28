@@ -1,14 +1,14 @@
 import { toast } from "react-toastify/unstyled";
 import { useProfile, useUpdateProfile } from "@/api";
+import { useLogout } from "@/components/business/Profile/useLogout";
 import Button from "@/components/ui/Button";
 import { Divider } from "@/components/ui/Divider";
 import { Switch } from "@/components/ui/Switch";
 import { Text } from "@/components/ui/Text";
-import { useAuthContext } from "@/providers/AuthProvider/hooks";
 import { EditableField } from "./components/EditableField";
 
 export const ProfileSettings = () => {
-  const { onLogoutClick } = useAuthContext();
+  const onLogoutClick = useLogout();
   const { data: profile } = useProfile();
   const { mutateAsync: updateProfile, isPending } = useUpdateProfile();
 
