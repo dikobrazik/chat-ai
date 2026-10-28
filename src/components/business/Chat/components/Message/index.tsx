@@ -1,5 +1,3 @@
-import { code } from "@streamdown/code";
-import { math } from "@streamdown/math";
 import classNames from "classnames";
 import { useParams } from "next/navigation";
 import { Streamdown } from "streamdown";
@@ -10,6 +8,7 @@ import {
   ERROR_MESSAGE_ID,
   LINK_SAFETY,
   MARKDOWN_COMPONENTS,
+  PLUGINS,
   REHYPE_PLUGINS,
   REMARK_PLUGINS_BY_ROLE,
   REMEND_OPTIONS,
@@ -26,6 +25,7 @@ import { prepareMarkdown, splitMarkdownIntoBlocks } from "./markdown";
 import { TooManyRequests } from "./TooManyRequests";
 import "streamdown/styles.css";
 import "katex/dist/katex.min.css";
+import "katex/contrib/mhchem";
 import { ImageContent } from "./ImageContent";
 import { MessageFiles } from "./MessageFiles";
 
@@ -64,7 +64,7 @@ const MessageContent = ({
       parseIncompleteMarkdown={isStreaming}
       animated={{ animation: "fadeIn", duration: 250, easing: "ease-out" }}
       isAnimating={isStreaming}
-      plugins={{ math, code }}
+      plugins={PLUGINS}
       remarkPlugins={REMARK_PLUGINS_BY_ROLE[role]}
       rehypePlugins={REHYPE_PLUGINS}
       remarkRehypeOptions={remarkRehypeOptions}

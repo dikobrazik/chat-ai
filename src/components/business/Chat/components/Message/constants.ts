@@ -1,3 +1,5 @@
+import { code } from "@streamdown/code";
+import { type MathPlugin, math } from "@streamdown/math";
 import remarkBreaks from "remark-breaks";
 import {
   defaultRehypePlugins,
@@ -9,6 +11,7 @@ import { MarkdownLink } from "./MarkdownLink";
 import { getFootnoteBackLabel } from "./markdown";
 import {
   rehypeLiteralTags,
+  rehypeSafeKatex,
   remarkCollapseBreaks,
   remarkHtmlAsText,
 } from "./plugins";
@@ -61,6 +64,16 @@ export const REHYPE_PLUGINS: StreamdownProps["rehypePlugins"] = [
   defaultRehypePlugins.sanitize,
   defaultRehypePlugins.harden,
 ];
+
+export const MATH_PLUGIN: MathPlugin = {
+  ...math,
+  rehypePlugin: [
+    rehypeSafeKatex,
+    { errorColor: "var(--color-muted-foreground)", strict: "ignore" },
+  ],
+};
+
+export const PLUGINS: StreamdownProps["plugins"] = { math: MATH_PLUGIN, code };
 
 export const REMARK_REHYPE_OPTIONS: StreamdownProps["remarkRehypeOptions"] = {
   footnoteLabel: "Сноски",

@@ -1,3 +1,5 @@
+import rehypeKatex, { type Options as KatexOptions } from "rehype-katex";
+
 type Position = {
   start: { offset?: number };
   end: { offset?: number };
@@ -307,4 +309,15 @@ const htmlToText = (node: TreeNode) => {
 
 export const remarkHtmlAsText = () => (tree: TreeNode) => {
   htmlToText(tree);
+};
+
+export const rehypeSafeKatex = (options: KatexOptions) => {
+  const transform = rehypeKatex(options);
+  return (...args: Parameters<typeof transform>) => {
+    try {
+      transform(...args);
+    } catch {
+      return;
+    }
+  };
 };
