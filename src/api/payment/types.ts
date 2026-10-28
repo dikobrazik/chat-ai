@@ -5,6 +5,8 @@ export type TariffInfoPayload = {
 
 export type TPayResponse = { RedirectUrl: string; WebQR: string };
 
+export type TbankResponse = { PaymentURL: string };
+
 export type Payment = {
   id: string;
   amount: number;

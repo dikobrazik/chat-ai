@@ -8,6 +8,7 @@ export const SIX_MONTHS_LENGTH = 6;
 
 export const TRIAL_PRICE_BY_PAYMENT_METHOD = {
   [PAYMENT_METHODS_MAP.card]: 10,
+  [PAYMENT_METHODS_MAP.tbank]: 10,
   [PAYMENT_METHODS_MAP.tpay]: 10,
   [PAYMENT_METHODS_MAP.sbp]: 10,
 };

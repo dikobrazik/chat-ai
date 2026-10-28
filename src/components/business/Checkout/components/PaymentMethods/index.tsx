@@ -12,7 +12,6 @@ type MethodProps = {
   icon: IconName;
   title: string;
   description: string;
-  isComing?: boolean;
   selectedMethod: PaymentMethodId;
   children?: ReactNode;
   onMethodSelect: (method: PaymentMethodId) => void;
@@ -23,7 +22,6 @@ const Method = ({
   icon,
   title,
   description,
-  isComing,
   selectedMethod,
   children,
   onMethodSelect,
@@ -34,7 +32,6 @@ const Method = ({
     <div
       className={cn(styles.method, {
         [styles.selected]: isSelected,
-        [styles.coming]: isComing,
       })}
     >
       <label className={styles.head}>
@@ -44,7 +41,6 @@ const Method = ({
           className="sr-only"
           value={id}
           checked={isSelected}
-          disabled={isComing}
           onChange={() => onMethodSelect(id)}
         />
         <span className={styles.radio} aria-hidden="true" />
@@ -57,13 +53,6 @@ const Method = ({
             {description}
           </Text>
         </span>
-        {isComing && (
-          <Badge as="span" size="s" variant="secondary">
-            <Text style="regular" type="xs">
-              Скоро
-            </Text>
-          </Badge>
-        )}
       </label>
 
       {isSelected && children && (
@@ -86,8 +75,7 @@ export const PaymentMethods = ({
 }: Props) => (
   <div role="radiogroup" aria-label="Способ оплаты" className={styles.methods}>
     <Method
-      isComing
-      id={PAYMENT_METHODS_MAP.card}
+      id={PAYMENT_METHODS_MAP.tbank}
       icon="card"
       title="Карта"
       description="МИР и российские карты"

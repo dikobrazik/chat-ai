@@ -1,4 +1,5 @@
 export const PAYMENT_METHODS_MAP = {
+  tbank: "tbank",
   card: "card",
   tpay: "tpay",
   sbp: "sbp",

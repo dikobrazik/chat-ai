@@ -3,12 +3,18 @@ import type {
   Payment,
   PaymentMethod,
   TariffInfoPayload,
+  TbankResponse,
   TPayResponse,
 } from "./types";
 
 export const getTPayLink = (payload: TariffInfoPayload) =>
   axios
     .post<TPayResponse>(`/payment/get-tpay-link`, payload)
+    .then((response) => response.data);
+
+export const getTbankLink = (payload: TariffInfoPayload) =>
+  axios
+    .post<TbankResponse>(`/payment/get-tbank-link`, payload)
     .then((response) => response.data);
 
 export const generateQr = (payload: TariffInfoPayload) =>
