@@ -130,6 +130,41 @@
       font-style: normal;
     }
 
+    & blockquote[data-alert] {
+      border-left-color: var(--alert-color);
+      color: inherit;
+    }
+
+    & blockquote[data-alert="note"] {
+      --alert-color: #0F8AFF;
+    }
+
+    & blockquote[data-alert="tip"] {
+      --alert-color: #14C240;
+    }
+
+    & blockquote[data-alert="important"] {
+      --alert-color: var(--foreground);
+    }
+
+    & blockquote[data-alert="warning"] {
+      --alert-color: #FF6B34;
+    }
+
+    & blockquote[data-alert="caution"] {
+      --alert-color: #FC3F1D;
+    }
+
+    & .alertTitle {
+      margin-bottom: 4px;
+      font-weight: 500;
+    }
+
+    & .alertIcon {
+      flex: none;
+      color: var(--alert-color);
+    }
+
     & [data-streamdown="inline-code"] {
       background-color: var(--surface);
       border-radius: 4px;

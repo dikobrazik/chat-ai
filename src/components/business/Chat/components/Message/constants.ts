@@ -7,9 +7,11 @@ import {
   type StreamdownProps,
 } from "streamdown";
 import type { Prompt } from "@/api";
+import { AlertTitle } from "./AlertTitle";
 import { MarkdownLink } from "./MarkdownLink";
 import { getFootnoteBackLabel } from "./markdown";
 import {
+  rehypeAlerts,
   rehypeLiteralTags,
   rehypeSafeKatex,
   remarkCollapseBreaks,
@@ -62,6 +64,7 @@ export const REHYPE_PLUGINS: StreamdownProps["rehypePlugins"] = [
   defaultRehypePlugins.raw,
   rehypeLiteralTags,
   defaultRehypePlugins.sanitize,
+  rehypeAlerts,
   defaultRehypePlugins.harden,
 ];
 
@@ -83,6 +86,7 @@ export const REMARK_REHYPE_OPTIONS: StreamdownProps["remarkRehypeOptions"] = {
 export const MARKDOWN_COMPONENTS: StreamdownProps["components"] = {
   a: MarkdownLink,
   td: TableCell,
+  "alert-title": AlertTitle,
 };
 
 export const TRANSLATIONS: StreamdownProps["translations"] = {

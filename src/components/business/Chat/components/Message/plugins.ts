@@ -1,4 +1,5 @@
 import rehypeKatex, { type Options as KatexOptions } from "rehype-katex";
+import { isIncompleteLink } from "./markdown";
 
 type Position = {
   start: { offset?: number };
@@ -9,9 +10,12 @@ type TreeNode = {
   type: string;
   tagName?: string;
   value?: string;
+  properties?: Record<string, unknown>;
   children?: TreeNode[];
   position?: Position;
 };
+
+export type AlertType = "note" | "tip" | "important" | "warning" | "caution";
 
 type SourceFile = {
   value: unknown;
@@ -321,3 +325,90 @@ export const rehypeSafeKatex = (options: KatexOptions) => {
     }
   };
 };
+
+const ALERT_TYPES: Record<string, AlertType> = {
+  note: "note",
+  info: "note",
+  tip: "tip",
+  hint: "tip",
+  important: "important",
+  warning: "warning",
+  warn: "warning",
+  attention: "warning",
+  caution: "caution",
+  danger: "caution",
+  error: "caution",
+};
+
+const ALERT_MARKER_PATTERN = /^\[!([A-Za-z]+)\][+-]?(?=\s|$)\s*/;
+
+const ALERT_DRAFT_PATTERN = /^![A-Za-z]*$/;
+
+const toAlertType = (name: string): AlertType =>
+  ALERT_TYPES[name.toLowerCase()] ?? "note";
+
+const isElement = (node: TreeNode | undefined, tagName: string) =>
+  node?.type === "element" && node.tagName === tagName;
+
+const isBlank = (node: TreeNode) => node.type === "text" && !node.value?.trim();
+
+const getAlertMarker = (node?: TreeNode) =>
+  node?.type === "text" ? node.value?.match(ALERT_MARKER_PATTERN) : undefined;
+
+const isAlertDraft = (node?: TreeNode) =>
+  isElement(node, "a") &&
+  isIncompleteLink(String(node?.properties?.href)) &&
+  ALERT_DRAFT_PATTERN.test(node?.children?.[0]?.value ?? "");
+
+const trimLeadingBreak = (nodes: TreeNode[]): TreeNode[] => {
+  const [first, ...rest] = nodes;
+  if (first && isBlank(first)) return trimLeadingBreak(rest);
+  if (!isElement(first, "br")) return nodes;
+  const [next, ...tail] = rest;
+  return next?.type === "text"
+    ? [{ ...next, value: next.value?.trimStart() }, ...tail]
+    : rest;
+};
+
+const toAlertTitle = (type: AlertType): TreeNode => ({
+  type: "element",
+  tagName: "alert-title",
+  properties: { dataAlert: type },
+  children: [],
+});
+
+const markAlert = (blockquote: TreeNode) => {
+  const paragraph = blockquote.children?.find((child) => !isBlank(child));
+  if (!paragraph || !isElement(paragraph, "p")) return;
+  const [head, ...rest] = paragraph.children ?? [];
+  const marker = getAlertMarker(head);
+  if (!marker && !isAlertDraft(head)) return;
+  paragraph.children = trimLeadingBreak(
+    marker
+      ? [{ ...head, value: head.value?.slice(marker[0].length) }, ...rest]
+      : rest,
+  );
+  blockquote.children = blockquote.children?.filter(
+    (child) => child !== paragraph || paragraph.children?.length,
+  );
+  if (!marker) return;
+  const type = ALERT_TYPES[marker[1].toLowerCase()];
+  blockquote.properties = {
+    ...blockquote.properties,
+    dataAlert: type ?? "note",
+  };
+  if (!type) return;
+  blockquote.children = [toAlertTitle(type), ...(blockquote.children ?? [])];
+};
+
+const markAlerts = (node: TreeNode) => {
+  node.children?.forEach(markAlerts);
+  if (isElement(node, "blockquote")) markAlert(node);
+};
+
+export const rehypeAlerts = () => (tree: TreeNode) => {
+  markAlerts(tree);
+};
+
+export const getAlertType = (node?: TreeNode) =>
+  toAlertType(String(node?.properties?.dataAlert));
