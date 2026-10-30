@@ -1,4 +1,16 @@
-import type { StreamdownProps } from "streamdown";
+import remarkBreaks from "remark-breaks";
+import {
+  defaultRehypePlugins,
+  defaultRemarkPlugins,
+  type StreamdownProps,
+} from "streamdown";
+import type { Prompt } from "@/api";
+import { MarkdownLink } from "./MarkdownLink";
+import {
+  rehypeLiteralTags,
+  remarkCollapseBreaks,
+  remarkHtmlAsText,
+} from "./plugins";
 import { TableCell } from "./TableCell";
 
 export const ERROR_MESSAGE_ID = "this-is-error-message";
@@ -21,7 +33,36 @@ export const CONTROLS: StreamdownProps["controls"] = {
 
 export const LINK_SAFETY: StreamdownProps["linkSafety"] = { enabled: false };
 
+export const REMARK_PLUGINS: StreamdownProps["remarkPlugins"] = [
+  ...Object.values(defaultRemarkPlugins),
+  remarkBreaks,
+  remarkCollapseBreaks,
+];
+
+export const REMARK_PLUGINS_USER: StreamdownProps["remarkPlugins"] = [
+  ...Object.values(defaultRemarkPlugins),
+  remarkHtmlAsText,
+  remarkBreaks,
+  remarkCollapseBreaks,
+];
+
+export const REMARK_PLUGINS_BY_ROLE: Record<
+  Prompt["role"],
+  StreamdownProps["remarkPlugins"]
+> = {
+  model: REMARK_PLUGINS,
+  user: REMARK_PLUGINS_USER,
+};
+
+export const REHYPE_PLUGINS: StreamdownProps["rehypePlugins"] = [
+  defaultRehypePlugins.raw,
+  rehypeLiteralTags,
+  defaultRehypePlugins.sanitize,
+  defaultRehypePlugins.harden,
+];
+
 export const MARKDOWN_COMPONENTS: StreamdownProps["components"] = {
+  a: MarkdownLink,
   td: TableCell,
 };
 
@@ -39,4 +80,6 @@ export const TRANSLATIONS: StreamdownProps["translations"] = {
   exitFullscreen: "Свернуть",
   copied: "Скопировано",
   close: "Закрыть",
+  downloadImage: "Скачать изображение",
+  imageNotAvailable: "Изображение недоступно",
 };
