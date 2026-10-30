@@ -12,6 +12,7 @@ export interface ModalProps {
   children: ReactNode;
   title?: string;
   headerBorder?: boolean;
+  floatingHeader?: boolean;
   className?: string;
   overlayClassName?: string;
   closeOnOverlayClick?: boolean;
@@ -30,6 +31,7 @@ export const Modal: ModalComponent = ({
   children,
   title,
   headerBorder = true,
+  floatingHeader = false,
   className = "",
   overlayClassName = "",
   closeOnOverlayClick = true,
@@ -131,7 +133,7 @@ export const Modal: ModalComponent = ({
         <main className={styles.main}>
           {(title || showCloseButton) && (
             <div
-              className={`${styles.header} ${!headerBorder ? styles.withoutBorder : ""}`}
+              className={`${styles.header} ${!headerBorder ? styles.withoutBorder : ""} ${floatingHeader ? styles.floatingHeader : ""}`}
             >
               <h2 id="modal-title" className={styles.title}>
                 {title}

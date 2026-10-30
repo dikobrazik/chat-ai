@@ -85,6 +85,12 @@
   line-height: 1.4;
 }
 
+.floatingHeader {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
 .content {
   flex: 1;
   overflow-y: auto;
