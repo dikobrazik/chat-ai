@@ -4,6 +4,7 @@ import { type Model, useProfile } from "@/api";
 import { useProviders } from "@/api/model";
 import { useChatSettingsContext } from "@/providers/ChatSettingsProvider/hooks";
 import { isOptionDisabled } from "./modelAccess";
+import { getPreferredModelId, savePreferredModel } from "./preferredModel";
 
 // пути интерсепт-модалок (@modal/(.)*): рендерятся ПОВЕРХ текущей страницы,
 // сама страница с селектом при этом остаётся смонтированной
@@ -83,20 +84,34 @@ export const useModel = () => {
     const currentModelLocked =
       profile && currentModel && isOptionDisabled(profile)(currentModel);
 
-    // если модель не выбрана или недоступна, выбираем первую ДОСТУПНУЮ:
-    // гостю нельзя дефолтить недоступную gpt-4o — его дефолт gpt-4o-mini
     if (filteredProviders && (!currentModel || currentModelLocked)) {
+      const preferredModelId = getPreferredModelId(
+        basePathname === "/image-chat",
+      );
+      const preferredModel = models.find(
+        (m) =>
+          m.id === preferredModelId &&
+          (isProfileLoading || !isOptionDisabled(profile)(m)),
+      );
       const firstAvailableModel = models.find(
         (m) => !isOptionDisabled(profile)(m),
       );
 
-      const firstModel = firstAvailableModel ?? models[0];
+      const nextModel = preferredModel ?? firstAvailableModel ?? models[0];
 
-      if (firstModel) {
-        setModel(firstModel);
+      if (nextModel) {
+        setModel(nextModel);
       }
     }
-  }, [filteredProviders, profile, model, models, setModel]);
+  }, [
+    filteredProviders,
+    profile,
+    isProfileLoading,
+    model,
+    models,
+    setModel,
+    basePathname,
+  ]);
 
   const selectedModel = model ? models.find((m) => m.id === model.id) : null;
 
@@ -113,6 +128,7 @@ export const useModel = () => {
 
     if (selectedOption) {
       setModel(selectedOption);
+      savePreferredModel(selectedOption);
     }
 
     if (basePathname !== "/") {
