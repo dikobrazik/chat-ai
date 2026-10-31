@@ -10,6 +10,7 @@ import { useIsMobile } from "@/hooks/useMobile";
 import styles from "./ModelSelect.module.scss";
 import { isOptionDisabled } from "./modelAccess";
 import { getModelDisplay } from "./modelDisplay";
+import { getModelIcon } from "./modelIcon";
 import { useModel } from "./useModel";
 
 export const ModelSelect = () => {
@@ -90,17 +91,13 @@ export const ModelSelect = () => {
       // (обрабатывается в onModelChange), бейджи рисуются ниже по статусу
       formatOptionLabel={(data, { context, selectValue }) => {
         const display = getModelDisplay(data);
+        const modelIcon = getModelIcon(data, providersById?.[data.id]);
 
         if (context === "value") {
           return (
             <div className="flex gap-3 items-center">
               <div className={styles.providerImage}>
-                <Image
-                  src={`/icons/providers/${providersById?.[data.id]}.png`}
-                  width={16}
-                  height={16}
-                  alt={`Provider ${providersById?.[data.id]}`}
-                />
+                <Image src={modelIcon} width={16} height={16} alt="" />
               </div>
               <span className={styles.modelName}>{display.name}</span>
             </div>
@@ -110,12 +107,7 @@ export const ModelSelect = () => {
         return (
           <div className={styles.model}>
             <div className={styles.optionProviderImage}>
-              <Image
-                src={`/icons/providers/${providersById?.[data.id]}.png`}
-                width={24}
-                height={24}
-                alt={`Provider ${providersById?.[data.id]}`}
-              />
+              <Image src={modelIcon} width={24} height={24} alt="" />
             </div>
             <div className={styles.optionInfo}>
               <div className={styles.heading}>
