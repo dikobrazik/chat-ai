@@ -34,7 +34,7 @@ services:
         env_file:
             - ./frontend.env
         volumes:
-            - /tmp/.next/cache:/usr/app/.next/cache
+            - next-images:/usr/app/.next/cache
         restart: always
 
     backend:
