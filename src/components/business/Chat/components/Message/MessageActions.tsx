@@ -4,12 +4,18 @@ import { useReaction } from "./hooks/useReaction";
 import { useSharePrompt } from "./hooks/useSharePrompt";
 import styles from "./Message.module.scss";
 import { MessageActionButton } from "./MessageActionButton";
+import { MessageSources } from "./MessageSources";
+import type { MessageSourcesData } from "./MessageSources/utils";
 
 export const MessageActions = ({
   id,
   text,
   role,
-}: Pick<Prompt, "id" | "text" | "role">) => {
+  sources,
+  isStreaming,
+}: Pick<Prompt, "id" | "text" | "role" | "isStreaming"> & {
+  sources: MessageSourcesData;
+}) => {
   const { isCopied, onCopyClick } = useCopyMessage(text);
   const { reaction, onLikeClick, onDislikeClick } = useReaction();
   const { isShared, isSharing, onShareClick } = useSharePrompt(id);
@@ -44,6 +50,7 @@ export const MessageActions = ({
             loading={isSharing}
             onClick={onShareClick}
           />
+          {!isStreaming && <MessageSources {...sources} />}
         </>
       )}
     </div>

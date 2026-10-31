@@ -20,6 +20,7 @@ export default function PromptPage() {
             text={prompt.text}
             files={prompt.files}
             role={prompt.role}
+            sources={prompt.sources}
             isStreaming={prompt.isStreaming}
           />
         )}

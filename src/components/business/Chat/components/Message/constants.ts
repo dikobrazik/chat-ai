@@ -83,3 +83,21 @@ export const TRANSLATIONS: StreamdownProps["translations"] = {
   downloadImage: "Скачать изображение",
   imageNotAvailable: "Изображение недоступно",
 };
+
+export const CODE_PATTERN = /(```[\s\S]*?(?:```|$)|`[^`\n]*`)/g;
+
+export const WWW_PREFIX_PATTERN = /^www\./;
+
+export const NUMBER_PATTERN = /^\d+$/;
+
+export const CITATION_GROUP_PATTERN =
+  /[ \t]?\((?:\[[^\]\n]+\]\(https?:\/\/(?:[^\s()]|\([^\s()]*\))+\)(?:[ \t]*[,;])?[ \t]*)+\)/g;
+
+export const CITATION_LINK_PATTERN =
+  /\[([^\]\n]+)\]\((https?:\/\/(?:[^\s()]|\([^\s()]*\))+)\)/g;
+
+export const NUMERIC_CITATION_PATTERN =
+  /[ \t]?\[\[\d+\]\]\(https?:\/\/(?:[^\s()]|\([^\s()]*\))+\)/g;
+
+export const STREAMING_CITATION_TAIL_PATTERN =
+  /[ \t]?(?:\((?:\[[^\]\n]+\]\(https?:\/\/(?:[^\s()]|\([^\s()]*\))+\)(?:[ \t]*[,;])?[ \t]*)*(?:\[[^\]\n]*(?:\](?:\([^\s)]*)?)?)?|\[\[\d*(?:\](?:\](?:\([^\s)]*)?)?)?)$/;
