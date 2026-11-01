@@ -2,7 +2,7 @@ import Link from "next/link";
 import Modal from "@/components/ui/Modal";
 import { Text } from "@/components/ui/Text";
 import { SUPPORT_EMAIL_URL } from "../../constants";
-import { SbpQrCode } from "../SbpBanks";
+import { SbpQrCode } from "../SbpQrCode";
 
 type Props = {
   isOpen: boolean;

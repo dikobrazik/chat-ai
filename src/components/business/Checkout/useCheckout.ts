@@ -12,6 +12,7 @@ import { SIX_MONTHS_QUERY_KEY } from "@/components/business/Subscription/constan
 import { getPlanPricing } from "@/components/business/Subscription/pricing";
 import { isSubscriptionActive } from "@/components/business/Subscription/utils";
 import { useToggle } from "@/hooks/useToggle";
+import { getMobileOs } from "@/utils/mobile-os";
 import { savePendingPayment } from "@/utils/pending-payment";
 import {
   DEFAULT_PAYMENT_METHOD,
@@ -37,6 +38,11 @@ export const useCheckout = () => {
     active: isSbpQrOpen,
     toggleOn: openSbpQr,
     toggleOff: closeSbpQr,
+  } = useToggle();
+  const {
+    active: isSbpBanksOpen,
+    toggleOn: openSbpBanks,
+    toggleOff: closeSbpBanks,
   } = useToggle();
   const { active: isSbpPaymentStarted, toggleOn: startSbpPayment } =
     useToggle();
@@ -85,7 +91,13 @@ export const useCheckout = () => {
     if (selectedMethod === PAYMENT_METHODS_MAP.sbp) {
       rememberPayment(selectedMethod);
       startSbpPayment();
-      openSbpQr();
+
+      if (getMobileOs()) {
+        openSbpBanks();
+      } else {
+        openSbpQr();
+      }
+
       return;
     }
 
@@ -131,10 +143,12 @@ export const useCheckout = () => {
     isPlanActive,
     isPaying,
     isSbpQrOpen,
+    isSbpBanksOpen,
     pricing: plan && getPlanPricing(plan, isSixMonths, selectedMethod),
     selectedMethod,
     onMethodSelect: setSelectedMethod,
     onSbpQrClose: closeSbpQr,
+    onSbpBanksClose: closeSbpBanks,
     onClose,
     onPay,
   };

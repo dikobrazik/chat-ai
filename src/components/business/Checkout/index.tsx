@@ -11,6 +11,7 @@ import styles from "./Checkout.module.scss";
 import { CheckoutMessage } from "./components/CheckoutMessage";
 import { PaymentMethods } from "./components/PaymentMethods";
 import { PlanCard } from "./components/PlanCard";
+import { SbpBanksModal } from "./components/SbpBanksModal";
 import { SbpQrModal } from "./components/SbpQrModal";
 import { getDaysLabel, getPeriodLabel, SUPPORT_EMAIL_URL } from "./constants";
 import { useCheckout } from "./useCheckout";
@@ -26,10 +27,12 @@ export const Checkout = () => {
     isPlanActive,
     isPaying,
     isSbpQrOpen,
+    isSbpBanksOpen,
     pricing,
     selectedMethod,
     onMethodSelect,
     onSbpQrClose,
+    onSbpBanksClose,
     onClose,
     onPay,
   } = useCheckout();
@@ -179,6 +182,13 @@ export const Checkout = () => {
         tariff={plan.id}
         sixMonths={isSixMonths}
         onClose={onSbpQrClose}
+      />
+
+      <SbpBanksModal
+        isOpen={isSbpBanksOpen}
+        tariff={plan.id}
+        sixMonths={isSixMonths}
+        onClose={onSbpBanksClose}
       />
     </div>
   );
