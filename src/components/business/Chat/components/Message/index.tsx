@@ -37,20 +37,18 @@ const MessageContent = ({
   message,
   isStreaming,
   isEmpty,
-  isInterrupted,
 }: {
   id: string;
   role: Prompt["role"];
   message: string;
   isStreaming: boolean;
   isEmpty: boolean;
-  isInterrupted: boolean;
 }) => {
   const { id: chatId } = useParams();
   const remarkRehypeOptions = useRemarkRehypeOptions(id);
   const { markdown, splitIntoBlocks } = useMessageMarkdown(
     message,
-    isStreaming || isInterrupted,
+    isStreaming,
   );
 
   if (id.startsWith(ERROR_MESSAGE_ID)) {
@@ -109,7 +107,7 @@ export const Message = ({
   text: message,
   isStreaming,
 }: Prompt) => {
-  const { isError, isInterrupted, isEmpty, hasActions } = useMessageState({
+  const { isError, isEmpty, hasActions } = useMessageState({
     id,
     role,
     text: message,
@@ -131,19 +129,7 @@ export const Message = ({
           message={message}
           isStreaming={Boolean(isStreaming)}
           isEmpty={isEmpty}
-          isInterrupted={isInterrupted}
         />
-        {isInterrupted && (
-          <Text
-            as="p"
-            type="s"
-            style="regular"
-            className={styles.interruptedNotice}
-          >
-            Ответ прервался и не сохранился. Попробуйте отправить вопрос ещё
-            раз.
-          </Text>
-        )}
       </div>
       <MessageFiles files={files} role={role} />
     </>

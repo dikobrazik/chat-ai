@@ -10,7 +10,7 @@ import {
   WAITING_RESPONSE_MESSAGE_ID,
 } from "../components/Message/constants";
 import { useStreamBuffer } from "./useStreamBuffer";
-import { createErrorMessage, createInterruptedMessage } from "./utils";
+import { createErrorMessage } from "./utils";
 
 export const useSendPromptStream = (
   chatId: string,
@@ -33,12 +33,10 @@ export const useSendPromptStream = (
         : prevMessages,
     );
 
-  const interruptAnswer = () => {
-    streamBuffer.flush();
+  const showError = () => {
+    streamBuffer.cancel();
     setMessages((prevMessages) => [
-      prevMessages[0]?.text.trim()
-        ? createInterruptedMessage(prevMessages[0].text)
-        : createErrorMessage(),
+      createErrorMessage(),
       ...prevMessages.slice(1),
     ]);
   };
@@ -97,11 +95,11 @@ export const useSendPromptStream = (
             showThinking();
           } else if (value.type === "error") {
             isFinished = true;
-            interruptAnswer();
+            showError();
           }
         }
 
-        if (!isFinished) interruptAnswer();
+        if (!isFinished) showError();
       })
       .catch((error) => {
         if (isAxiosError(error) && error.status === 429) {
@@ -116,7 +114,7 @@ export const useSendPromptStream = (
             ...prevMessages.slice(1),
           ]);
         } else if (!isFinished) {
-          interruptAnswer();
+          showError();
         }
       })
       .finally(() => {

@@ -1,8 +1,5 @@
 import type { Prompt } from "@/api";
-import {
-  ERROR_MESSAGE_ID,
-  INTERRUPTED_MESSAGE_ID,
-} from "../components/Message/constants";
+import { ERROR_MESSAGE_ID } from "../components/Message/constants";
 
 export const createNewChat = (chatId: string, modelId: string) => ({
   id: chatId,
@@ -16,13 +13,6 @@ export const createErrorMessage = (): Prompt => ({
   id: `${ERROR_MESSAGE_ID}-${Date.now()}`,
   files: [],
   text: "В последнем сообщении произошла ошибка. Попробуйте отправить его ещё раз или обновите страницу.",
-  role: "model",
-});
-
-export const createInterruptedMessage = (text: string): Prompt => ({
-  id: `${INTERRUPTED_MESSAGE_ID}-${Date.now()}`,
-  files: [],
-  text,
   role: "model",
 });
 
