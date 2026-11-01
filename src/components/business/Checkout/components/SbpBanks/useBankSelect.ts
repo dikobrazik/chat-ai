@@ -1,49 +1,37 @@
 import { useState } from "react";
-import { toast } from "react-toastify/unstyled";
-import { getSbpLink, type TariffInfoPayload, useSbpBanks } from "@/api";
+import {
+  type TariffInfoPayload,
+  useProfile,
+  useSbpBanks,
+  useSbpLink,
+} from "@/api";
 import { getMobileOs } from "@/utils/mobile-os";
-import { filterBanks } from "./utils";
+import { getVisibleBanks } from "./utils";
 
 export const useBankSelect = (tariffInfo: TariffInfoPayload) => {
   const [search, setSearch] = useState("");
   const [selectedBankId, setSelectedBankId] = useState<string>();
-  const [isPaying, setIsPaying] = useState(false);
 
+  const { data: profile } = useProfile();
   const { data = [], isPending, isError, refetch } = useSbpBanks(getMobileOs());
 
-  const onPay = async () => {
-    if (!selectedBankId) {
-      return;
-    }
+  const banks = getVisibleBanks(data, search);
+  const selectedBank = banks.find((bank) => bank.BankId === selectedBankId);
 
-    setIsPaying(true);
-
-    try {
-      const { link } = await getSbpLink({
-        ...tariffInfo,
-        bankId: selectedBankId,
-      });
-
-      window.location.href = link;
-    } catch {
-      toast.error(
-        "Не удалось открыть приложение банка. Попробуйте ещё раз или напишите в поддержку",
-      );
-    }
-
-    setIsPaying(false);
-  };
+  const link = useSbpLink(tariffInfo, selectedBank?.BankId, profile?.id);
 
   return {
-    banks: filterBanks(data, search),
+    banks,
     search,
-    selectedBankId,
+    selectedBankId: selectedBank?.BankId,
+    link: link.data?.link,
     isLoading: isPending,
     isError,
-    isPaying,
+    isLinkLoading: link.isFetching,
+    isLinkError: link.isError,
     onSearchChange: setSearch,
     onBankSelect: setSelectedBankId,
     onRetry: () => refetch(),
-    onPay,
+    onLinkRetry: () => link.refetch(),
   };
 };

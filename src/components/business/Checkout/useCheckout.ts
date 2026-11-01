@@ -20,6 +20,7 @@ import {
   type PaymentMethodId,
 } from "./constants";
 import { useGuestRedirect } from "./useGuestRedirect";
+import { useRestoreSbpPayment } from "./useRestoreSbpPayment";
 import { useSbpPaymentRedirect } from "./useSbpPaymentRedirect";
 import { createPendingPayment } from "./utils";
 
@@ -64,6 +65,7 @@ export const useCheckout = () => {
   const isPlanActive = isSubscriptionActive(activeSubscription, planId);
 
   useGuestRedirect(isGuest, planId, isSixMonths);
+  useRestoreSbpPayment(planId, isSixMonths, startSbpPayment);
   useSbpPaymentRedirect(isSbpPaymentStarted && isPlanActive);
 
   const rememberPayment = (paymentMethod: PaymentMethodId) => {

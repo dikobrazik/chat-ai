@@ -24,7 +24,7 @@
       background-color: #F7F7F7;
 
       @media (prefers-color-scheme: dark) {
-        background-color: color-mix(in srgb, var(--background), white 12%);
+        background-color: color-mix(in srgb, var(--background), white 20%);
       }
     }
   }

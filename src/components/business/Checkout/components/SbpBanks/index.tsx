@@ -7,6 +7,7 @@ import { Skeleton } from "@/components/ui/Skeleton";
 import { Text } from "@/components/ui/Text";
 import { TextField } from "@/components/ui/TextField";
 import { cn } from "@/lib/utils";
+import { RetryMessage } from "../RetryMessage";
 import styles from "./SbpBanks.module.scss";
 import { useBankSelect } from "./useBankSelect";
 
@@ -20,27 +21,22 @@ export const SbpBanks = (props: Props) => {
     banks,
     search,
     selectedBankId,
+    link,
     isLoading,
     isError,
-    isPaying,
+    isLinkLoading,
+    isLinkError,
     onSearchChange,
     onBankSelect,
     onRetry,
-    onPay,
+    onLinkRetry,
   } = useBankSelect(props);
 
   if (isError) {
     return (
-      <div className="flex flex-col items-center gap-3 text-center">
-        <Text style="regular" type="s" color="#6F6F6F">
-          Не удалось загрузить список банков
-        </Text>
-        <Button variant="base" size="m" onClick={onRetry}>
-          <Text type="s" style="regular">
-            Обновить
-          </Text>
-        </Button>
-      </div>
+      <RetryMessage onRetry={onRetry}>
+        Не удалось загрузить список банков
+      </RetryMessage>
     );
   }
 
@@ -49,7 +45,7 @@ export const SbpBanks = (props: Props) => {
       <TextField
         value={search}
         placeholder="Название банка"
-        leftIcon={<Icon className="text-[#9C9C9C]" name="search" />}
+        leftIcon={<Icon name="search" />}
         onValueChange={onSearchChange}
         fullWidth
         size="l"
@@ -106,17 +102,24 @@ export const SbpBanks = (props: Props) => {
           size="m"
           align="center"
           fullWidth
-          disabled={!selectedBankId}
-          loading={isPaying}
-          onClick={onPay}
+          href={link}
+          disabled={!link}
+          loading={isLinkLoading}
         >
           <Text type="s" style="regular">
             Оплатить в приложении
           </Text>
         </Button>
-        <Text style="regular" type="s" color="#6F6F6F">
-          После оплаты вернитесь в браузер — страница обновится сама
-        </Text>
+
+        {isLinkError ? (
+          <RetryMessage onRetry={onLinkRetry}>
+            Не удалось получить ссылку на приложение банка
+          </RetryMessage>
+        ) : (
+          <Text style="regular" type="s" color="#6F6F6F">
+            После оплаты вернитесь в браузер — страница обновится сама
+          </Text>
+        )}
       </div>
     </div>
   );

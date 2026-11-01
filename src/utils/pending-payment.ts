@@ -10,6 +10,7 @@ export type PendingPayment = {
   isTrial: boolean;
   amount: number;
   nextAmount: number;
+  paymentMethod: string;
 };
 
 export const savePendingPayment = (payment: PendingPayment) =>

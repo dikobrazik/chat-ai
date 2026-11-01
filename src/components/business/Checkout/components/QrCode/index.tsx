@@ -8,7 +8,7 @@ type Props = {
 
 export const QrCode = ({ svg, isLoading }: Props) => {
   if (isLoading) {
-    return <Skeleton isLoading className={styles.qr} />;
+    return <Skeleton isLoading height={176} width={176} />;
   }
 
   return (

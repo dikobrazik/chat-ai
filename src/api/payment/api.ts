@@ -4,7 +4,6 @@ import type {
   Payment,
   PaymentMethod,
   SbpBank,
-  SbpLinkPayload,
   TariffInfoPayload,
   TbankResponse,
   TPayResponse,
@@ -24,6 +23,8 @@ export const generateQr = (payload: TariffInfoPayload) =>
   axios
     .post<{ svg: string }>(`/payment/generate-qr`, payload)
     .then((response) => response.data);
+
+type SbpLinkPayload = TariffInfoPayload & { bankId: string };
 
 export const getSbpBanks = (os: MobileOs | null) =>
   axios

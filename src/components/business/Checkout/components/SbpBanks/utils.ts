@@ -1,6 +1,6 @@
 import type { SbpBank } from "@/api";
 
-export const filterBanks = (banks: SbpBank[], search: string) => {
+export const getVisibleBanks = (banks: SbpBank[], search: string) => {
   const query = search.trim().toLowerCase();
 
   return banks

@@ -1,17 +1,20 @@
 import { useQuery } from "@tanstack/react-query";
-import { useProfile } from "../../user";
 import { generateQr } from "../api";
 import type { TariffInfoPayload } from "../types";
 
-export const useSbpQr = (tariffInfo: TariffInfoPayload) => {
-  const { data: profile } = useProfile();
+export const getSbpQrQueryKey = (
+  tariffInfo: TariffInfoPayload,
+  userId?: string,
+) => ["getQr", userId, tariffInfo.tariff, tariffInfo.sixMonths];
 
-  return useQuery<{ svg: string }>({
+export const useSbpQr = (tariffInfo: TariffInfoPayload, userId?: string) =>
+  useQuery<{ svg: string }>({
+    enabled: Boolean(userId),
+    retry: false,
     refetchInterval: false,
     refetchOnWindowFocus: false,
     staleTime: 1000 * 60 * 25,
     gcTime: 1000 * 60 * 30,
-    queryKey: ["getQr", profile?.id, tariffInfo.tariff, tariffInfo.sixMonths],
+    queryKey: getSbpQrQueryKey(tariffInfo, userId),
     queryFn: () => generateQr(tariffInfo),
   });
-};

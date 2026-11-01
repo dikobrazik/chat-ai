@@ -20,5 +20,6 @@ export const createPendingPayment = (
     isTrial: trialDays > 0,
     amount: firstPayment,
     nextAmount: nextPayment,
+    paymentMethod,
   };
 };

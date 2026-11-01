@@ -1,9 +1,9 @@
 "use client";
 
-import { useSbpQr } from "@/api";
-import Button from "@/components/ui/Button";
+import { useProfile, useSbpQr } from "@/api";
 import { Text } from "@/components/ui/Text";
 import { QrCode } from "../QrCode";
+import { RetryMessage } from "../RetryMessage";
 
 type Props = {
   tariff: string;
@@ -11,21 +11,18 @@ type Props = {
 };
 
 export const SbpQrCode = (props: Props) => {
-  const { data, isPending, isFetching, isError, refetch } = useSbpQr(props);
+  const { data: profile } = useProfile();
+  const { data, isPending, isFetching, isError, refetch } = useSbpQr(
+    props,
+    profile?.id,
+  );
   const isLoading = isPending || isFetching;
 
   if (!isLoading && isError) {
     return (
-      <div className="flex flex-col items-center gap-3">
-        <Text style="regular" type="s" color="#6F6F6F">
-          Не удалось получить QR-код
-        </Text>
-        <Button variant="base" size="m" onClick={() => refetch()}>
-          <Text type="s" style="regular">
-            Обновить
-          </Text>
-        </Button>
-      </div>
+      <RetryMessage onRetry={() => refetch()}>
+        Не удалось получить QR-код
+      </RetryMessage>
     );
   }
 
