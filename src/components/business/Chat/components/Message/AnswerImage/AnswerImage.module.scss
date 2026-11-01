@@ -1,0 +1,27 @@
+.answerImage {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  max-width: 100%;
+  vertical-align: top;
+}
+
+.picture {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: min(400px, 60dvh);
+  border-radius: 12px;
+}
+
+.link {
+  color: inherit;
+}
+
+.icon {
+  display: inline-block;
+  margin-right: 4px;
+  vertical-align: -3px;
+}

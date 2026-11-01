@@ -8,16 +8,18 @@ import {
 } from "streamdown";
 import type { Prompt } from "@/api";
 import { AlertTitle } from "./AlertTitle";
+import { AnswerImage } from "./AnswerImage";
 import { MarkdownLink } from "./MarkdownLink";
 import { MermaidDiagram } from "./MermaidDiagram";
 import { getFootnoteBackLabel } from "./markdown";
 import {
   rehypeAlerts,
-  rehypeImageLinks,
+  rehypeAnswerImages,
   rehypeLiteralTags,
   rehypeSafeKatex,
   remarkCollapseBreaks,
   remarkHtmlAsText,
+  withDataImageSources,
 } from "./plugins";
 import { TableCell } from "./TableCell";
 
@@ -73,9 +75,9 @@ export const REMARK_PLUGINS_BY_ROLE: Record<
 export const REHYPE_PLUGINS: StreamdownProps["rehypePlugins"] = [
   defaultRehypePlugins.raw,
   rehypeLiteralTags,
-  defaultRehypePlugins.sanitize,
+  withDataImageSources(defaultRehypePlugins.sanitize),
   rehypeAlerts,
-  rehypeImageLinks,
+  rehypeAnswerImages,
   defaultRehypePlugins.harden,
 ];
 
@@ -115,6 +117,7 @@ export const MARKDOWN_COMPONENTS: StreamdownProps["components"] = {
   a: MarkdownLink,
   td: TableCell,
   "alert-title": AlertTitle,
+  "answer-image": AnswerImage,
 };
 
 export const TRANSLATIONS: StreamdownProps["translations"] = {

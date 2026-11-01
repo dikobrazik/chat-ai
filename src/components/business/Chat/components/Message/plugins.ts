@@ -1,4 +1,5 @@
 import rehypeKatex, { type Options as KatexOptions } from "rehype-katex";
+import type { StreamdownProps } from "streamdown";
 import { isIncompleteLink } from "./markdown";
 
 type Position = {
@@ -418,6 +419,9 @@ export const getAlertType = (node?: TreeNode) =>
 
 const HTTP_PROTOCOLS = new Set(["http:", "https:"]);
 
+const DATA_IMAGE_PATTERN =
+  /^data:image\/(?:png|jpe?g|gif|webp);base64,[a-z0-9+/=\s]+$/i;
+
 const parseHttpUrl = (value: unknown) => {
   try {
     const url = new URL(String(value));
@@ -430,36 +434,58 @@ const parseHttpUrl = (value: unknown) => {
 const hasImage = (node: TreeNode): boolean =>
   isElement(node, "img") || Boolean(node.children?.some(hasImage));
 
-const hasText = (node: TreeNode): boolean =>
-  Boolean(node.value?.trim()) || Boolean(node.children?.some(hasText));
+const hasContent = (node: TreeNode): boolean =>
+  Boolean(node.value?.trim()) ||
+  isElement(node, "answer-image") ||
+  Boolean(node.children?.some(hasContent));
 
 const getAlt = (node: TreeNode) => String(node.properties?.alt ?? "").trim();
 
-const toImageLink = (node: TreeNode, url: URL): TreeNode => ({
+const toAnswerImage = (
+  node: TreeNode,
+  properties: Record<string, unknown>,
+): TreeNode => ({
   type: "element",
-  tagName: "a",
+  tagName: "answer-image",
   properties: {
-    href: url.href,
+    src: node.properties?.src,
+    alt: getAlt(node),
     title: node.properties?.title,
-    dataImageLink: true,
+    ...properties,
   },
-  children: toText(getAlt(node) || url.hostname),
+  children: [],
 });
 
-const replaceImage = (node: TreeNode, isInLink: boolean) => {
-  const url = parseHttpUrl(node.properties?.src);
-  return url && !isInLink ? [toImageLink(node, url)] : toText(getAlt(node));
+const replaceImage = (node: TreeNode, linkHref?: unknown) => {
+  const src = String(node.properties?.src ?? "");
+  const url = parseHttpUrl(src);
+  const isInLink = linkHref !== undefined;
+  if (url && !isInLink) {
+    return [
+      toAnswerImage(node, {
+        href: url.href,
+        caption: getAlt(node) || url.hostname,
+      }),
+    ];
+  }
+  if (url || DATA_IMAGE_PATTERN.test(src)) {
+    return [
+      toAnswerImage(node, {
+        fallback: getAlt(node) || parseHttpUrl(linkHref)?.hostname || "",
+      }),
+    ];
+  }
+  return toText(getAlt(node));
 };
 
-const replaceImages = (node: TreeNode, isInLink: boolean): TreeNode[] => {
-  if (isElement(node, "img")) return replaceImage(node, isInLink);
+const replaceImages = (node: TreeNode, linkHref?: unknown): TreeNode[] => {
+  if (isElement(node, "img")) return replaceImage(node, linkHref);
   if (!node.children) return [node];
   const isLink = isElement(node, "a");
+  const href = isLink ? (node.properties?.href ?? "") : linkHref;
   const hadImage = isLink && node.children.some(hasImage);
-  node.children = node.children.flatMap((child) =>
-    replaceImages(child, isInLink || isLink),
-  );
-  if (hadImage && !hasText(node)) {
+  node.children = node.children.flatMap((child) => replaceImages(child, href));
+  if (hadImage && !hasContent(node)) {
     node.children = toText(
       parseHttpUrl(node.properties?.href)?.hostname ??
         String(node.properties?.href ?? ""),
@@ -468,6 +494,24 @@ const replaceImages = (node: TreeNode, isInLink: boolean): TreeNode[] => {
   return [node];
 };
 
-export const rehypeImageLinks = () => (tree: TreeNode) => {
-  replaceImages(tree, false);
+export const rehypeAnswerImages = () => (tree: TreeNode) => {
+  replaceImages(tree);
+};
+
+type RehypePlugin = NonNullable<StreamdownProps["rehypePlugins"]>[number];
+
+type RehypePluginTuple = Extract<RehypePlugin, unknown[]>;
+
+export const withDataImageSources = (sanitize: RehypePlugin): RehypePlugin => {
+  const [plugin, schema] = sanitize as RehypePluginTuple;
+  return [
+    plugin,
+    {
+      ...schema,
+      protocols: {
+        ...schema.protocols,
+        src: [...schema.protocols.src, "data"],
+      },
+    },
+  ];
 };

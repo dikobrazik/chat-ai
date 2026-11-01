@@ -804,9 +804,6 @@ export const isIncompleteLink = (href?: string) =>
 
 export const isAnchorLink = (href?: string) => Boolean(href?.startsWith("#"));
 
-export const isImageLink = (node: ExtraProps["node"]) =>
-  Boolean(node?.properties?.dataImageLink);
-
 export const toFootnotePrefix = (id: string) =>
   `prompt-${id.replace(ID_UNSAFE_PATTERN, "_")}-`;
 

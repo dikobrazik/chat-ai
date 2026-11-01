@@ -1,9 +1,7 @@
 import type { ComponentProps } from "react";
 import type { ExtraProps } from "streamdown";
-import Icon from "@/components/ui/Icon";
 import { cn } from "@/lib/utils";
-import styles from "./Message.module.scss";
-import { isAnchorLink, isImageLink, isIncompleteLink } from "./markdown";
+import { isAnchorLink, isIncompleteLink } from "./markdown";
 
 export const MarkdownLink = ({
   node,
@@ -37,14 +35,6 @@ export const MarkdownLink = ({
       rel={isAnchor ? undefined : rel}
       target={isAnchor ? undefined : target}
     >
-      {isImageLink(node) && (
-        <Icon
-          name="gallery"
-          size={16}
-          className={styles.imageLinkIcon}
-          aria-hidden
-        />
-      )}
       {children}
     </a>
   );
