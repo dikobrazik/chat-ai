@@ -122,21 +122,15 @@ export const Checkout = () => {
           onClick={onClose}
         />
         <Text as="h1" type="xl">
-          Настройте свой план
+          Выберите способ оплаты
         </Text>
       </div>
 
       <div className={styles.checkout}>
-        <div className="flex flex-col gap-4">
-          <Text style="regular" type="m" color="#6F6F6F">
-            Выберите способ оплаты
-          </Text>
-
-          <PaymentMethods
-            selectedMethod={selectedMethod}
-            onMethodSelect={onMethodSelect}
-          />
-        </div>
+        <PaymentMethods
+          selectedMethod={selectedMethod}
+          onMethodSelect={onMethodSelect}
+        />
 
         <div className="flex flex-col gap-4">
           <PlanCard

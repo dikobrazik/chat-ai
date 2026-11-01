@@ -43,3 +43,21 @@
   justify-content: space-between;
   gap: spacing(4);
 }
+
+.pay {
+  @include media-max(md) {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    padding: spacing(4);
+    padding-bottom: calc(#{spacing(4)} + env(safe-area-inset-bottom));
+    background-color: #FFFFFF;
+    border-top: 1px solid #EFEFEF;
+
+    @media (prefers-color-scheme: dark) {
+      background-color: var(--background);
+      border-top-color: rgba(255, 255, 255, 0.1);
+    }
+  }
+}
