@@ -49,7 +49,7 @@ export const Chat = () => {
     window.history.replaceState({}, "", url.toString());
 
     if (query) {
-      onSendClick(decodeURIComponent(query));
+      onSendClick(query);
     }
   }, []);
 
