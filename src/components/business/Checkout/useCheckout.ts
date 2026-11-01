@@ -12,6 +12,7 @@ import { SIX_MONTHS_QUERY_KEY } from "@/components/business/Subscription/constan
 import { getPlanPricing } from "@/components/business/Subscription/pricing";
 import { isSubscriptionActive } from "@/components/business/Subscription/utils";
 import { useToggle } from "@/hooks/useToggle";
+import { useCookieConsentContext } from "@/providers/CookieConsentProvider/hooks";
 import { getMobileOs } from "@/utils/mobile-os";
 import { savePendingPayment } from "@/utils/pending-payment";
 import {
@@ -56,6 +57,7 @@ export const useCheckout = () => {
         : false,
   });
   const { data: profile } = useProfile();
+  const { isConsentRequired } = useCookieConsentContext();
 
   const plan = (isSixMonths ? sixMonthsPlans : plans).find(
     (item) => item.id === planId,
@@ -146,6 +148,7 @@ export const useCheckout = () => {
     isPaying,
     isSbpQrOpen,
     isSbpBanksOpen,
+    isCookieBannerShown: isConsentRequired,
     pricing: plan && getPlanPricing(plan, isSixMonths, selectedMethod),
     selectedMethod,
     onMethodSelect: setSelectedMethod,

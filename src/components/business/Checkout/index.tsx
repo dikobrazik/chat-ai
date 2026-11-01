@@ -6,6 +6,7 @@ import Button from "@/components/ui/Button";
 import Icon from "@/components/ui/Icon";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { Text } from "@/components/ui/Text";
+import { cn } from "@/lib/utils";
 import { formatCurrency } from "@/utils/format-currency";
 import styles from "./Checkout.module.scss";
 import { CheckoutMessage } from "./components/CheckoutMessage";
@@ -28,6 +29,7 @@ export const Checkout = () => {
     isPaying,
     isSbpQrOpen,
     isSbpBanksOpen,
+    isCookieBannerShown,
     pricing,
     selectedMethod,
     onMethodSelect,
@@ -37,9 +39,13 @@ export const Checkout = () => {
     onPay,
   } = useCheckout();
 
+  const pageClassName = cn(styles.page, {
+    [styles.withCookieBanner]: isCookieBannerShown,
+  });
+
   if (isLoading) {
     return (
-      <div className={styles.page}>
+      <div className={pageClassName}>
         <div className={styles.checkout}>
           <Skeleton isLoading height={320} />
           <Skeleton isLoading height={520} />
@@ -50,7 +56,7 @@ export const Checkout = () => {
 
   if (isError) {
     return (
-      <div className={styles.page}>
+      <div className={pageClassName}>
         <CheckoutMessage
           title="Не удалось загрузить тарифы"
           description="Проверьте соединение и попробуйте ещё раз"
@@ -63,7 +69,7 @@ export const Checkout = () => {
 
   if (!plan || !pricing) {
     return (
-      <div className={styles.page}>
+      <div className={pageClassName}>
         <CheckoutMessage
           title="Такой тариф не найден"
           actionText="Вернуться к тарифам"
@@ -75,7 +81,7 @@ export const Checkout = () => {
 
   if (isFreePlan) {
     return (
-      <div className={styles.page}>
+      <div className={pageClassName}>
         <CheckoutMessage
           title="Этот тариф бесплатный"
           description={`«${plan.name}» доступен без оплаты — платить не за что`}
@@ -88,7 +94,7 @@ export const Checkout = () => {
 
   if (isGuest) {
     return (
-      <div className={styles.page}>
+      <div className={pageClassName}>
         <CheckoutMessage
           title="Войдите, чтобы оформить подписку"
           description="Подписка привязывается к аккаунту — без входа оплата не пройдёт"
@@ -101,7 +107,7 @@ export const Checkout = () => {
 
   if (isPlanActive) {
     return (
-      <div className={styles.page}>
+      <div className={pageClassName}>
         <CheckoutMessage
           title={`Тариф «${plan.name}» уже подключён`}
           description="Повторно оплачивать его не нужно"
@@ -113,7 +119,7 @@ export const Checkout = () => {
   }
 
   return (
-    <div className={styles.page}>
+    <div className={pageClassName}>
       <div className={styles.header}>
         <Button
           className={styles.back}
@@ -121,7 +127,7 @@ export const Checkout = () => {
           aria-label="Вернуться к тарифам"
           onClick={onClose}
         />
-        <Text as="h1" type="xl">
+        <Text as="h1" type="xl" className={styles.title}>
           Выберите способ оплаты
         </Text>
       </div>
