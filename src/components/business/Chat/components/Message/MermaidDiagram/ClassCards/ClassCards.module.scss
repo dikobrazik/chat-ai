@@ -70,10 +70,37 @@
   }
 }
 
-.links {
+.note {
+  color: var(--muted);
+}
+
+.relations {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  padding-top: 4px;
+}
+
+.relationsTitle {
+  padding-bottom: 4px;
+  font-weight: 500;
+}
+
+.relation {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 8px;
+  overflow-wrap: anywhere;
+
+  & + & {
+    border-top: 1px solid var(--line);
+  }
+}
+
+.relationText {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 20px;
 }
 
 .link {

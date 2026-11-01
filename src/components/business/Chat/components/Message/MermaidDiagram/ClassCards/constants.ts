@@ -31,6 +31,31 @@ export const CLASS_LINK_KINDS: Record<string, string> = {
   "many-many": "многие ко многим",
 };
 
+export const CLASS_RELATION_GLYPHS: Partial<Record<string, string>> = {
+  "none-dependency": "→",
+  "dependency-none": "←",
+  "dependency-dependency": "↔",
+  "none-extension": "→",
+  "extension-none": "←",
+  "none-composition": "←◆",
+  "composition-none": "◆→",
+  "none-aggregation": "←◇",
+  "aggregation-none": "◇→",
+  "none-lollipop": "—○",
+  "lollipop-none": "○—",
+};
+
+export const CLASS_DEFAULT_GLYPH = "—";
+
+export const CLASS_RELATION_KINDS: Partial<Record<string, string>> = {
+  composition: "композиция",
+  aggregation: "агрегация",
+  extension: "наследование",
+  "dashed-dependency": "зависимость",
+  "dashed-extension": "реализация",
+  lollipop: "интерфейс",
+};
+
 export const LATIN_CLASS_NAME_PATTERN = /^[\w<>,. ]+$/;
 
 export const CYRILLIC_PATTERN = /[а-яё]/i;

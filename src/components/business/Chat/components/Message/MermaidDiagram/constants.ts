@@ -1,4 +1,5 @@
 import type { MermaidConfig } from "mermaid";
+import type { ClassMarker } from "./types";
 
 export const MERMAID_ID_PREFIX = "jonu-mermaid-";
 
@@ -15,6 +16,14 @@ export const MERMAID_CLASS_TYPES = new Set(["class", "classDiagram"]);
 export const MERMAID_NO_RELATION_TITLE = "none";
 
 export const MERMAID_DOTTED_LINE = 1;
+
+export const MERMAID_RELATION_MARKERS: Partial<Record<string, ClassMarker>> = {
+  "0": "aggregation",
+  "1": "extension",
+  "2": "composition",
+  "3": "dependency",
+  "4": "lollipop",
+};
 
 export const MERMAID_DECISION_CLASS = "jonuDecision";
 

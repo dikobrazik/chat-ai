@@ -10,6 +10,13 @@ export type ClassCard = {
   methods: ClassItem[];
 };
 
+export type ClassMarker =
+  | "aggregation"
+  | "extension"
+  | "composition"
+  | "dependency"
+  | "lollipop";
+
 export type ClassLink = {
   id: string;
   from: string;
@@ -18,6 +25,8 @@ export type ClassLink = {
   toCount: string;
   label: string;
   isDashed: boolean;
+  fromMarker?: ClassMarker;
+  toMarker?: ClassMarker;
 };
 
 export type ClassModel = { classes: ClassCard[]; links: ClassLink[] };

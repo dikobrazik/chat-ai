@@ -1,4 +1,8 @@
-import { MERMAID_DOTTED_LINE, MERMAID_NO_RELATION_TITLE } from "./constants";
+import {
+  MERMAID_DOTTED_LINE,
+  MERMAID_NO_RELATION_TITLE,
+  MERMAID_RELATION_MARKERS,
+} from "./constants";
 import type { ClassModel, Mermaid } from "./types";
 
 type MemberEntry = { getDisplayDetails: () => { displayText: string } };
@@ -18,7 +22,11 @@ type RelationEntry = {
   relationTitle1: string;
   relationTitle2: string;
   title?: string;
-  relation: { lineType: number };
+  relation: {
+    type1: number | string;
+    type2: number | string;
+    lineType: number;
+  };
 };
 
 type ClassDiagramDb = {
@@ -72,6 +80,8 @@ export const readClassModel = async (
       toCount: toCount(relation.relationTitle2),
       label: relation.title ?? "",
       isDashed: relation.relation.lineType === MERMAID_DOTTED_LINE,
+      fromMarker: MERMAID_RELATION_MARKERS[String(relation.relation.type1)],
+      toMarker: MERMAID_RELATION_MARKERS[String(relation.relation.type2)],
     })),
   };
 };
