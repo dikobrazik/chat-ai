@@ -16,7 +16,7 @@ export const SbpQrCode = (props: Props) => {
 
   if (!isLoading && isError) {
     return (
-      <div className="flex flex-col items-start gap-3">
+      <div className="flex flex-col items-center gap-3">
         <Text style="regular" type="s" color="#6F6F6F">
           Не удалось получить QR-код
         </Text>
@@ -30,7 +30,7 @@ export const SbpQrCode = (props: Props) => {
   }
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col items-center gap-3">
       <QrCode svg={data?.svg} isLoading={isLoading} />
       {!isLoading && (
         <Text style="regular" type="s" color="#6F6F6F">

@@ -15,11 +15,12 @@ export const SbpQrModal = ({ isOpen, tariff, sixMonths, onClose }: Props) => (
   <Modal
     size="compact"
     title="Оплата через СБП"
+    centeredTitle
     headerBorder={false}
     isOpen={isOpen}
     onClose={onClose}
   >
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col items-center gap-4 text-center">
       <Text style="regular" type="s" color="#6F6F6F">
         Отсканируйте QR-код камерой телефона или в приложении банка
       </Text>
