@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { StreamdownContext } from "streamdown";
 import { useDebouncedValue } from "@/hooks/useDebouncedValue";
 import { useIsDarkScheme } from "@/hooks/useIsDarkScheme";
@@ -33,16 +33,8 @@ export const useMermaidDiagram = (code: string, isIncomplete: boolean) => {
     };
   }, [code, scheme, isIncomplete, isSettled, isAnimating]);
 
-  const diagramRef = useCallback(
-    (element: HTMLDivElement | null) => {
-      if (element && svg) element.innerHTML = svg;
-    },
-    [svg],
-  );
-
   return {
     svg,
-    diagramRef,
     lineNumbers,
     isFailed: isFailed && !isAnimating,
   };

@@ -45,6 +45,7 @@ import { LikeIcon } from "./LikeIcon";
 import { LockIcon } from "./LockIcon";
 import { LogoutIcon } from "./LogoutIcon";
 import { MailRuIcon } from "./MailRuIcon";
+import { MaximizeIcon } from "./MaximizeIcon";
 import { MenuIcon } from "./MenuIcon";
 import { MessageCreateIcon } from "./MessageCreateIcon";
 import { MessageQuestionIcon } from "./MessageQuestionIcon";
@@ -139,6 +140,7 @@ export {
   SidebarToggleOnIcon,
   FlashCircleIcon,
   MoreIcon,
+  MaximizeIcon,
   SettingIcon,
   LockIcon,
 };
@@ -220,6 +222,7 @@ export const iconComponents = {
   "flash-circle": FlashCircleIcon,
   clipboard: ClipboardIcon,
   more: MoreIcon,
+  maximize: MaximizeIcon,
   setting: SettingIcon,
 } as const;
 

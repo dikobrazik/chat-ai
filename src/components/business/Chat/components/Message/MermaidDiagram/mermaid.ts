@@ -1,11 +1,17 @@
 import {
   MERMAID_CACHE_LIMIT,
   MERMAID_CONFIGS,
+  MERMAID_FLOWCHART_TYPES,
   MERMAID_ID_PREFIX,
+  MERMAID_LAYOUTS,
   MERMAID_LINK_TAG,
 } from "./constants";
+import { toRoundedDecisions } from "./flowchart";
+import { decorateSvg } from "./svg";
 
 export type MermaidScheme = keyof typeof MERMAID_CONFIGS;
+
+type Mermaid = typeof import("mermaid")["default"];
 
 let mermaidModule: Promise<typeof import("mermaid")> | undefined;
 let renderQueue: Promise<unknown> = Promise.resolve();
@@ -24,15 +30,46 @@ const loadMermaid = () => {
   return mermaidModule;
 };
 
-const renderSvg = async (code: string, scheme: MermaidScheme) => {
-  const { default: mermaid } = await loadMermaid();
-  mermaid.initialize(MERMAID_CONFIGS[scheme]);
+const getDiagramType = (mermaid: Mermaid, code: string) => {
+  try {
+    return mermaid.detectType(code);
+  } catch {
+    return undefined;
+  }
+};
+
+const getLayoutConfig = (scheme: MermaidScheme, type: string) => {
+  const layout = MERMAID_LAYOUTS[type];
+  return layout && { ...MERMAID_CONFIGS[scheme], ...layout };
+};
+
+const renderCode = async (mermaid: Mermaid, code: string) => {
   renderCount += 1;
   const { svg } = await mermaid.render(
     `${MERMAID_ID_PREFIX}${renderCount}`,
     code,
   );
-  return svg.replaceAll("<a ", MERMAID_LINK_TAG);
+  return svg;
+};
+
+const renderFlowchart = (mermaid: Mermaid, code: string) => {
+  const roundedCode = toRoundedDecisions(code);
+  if (roundedCode === code) return renderCode(mermaid, code);
+  return renderCode(mermaid, roundedCode).catch(() =>
+    renderCode(mermaid, code),
+  );
+};
+
+const renderSvg = async (code: string, scheme: MermaidScheme) => {
+  const { default: mermaid } = await loadMermaid();
+  mermaid.initialize(MERMAID_CONFIGS[scheme]);
+  const type = getDiagramType(mermaid, code) ?? "";
+  const layoutConfig = getLayoutConfig(scheme, type);
+  if (layoutConfig) mermaid.initialize(layoutConfig);
+  const svg = MERMAID_FLOWCHART_TYPES.has(type)
+    ? await renderFlowchart(mermaid, code)
+    : await renderCode(mermaid, code);
+  return decorateSvg(svg.replaceAll("<a ", MERMAID_LINK_TAG));
 };
 
 const enqueueRender = (code: string, scheme: MermaidScheme) => {

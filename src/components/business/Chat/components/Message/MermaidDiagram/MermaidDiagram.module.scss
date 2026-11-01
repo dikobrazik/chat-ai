@@ -1,11 +1,38 @@
+$min-scale: 0.7;
+$max-scale: 2;
+
+.block {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-block: 16px;
+}
+
+.toolbar {
+  display: flex;
+  align-self: flex-end;
+  padding: 2px;
+  border-radius: 999px;
+  background-color: var(--surface);
+
+  & .toolbarButton {
+    border-radius: 999px;
+    color: var(--muted);
+    background-color: transparent;
+
+    &:hover:not(:disabled) {
+      color: var(--foreground);
+      background-color: var(--line);
+    }
+  }
+}
+
 .diagram {
-  --diagram-cover: var(--surface);
+  --diagram-cover: var(--background);
 
   display: flex;
   overflow-x: auto;
   overflow-y: hidden;
-  padding: 8px;
-  border-radius: 8px;
   background:
     linear-gradient(to right, var(--diagram-cover) 30%, transparent) left center / 40px 100% no-repeat local,
     linear-gradient(to left, var(--diagram-cover) 30%, transparent) right center / 40px 100% no-repeat local,
@@ -14,7 +41,28 @@
 
   & > svg {
     flex-shrink: 0;
+    max-width: 100%;
+    min-width: calc(var(--natural-width) * #{$min-scale});
+    height: auto;
     margin-inline: auto;
+  }
+}
+
+.fullscreenDiagram {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+
+  & > svg {
+    flex-shrink: 0;
+    width: 100%;
+    height: 100%;
+    min-width: var(--natural-width);
+    min-height: var(--natural-height);
+    max-width: calc(var(--natural-width) * #{$max-scale});
+    max-height: calc(var(--natural-height) * #{$max-scale});
+    margin: auto;
   }
 }
 
