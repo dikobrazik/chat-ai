@@ -88,11 +88,18 @@ export const Message = ({
   files,
   text: message,
   isStreaming,
-}: Prompt) => {
+  isPublicPage = false,
+}: Prompt & { isPublicPage?: boolean }) => {
   return (
     <>
       {!(SYSTEM_MESSAGES.includes(id) || id.startsWith(ERROR_MESSAGE_ID)) && (
-        <MessageActions id={id} text={message} role={role} />
+        <MessageActions
+          id={id}
+          text={message}
+          role={role}
+          isStreaming={isStreaming}
+          isPublicPage={isPublicPage}
+        />
       )}
       <div
         id={`prompt-${id}`}

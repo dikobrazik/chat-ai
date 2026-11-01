@@ -21,6 +21,7 @@ export default function PromptPage() {
             files={prompt.files}
             role={prompt.role}
             isStreaming={prompt.isStreaming}
+            isPublicPage
           />
         )}
       </div>
