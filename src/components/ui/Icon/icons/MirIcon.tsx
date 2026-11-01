@@ -1,12 +1,7 @@
 import { BaseIcon, type IconComponentProps } from "..";
 
-export const MirIcon: React.FC<IconComponentProps> = ({ size, ...props }) => (
-  <BaseIcon
-    viewBox="31 13 351 96"
-    size={size}
-    width={typeof size === "number" ? (size * 351) / 96 : undefined}
-    {...props}
-  >
+export const MirIcon: React.FC<IconComponentProps> = (props) => (
+  <BaseIcon viewBox="31 13 351 96" {...props}>
     <linearGradient
       id="mir-logo-gradient"
       x1="370"

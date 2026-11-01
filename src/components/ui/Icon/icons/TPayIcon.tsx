@@ -1,12 +1,7 @@
 import { BaseIcon, type IconComponentProps } from "..";
 
-export const TPayIcon: React.FC<IconComponentProps> = ({ size, ...props }) => (
-  <BaseIcon
-    viewBox="0 0 92.954 38.362"
-    size={size}
-    width={typeof size === "number" ? (size * 92.954) / 38.362 : undefined}
-    {...props}
-  >
+export const TPayIcon: React.FC<IconComponentProps> = (props) => (
+  <BaseIcon viewBox="0 0 92.954 38.362" {...props}>
     <path
       fill="#303030"
       d="M73.6413 0L19.3126 0C8.64656 0 0 8.58762 0 19.181C0 29.7743 8.64656 38.362 19.3126 38.362L73.6413 38.362C84.3074 38.362 92.954 29.7743 92.954 19.181C92.954 8.58762 84.3074 0 73.6413 0Z"

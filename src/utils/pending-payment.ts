@@ -1,4 +1,5 @@
 import type { PlanId } from "@/api/subscription";
+import type { PaymentMethodId } from "@/components/business/Checkout/constants";
 import {
   PENDING_PAYMENT_LIFETIME,
   PENDING_PAYMENT_LOCAL_STORAGE_KEY,
@@ -10,7 +11,7 @@ export type PendingPayment = {
   isTrial: boolean;
   amount: number;
   nextAmount: number;
-  paymentMethod: string;
+  paymentMethod: PaymentMethodId;
 };
 
 export const savePendingPayment = (payment: PendingPayment) =>

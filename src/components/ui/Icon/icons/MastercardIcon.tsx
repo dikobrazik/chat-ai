@@ -1,15 +1,7 @@
 import { BaseIcon, type IconComponentProps } from "..";
 
-export const MastercardIcon: React.FC<IconComponentProps> = ({
-  size,
-  ...props
-}) => (
-  <BaseIcon
-    viewBox="7.4 7.5 116.5 72"
-    size={size}
-    width={typeof size === "number" ? (size * 116.5) / 72 : undefined}
-    {...props}
-  >
+export const MastercardIcon: React.FC<IconComponentProps> = (props) => (
+  <BaseIcon viewBox="7.4 7.5 116.5 72" {...props}>
     <rect x="49.9" y="15.1" width="31.5" height="56.6" fill="#FF5F00" />
     <path
       fill="#EB001B"

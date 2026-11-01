@@ -62,6 +62,7 @@
 
 .leftIcon {
   position: absolute;
+  color: #9C9C9C;
 
   &:has(+.input.size-m) {
     left: 18px;
