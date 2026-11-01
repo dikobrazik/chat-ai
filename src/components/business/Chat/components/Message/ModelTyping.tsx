@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Logo } from "@/components/ui/Logo";
+import { LogoThinking } from "@/components/ui/LogoThinking";
 import { Text } from "@/components/ui/Text";
 import styles from "./Message.module.scss";
 
@@ -26,7 +26,7 @@ export const ModelTyping = () => {
 
   return (
     <div className="flex gap-3">
-      <Logo size="small" />
+      <LogoThinking size="small" />
 
       <Text style="regular" type="s" color="#9C9C9C">
         {TYPING_MESSAGES[messageIndex]}&nbsp;
