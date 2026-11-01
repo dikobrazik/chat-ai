@@ -73,7 +73,10 @@ const renderDiagram = async (
   code: string,
   scheme: MermaidScheme,
 ): Promise<RenderedMermaid> => {
-  const { default: mermaid } = await loadMermaid();
+  const [{ default: mermaid }] = await Promise.all([
+    loadMermaid(),
+    document.fonts.ready,
+  ]);
   mermaid.initialize(MERMAID_CONFIGS[scheme]);
   const type = getDiagramType(mermaid, code) ?? "";
   const layoutConfig = getLayoutConfig(scheme, type);
