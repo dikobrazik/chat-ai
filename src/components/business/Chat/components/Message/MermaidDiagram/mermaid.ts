@@ -1,5 +1,7 @@
+import { readClassModel } from "./classModel";
 import {
   MERMAID_CACHE_LIMIT,
+  MERMAID_CLASS_TYPES,
   MERMAID_CONFIGS,
   MERMAID_FLOWCHART_TYPES,
   MERMAID_ID_PREFIX,
@@ -8,25 +10,32 @@ import {
 } from "./constants";
 import { toRoundedDecisions } from "./flowchart";
 import { decorateSvg } from "./svg";
+import type { Mermaid, RenderedMermaid } from "./types";
 
 export type MermaidScheme = keyof typeof MERMAID_CONFIGS;
-
-type Mermaid = typeof import("mermaid")["default"];
 
 let mermaidModule: Promise<typeof import("mermaid")> | undefined;
 let renderQueue: Promise<unknown> = Promise.resolve();
 let renderCount = 0;
-const readySvgs = new Map<string, string>();
-const pendingSvgs = new Map<string, Promise<string>>();
+const readyDiagrams = new Map<string, RenderedMermaid>();
+const pendingDiagrams = new Map<string, Promise<RenderedMermaid>>();
 
 const toCacheKey = (code: string, scheme: MermaidScheme) =>
   `${scheme}\n${code}`;
 
 const loadMermaid = () => {
-  mermaidModule ??= import("mermaid").catch((error) => {
-    mermaidModule = undefined;
-    throw error;
-  });
+  mermaidModule ??= Promise.all([
+    import("mermaid"),
+    import("@mermaid-js/layout-elk"),
+  ])
+    .then(([mermaid, { default: elkLayouts }]) => {
+      mermaid.default.registerLayoutLoaders(elkLayouts);
+      return mermaid;
+    })
+    .catch((error) => {
+      mermaidModule = undefined;
+      throw error;
+    });
   return mermaidModule;
 };
 
@@ -60,7 +69,10 @@ const renderFlowchart = (mermaid: Mermaid, code: string) => {
   );
 };
 
-const renderSvg = async (code: string, scheme: MermaidScheme) => {
+const renderDiagram = async (
+  code: string,
+  scheme: MermaidScheme,
+): Promise<RenderedMermaid> => {
   const { default: mermaid } = await loadMermaid();
   mermaid.initialize(MERMAID_CONFIGS[scheme]);
   const type = getDiagramType(mermaid, code) ?? "";
@@ -69,35 +81,40 @@ const renderSvg = async (code: string, scheme: MermaidScheme) => {
   const svg = MERMAID_FLOWCHART_TYPES.has(type)
     ? await renderFlowchart(mermaid, code)
     : await renderCode(mermaid, code);
-  return decorateSvg(svg.replaceAll("<a ", MERMAID_LINK_TAG));
+  return {
+    svg: decorateSvg(svg.replaceAll("<a ", MERMAID_LINK_TAG)),
+    classModel: MERMAID_CLASS_TYPES.has(type)
+      ? await readClassModel(mermaid, code).catch(() => undefined)
+      : undefined,
+  };
 };
 
 const enqueueRender = (code: string, scheme: MermaidScheme) => {
-  const task = renderQueue.then(() => renderSvg(code, scheme));
+  const task = renderQueue.then(() => renderDiagram(code, scheme));
   renderQueue = task.catch(() => undefined);
   return task;
 };
 
-const rememberSvg = (key: string, svg: string) => {
-  if (readySvgs.size >= MERMAID_CACHE_LIMIT) {
-    readySvgs.delete(readySvgs.keys().next().value ?? "");
+const rememberDiagram = (key: string, diagram: RenderedMermaid) => {
+  if (readyDiagrams.size >= MERMAID_CACHE_LIMIT) {
+    readyDiagrams.delete(readyDiagrams.keys().next().value ?? "");
   }
-  readySvgs.set(key, svg);
-  return svg;
+  readyDiagrams.set(key, diagram);
+  return diagram;
 };
 
 export const getRenderedMermaid = (code: string, scheme: MermaidScheme) =>
-  readySvgs.get(toCacheKey(code, scheme));
+  readyDiagrams.get(toCacheKey(code, scheme));
 
 export const renderMermaid = (code: string, scheme: MermaidScheme) => {
   const key = toCacheKey(code, scheme);
-  const ready = readySvgs.get(key);
+  const ready = readyDiagrams.get(key);
   if (ready) return Promise.resolve(ready);
   const pending =
-    pendingSvgs.get(key) ??
+    pendingDiagrams.get(key) ??
     enqueueRender(code, scheme)
-      .then((svg) => rememberSvg(key, svg))
-      .finally(() => pendingSvgs.delete(key));
-  pendingSvgs.set(key, pending);
+      .then((diagram) => rememberDiagram(key, diagram))
+      .finally(() => pendingDiagrams.delete(key));
+  pendingDiagrams.set(key, pending);
   return pending;
 };

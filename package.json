@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^5.4.0",
+    "@mermaid-js/layout-elk": "0.2.3",
     "@server-sent-stream/web": "1.0.3",
     "@streamdown/code": "^1.1.1",
     "@streamdown/math": "^1.0.2",

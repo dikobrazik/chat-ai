@@ -22,7 +22,8 @@ export const MermaidToolbar = ({
 }: Props) => {
   const { isCopied, onCopyClick } = useCopyMessage(code);
 
-  const onDownloadClick = () => renderMermaid(code, "light").then(downloadSvg);
+  const onDownloadClick = () =>
+    renderMermaid(code, "light").then(({ svg }) => downloadSvg(svg));
 
   return (
     <div className={styles.toolbar}>

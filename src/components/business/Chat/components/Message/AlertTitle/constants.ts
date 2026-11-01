@@ -5,6 +5,6 @@ export const ALERT_ICONS: Record<AlertType, IconName> = {
   note: "information",
   tip: "lamp-on",
   important: "flash-circle",
-  warning: "info-circle",
+  warning: "warning-2",
   caution: "close-circle",
 };

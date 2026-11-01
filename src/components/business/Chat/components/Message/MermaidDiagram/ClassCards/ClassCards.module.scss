@@ -1,0 +1,138 @@
+.classCards {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 8px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.card {
+  --class-accent: #0F8AFF;
+
+  flex: 1 1 300px;
+  min-width: min(300px, 100%);
+  overflow: hidden;
+  border: 1.5px solid var(--class-accent);
+  border-radius: 12px;
+  background-color: var(--background);
+}
+
+.accent-1 {
+  --class-accent: #14C240;
+}
+
+.accent-2 {
+  --class-accent: #FF6B34;
+}
+
+.accent-3 {
+  --class-accent: #9C9C9C;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 12px;
+  background-color: color-mix(in srgb, var(--class-accent) 14%, var(--background));
+  text-align: center;
+}
+
+.annotation {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.name {
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 12px;
+  font-size: 14px;
+  line-height: 22px;
+  overflow-wrap: anywhere;
+
+  & + & {
+    border-top: 1px solid var(--line);
+  }
+}
+
+.links {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+}
+
+.linkRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.linkName {
+  flex: none;
+  max-width: 40%;
+  overflow-wrap: anywhere;
+}
+
+.linkCount {
+  flex: none;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.linkLine {
+  display: flex;
+  flex: 0 1 120px;
+  align-items: center;
+  min-width: 40px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 16px;
+
+  &::before,
+  &::after {
+    content: "";
+    flex: 1;
+    min-width: 12px;
+    border-top: 1px solid var(--muted);
+  }
+
+  &:not(:empty) {
+    gap: 6px;
+  }
+
+  &.dashed::before,
+  &.dashed::after {
+    border-top-style: dashed;
+  }
+}
+
+.caption {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 20px;
+}

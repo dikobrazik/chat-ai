@@ -68,6 +68,7 @@ import { TrashIcon } from "./TrashIcon";
 import { VerifyIcon } from "./VerifyIcon";
 import { VideoPlayIcon } from "./VideoPlayIcon";
 import { VKIcon } from "./VkIcon";
+import { Warning2Icon } from "./Warning2Icon";
 import { XCircleIcon } from "./XCircleIcon";
 import { YandexIcon } from "./YandexIcon";
 
@@ -141,6 +142,7 @@ export {
   FlashCircleIcon,
   MoreIcon,
   MaximizeIcon,
+  Warning2Icon,
   SettingIcon,
   LockIcon,
 };
@@ -223,6 +225,7 @@ export const iconComponents = {
   clipboard: ClipboardIcon,
   more: MoreIcon,
   maximize: MaximizeIcon,
+  "warning-2": Warning2Icon,
   setting: SettingIcon,
 } as const;
 

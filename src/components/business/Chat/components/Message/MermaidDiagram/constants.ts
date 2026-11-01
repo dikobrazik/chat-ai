@@ -10,16 +10,26 @@ export const MERMAID_LINK_TAG = '<a target="_blank" rel="noopener noreferrer" ';
 
 export const MERMAID_FLOWCHART_TYPES = new Set(["flowchart", "flowchart-v2"]);
 
+export const MERMAID_CLASS_TYPES = new Set(["class", "classDiagram"]);
+
+export const MERMAID_NO_RELATION_TITLE = "none";
+
+export const MERMAID_DOTTED_LINE = 1;
+
 export const MERMAID_DECISION_CLASS = "jonuDecision";
 
-export const MERMAID_NODE_RADIUS = 10;
+export const MERMAID_NODE_RADIUS = 14;
 
 export const MERMAID_EDGE_RADIUS = 6;
 
 export const MERMAID_ARROWS = {
-  "flowchart-v2-pointEnd": "M 2 1 L 10 5 L 2 9",
-  "flowchart-v2-pointStart": "M 8 1 L 0 5 L 8 9",
+  "flowchart-v2-pointEnd": { path: "M 6 1 L 10 5 L 6 9", tip: "10" },
+  "flowchart-v2-pointStart": { path: "M 4 1 L 0 5 L 4 9", tip: "0" },
 };
+
+export const MERMAID_ARROW_STROKE = "1.5";
+
+export const MERMAID_MAX_JOG = 6;
 
 export const MERMAID_TERMINAL_LABEL = { width: 64, height: 24 };
 
@@ -43,7 +53,12 @@ const BASE_CONFIG: MermaidConfig = {
   theme: "base",
   fontFamily: APP_FONT,
   dompurifyConfig: { FORBID_TAGS: ["style", "img"] },
-  flowchart: { ...NATURAL_SIZE, curve: "step", padding: 10 },
+  flowchart: {
+    ...NATURAL_SIZE,
+    curve: "step",
+    padding: 18,
+    wrappingWidth: 180,
+  },
   sequence: NATURAL_SIZE,
   gantt: NATURAL_SIZE,
   class: { ...NATURAL_SIZE, hideEmptyMembersBox: true },
@@ -92,10 +107,10 @@ const LIGHT_COLORS: DiagramColors = {
   text: "#171717",
   line: "#8E8E8E",
   node: "#E4F3FF",
-  nodeBorder: "#D6E2EC",
+  nodeBorder: "#CFDBE5",
   nodeText: "#004F99",
   decision: "#F5FAFF",
-  decisionBorder: "#B9CCDD",
+  decisionBorder: "#CFDBE5",
   group: "#F7F7F7",
   groupBorder: "#EFEFEF",
   note: "#F7F7F7",
@@ -118,22 +133,29 @@ const DARK_COLORS: DiagramColors = {
 };
 
 const getThemeCss = (colors: DiagramColors) => `
-  .nodeLabel, .nodeLabel p { font-weight: 500; }
+  .nodeLabel, .nodeLabel p { font-weight: 500; line-height: 1.15; }
+  .node > .label .nodeLabel {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 24px;
+  }
   .members-group p, .methods-group p { font-weight: 400; }
   .node.${MERMAID_DECISION_CLASS} rect {
     fill: ${colors.decision};
     stroke: ${colors.decisionBorder};
-    stroke-dasharray: 4 3;
+    stroke-dasharray: 2 2;
   }
   .labelBkg { background: transparent; }
   .edgeLabel p { margin: 0; }
   .edgeLabel span.edgeLabel:not(:empty) {
     display: inline-block;
-    padding: 1px 10px;
+    padding: 2px 12px;
     border: 1px solid ${colors.decisionBorder};
     border-radius: 999px;
     background: ${colors.decision};
     color: ${colors.nodeText};
+    font-weight: 500;
   }
   .edgeTerminals foreignObject { overflow: visible; }
   .edgeTerminals foreignObject > div {
@@ -193,9 +215,9 @@ export const MERMAID_CONFIGS = {
   dark: getConfig(DARK_COLORS, true),
 } satisfies Record<string, MermaidConfig>;
 
-type Layout = { nodeSpacing?: number; rankSpacing?: number };
+type Layout = Pick<MermaidConfig, "layout"> & { rankSpacing?: number };
 
-const FLOWCHART_LAYOUT: Layout = { nodeSpacing: 28, rankSpacing: 36 };
+const FLOWCHART_LAYOUT: Layout = { layout: "elk" };
 
 export const MERMAID_LAYOUTS: Partial<Record<string, Layout>> = {
   flowchart: FLOWCHART_LAYOUT,

@@ -7,6 +7,7 @@ import {
 import { useModal } from "@/components/ui/Modal";
 import { Text } from "@/components/ui/Text";
 import { useToggle } from "@/hooks/useToggle";
+import { ClassCards } from "./ClassCards";
 import styles from "./MermaidDiagram.module.scss";
 import { MermaidFullscreen } from "./MermaidFullscreen";
 import { MermaidToolbar } from "./MermaidToolbar";
@@ -18,8 +19,11 @@ export const MermaidDiagram = ({
   language,
   isIncomplete,
 }: CustomRendererProps) => {
-  const { svg, lineNumbers, isFailed } = useMermaidDiagram(code, isIncomplete);
-  const diagramRef = useSvgRef(svg ?? "");
+  const { diagram, lineNumbers, isFailed } = useMermaidDiagram(
+    code,
+    isIncomplete,
+  );
+  const diagramRef = useSvgRef(diagram?.svg ?? "");
   const { active: isCodeShown, toggle: toggleCode } = useToggle();
   const { isOpen, openModal, closeModal } = useModal();
 
@@ -35,7 +39,7 @@ export const MermaidDiagram = ({
     </CodeBlock>
   );
 
-  if (!svg) {
+  if (!diagram) {
     return (
       <>
         {codeBlock}
@@ -49,7 +53,8 @@ export const MermaidDiagram = ({
   }
 
   return (
-    <div className={styles.block}>
+    <div className={styles.block} data-diagram-block>
+      {diagram.classModel && <ClassCards model={diagram.classModel} />}
       <MermaidToolbar
         code={code}
         isCodeShown={isCodeShown}
@@ -63,7 +68,11 @@ export const MermaidDiagram = ({
         role="img"
       />
       {isCodeShown && codeBlock}
-      <MermaidFullscreen svg={svg} isOpen={isOpen} onClose={closeModal} />
+      <MermaidFullscreen
+        svg={diagram.svg}
+        isOpen={isOpen}
+        onClose={closeModal}
+      />
     </div>
   );
 };

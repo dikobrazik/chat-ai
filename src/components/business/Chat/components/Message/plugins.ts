@@ -364,6 +364,17 @@ const isAlertDraft = (node?: TreeNode) =>
   isIncompleteLink(String(node?.properties?.href)) &&
   ALERT_DRAFT_PATTERN.test(node?.children?.[0]?.value ?? "");
 
+const getDraftAlertType = (node?: TreeNode) => {
+  const name = node?.children?.[0]?.value?.slice(1).toLowerCase();
+  if (!name) return undefined;
+  const types = new Set(
+    Object.entries(ALERT_TYPES)
+      .filter(([key]) => key.startsWith(name))
+      .map(([, type]) => type),
+  );
+  return types.size === 1 ? [...types][0] : undefined;
+};
+
 const trimLeadingBreak = (nodes: TreeNode[]): TreeNode[] => {
   const [first, ...rest] = nodes;
   if (first && isBlank(first)) return trimLeadingBreak(rest);
@@ -395,8 +406,10 @@ const markAlert = (blockquote: TreeNode) => {
   blockquote.children = blockquote.children?.filter(
     (child) => child !== paragraph || paragraph.children?.length,
   );
-  if (!marker) return;
-  const type = ALERT_TYPES[marker[1].toLowerCase()];
+  const type = marker
+    ? ALERT_TYPES[marker[1].toLowerCase()]
+    : getDraftAlertType(head);
+  if (!marker && !type) return;
   blockquote.properties = {
     ...blockquote.properties,
     dataAlert: type ?? "note",

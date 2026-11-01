@@ -131,8 +131,18 @@
     }
 
     & blockquote[data-alert] {
-      border-left-color: var(--alert-color);
+      padding: 12px 16px;
+      border: 1px solid var(--alert-color);
+      border-radius: 12px;
       color: inherit;
+
+      & > :first-child {
+        margin-top: 0;
+      }
+
+      & > :last-child {
+        margin-bottom: 0;
+      }
     }
 
     & blockquote[data-alert="note"] {
@@ -156,7 +166,7 @@
     }
 
     & .alertTitle {
-      margin-bottom: 4px;
+      margin-bottom: 8px;
       font-weight: 500;
     }
 
@@ -284,6 +294,10 @@
   align-self: flex-start;
   max-width: 100%;
   background-color: transparent;
+
+  &:has([data-diagram-block], blockquote[data-alert]) {
+    align-self: stretch;
+  }
 }
 
 .user {
