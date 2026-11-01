@@ -105,12 +105,10 @@
   }
 }
 
-.icon {
+.logos {
+  display: flex;
+  align-items: center;
+  gap: spacing(2);
   flex-shrink: 0;
   margin-left: auto;
-  color: #6F6F6F;
-}
-
-.selected .icon {
-  color: #0F8AFF;
 }

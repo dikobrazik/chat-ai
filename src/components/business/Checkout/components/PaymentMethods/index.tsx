@@ -1,5 +1,5 @@
+import type { ReactNode } from "react";
 import Icon from "@/components/ui/Icon";
-import type { IconName } from "@/components/ui/Icon/icons";
 import { Text } from "@/components/ui/Text";
 import { cn } from "@/lib/utils";
 import { PAYMENT_METHODS_MAP, type PaymentMethodId } from "../../constants";
@@ -7,7 +7,7 @@ import styles from "./PaymentMethods.module.scss";
 
 type MethodProps = {
   id: PaymentMethodId;
-  icon: IconName;
+  logo: ReactNode;
   title: string;
   description: string;
   selectedMethod: PaymentMethodId;
@@ -16,7 +16,7 @@ type MethodProps = {
 
 const Method = ({
   id,
-  icon,
+  logo,
   title,
   description,
   selectedMethod,
@@ -48,7 +48,7 @@ const Method = ({
             {description}
           </Text>
         </span>
-        <Icon name={icon} size={24} className={styles.icon} />
+        <span className={styles.logos}>{logo}</span>
       </label>
     </div>
   );
@@ -63,15 +63,21 @@ export const PaymentMethods = ({ selectedMethod, onMethodSelect }: Props) => (
   <div role="radiogroup" aria-label="Способ оплаты" className={styles.methods}>
     <Method
       id={PAYMENT_METHODS_MAP.tbank}
-      icon="card"
+      logo={
+        <>
+          <Icon name="mir" size={12} />
+          <Icon name="visa" size={12} />
+          <Icon name="mastercard" size={18} />
+        </>
+      }
       title="Карта"
-      description="МИР и российские карты"
+      description="Карты российских банков"
       selectedMethod={selectedMethod}
       onMethodSelect={onMethodSelect}
     />
     <Method
       id={PAYMENT_METHODS_MAP.tpay}
-      icon="tpay"
+      logo={<Icon name="tpay" size={24} />}
       title="TPay"
       description="Оплата в один клик через Т‑Банк"
       selectedMethod={selectedMethod}
@@ -79,7 +85,7 @@ export const PaymentMethods = ({ selectedMethod, onMethodSelect }: Props) => (
     />
     <Method
       id={PAYMENT_METHODS_MAP.sbp}
-      icon="sbp"
+      logo={<Icon name="sbp" size={24} />}
       title="Оплата через СБП"
       description="Через приложение вашего банка"
       selectedMethod={selectedMethod}

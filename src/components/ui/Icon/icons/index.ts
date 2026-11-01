@@ -45,9 +45,11 @@ import { LikeIcon } from "./LikeIcon";
 import { LockIcon } from "./LockIcon";
 import { LogoutIcon } from "./LogoutIcon";
 import { MailRuIcon } from "./MailRuIcon";
+import { MastercardIcon } from "./MastercardIcon";
 import { MenuIcon } from "./MenuIcon";
 import { MessageCreateIcon } from "./MessageCreateIcon";
 import { MessageQuestionIcon } from "./MessageQuestionIcon";
+import { MirIcon } from "./MirIcon";
 import { MoreIcon } from "./MoreIcon";
 import { PaperclipIcon } from "./PaperclipIcon";
 import { PinIcon } from "./PinIcon";
@@ -68,6 +70,7 @@ import { TPayIcon } from "./TPayIcon";
 import { TrashIcon } from "./TrashIcon";
 import { VerifyIcon } from "./VerifyIcon";
 import { VideoPlayIcon } from "./VideoPlayIcon";
+import { VisaIcon } from "./VisaIcon";
 import { VKIcon } from "./VkIcon";
 import { XCircleIcon } from "./XCircleIcon";
 import { YandexIcon } from "./YandexIcon";
@@ -82,6 +85,9 @@ export {
   MailRuIcon,
   SbpIcon,
   TPayIcon,
+  MirIcon,
+  VisaIcon,
+  MastercardIcon,
   ImportIcon,
   SearchIcon,
   VKIcon,
@@ -167,6 +173,9 @@ export const iconComponents = {
   vk: VKIcon,
   sbp: SbpIcon,
   tpay: TPayIcon,
+  mir: MirIcon,
+  visa: VisaIcon,
+  mastercard: MastercardIcon,
   verify: VerifyIcon,
   "pinned-off": PinnedOffIcon,
   global: GlobalIcon,
