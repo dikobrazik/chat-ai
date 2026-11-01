@@ -40,15 +40,17 @@ const Method = ({
           onChange={() => onMethodSelect(id)}
         />
         <span className={styles.radio} aria-hidden="true" />
-        <span className="flex flex-col gap-0.5">
-          <Text as="span" type="m">
-            {title}
-          </Text>
+        <span className="flex min-w-0 flex-1 flex-col gap-0.5">
+          <span className="flex items-center gap-3">
+            <Text as="span" type="m">
+              {title}
+            </Text>
+            <span className={styles.logos}>{logo}</span>
+          </span>
           <Text as="span" style="regular" type="s" color="#9C9C9C">
             {description}
           </Text>
         </span>
-        <span className={styles.logos}>{logo}</span>
       </label>
     </div>
   );
