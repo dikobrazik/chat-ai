@@ -40,17 +40,15 @@ const Method = ({
           onChange={() => onMethodSelect(id)}
         />
         <span className={styles.radio} aria-hidden="true" />
-        <span className="flex flex-col gap-1">
-          <span className="flex items-center gap-2">
-            <Icon name={icon} className={styles.icon} />
-            <Text as="span" type="m">
-              {title}
-            </Text>
-          </span>
+        <span className="flex flex-col gap-0.5">
+          <Text as="span" type="m">
+            {title}
+          </Text>
           <Text as="span" style="regular" type="s" color="#9C9C9C">
             {description}
           </Text>
         </span>
+        <Icon name={icon} size={24} className={styles.icon} />
       </label>
     </div>
   );
@@ -75,7 +73,7 @@ export const PaymentMethods = ({ selectedMethod, onMethodSelect }: Props) => (
       id={PAYMENT_METHODS_MAP.tpay}
       icon="tpay"
       title="TPay"
-      description="Оплата в один клик через Т-Банк"
+      description="Оплата в один клик через Т‑Банк"
       selectedMethod={selectedMethod}
       onMethodSelect={onMethodSelect}
     />
