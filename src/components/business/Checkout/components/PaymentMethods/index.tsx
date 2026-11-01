@@ -71,7 +71,7 @@ export const PaymentMethods = ({ selectedMethod, onMethodSelect }: Props) => (
     />
     <Method
       id={PAYMENT_METHODS_MAP.tpay}
-      icon="flash-circle"
+      icon="tpay"
       title="TPay"
       description="Оплата в один клик через Т-Банк"
       selectedMethod={selectedMethod}

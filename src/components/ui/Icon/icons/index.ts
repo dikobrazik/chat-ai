@@ -64,6 +64,7 @@ import { SidebarToggleIcon } from "./SidebarToggleIcon";
 import { SidebarToggleOnIcon } from "./SidebarToggleOnIcon";
 import { SpinnerIcon } from "./SpinnerIcon";
 import { TickCircleIcon } from "./TickCircleIcon";
+import { TPayIcon } from "./TPayIcon";
 import { TrashIcon } from "./TrashIcon";
 import { VerifyIcon } from "./VerifyIcon";
 import { VideoPlayIcon } from "./VideoPlayIcon";
@@ -80,6 +81,7 @@ export {
   LikeFillIcon,
   MailRuIcon,
   SbpIcon,
+  TPayIcon,
   ImportIcon,
   SearchIcon,
   VKIcon,
@@ -164,6 +166,7 @@ export const iconComponents = {
   search: SearchIcon,
   vk: VKIcon,
   sbp: SbpIcon,
+  tpay: TPayIcon,
   verify: VerifyIcon,
   "pinned-off": PinnedOffIcon,
   global: GlobalIcon,

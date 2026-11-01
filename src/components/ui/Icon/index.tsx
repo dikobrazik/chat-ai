@@ -72,9 +72,11 @@ export const BaseIcon: React.FC<{
   "aria-label"?: string;
   "aria-hidden"?: boolean;
   viewBox?: string;
+  width?: number | string;
 }> = ({
   children,
   size = 20,
+  width = size,
   color = "currentColor",
   className = "",
   strokeWidth = 1,
@@ -85,7 +87,7 @@ export const BaseIcon: React.FC<{
 }) => {
   return (
     <svg
-      width={size}
+      width={width}
       height={size}
       viewBox={viewBox}
       fill={fill}
