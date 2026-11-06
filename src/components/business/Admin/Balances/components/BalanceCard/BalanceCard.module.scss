@@ -1,0 +1,12 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 12px;
+  background-color: #F7F7F7;
+
+  @media (prefers-color-scheme: dark) {
+    background-color: color-mix(in srgb, var(--background), white 8%);
+  }
+}

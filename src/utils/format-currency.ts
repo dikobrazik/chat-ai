@@ -14,3 +14,11 @@ export const formatKopecks = (kopecks: number) =>
     minimumFractionDigits: kopecks % 100 ? 2 : 0,
     maximumFractionDigits: 2,
   }).format(kopecks / 100);
+
+export const formatMoney = (amount: number, currency: string) =>
+  new Intl.NumberFormat("ru-RU", {
+    style: "currency",
+    currency,
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(amount);

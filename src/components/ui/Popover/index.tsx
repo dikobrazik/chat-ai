@@ -2,12 +2,7 @@
 
 import classNames from "classnames";
 import type React from "react";
-import {
-  type PropsWithChildren,
-  type ReactNode,
-  useEffect,
-  useState,
-} from "react";
+import { type ReactNode, useEffect, useState } from "react";
 import {
   type PopoverAlign,
   type PopoverPosition,
@@ -17,6 +12,7 @@ import type { ButtonProps } from "../Button";
 import styles from "./Popover.module.scss";
 
 type Props = {
+  children: ReactNode | ((close: () => void) => ReactNode);
   Trigger: (
     props: ButtonProps & React.RefAttributes<HTMLButtonElement>,
   ) => ReactNode;
@@ -33,7 +29,7 @@ const Popover = ({
   padding = 8,
   position = "bottom",
   align,
-}: PropsWithChildren<Props>) => {
+}: Props) => {
   const [isVisible, setIsVisible] = useState(false);
 
   // scroll не всплывает — слушаем в capture-фазе
@@ -56,15 +52,17 @@ const Popover = ({
     setIsVisible(!isVisible);
   };
 
+  const close = () => setIsVisible(false);
+
   return (
     <TinyPopover
       isOpen={isVisible}
-      onClickOutside={() => setIsVisible(false)}
+      onClickOutside={close}
       positions={position}
       align={align}
       padding={padding}
       containerClassName={classNames(popoverClassName, styles.popoverContent)}
-      content={children}
+      content={typeof children === "function" ? children(close) : children}
     >
       <Trigger
         // ref={triggerRef}
