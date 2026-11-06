@@ -18,3 +18,18 @@ export type AttentionKey =
   | "notResponding"
   | "soonDisabled"
   | "notOnSite";
+
+export type SortKey =
+  | "provider"
+  | "name"
+  | "release_date"
+  | "provider_status"
+  | "shutdown_date"
+  | "on_site"
+  | "check_status"
+  | "class";
+
+export type ModelsSort = {
+  key: SortKey;
+  direction: "asc" | "desc";
+};

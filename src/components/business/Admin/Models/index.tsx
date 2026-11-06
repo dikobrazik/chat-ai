@@ -9,6 +9,7 @@ import { Filters } from "./components/Filters";
 import { ModelsTable } from "./components/ModelsTable";
 import { useModelClass } from "./hooks/useModelClass";
 import { useModelsFilters } from "./hooks/useModelsFilters";
+import { useModelsSort } from "./hooks/useModelsSort";
 
 export const AdminModels = () => {
   const { data, error, isLoading, refetch } = useAdminModels();
@@ -22,6 +23,7 @@ export const AdminModels = () => {
     toggleAttention,
     resetFilters,
   } = useModelsFilters(data?.models);
+  const { sort, sortedModels, toggleSort } = useModelsSort(filteredModels);
   const { changeClass, updatingModelId } = useModelClass();
 
   if (error) {
@@ -47,8 +49,10 @@ export const AdminModels = () => {
           />
         </div>
         <ModelsTable
-          models={filteredModels}
+          models={sortedModels}
+          sort={sort}
           updatingModelId={updatingModelId}
+          onSort={toggleSort}
           onClassChange={changeClass}
           onReset={resetFilters}
         />

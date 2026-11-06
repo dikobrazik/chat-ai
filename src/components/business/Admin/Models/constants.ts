@@ -1,4 +1,4 @@
-import type { CheckStatus, ProviderStatus } from "@/api";
+import type { CheckStatus, ModelClass, ProviderStatus } from "@/api";
 import type { BadgeVariant } from "@/components/ui/Badge";
 import type { AttentionKey, ModelsFilters } from "./types";
 
@@ -32,4 +32,21 @@ export const PROVIDER_STATUS_BADGES: Record<ProviderStatus, BadgeVariant> = {
 export const CHECK_STATUS_BADGES: Record<CheckStatus, BadgeVariant> = {
   ok: "success",
   error: "danger",
+};
+
+export const PROVIDER_STATUS_ORDER: Record<ProviderStatus, number> = {
+  active: 0,
+  deprecated: 1,
+  shutdown: 2,
+};
+
+export const CHECK_STATUS_ORDER: Record<CheckStatus, number> = {
+  ok: 0,
+  error: 1,
+};
+
+export const MODEL_CLASS_ORDER: Record<ModelClass, number> = {
+  fast: 0,
+  advanced: 1,
+  heavy: 2,
 };

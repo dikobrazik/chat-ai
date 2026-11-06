@@ -1,19 +1,25 @@
 import type { AdminModel, ModelClass } from "@/api";
 import Button from "@/components/ui/Button";
 import { Text } from "@/components/ui/Text";
+import type { ModelsSort, SortKey } from "../../types";
 import { ModelRow } from "../ModelRow";
+import { SortableHeader } from "../SortableHeader";
 import styles from "./ModelsTable.module.scss";
 
 type Props = {
   models: AdminModel[];
+  sort: ModelsSort | null;
   updatingModelId?: string | null;
+  onSort: (key: SortKey) => void;
   onClassChange: (model: AdminModel, modelClass: ModelClass) => void;
   onReset: () => void;
 };
 
 export const ModelsTable = ({
   models,
+  sort,
   updatingModelId,
+  onSort,
   onClassChange,
   onReset,
 }: Props) => {
@@ -37,30 +43,34 @@ export const ModelsTable = ({
       <table className={styles.table}>
         <thead>
           <tr>
-            <th>
-              <Text type="s">Провайдер</Text>
-            </th>
-            <th>
-              <Text type="s">Модель</Text>
-            </th>
-            <th>
-              <Text type="s">Дата выхода</Text>
-            </th>
-            <th>
-              <Text type="s">Статус у провайдера</Text>
-            </th>
-            <th>
-              <Text type="s">Дата отключения</Text>
-            </th>
-            <th>
-              <Text type="s">На сайте</Text>
-            </th>
-            <th>
-              <Text type="s">Проверка</Text>
-            </th>
-            <th>
-              <Text type="s">Класс</Text>
-            </th>
+            <SortableHeader sortKey="provider" sort={sort} onSort={onSort}>
+              Провайдер
+            </SortableHeader>
+            <SortableHeader sortKey="name" sort={sort} onSort={onSort}>
+              Модель
+            </SortableHeader>
+            <SortableHeader sortKey="release_date" sort={sort} onSort={onSort}>
+              Дата выхода
+            </SortableHeader>
+            <SortableHeader
+              sortKey="provider_status"
+              sort={sort}
+              onSort={onSort}
+            >
+              Статус у провайдера
+            </SortableHeader>
+            <SortableHeader sortKey="shutdown_date" sort={sort} onSort={onSort}>
+              Дата отключения
+            </SortableHeader>
+            <SortableHeader sortKey="on_site" sort={sort} onSort={onSort}>
+              На сайте
+            </SortableHeader>
+            <SortableHeader sortKey="check_status" sort={sort} onSort={onSort}>
+              Проверка
+            </SortableHeader>
+            <SortableHeader sortKey="class" sort={sort} onSort={onSort}>
+              Класс
+            </SortableHeader>
           </tr>
         </thead>
         <tbody>
