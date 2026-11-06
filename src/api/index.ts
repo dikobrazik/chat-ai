@@ -8,6 +8,7 @@ export function setAuthToken(token: string) {
   axios.defaults.headers.common.Authorization = `Bearer ${token}`;
 }
 
+export * from "./admin";
 export * from "./auth";
 export * from "./chat";
 export * from "./files";

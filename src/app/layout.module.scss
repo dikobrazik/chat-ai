@@ -19,4 +19,8 @@
   max-width: map.get($breakpoints, md);
   width: 100%;
   padding: 0 16px;
+
+  &:has([data-layout="wide"]) {
+    max-width: none;
+  }
 }

@@ -9,6 +9,7 @@ import { Logo } from "@/components/ui/Logo";
 import { Sidebar as UISidebar } from "@/components/ui/Sidebar";
 import { useSidebarState } from "@/components/ui/Sidebar/useSidebarState";
 import { Text } from "@/components/ui/Text";
+import { useIsAdminRoute } from "@/hooks/useIsAdminRoute";
 import { cn } from "@/lib/utils";
 import { useAuthContext } from "@/providers/AuthProvider/hooks";
 import { stopPropagation } from "@/utils";
@@ -234,6 +235,9 @@ export const ChatSidebar = ({
 
 export const Sidebar = ({ forMobile }: { forMobile?: boolean }) => {
   const { isOpen, toggle } = useSidebarState();
+  const isAdminRoute = useIsAdminRoute();
+
+  if (isAdminRoute) return null;
 
   return (
     <UISidebar isOpen={isOpen} toggle={toggle} forMobile={forMobile}>

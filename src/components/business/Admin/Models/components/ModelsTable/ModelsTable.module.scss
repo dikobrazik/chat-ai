@@ -1,0 +1,32 @@
+.wrapper {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: 12px;
+  background-color: #FFFFFF;
+
+  @media (prefers-color-scheme: dark) {
+    background-color: var(--background);
+  }
+}
+
+.table {
+  width: 100%;
+  min-width: 920px;
+  border-collapse: collapse;
+
+  th,
+  td {
+    padding: 16px;
+    text-align: left;
+    vertical-align: middle;
+    border-bottom: 1px solid #EFEFEF;
+
+    @media (prefers-color-scheme: dark) {
+      border-bottom-color: color-mix(in srgb, var(--background), white 20%);
+    }
+  }
+
+  th {
+    white-space: nowrap;
+  }
+}
