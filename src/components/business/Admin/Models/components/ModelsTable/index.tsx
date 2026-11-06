@@ -1,4 +1,4 @@
-import type { AdminModel, ModelClass } from "@/api";
+import type { AdminModel } from "@/api";
 import Button from "@/components/ui/Button";
 import { Text } from "@/components/ui/Text";
 import type { ModelsSort, SortKey } from "../../types";
@@ -9,20 +9,11 @@ import styles from "./ModelsTable.module.scss";
 type Props = {
   models: AdminModel[];
   sort: ModelsSort | null;
-  updatingModelId?: string | null;
   onSort: (key: SortKey) => void;
-  onClassChange: (model: AdminModel, modelClass: ModelClass) => void;
   onReset: () => void;
 };
 
-export const ModelsTable = ({
-  models,
-  sort,
-  updatingModelId,
-  onSort,
-  onClassChange,
-  onReset,
-}: Props) => {
+export const ModelsTable = ({ models, sort, onSort, onReset }: Props) => {
   if (!models.length) {
     return (
       <div className="flex flex-col items-start gap-3 py-5">
@@ -75,12 +66,7 @@ export const ModelsTable = ({
         </thead>
         <tbody>
           {models.map((model) => (
-            <ModelRow
-              key={model.id}
-              model={model}
-              isClassUpdating={model.id === updatingModelId}
-              onClassChange={onClassChange}
-            />
+            <ModelRow key={model.id} model={model} />
           ))}
         </tbody>
       </table>

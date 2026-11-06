@@ -1,7 +1,5 @@
 export type ProviderStatus = "active" | "deprecated" | "shutdown";
 
-export type ModelClass = "fast" | "advanced" | "heavy";
-
 export type CheckStatus = "ok" | "error";
 
 export type CheckError =
@@ -24,23 +22,11 @@ export type AdminModel = {
   on_site: boolean;
   check_status: CheckStatus | null;
   check_error: CheckError | null;
-  class: ModelClass | null;
 };
 
 export type AdminModels = {
   updated_at: string;
   models: AdminModel[];
-};
-
-export type ProviderBalance = {
-  provider: string;
-  balance: number | null;
-  currency: string | null;
-};
-
-export type ProviderBalances = {
-  updated_at: string;
-  balances: ProviderBalance[];
 };
 
 export type AdminSession = {

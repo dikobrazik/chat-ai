@@ -1,6 +1,6 @@
-import type { CheckStatus, ModelClass, ProviderStatus } from "@/api";
+import type { CheckStatus, ProviderStatus } from "@/api";
 import type { BadgeVariant } from "@/components/ui/Badge";
-import type { AttentionKey, ModelsFilters } from "./types";
+import type { AttentionKey, ModelClass, ModelsFilters } from "./types";
 
 export const DEFAULT_FILTERS: ModelsFilters = {
   provider: "all",

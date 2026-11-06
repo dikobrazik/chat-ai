@@ -1,21 +1,19 @@
-import type { AdminModel, ModelClass } from "@/api";
+import type { AdminModel } from "@/api";
 import { Text } from "@/components/ui/Text";
 import { cn } from "@/lib/utils";
 import { formatShortDate } from "@/utils/format-date";
 import { ProviderName } from "../../../components/ProviderName";
-import { needsAttention } from "../../utils";
+import { getModelClass, needsAttention } from "../../utils";
 import { CheckStatus } from "../CheckStatus";
-import { ClassSelect } from "../ClassSelect";
+import { ModelClassName } from "../ModelClassName";
 import { ProviderStatusBadge } from "../ProviderStatusBadge";
 import styles from "./ModelRow.module.scss";
 
 type Props = {
   model: AdminModel;
-  isClassUpdating: boolean;
-  onClassChange: (model: AdminModel, modelClass: ModelClass) => void;
 };
 
-export const ModelRow = ({ model, isClassUpdating, onClassChange }: Props) => (
+export const ModelRow = ({ model }: Props) => (
   <tr className={cn({ [styles.attention]: needsAttention(model) })}>
     <td>
       <ProviderName provider={model.provider} />
@@ -52,17 +50,9 @@ export const ModelRow = ({ model, isClassUpdating, onClassChange }: Props) => (
       <CheckStatus status={model.check_status} error={model.check_error} />
     </td>
     <td>
-      {model.for_image ? (
-        <Text type="s" style="regular">
-          —
-        </Text>
-      ) : (
-        <ClassSelect
-          value={model.class}
-          isPending={isClassUpdating}
-          onChange={(modelClass) => onClassChange(model, modelClass)}
-        />
-      )}
+      <Text type="s" style="regular" className="whitespace-nowrap">
+        <ModelClassName modelClass={getModelClass(model)} />
+      </Text>
     </td>
   </tr>
 );

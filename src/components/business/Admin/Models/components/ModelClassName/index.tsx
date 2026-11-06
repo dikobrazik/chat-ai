@@ -1,4 +1,4 @@
-import type { ModelClass } from "@/api";
+import type { ModelClass } from "../../types";
 
 type Props = {
   modelClass: ModelClass | null;

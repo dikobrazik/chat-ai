@@ -1,5 +1,7 @@
 import type { CheckStatus, ProviderStatus } from "@/api";
 
+export type ModelClass = "fast" | "advanced" | "heavy";
+
 export type StatusFilter = ProviderStatus | "all";
 
 export type SiteFilter = "yes" | "no" | "all";
