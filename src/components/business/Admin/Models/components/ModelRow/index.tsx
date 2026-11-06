@@ -3,9 +3,8 @@ import { Text } from "@/components/ui/Text";
 import { cn } from "@/lib/utils";
 import { formatShortDate } from "@/utils/format-date";
 import { ProviderName } from "../../../components/ProviderName";
-import { getModelClass, needsAttention } from "../../utils";
+import { needsAttention } from "../../utils";
 import { CheckStatus } from "../CheckStatus";
-import { ModelClassName } from "../ModelClassName";
 import { ProviderStatusBadge } from "../ProviderStatusBadge";
 import styles from "./ModelRow.module.scss";
 
@@ -48,11 +47,6 @@ export const ModelRow = ({ model }: Props) => (
     </td>
     <td>
       <CheckStatus status={model.check_status} error={model.check_error} />
-    </td>
-    <td>
-      <Text type="s" style="regular" className="whitespace-nowrap">
-        <ModelClassName modelClass={getModelClass(model)} />
-      </Text>
     </td>
   </tr>
 );

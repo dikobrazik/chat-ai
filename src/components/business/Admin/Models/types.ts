@@ -1,7 +1,5 @@
 import type { CheckStatus, ProviderStatus } from "@/api";
 
-export type ModelClass = "fast" | "advanced" | "heavy";
-
 export type StatusFilter = ProviderStatus | "all";
 
 export type SiteFilter = "yes" | "no" | "all";
@@ -28,8 +26,7 @@ export type SortKey =
   | "provider_status"
   | "shutdown_date"
   | "on_site"
-  | "check_status"
-  | "class";
+  | "check_status";
 
 export type ModelsSort = {
   key: SortKey;

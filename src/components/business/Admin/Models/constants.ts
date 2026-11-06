@@ -1,6 +1,6 @@
 import type { CheckStatus, ProviderStatus } from "@/api";
 import type { BadgeVariant } from "@/components/ui/Badge";
-import type { AttentionKey, ModelClass, ModelsFilters } from "./types";
+import type { AttentionKey, ModelsFilters } from "./types";
 
 export const DEFAULT_FILTERS: ModelsFilters = {
   provider: "all",
@@ -43,10 +43,4 @@ export const PROVIDER_STATUS_ORDER: Record<ProviderStatus, number> = {
 export const CHECK_STATUS_ORDER: Record<CheckStatus, number> = {
   ok: 0,
   error: 1,
-};
-
-export const MODEL_CLASS_ORDER: Record<ModelClass, number> = {
-  fast: 0,
-  advanced: 1,
-  heavy: 2,
 };

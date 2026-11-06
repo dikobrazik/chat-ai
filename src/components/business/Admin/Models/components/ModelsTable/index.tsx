@@ -59,9 +59,6 @@ export const ModelsTable = ({ models, sort, onSort, onReset }: Props) => {
             <SortableHeader sortKey="check_status" sort={sort} onSort={onSort}>
               Проверка
             </SortableHeader>
-            <SortableHeader sortKey="class" sort={sort} onSort={onSort}>
-              Класс
-            </SortableHeader>
           </tr>
         </thead>
         <tbody>

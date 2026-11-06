@@ -3,10 +3,8 @@ import { PROVIDER_TITLES } from "../constants";
 import {
   ATTENTION_FILTERS,
   CHECK_STATUS_ORDER,
-  MODEL_CLASS_ORDER,
   PROVIDER_STATUS_ORDER,
 } from "./constants";
-import { MODEL_CLASSES } from "./modelClasses";
 import type { AttentionKey, ModelsFilters, ModelsSort, SortKey } from "./types";
 
 const matchesFilters = (model: AdminModel, filters: ModelsFilters) =>
@@ -45,9 +43,6 @@ export const needsAttention = (model: AdminModel) =>
   model.on_site &&
   (model.provider_status === "shutdown" || model.check_status === "error");
 
-export const getModelClass = (model: AdminModel) =>
-  model.for_image ? null : (MODEL_CLASSES[model.id] ?? null);
-
 const getSortValue = (model: AdminModel, key: SortKey) => {
   switch (key) {
     case "provider":
@@ -64,10 +59,6 @@ const getSortValue = (model: AdminModel, key: SortKey) => {
       return Number(model.on_site);
     case "check_status":
       return model.check_status && CHECK_STATUS_ORDER[model.check_status];
-    case "class": {
-      const modelClass = getModelClass(model);
-      return modelClass && MODEL_CLASS_ORDER[modelClass];
-    }
   }
 };
 
