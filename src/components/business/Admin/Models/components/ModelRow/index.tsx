@@ -1,21 +1,22 @@
-import type { AdminModel } from "@/api";
-import { Switch } from "@/components/ui/Switch";
+import type { AdminModel, ModelClass } from "@/api";
 import { Text } from "@/components/ui/Text";
 import { cn } from "@/lib/utils";
 import { formatShortDate } from "@/utils/format-date";
 import { ProviderName } from "../../../components/ProviderName";
-import { isModelToDisable } from "../../utils";
+import { needsAttention } from "../../utils";
+import { CheckStatus } from "../CheckStatus";
+import { ClassSelect } from "../ClassSelect";
 import { ProviderStatusBadge } from "../ProviderStatusBadge";
 import styles from "./ModelRow.module.scss";
 
 type Props = {
   model: AdminModel;
-  isUpdating: boolean;
-  onToggle: (model: AdminModel) => void;
+  isClassUpdating: boolean;
+  onClassChange: (model: AdminModel, modelClass: ModelClass) => void;
 };
 
-export const ModelRow = ({ model, isUpdating, onToggle }: Props) => (
-  <tr className={cn({ [styles.toDisable]: isModelToDisable(model) })}>
+export const ModelRow = ({ model, isClassUpdating, onClassChange }: Props) => (
+  <tr className={cn({ [styles.attention]: needsAttention(model) })}>
     <td>
       <ProviderName provider={model.provider} />
     </td>
@@ -30,6 +31,11 @@ export const ModelRow = ({ model, isUpdating, onToggle }: Props) => (
       </div>
     </td>
     <td>
+      <Text type="s" style="regular" className="whitespace-nowrap">
+        {model.release_date ? formatShortDate(model.release_date) : "—"}
+      </Text>
+    </td>
+    <td>
       <ProviderStatusBadge status={model.provider_status} />
     </td>
     <td>
@@ -38,31 +44,25 @@ export const ModelRow = ({ model, isUpdating, onToggle }: Props) => (
       </Text>
     </td>
     <td>
-      <div className="flex flex-row items-center gap-2">
-        <Switch
-          checked={model.is_enabled}
-          disabled={!model.in_database || isUpdating}
-          aria-label={`Показывать ${model.name} на сайте`}
-          onChange={() => onToggle(model)}
-        />
-        <Text
-          type="s"
-          style="regular"
-          color={model.in_database ? undefined : "#9C9C9C"}
-          className="whitespace-nowrap"
-        >
-          {!model.in_database && "Нет в базе"}
-          {model.in_database && (model.is_enabled ? "Да" : "Нет")}
-        </Text>
-      </div>
+      <Text type="s" style="regular">
+        {model.on_site ? "Да" : "Нет"}
+      </Text>
     </td>
     <td>
-      <Text type="s" style="regular" className="whitespace-nowrap">
-        {model.class === "fast" && "Быстрая"}
-        {model.class === "advanced" && "Продвинутая"}
-        {model.class === "heavy" && "Тяжёлая"}
-        {!model.class && "—"}
-      </Text>
+      <CheckStatus status={model.check_status} error={model.check_error} />
+    </td>
+    <td>
+      {model.for_image ? (
+        <Text type="s" style="regular">
+          —
+        </Text>
+      ) : (
+        <ClassSelect
+          value={model.class}
+          isPending={isClassUpdating}
+          onChange={(modelClass) => onClassChange(model, modelClass)}
+        />
+      )}
     </td>
   </tr>
 );

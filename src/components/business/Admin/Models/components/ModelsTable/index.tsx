@@ -1,4 +1,4 @@
-import type { AdminModel } from "@/api";
+import type { AdminModel, ModelClass } from "@/api";
 import Button from "@/components/ui/Button";
 import { Text } from "@/components/ui/Text";
 import { ModelRow } from "../ModelRow";
@@ -7,14 +7,14 @@ import styles from "./ModelsTable.module.scss";
 type Props = {
   models: AdminModel[];
   updatingModelId?: string | null;
-  onToggle: (model: AdminModel) => void;
+  onClassChange: (model: AdminModel, modelClass: ModelClass) => void;
   onReset: () => void;
 };
 
 export const ModelsTable = ({
   models,
   updatingModelId,
-  onToggle,
+  onClassChange,
   onReset,
 }: Props) => {
   if (!models.length) {
@@ -44,6 +44,9 @@ export const ModelsTable = ({
               <Text type="s">Модель</Text>
             </th>
             <th>
+              <Text type="s">Дата выхода</Text>
+            </th>
+            <th>
               <Text type="s">Статус у провайдера</Text>
             </th>
             <th>
@@ -51,6 +54,9 @@ export const ModelsTable = ({
             </th>
             <th>
               <Text type="s">На сайте</Text>
+            </th>
+            <th>
+              <Text type="s">Проверка</Text>
             </th>
             <th>
               <Text type="s">Класс</Text>
@@ -62,8 +68,8 @@ export const ModelsTable = ({
             <ModelRow
               key={model.id}
               model={model}
-              isUpdating={model.id === updatingModelId}
-              onToggle={onToggle}
+              isClassUpdating={model.id === updatingModelId}
+              onClassChange={onClassChange}
             />
           ))}
         </tbody>

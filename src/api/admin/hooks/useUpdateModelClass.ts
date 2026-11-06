@@ -1,18 +1,18 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { type AdminModels, updateAdminModel } from "..";
+import { type AdminModels, type ModelClass, updateModelClass } from "..";
 import { ADMIN_MODELS_QUERY_KEY } from "./useAdminModels";
 
 type Variables = {
   modelId: string;
-  isEnabled: boolean;
+  modelClass: ModelClass;
 };
 
-export const useUpdateAdminModel = () => {
+export const useUpdateModelClass = () => {
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
-    mutationFn: ({ modelId, isEnabled }: Variables) =>
-      updateAdminModel(modelId, { is_enabled: isEnabled }),
+    mutationFn: ({ modelId, modelClass }: Variables) =>
+      updateModelClass(modelId, modelClass),
     onSuccess: (updatedModel) => {
       queryClient.setQueryData(
         ADMIN_MODELS_QUERY_KEY,
@@ -32,7 +32,7 @@ export const useUpdateAdminModel = () => {
   });
 
   return {
-    updateModel: mutation.mutateAsync,
+    updateClass: mutation.mutateAsync,
     updatingModelId: mutation.isPending ? mutation.variables?.modelId : null,
   };
 };

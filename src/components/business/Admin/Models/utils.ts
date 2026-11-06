@@ -5,7 +5,8 @@ import type { AttentionKey, ModelsFilters } from "./types";
 const matchesFilters = (model: AdminModel, filters: ModelsFilters) =>
   (filters.provider === "all" || model.provider === filters.provider) &&
   (filters.status === "all" || model.provider_status === filters.status) &&
-  (filters.site === "all" || model.is_enabled === (filters.site === "enabled"));
+  (filters.site === "all" || model.on_site === (filters.site === "yes")) &&
+  (filters.check === "all" || model.check_status === filters.check);
 
 export const filterModels = (models: AdminModel[], filters: ModelsFilters) =>
   models.filter((model) => matchesFilters(model, filters));
@@ -22,15 +23,17 @@ export const countAttention = (models: AdminModel[]) =>
     ]),
   ) as Record<AttentionKey, number>;
 
-export const getActiveAttention = (filters: ModelsFilters) =>
-  (Object.keys(ATTENTION_FILTERS) as AttentionKey[]).find((key) => {
-    const attentionFilters = ATTENTION_FILTERS[key];
-    return (
-      attentionFilters.provider === filters.provider &&
-      attentionFilters.status === filters.status &&
-      attentionFilters.site === filters.site
-    );
-  });
+const isSameFilters = (first: ModelsFilters, second: ModelsFilters) =>
+  first.provider === second.provider &&
+  first.status === second.status &&
+  first.site === second.site &&
+  first.check === second.check;
 
-export const isModelToDisable = (model: AdminModel) =>
-  model.provider_status === "shutdown" && model.is_enabled;
+export const getActiveAttention = (filters: ModelsFilters) =>
+  (Object.keys(ATTENTION_FILTERS) as AttentionKey[]).find((key) =>
+    isSameFilters(ATTENTION_FILTERS[key], filters),
+  );
+
+export const needsAttention = (model: AdminModel) =>
+  model.on_site &&
+  (model.provider_status === "shutdown" || model.check_status === "error");

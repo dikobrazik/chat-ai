@@ -1,7 +1,6 @@
-import { Badge } from "@/components/ui/Badge";
-import Button from "@/components/ui/Button";
-import { Text } from "@/components/ui/Text";
+import { ATTENTION_COLORS } from "../../constants";
 import type { AttentionKey } from "../../types";
+import { AttentionChip } from "../AttentionChip";
 
 type Props = {
   counts: Record<AttentionKey, number>;
@@ -10,51 +9,38 @@ type Props = {
 };
 
 export const Attention = ({ counts, active, onToggle }: Props) => (
-  <div className="flex flex-row flex-wrap gap-2">
-    <Button
-      variant="base"
-      borderRadius="full"
-      pressed={active === "toDisable"}
-      rightIcon={
-        <Badge variant={counts.toDisable ? "danger" : "secondary"} size="s">
-          <Text type="xs">{counts.toDisable}</Text>
-        </Badge>
-      }
+  <div className="flex flex-row flex-wrap items-center gap-1">
+    <AttentionChip
+      count={counts.toDisable}
+      color={ATTENTION_COLORS.toDisable}
+      isActive={active === "toDisable"}
       onClick={() => onToggle("toDisable")}
     >
-      <Text type="s" style="regular">
-        Выключили у провайдера, есть на сайте
-      </Text>
-    </Button>
-    <Button
-      variant="base"
-      borderRadius="full"
-      pressed={active === "soonDisabled"}
-      rightIcon={
-        <Badge variant={counts.soonDisabled ? "danger" : "secondary"} size="s">
-          <Text type="xs">{counts.soonDisabled}</Text>
-        </Badge>
-      }
+      Выключили у провайдера, есть на сайте
+    </AttentionChip>
+    <AttentionChip
+      count={counts.notResponding}
+      color={ATTENTION_COLORS.notResponding}
+      isActive={active === "notResponding"}
+      onClick={() => onToggle("notResponding")}
+    >
+      Не ответили на проверку
+    </AttentionChip>
+    <AttentionChip
+      count={counts.soonDisabled}
+      color={ATTENTION_COLORS.soonDisabled}
+      isActive={active === "soonDisabled"}
       onClick={() => onToggle("soonDisabled")}
     >
-      <Text type="s" style="regular">
-        Скоро отключат, есть на сайте
-      </Text>
-    </Button>
-    <Button
-      variant="base"
-      borderRadius="full"
-      pressed={active === "notOnSite"}
-      rightIcon={
-        <Badge variant={counts.notOnSite ? "primary" : "secondary"} size="s">
-          <Text type="xs">{counts.notOnSite}</Text>
-        </Badge>
-      }
+      Скоро отключат, есть на сайте
+    </AttentionChip>
+    <AttentionChip
+      count={counts.notOnSite}
+      color={ATTENTION_COLORS.notOnSite}
+      isActive={active === "notOnSite"}
       onClick={() => onToggle("notOnSite")}
     >
-      <Text type="s" style="regular">
-        Доступны у провайдера, нет на сайте
-      </Text>
-    </Button>
+      Доступны у провайдера, нет на сайте
+    </AttentionChip>
   </div>
 );

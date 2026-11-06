@@ -7,8 +7,8 @@ import { UpdatedAt } from "../components/UpdatedAt";
 import { Attention } from "./components/Attention";
 import { Filters } from "./components/Filters";
 import { ModelsTable } from "./components/ModelsTable";
+import { useModelClass } from "./hooks/useModelClass";
 import { useModelsFilters } from "./hooks/useModelsFilters";
-import { useToggleModel } from "./hooks/useToggleModel";
 
 export const AdminModels = () => {
   const { data, error, isLoading, refetch } = useAdminModels();
@@ -22,7 +22,7 @@ export const AdminModels = () => {
     toggleAttention,
     resetFilters,
   } = useModelsFilters(data?.models);
-  const { toggleModel, updatingModelId } = useToggleModel();
+  const { changeClass, updatingModelId } = useModelClass();
 
   if (error) {
     return <AdminError error={error} onRetry={() => refetch()} />;
@@ -32,22 +32,24 @@ export const AdminModels = () => {
     <div className="flex flex-col gap-4">
       <UpdatedAt date={data?.updated_at} />
       <Skeleton isLoading={isLoading} width="100%" height={480}>
-        <Attention
-          counts={attentionCounts}
-          active={activeAttention}
-          onToggle={toggleAttention}
-        />
-        <Filters
-          filters={filters}
-          providers={providers}
-          shownCount={filteredModels.length}
-          totalCount={data?.models.length ?? 0}
-          onChange={changeFilter}
-        />
+        <div className="flex flex-col gap-2">
+          <Filters
+            filters={filters}
+            providers={providers}
+            shownCount={filteredModels.length}
+            totalCount={data?.models.length ?? 0}
+            onChange={changeFilter}
+          />
+          <Attention
+            counts={attentionCounts}
+            active={activeAttention}
+            onToggle={toggleAttention}
+          />
+        </div>
         <ModelsTable
           models={filteredModels}
           updatingModelId={updatingModelId}
-          onToggle={toggleModel}
+          onClassChange={changeClass}
           onReset={resetFilters}
         />
       </Skeleton>

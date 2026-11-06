@@ -48,8 +48,17 @@ export const Filters = ({
       onChange={(value) => onChange("site", value)}
       options={[
         { value: "all", label: "На сайте: все" },
-        { value: "enabled", label: "На сайте: да" },
-        { value: "disabled", label: "На сайте: нет" },
+        { value: "yes", label: "На сайте: да" },
+        { value: "no", label: "На сайте: нет" },
+      ]}
+    />
+    <FilterSelect
+      value={filters.check}
+      onChange={(value) => onChange("check", value)}
+      options={[
+        { value: "all", label: "Любая проверка" },
+        { value: "ok", label: "Ответ есть" },
+        { value: "error", label: "Нет ответа" },
       ]}
     />
     <Text type="s" style="regular" color="#9C9C9C" className="ml-auto">

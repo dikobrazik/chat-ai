@@ -2,15 +2,28 @@ export type ProviderStatus = "active" | "deprecated" | "shutdown";
 
 export type ModelClass = "fast" | "advanced" | "heavy";
 
+export type CheckStatus = "ok" | "error";
+
+export type CheckError =
+  | "no_money"
+  | "invalid_key"
+  | "not_found"
+  | "rate_limit"
+  | "timeout"
+  | "unknown";
+
 export type AdminModel = {
   id: string;
   provider: string;
   name: string;
   description: string;
+  for_image: boolean;
+  release_date: string | null;
   provider_status: ProviderStatus;
   shutdown_date: string | null;
-  in_database: boolean;
-  is_enabled: boolean;
+  on_site: boolean;
+  check_status: CheckStatus | null;
+  check_error: CheckError | null;
   class: ModelClass | null;
 };
 
@@ -28,4 +41,9 @@ export type ProviderBalance = {
 export type ProviderBalances = {
   updated_at: string;
   balances: ProviderBalance[];
+};
+
+export type AdminSession = {
+  status: "active" | "code_required";
+  email: string;
 };

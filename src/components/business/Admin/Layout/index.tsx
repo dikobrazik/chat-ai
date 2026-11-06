@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import type { PropsWithChildren } from "react";
 import Button from "@/components/ui/Button";
 import { Text } from "@/components/ui/Text";
+import { AdminGate } from "../components/AdminGate";
 
 export const AdminLayout = ({ children }: PropsWithChildren) => {
   const pathname = usePathname();
@@ -11,12 +12,12 @@ export const AdminLayout = ({ children }: PropsWithChildren) => {
   return (
     <div
       data-layout="wide"
-      className="flex flex-col gap-6 w-full max-w-[1200px] mx-auto pt-5 pb-10"
+      className="flex flex-col gap-6 w-full max-w-[1280px] mx-auto pt-5 pb-10"
     >
-      <div className="flex flex-col gap-4">
-        <Text as="h1" type="xl">
-          Админка
-        </Text>
+      <Text as="h1" type="xl">
+        Админка
+      </Text>
+      <AdminGate>
         <nav className="flex flex-row gap-2">
           <Button
             href="/admin/models"
@@ -37,8 +38,8 @@ export const AdminLayout = ({ children }: PropsWithChildren) => {
             </Text>
           </Button>
         </nav>
-      </div>
-      {children}
+        {children}
+      </AdminGate>
     </div>
   );
 };

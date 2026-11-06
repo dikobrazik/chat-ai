@@ -16,6 +16,7 @@ import { Profile } from "../Profile";
 import { ChatsGroup } from "./components/ChatsGroup";
 import styles from "./Sidebar.module.scss";
 import { useChatGroups } from "./useChatGroups";
+import { useIsSidebarHidden } from "./useIsSidebarHidden";
 import { useShowUpsell } from "./useShowUpsell";
 
 export const ChatSidebar = ({
@@ -234,6 +235,9 @@ export const ChatSidebar = ({
 
 export const Sidebar = ({ forMobile }: { forMobile?: boolean }) => {
   const { isOpen, toggle } = useSidebarState();
+  const isHidden = useIsSidebarHidden();
+
+  if (isHidden) return null;
 
   return (
     <UISidebar isOpen={isOpen} toggle={toggle} forMobile={forMobile}>

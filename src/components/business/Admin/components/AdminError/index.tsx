@@ -1,6 +1,6 @@
 import Button from "@/components/ui/Button";
 import { Text } from "@/components/ui/Text";
-import { isAccessError } from "../../utils";
+import { useAdminErrorRetry } from "./useAdminErrorRetry";
 
 type Props = {
   error: Error;
@@ -8,22 +8,18 @@ type Props = {
 };
 
 export const AdminError = ({ error, onRetry }: Props) => {
-  if (isAccessError(error)) {
-    return (
-      <Text type="m" style="regular" color="#6F6F6F">
-        Раздел доступен только администраторам
-      </Text>
-    );
-  }
+  const { isSessionLost, retry } = useAdminErrorRetry(error, onRetry);
 
   return (
     <div className="flex flex-col items-start gap-3">
       <Text type="m" style="regular" color="#6F6F6F">
-        Не удалось загрузить данные
+        {isSessionLost
+          ? "Сессия админки закончилась, войдите заново"
+          : "Не удалось загрузить данные"}
       </Text>
-      <Button variant="base" onClick={onRetry}>
+      <Button variant="base" onClick={retry}>
         <Text type="s" style="regular">
-          Повторить
+          {isSessionLost ? "Войти" : "Повторить"}
         </Text>
       </Button>
     </div>

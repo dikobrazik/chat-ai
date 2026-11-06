@@ -10,3 +10,5 @@ const createLoadingChats = (count: number): Chat[] =>
 
 export const LOADING_PINNED_CHATS = createLoadingChats(3);
 export const LOADING_CHATS = createLoadingChats(30);
+
+export const ROUTES_WITHOUT_SIDEBAR = ["/admin"];
