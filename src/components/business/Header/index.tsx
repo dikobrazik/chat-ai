@@ -6,6 +6,7 @@ import Icon from "@/components/ui/Icon";
 import { Logo } from "@/components/ui/Logo";
 import Popover from "@/components/ui/Popover";
 import { Text } from "@/components/ui/Text";
+import { useIsAdminRoute } from "@/hooks/useIsAdminRoute";
 import { useIsMobile } from "@/hooks/useMobile";
 import { useAuthContext } from "@/providers/AuthProvider/hooks";
 import { ChatActions } from "../ChatActions";
@@ -21,6 +22,7 @@ export const Header = () => {
 
   const onShareClick = useShare(chatId as string);
   const isChatScreen = usePathname().startsWith("/chat/");
+  const isAdminRoute = useIsAdminRoute();
 
   return (
     <header className={styles.header}>
@@ -39,7 +41,7 @@ export const Header = () => {
 
       <div className={styles.rightContent}>
         {!isGuest ? (
-          <SubscriptionButton />
+          !isAdminRoute && <SubscriptionButton />
         ) : (
           <>
             <Button href="/login">
