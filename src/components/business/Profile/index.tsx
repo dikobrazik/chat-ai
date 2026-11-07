@@ -14,6 +14,7 @@ import { useAuthContext } from "@/providers/AuthProvider/hooks";
 import Button, { type ButtonProps } from "@/ui/Button";
 import { USER_STATUS_BADGE_VARIANT_MAP, USER_STATUS_MAP } from "./constants";
 import styles from "./Profile.module.scss";
+import { useLogout } from "./useLogout";
 
 const ProfileAvatar = () => {
   const { isGuest } = useAuthContext();
@@ -92,7 +93,8 @@ const ProfileInfo = () => {
 };
 
 const ProfileMenu = () => {
-  const { isGuest, onLogoutClick } = useAuthContext();
+  const { isGuest } = useAuthContext();
+  const onLogoutClick = useLogout();
 
   const { data: profile } = useProfile({
     enabled: !isGuest,

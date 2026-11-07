@@ -12,6 +12,7 @@ export const DialogModal = () => {
   return (
     <Modal
       headerBorder={false}
+      floatingHeader
       isOpen={dialogModalContext.isOpen}
       onClose={dialogModalContext.hide}
       size="small"
@@ -21,7 +22,11 @@ export const DialogModal = () => {
         <div className="flex flex-col gap-8">
           <div className="flex flex-col gap-2 items-center">
             {dialogModalContext.title && (
-              <Text as="h6" type="l">
+              <Text
+                as="h6"
+                type="l"
+                className="flex items-center min-h-9 px-11 text-center"
+              >
                 {dialogModalContext.title}
               </Text>
             )}
