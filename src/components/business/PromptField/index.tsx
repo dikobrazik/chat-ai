@@ -2,6 +2,7 @@ import { forwardRef, useRef } from "react";
 import { mergeRefs } from "react-merge-refs";
 import { ModelSelect } from "@/components/business/ModelSelect";
 import Popover from "@/components/ui/Popover";
+import { useIsTouchScreen } from "@/hooks/useIsTouchScreen";
 import { useIsMobile } from "@/hooks/useMobile";
 import { cn } from "@/lib/utils";
 import { useFiles } from "@/providers/FilesProvider/useFiles";
@@ -11,6 +12,7 @@ import { File } from "./components/File";
 import styles from "./PromptField.module.scss";
 import { useAccept } from "./useAccept";
 import { useSearch } from "./useSearch";
+import { insertLineBreak, isLineBreakShortcut, isSendShortcut } from "./utils";
 
 type PromptFieldProps = {
   value: string;
@@ -39,6 +41,7 @@ export const PromptField = forwardRef<HTMLTextAreaElement, PromptFieldProps>(
     ref,
   ) => {
     const isMobile = useIsMobile();
+    const isTouchScreen = useIsTouchScreen();
     const accept = useAccept();
     const { isSearchAvailable, withSearch, setWithSearch } = useSearch();
 
@@ -54,15 +57,17 @@ export const PromptField = forwardRef<HTMLTextAreaElement, PromptFieldProps>(
     };
 
     const onKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
-      if (!value || !areAllFilesUploaded) return;
-
-      if (
-        event.key === "Enter" &&
-        !event.shiftKey &&
-        !event.altKey &&
-        !event.ctrlKey
-      ) {
+      if (isLineBreakShortcut(event)) {
         event.preventDefault();
+        insertLineBreak(event.currentTarget);
+        return;
+      }
+
+      if (isTouchScreen || !isSendShortcut(event)) return;
+
+      event.preventDefault();
+
+      if (value && areAllFilesUploaded && !event.repeat) {
         onSendClick();
       }
     };
@@ -105,7 +110,7 @@ export const PromptField = forwardRef<HTMLTextAreaElement, PromptFieldProps>(
         <textarea
           id="prompt"
           name="prompt"
-          enterKeyHint="send"
+          enterKeyHint={isTouchScreen ? "enter" : "send"}
           autoFocus={!isMobile}
           placeholder={placeholder}
           ref={mergeRefs([inputRef, ref])}
