@@ -38,32 +38,6 @@
   }
 }
 
-.coming {
-  background-color: #EFEFEF;
-  box-shadow: none;
-
-  &:hover {
-    box-shadow: none;
-  }
-
-  .head {
-    cursor: not-allowed;
-  }
-
-  .radio,
-  .icon {
-    opacity: 0.4;
-  }
-
-  @media (prefers-color-scheme: dark) {
-    background-color: color-mix(in srgb, var(--background), white 6%);
-
-    &:hover {
-      border-color: rgba(255, 255, 255, 0.1);
-    }
-  }
-}
-
 .head {
   display: flex;
   align-items: center;
@@ -105,15 +79,15 @@
   }
 }
 
-.icon {
+.logos {
+  display: flex;
+  align-items: center;
+  gap: spacing(2);
   flex-shrink: 0;
-  color: #6F6F6F;
-}
+  margin-left: auto;
+  color: #1434CB;
 
-.selected .icon {
-  color: #0F8AFF;
-}
-
-.content {
-  padding: 0 spacing(4) spacing(4);
+  @media (prefers-color-scheme: dark) {
+    color: #FFFFFF;
+  }
 }

@@ -3,6 +3,7 @@
 import type React from "react";
 import styles from "./Icon.module.scss";
 import { type IconName, iconComponents } from "./icons";
+import { getIconWidth } from "./utils";
 
 export interface IconProps {
   name: IconName;
@@ -85,7 +86,7 @@ export const BaseIcon: React.FC<{
 }) => {
   return (
     <svg
-      width={size}
+      width={getIconWidth(size, viewBox)}
       height={size}
       viewBox={viewBox}
       fill={fill}

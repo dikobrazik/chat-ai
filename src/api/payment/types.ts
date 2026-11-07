@@ -7,6 +7,13 @@ export type TPayResponse = { RedirectUrl: string; WebQR: string };
 
 export type TbankResponse = { PaymentURL: string };
 
+export type SbpBank = {
+  BankId: string;
+  BankName: string;
+  BankLogo: string;
+  BankOrder: number;
+};
+
 export type Payment = {
   id: string;
   amount: number;

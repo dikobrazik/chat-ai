@@ -1,7 +1,9 @@
 import axios from "axios";
+import type { MobileOs } from "@/utils/mobile-os";
 import type {
   Payment,
   PaymentMethod,
+  SbpBank,
   TariffInfoPayload,
   TbankResponse,
   TPayResponse,
@@ -20,6 +22,18 @@ export const getTbankLink = (payload: TariffInfoPayload) =>
 export const generateQr = (payload: TariffInfoPayload) =>
   axios
     .post<{ svg: string }>(`/payment/generate-qr`, payload)
+    .then((response) => response.data);
+
+type SbpLinkPayload = TariffInfoPayload & { bankId: string };
+
+export const getSbpBanks = (os: MobileOs | null) =>
+  axios
+    .get<SbpBank[]>(`/payment/sbp/banks`, { params: { os } })
+    .then((response) => response.data);
+
+export const getSbpLink = (payload: SbpLinkPayload) =>
+  axios
+    .post<{ link: string }>(`/payment/sbp/link`, payload)
     .then((response) => response.data);
 
 export const getPayments = () =>

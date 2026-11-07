@@ -6,12 +6,14 @@ import Button from "@/components/ui/Button";
 import Icon from "@/components/ui/Icon";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { Text } from "@/components/ui/Text";
+import { cn } from "@/lib/utils";
 import { formatCurrency } from "@/utils/format-currency";
 import styles from "./Checkout.module.scss";
 import { CheckoutMessage } from "./components/CheckoutMessage";
 import { PaymentMethods } from "./components/PaymentMethods";
 import { PlanCard } from "./components/PlanCard";
-import { SbpQrCode } from "./components/SbpBanks";
+import { SbpBanksModal } from "./components/SbpBanksModal";
+import { SbpQrModal } from "./components/SbpQrModal";
 import { getDaysLabel, getPeriodLabel, SUPPORT_EMAIL_URL } from "./constants";
 import { useCheckout } from "./useCheckout";
 
@@ -25,17 +27,25 @@ export const Checkout = () => {
     isGuest,
     isPlanActive,
     isPaying,
-    isPayDisabled,
+    isSbpQrOpen,
+    isSbpBanksOpen,
+    isCookieBannerShown,
     pricing,
     selectedMethod,
     onMethodSelect,
+    onSbpQrClose,
+    onSbpBanksClose,
     onClose,
     onPay,
   } = useCheckout();
 
+  const pageClassName = cn(styles.page, {
+    [styles.withCookieBanner]: isCookieBannerShown,
+  });
+
   if (isLoading) {
     return (
-      <div className={styles.page}>
+      <div className={pageClassName}>
         <div className={styles.checkout}>
           <Skeleton isLoading height={320} />
           <Skeleton isLoading height={520} />
@@ -46,7 +56,7 @@ export const Checkout = () => {
 
   if (isError) {
     return (
-      <div className={styles.page}>
+      <div className={pageClassName}>
         <CheckoutMessage
           title="Не удалось загрузить тарифы"
           description="Проверьте соединение и попробуйте ещё раз"
@@ -59,7 +69,7 @@ export const Checkout = () => {
 
   if (!plan || !pricing) {
     return (
-      <div className={styles.page}>
+      <div className={pageClassName}>
         <CheckoutMessage
           title="Такой тариф не найден"
           actionText="Вернуться к тарифам"
@@ -71,7 +81,7 @@ export const Checkout = () => {
 
   if (isFreePlan) {
     return (
-      <div className={styles.page}>
+      <div className={pageClassName}>
         <CheckoutMessage
           title="Этот тариф бесплатный"
           description={`«${plan.name}» доступен без оплаты — платить не за что`}
@@ -84,7 +94,7 @@ export const Checkout = () => {
 
   if (isGuest) {
     return (
-      <div className={styles.page}>
+      <div className={pageClassName}>
         <CheckoutMessage
           title="Войдите, чтобы оформить подписку"
           description="Подписка привязывается к аккаунту — без входа оплата не пройдёт"
@@ -97,7 +107,7 @@ export const Checkout = () => {
 
   if (isPlanActive) {
     return (
-      <div className={styles.page}>
+      <div className={pageClassName}>
         <CheckoutMessage
           title={`Тариф «${plan.name}» уже подключён`}
           description="Повторно оплачивать его не нужно"
@@ -109,7 +119,7 @@ export const Checkout = () => {
   }
 
   return (
-    <div className={styles.page}>
+    <div className={pageClassName}>
       <div className={styles.header}>
         <Button
           className={styles.back}
@@ -117,25 +127,16 @@ export const Checkout = () => {
           aria-label="Вернуться к тарифам"
           onClick={onClose}
         />
-        <Text as="h1" type="xl">
-          Настройте свой план
+        <Text as="h1" type="xl" className={styles.title}>
+          Выберите способ оплаты
         </Text>
       </div>
 
       <div className={styles.checkout}>
-        <div className="flex flex-col gap-4">
-          <Text style="regular" type="m" color="#6F6F6F">
-            Выберите способ оплаты
-          </Text>
-
-          <PaymentMethods
-            selectedMethod={selectedMethod}
-            onMethodSelect={onMethodSelect}
-            content={{
-              sbp: <SbpQrCode tariff={plan.id} sixMonths={isSixMonths} />,
-            }}
-          />
-        </div>
+        <PaymentMethods
+          selectedMethod={selectedMethod}
+          onMethodSelect={onMethodSelect}
+        />
 
         <div className="flex flex-col gap-4">
           <PlanCard
@@ -143,7 +144,6 @@ export const Checkout = () => {
             plan={plan}
             isSixMonths={isSixMonths}
             isPaying={isPaying}
-            isPayDisabled={isPayDisabled}
             onPay={onPay}
           />
 
@@ -176,6 +176,20 @@ export const Checkout = () => {
           </Text>
         </div>
       </div>
+
+      <SbpQrModal
+        isOpen={isSbpQrOpen}
+        tariff={plan.id}
+        sixMonths={isSixMonths}
+        onClose={onSbpQrClose}
+      />
+
+      <SbpBanksModal
+        isOpen={isSbpBanksOpen}
+        tariff={plan.id}
+        sixMonths={isSixMonths}
+        onClose={onSbpBanksClose}
+      />
     </div>
   );
 };

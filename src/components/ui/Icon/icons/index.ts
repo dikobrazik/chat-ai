@@ -45,9 +45,11 @@ import { LikeIcon } from "./LikeIcon";
 import { LockIcon } from "./LockIcon";
 import { LogoutIcon } from "./LogoutIcon";
 import { MailRuIcon } from "./MailRuIcon";
+import { MastercardIcon } from "./MastercardIcon";
 import { MenuIcon } from "./MenuIcon";
 import { MessageCreateIcon } from "./MessageCreateIcon";
 import { MessageQuestionIcon } from "./MessageQuestionIcon";
+import { MirIcon } from "./MirIcon";
 import { MoreIcon } from "./MoreIcon";
 import { PaperclipIcon } from "./PaperclipIcon";
 import { PinIcon } from "./PinIcon";
@@ -55,6 +57,7 @@ import { PinnedOffIcon } from "./PinnedOffIcon";
 import { PlusIcon } from "./PlusIcon";
 import { ProfileCircleIcon } from "./ProfileCircleIcon";
 import { RefreshIcon } from "./Refresh2Icon";
+import { SbpIcon } from "./SbpIcon";
 import { SearchIcon } from "./SearchIcon";
 import { SettingIcon } from "./SettingIcon";
 import { SettingsIcon } from "./SettingsIcon";
@@ -63,9 +66,11 @@ import { SidebarToggleIcon } from "./SidebarToggleIcon";
 import { SidebarToggleOnIcon } from "./SidebarToggleOnIcon";
 import { SpinnerIcon } from "./SpinnerIcon";
 import { TickCircleIcon } from "./TickCircleIcon";
+import { TPayIcon } from "./TPayIcon";
 import { TrashIcon } from "./TrashIcon";
 import { VerifyIcon } from "./VerifyIcon";
 import { VideoPlayIcon } from "./VideoPlayIcon";
+import { VisaIcon } from "./VisaIcon";
 import { VKIcon } from "./VkIcon";
 import { XCircleIcon } from "./XCircleIcon";
 import { YandexIcon } from "./YandexIcon";
@@ -78,6 +83,11 @@ export {
   DislikeFillIcon,
   LikeFillIcon,
   MailRuIcon,
+  SbpIcon,
+  TPayIcon,
+  MirIcon,
+  VisaIcon,
+  MastercardIcon,
   ImportIcon,
   SearchIcon,
   VKIcon,
@@ -161,6 +171,11 @@ export const iconComponents = {
 
   search: SearchIcon,
   vk: VKIcon,
+  sbp: SbpIcon,
+  tpay: TPayIcon,
+  mir: MirIcon,
+  visa: VisaIcon,
+  mastercard: MastercardIcon,
   verify: VerifyIcon,
   "pinned-off": PinnedOffIcon,
   global: GlobalIcon,

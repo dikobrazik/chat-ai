@@ -1,7 +1,5 @@
 import type { ReactNode } from "react";
-import { Badge } from "@/components/ui/Badge";
 import Icon from "@/components/ui/Icon";
-import type { IconName } from "@/components/ui/Icon/icons";
 import { Text } from "@/components/ui/Text";
 import { cn } from "@/lib/utils";
 import { PAYMENT_METHODS_MAP, type PaymentMethodId } from "../../constants";
@@ -9,21 +7,19 @@ import styles from "./PaymentMethods.module.scss";
 
 type MethodProps = {
   id: PaymentMethodId;
-  icon: IconName;
+  logo: ReactNode;
   title: string;
   description: string;
   selectedMethod: PaymentMethodId;
-  children?: ReactNode;
   onMethodSelect: (method: PaymentMethodId) => void;
 };
 
 const Method = ({
   id,
-  icon,
+  logo,
   title,
   description,
   selectedMethod,
-  children,
   onMethodSelect,
 }: MethodProps) => {
   const isSelected = id === selectedMethod;
@@ -44,65 +40,58 @@ const Method = ({
           onChange={() => onMethodSelect(id)}
         />
         <span className={styles.radio} aria-hidden="true" />
-        <Icon name={icon} className={styles.icon} />
-        <span className="flex flex-col gap-0.5">
-          <Text as="span" type="m">
-            {title}
-          </Text>
+        <span className="flex min-w-0 flex-1 flex-col gap-0.5">
+          <span className="flex items-center gap-3">
+            <Text as="span" type="m">
+              {title}
+            </Text>
+            <span className={styles.logos}>{logo}</span>
+          </span>
           <Text as="span" style="regular" type="s" color="#9C9C9C">
             {description}
           </Text>
         </span>
       </label>
-
-      {isSelected && children && (
-        <div className={styles.content}>{children}</div>
-      )}
     </div>
   );
 };
 
 type Props = {
   selectedMethod: PaymentMethodId;
-  content: Partial<Record<PaymentMethodId, ReactNode>>;
   onMethodSelect: (method: PaymentMethodId) => void;
 };
 
-export const PaymentMethods = ({
-  selectedMethod,
-  content,
-  onMethodSelect,
-}: Props) => (
+export const PaymentMethods = ({ selectedMethod, onMethodSelect }: Props) => (
   <div role="radiogroup" aria-label="Способ оплаты" className={styles.methods}>
     <Method
       id={PAYMENT_METHODS_MAP.tbank}
-      icon="card"
+      logo={
+        <>
+          <Icon name="mir" size={12} />
+          <Icon name="visa" size={12} />
+          <Icon name="mastercard" size={18} />
+        </>
+      }
       title="Карта"
-      description="МИР и российские карты"
+      description="Карты российских банков"
       selectedMethod={selectedMethod}
       onMethodSelect={onMethodSelect}
-    >
-      {content[PAYMENT_METHODS_MAP.card]}
-    </Method>
+    />
     <Method
       id={PAYMENT_METHODS_MAP.tpay}
-      icon="flash-circle"
+      logo={<Icon name="tpay" size={24} />}
       title="TPay"
-      description="Оплата в один клик через Т-Банк"
+      description="Оплата в один клик через Т‑Банк"
       selectedMethod={selectedMethod}
       onMethodSelect={onMethodSelect}
-    >
-      {content[PAYMENT_METHODS_MAP.tpay]}
-    </Method>
+    />
     <Method
       id={PAYMENT_METHODS_MAP.sbp}
-      icon="lock"
-      title="Оплата по СБП"
+      logo={<Icon name="sbp" size={24} />}
+      title="Оплата через СБП"
       description="Через приложение вашего банка"
       selectedMethod={selectedMethod}
       onMethodSelect={onMethodSelect}
-    >
-      {content[PAYMENT_METHODS_MAP.sbp]}
-    </Method>
+    />
   </div>
 );

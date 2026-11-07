@@ -43,3 +43,19 @@
   justify-content: space-between;
   gap: spacing(4);
 }
+
+.pay {
+  @include media-max(md) {
+    position: sticky;
+    bottom: calc(-1 * #{spacing(4)} - env(safe-area-inset-bottom));
+    margin: calc(-1 * #{spacing(4)});
+    padding: spacing(4);
+    padding-bottom: calc(#{spacing(4)} + env(safe-area-inset-bottom));
+    border-radius: 0 0 border-radius("3xl") border-radius("3xl");
+    background-color: #FFFFFF;
+
+    @media (prefers-color-scheme: dark) {
+      background-color: var(--background);
+    }
+  }
+}
