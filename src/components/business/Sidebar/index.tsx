@@ -238,7 +238,7 @@ export const ChatSidebar = ({
         />
       </div>
       {isGuest ? (
-        <div className="-mx-1">
+        <div className={cn(styles.guestBanner, "-mx-1")}>
           <Banner
             title="Получайте ответы, адаптированные специально для вас"
             description="Войдите в систему, чтобы использовать историю чатов, создавать изображения и загружать файлы."

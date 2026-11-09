@@ -4,6 +4,12 @@
   }
 }
 
+.guestBanner {
+  @media (max-height: 650px) {
+    display: none;
+  }
+}
+
 .logoLink {
   text-decoration: none;
 }
