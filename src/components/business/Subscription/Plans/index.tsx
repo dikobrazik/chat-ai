@@ -26,6 +26,7 @@ export const Plans = () => {
     plans,
     sixMonthsPlans,
     sixMonthsDiscount,
+    hasTokenLimits,
     activePlan,
     onPlanSelect,
     onClose,
@@ -101,6 +102,21 @@ export const Plans = () => {
             },
           ]}
         ></Tabs>
+
+        {hasTokenLimits && (
+          <Text
+            color="#9C9C9C"
+            style="regular"
+            type="xs"
+            className="text-center"
+          >
+            Jonu-токены — внутренняя единица учёта Jonu AI. Расход зависит от
+            модели и длины диалога: быстрые модели тратят меньше, продвинутые и
+            тяжёлые — больше. Диалоги и изображения тратят общий запас, поэтому
+            числа не складываются: указан максимум, если тратить запас только на
+            диалоги или только на изображения.
+          </Text>
+        )}
 
         <Text color="#9C9C9C" style="regular" type="xs" className="text-center">
           {AUTO_RENEWAL_DISCLAIMER}

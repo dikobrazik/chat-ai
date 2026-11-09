@@ -1,0 +1,24 @@
+.benefit {
+  display: flex;
+  gap: 8px;
+}
+
+.icon {
+  color: #6F6F6F;
+
+  @include media-max(md) {
+    margin-top: 2px;
+  }
+}
+
+span.text {
+  @include media-max(md) {
+    font-size: 1rem;
+    line-height: 1.5rem;
+
+    span {
+      font-size: inherit;
+      line-height: inherit;
+    }
+  }
+}

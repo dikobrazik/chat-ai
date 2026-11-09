@@ -14,7 +14,9 @@ import { ClipboardIcon } from "./ClipboardIcon";
 import { CloseCircleIcon } from "./CloseCircleIcon";
 import { CloseIcon } from "./CloseIcon";
 import { CloseSquareIcon } from "./CloseSquareIcon";
+import { CoinIcon } from "./CoinIcon";
 import { CopyIcon } from "./CopyIcon";
+import { CpuIcon } from "./CpuIcon";
 import { DislikeFillIcon } from "./DislikeFillIcon";
 import { DislikeIcon } from "./DislikeIcon";
 import { DocumentIcon } from "./DocumentIcon";
@@ -44,10 +46,12 @@ import { LikeFillIcon } from "./LikeFillIcon";
 import { LikeIcon } from "./LikeIcon";
 import { LockIcon } from "./LockIcon";
 import { LogoutIcon } from "./LogoutIcon";
+import { MagicStarIcon } from "./MagicStarIcon";
 import { MailRuIcon } from "./MailRuIcon";
 import { MenuIcon } from "./MenuIcon";
 import { MessageCreateIcon } from "./MessageCreateIcon";
 import { MessageQuestionIcon } from "./MessageQuestionIcon";
+import { MessagesIcon } from "./MessagesIcon";
 import { MoreIcon } from "./MoreIcon";
 import { PaperclipIcon } from "./PaperclipIcon";
 import { PinIcon } from "./PinIcon";
@@ -61,6 +65,7 @@ import { SettingsIcon } from "./SettingsIcon";
 import { ShareIcon } from "./ShareIcon";
 import { SidebarToggleIcon } from "./SidebarToggleIcon";
 import { SidebarToggleOnIcon } from "./SidebarToggleOnIcon";
+import { SpeedometerIcon } from "./SpeedometerIcon";
 import { SpinnerIcon } from "./SpinnerIcon";
 import { TickCircleIcon } from "./TickCircleIcon";
 import { TrashIcon } from "./TrashIcon";
@@ -72,6 +77,11 @@ import { YandexIcon } from "./YandexIcon";
 
 // Re-export all icons
 export {
+  CoinIcon,
+  CpuIcon,
+  MagicStarIcon,
+  SpeedometerIcon,
+  MessagesIcon,
   InformationIcon,
   CloseCircleIcon,
   TickCircleIcon,
@@ -145,6 +155,16 @@ export {
 
 // Icon registry for dynamic loading
 export const iconComponents = {
+  coin: CoinIcon,
+
+  cpu: CpuIcon,
+
+  "magic-star": MagicStarIcon,
+
+  speedometer: SpeedometerIcon,
+
+  messages: MessagesIcon,
+
   information: InformationIcon,
 
   "close-circle": CloseCircleIcon,

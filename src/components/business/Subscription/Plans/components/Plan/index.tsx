@@ -5,6 +5,9 @@ import { Divider } from "@/components/ui/Divider";
 import { Icon } from "@/components/ui/Icon";
 import { Text } from "@/components/ui/Text";
 import { cn } from "@/lib/utils";
+import { formatCompactNumber, formatNumber } from "@/utils/format-number";
+import { pluralize } from "@/utils/pluralize";
+import { Benefit } from "./Benefit";
 import { CANCEL_ANYTIME_TEXT, POPULAR_BADGE_TEXT } from "./constants";
 import styles from "./Plan.module.scss";
 import { usePlan } from "./usePlan";
@@ -25,16 +28,24 @@ export const Plan = ({
   onPlanSelect,
 }: PlanProps) => {
   const {
-    isActive,
+    isDisabled,
+    isCancelable,
     buttonText,
     buttonVariant,
     price,
     oldPrice,
     period,
     subtitle,
-    featuresTitle,
-    features,
+    tokensLimit,
+    isDailyLimit,
+    dialogsUpTo,
+    imagesUpTo,
+    fastModelsCount,
+    advancedModelsCount,
+    heavyModelsCount,
   } = usePlan({ plan, activePlan, discount, isSixMonths });
+
+  const limitPeriod = isDailyLimit ? <>в&nbsp;день</> : <>в&nbsp;месяц</>;
 
   return (
     <div className={cn(styles.plan, styles[`plan-${plan.id}`])}>
@@ -84,7 +95,7 @@ export const Plan = ({
       <div className="flex flex-col gap-3">
         <Button
           variant={buttonVariant}
-          disabled={isActive}
+          disabled={isDisabled}
           size="m"
           align="center"
           fullWidth
@@ -94,9 +105,9 @@ export const Plan = ({
         </Button>
 
         <div
-          aria-hidden={!plan.isPopular}
+          aria-hidden={!isCancelable}
           className={cn("flex items-center justify-center gap-2", {
-            [styles.cancelNoteHidden]: !plan.isPopular,
+            [styles.cancelNoteHidden]: !isCancelable,
           })}
         >
           <Icon name="verify" className={styles.cancelIcon} />
@@ -108,16 +119,63 @@ export const Plan = ({
 
       <Divider />
 
-      <div className="flex flex-col gap-3">
-        <Text type="s">{featuresTitle}</Text>
-        <div className="flex flex-col gap-2">
-          {features.map((feature) => (
-            <Text key={feature} style="regular" type="s">
-              {feature}
-            </Text>
-          ))}
-        </div>
-      </div>
+      <ul className={styles.benefits}>
+        {tokensLimit && (
+          <Benefit icon="coin">
+            <Text type="s">{formatCompactNumber(tokensLimit)}</Text>
+            &nbsp;jonu-токенов {limitPeriod}
+          </Benefit>
+        )}
+        {dialogsUpTo && (
+          <Benefit icon="messages">
+            <Text type="s">До&nbsp;{formatNumber(dialogsUpTo)}</Text>&nbsp;
+            {pluralize(dialogsUpTo, ["диалога", "диалогов", "диалогов"])}
+            {isDailyLimit && <> в&nbsp;день</>}
+          </Benefit>
+        )}
+        {imagesUpTo && (
+          <Benefit icon="gallery">
+            <Text type="s">До&nbsp;{formatNumber(imagesUpTo)}</Text>&nbsp;
+            {pluralize(imagesUpTo, [
+              "изображения",
+              "изображений",
+              "изображений",
+            ])}
+            {isDailyLimit && <> в&nbsp;день</>}
+          </Benefit>
+        )}
+        <Benefit icon="paperclip">Загрузка фото и файлов</Benefit>
+        {fastModelsCount && (
+          <Benefit icon="speedometer">
+            <Text type="s">{fastModelsCount}</Text>&nbsp;
+            {pluralize(fastModelsCount, [
+              "быстрая модель",
+              "быстрые модели",
+              "быстрых моделей",
+            ])}
+          </Benefit>
+        )}
+        {advancedModelsCount && (
+          <Benefit icon="magic-star">
+            <Text type="s">{advancedModelsCount}</Text>&nbsp;
+            {pluralize(advancedModelsCount, [
+              "продвинутая модель",
+              "продвинутые модели",
+              "продвинутых моделей",
+            ])}
+          </Benefit>
+        )}
+        {heavyModelsCount && (
+          <Benefit icon="cpu">
+            <Text type="s">{heavyModelsCount}</Text>&nbsp;
+            {pluralize(heavyModelsCount, [
+              "тяжёлая модель",
+              "тяжёлые модели",
+              "тяжёлых моделей",
+            ])}
+          </Benefit>
+        )}
+      </ul>
     </div>
   );
 };

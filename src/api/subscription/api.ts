@@ -13,6 +13,13 @@ export type Plan = {
   isCurrentPlan?: boolean;
   features: string[];
   nextChargeAt: string;
+  tokens?: number;
+  dailyTokens?: number;
+  dialogsUpTo?: number;
+  imagesUpTo?: number;
+  fastModelsCount?: number;
+  advancedModelsCount?: number;
+  heavyModelsCount?: number;
 };
 
 export const getTariffs = (params?: { sixMonths?: boolean }) =>
