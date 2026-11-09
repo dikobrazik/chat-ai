@@ -40,6 +40,7 @@ import { InfoCircleIcon } from "./InfoCircleIcon";
 import { InfoIcon } from "./InfoIcon";
 import { InformationIcon } from "./InformationIcon";
 import { LampOnIcon } from "./LampOnIcon";
+import { LifebuoyIcon } from "./LifebuoyIcon";
 import { LikeFillIcon } from "./LikeFillIcon";
 import { LikeIcon } from "./LikeIcon";
 import { LockIcon } from "./LockIcon";
@@ -72,6 +73,7 @@ import { YandexIcon } from "./YandexIcon";
 
 // Re-export all icons
 export {
+  LifebuoyIcon,
   InformationIcon,
   CloseCircleIcon,
   TickCircleIcon,
@@ -145,6 +147,8 @@ export {
 
 // Icon registry for dynamic loading
 export const iconComponents = {
+  lifebuoy: LifebuoyIcon,
+
   information: InformationIcon,
 
   "close-circle": CloseCircleIcon,
