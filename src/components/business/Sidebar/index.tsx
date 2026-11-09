@@ -79,6 +79,38 @@ export const ChatSidebar = ({
             })}
             leftIcon={<Icon name="gallery" />}
           />
+          {isGuest && (
+            <>
+              <Button
+                href="/plans"
+                align="center"
+                aria-label="Тарифы"
+                onClick={handleSidebarClick}
+                className={cn(
+                  styles.collapsedNavButton,
+                  styles.guestLinkButton,
+                  {
+                    [styles.active]: pathname === "/plans",
+                  },
+                )}
+                leftIcon={<Icon name="clipboard" />}
+              />
+              <Button
+                href="/settings/help"
+                align="center"
+                aria-label="Вопросы"
+                onClick={handleSidebarClick}
+                className={cn(
+                  styles.collapsedNavButton,
+                  styles.guestLinkButton,
+                  {
+                    [styles.active]: pathname === "/settings/help",
+                  },
+                )}
+                leftIcon={<Icon name="message-question" />}
+              />
+            </>
+          )}
         </div>
         <div className="mt-auto flex flex-col items-center gap-3">
           {isGuest ? (
@@ -164,6 +196,30 @@ export const ChatSidebar = ({
         >
           Изображения
         </Button>
+        {isGuest && (
+          <>
+            <Button
+              className={cn(styles.guestLinkButton, {
+                [styles.active]: pathname === "/plans",
+              })}
+              onClick={handleSidebarClick}
+              leftIcon={<Icon name="clipboard" />}
+              href="/plans"
+            >
+              Тарифы
+            </Button>
+            <Button
+              className={cn(styles.guestLinkButton, {
+                [styles.active]: pathname === "/settings/help",
+              })}
+              onClick={handleSidebarClick}
+              leftIcon={<Icon name="message-question" />}
+              href="/settings/help"
+            >
+              Вопросы
+            </Button>
+          </>
+        )}
       </div>
       <div className={cn(styles.chatsSection, "flex-1 flex flex-col gap-2")}>
         {pinnedChats.length > 0 && (
