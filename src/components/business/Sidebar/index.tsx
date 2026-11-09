@@ -86,13 +86,9 @@ export const ChatSidebar = ({
                 align="center"
                 aria-label="Тарифы"
                 onClick={handleSidebarClick}
-                className={cn(
-                  styles.collapsedNavButton,
-                  styles.guestLinkButton,
-                  {
-                    [styles.active]: pathname === "/plans",
-                  },
-                )}
+                className={cn(styles.collapsedNavButton, styles.plansButton, {
+                  [styles.active]: pathname === "/plans",
+                })}
                 leftIcon={<Icon name="clipboard" />}
               />
               <Button
@@ -100,13 +96,9 @@ export const ChatSidebar = ({
                 align="center"
                 aria-label="Вопросы"
                 onClick={handleSidebarClick}
-                className={cn(
-                  styles.collapsedNavButton,
-                  styles.guestLinkButton,
-                  {
-                    [styles.active]: pathname === "/settings/help",
-                  },
-                )}
+                className={cn(styles.collapsedNavButton, styles.helpButton, {
+                  [styles.active]: pathname === "/settings/help",
+                })}
                 leftIcon={<Icon name="message-question" />}
               />
             </>
@@ -199,7 +191,7 @@ export const ChatSidebar = ({
         {isGuest && (
           <>
             <Button
-              className={cn(styles.guestLinkButton, {
+              className={cn(styles.plansButton, {
                 [styles.active]: pathname === "/plans",
               })}
               onClick={handleSidebarClick}
@@ -209,7 +201,7 @@ export const ChatSidebar = ({
               Тарифы
             </Button>
             <Button
-              className={cn(styles.guestLinkButton, {
+              className={cn(styles.helpButton, {
                 [styles.active]: pathname === "/settings/help",
               })}
               onClick={handleSidebarClick}

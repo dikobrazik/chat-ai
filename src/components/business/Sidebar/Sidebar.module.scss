@@ -42,7 +42,8 @@
 
 .newChatButton,
 .imagesButton,
-.guestLinkButton {
+.plansButton,
+.helpButton {
   svg {
     transition: transform 0.15s ease, color 0.2s ease;
   }
@@ -84,6 +85,31 @@
   @media (hover: hover) {
     &:hover path:nth-of-type(2) {
       transform: translate(0.5px, -1.2px) scale(1.25);
+    }
+  }
+}
+
+.plansButton {
+  @media (hover: hover) {
+    &:hover path:nth-of-type(3) {
+      transform: scale(1.3);
+    }
+  }
+}
+
+.helpButton {
+
+  path:nth-of-type(2),
+  path:nth-of-type(3) {
+    transform-box: view-box;
+    transform-origin: 10px 8.63px;
+  }
+
+  @media (hover: hover) {
+
+    &:hover path:nth-of-type(2),
+    &:hover path:nth-of-type(3) {
+      transform: rotate(12deg) scale(1.2);
     }
   }
 }
