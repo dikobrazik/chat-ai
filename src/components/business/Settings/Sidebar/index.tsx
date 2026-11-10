@@ -56,7 +56,7 @@ export const SettingsSidebar = () => {
         </Button>
         <Button
           className={path === "/settings/help" ? styles.active : ""}
-          leftIcon={<Icon name="message-question" />}
+          leftIcon={<Icon name="lifebuoy" />}
           as="a"
           href="/settings/help"
           replace

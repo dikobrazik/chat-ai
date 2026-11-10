@@ -79,6 +79,30 @@ export const ChatSidebar = ({
             })}
             leftIcon={<Icon name="gallery" />}
           />
+          {isGuest && (
+            <>
+              <Button
+                href="/plans"
+                align="center"
+                aria-label="Тарифы"
+                onClick={handleSidebarClick}
+                className={cn(styles.collapsedNavButton, styles.plansButton, {
+                  [styles.active]: pathname === "/plans",
+                })}
+                leftIcon={<Icon name="clipboard" />}
+              />
+              <Button
+                href="/settings/help"
+                align="center"
+                aria-label="Справка"
+                onClick={handleSidebarClick}
+                className={cn(styles.collapsedNavButton, styles.helpButton, {
+                  [styles.active]: pathname === "/settings/help",
+                })}
+                leftIcon={<Icon name="lifebuoy" />}
+              />
+            </>
+          )}
         </div>
         <div className="mt-auto flex flex-col items-center gap-3">
           {isGuest ? (
@@ -164,6 +188,30 @@ export const ChatSidebar = ({
         >
           Изображения
         </Button>
+        {isGuest && (
+          <>
+            <Button
+              className={cn(styles.plansButton, {
+                [styles.active]: pathname === "/plans",
+              })}
+              onClick={handleSidebarClick}
+              leftIcon={<Icon name="clipboard" />}
+              href="/plans"
+            >
+              Тарифы
+            </Button>
+            <Button
+              className={cn(styles.helpButton, {
+                [styles.active]: pathname === "/settings/help",
+              })}
+              onClick={handleSidebarClick}
+              leftIcon={<Icon name="lifebuoy" />}
+              href="/settings/help"
+            >
+              Справка
+            </Button>
+          </>
+        )}
       </div>
       <div className={cn(styles.chatsSection, "flex-1 flex flex-col gap-2")}>
         {pinnedChats.length > 0 && (
@@ -182,7 +230,7 @@ export const ChatSidebar = ({
         />
       </div>
       {isGuest ? (
-        <div className="-mx-1">
+        <div className={cn(styles.guestBanner, "-mx-1")}>
           <Banner
             title="Получайте ответы, адаптированные специально для вас"
             description="Войдите в систему, чтобы использовать историю чатов, создавать изображения и загружать файлы."

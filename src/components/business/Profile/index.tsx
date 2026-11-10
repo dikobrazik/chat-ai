@@ -126,7 +126,7 @@ const ProfileMenu = () => {
         <Button
           as="a"
           href="/settings/help"
-          leftIcon={<Icon name="message-question" />}
+          leftIcon={<Icon name="lifebuoy" />}
         >
           Справка
         </Button>

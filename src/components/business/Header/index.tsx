@@ -67,47 +67,19 @@ export const Header = () => {
             {isMobile ? "" : "Поделиться"}
           </Button>
         )}
-        {(isChatScreen || isGuest) && (
+        {isChatScreen && (
           <Popover
             position="bottom"
             align="end"
             Trigger={(props) => (
               <Button
                 variant="base"
-                leftIcon={
-                  <Icon name={!isChatScreen ? "message-question" : "more"} />
-                }
+                leftIcon={<Icon name="more" />}
                 {...props}
               />
             )}
           >
-            {!isChatScreen ? (
-              <div className="flex flex-col">
-                <Button
-                  as="a"
-                  href="/plans"
-                  leftIcon={<Icon name="clipboard" />}
-                >
-                  <Text type="s" style="regular">
-                    Тарифы
-                  </Text>
-                </Button>
-                <Button
-                  as="a"
-                  href="/settings/help"
-                  leftIcon={<Icon name="message-question" />}
-                >
-                  <Text type="s" style="regular">
-                    Вопросы
-                  </Text>
-                </Button>
-              </div>
-            ) : (
-              <ChatActions
-                chatId={chatId as string}
-                hiddenActions={["share"]}
-              />
-            )}
+            <ChatActions chatId={chatId as string} hiddenActions={["share"]} />
           </Popover>
         )}
       </div>
