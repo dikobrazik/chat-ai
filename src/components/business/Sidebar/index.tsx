@@ -94,7 +94,7 @@ export const ChatSidebar = ({
               <Button
                 href="/settings/help"
                 align="center"
-                aria-label="Вопросы"
+                aria-label="Справка"
                 onClick={handleSidebarClick}
                 className={cn(styles.collapsedNavButton, styles.helpButton, {
                   [styles.active]: pathname === "/settings/help",
@@ -208,7 +208,7 @@ export const ChatSidebar = ({
               leftIcon={<Icon name="lifebuoy" />}
               href="/settings/help"
             >
-              Вопросы
+              Справка
             </Button>
           </>
         )}
