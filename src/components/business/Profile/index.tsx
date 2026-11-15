@@ -116,7 +116,7 @@ const ProfileMenu = () => {
                 Открыть полный доступ
               </Text>
             </Button>
-            <Button as="a" href="/plans" leftIcon={<Icon name="card" />}>
+            <Button as="a" href="/plans" leftIcon={<Icon name="clipboard" />}>
               Тарифы
             </Button>
           </>
