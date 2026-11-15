@@ -37,12 +37,18 @@ export const ConfirmModal = ({
       </Text>
 
       <div className={cn(styles.buttons, "mt-4")}>
-        <Button size="m" variant={cancelVariant} onClick={onClose}>
+        <Button
+          size="m"
+          variant={cancelVariant}
+          align="center"
+          onClick={onClose}
+        >
           {cancelText}
         </Button>
         <Button
           size="m"
           variant="danger"
+          align="center"
           leftIcon={confirmIcon}
           loading={isConfirming}
           onClick={onConfirm}
