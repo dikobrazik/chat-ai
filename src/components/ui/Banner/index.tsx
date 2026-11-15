@@ -1,5 +1,7 @@
 import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
+import Button from "../Button";
+import { Icon } from "../Icon";
 import { Text } from "../Text";
 import styles from "./Banner.module.scss";
 import { BANNER_DESCRIPTION_COLOR } from "./constants";
@@ -8,10 +10,11 @@ export type BannerVariant = "base" | "promo";
 
 type BannerProps = {
   title: string;
-  description: string;
-  action: ReactNode;
+  description: ReactNode;
+  action?: ReactNode;
   direction?: "row" | "col";
   variant?: BannerVariant;
+  onClose?: () => void;
 };
 
 export const Banner = ({ variant = "base", ...props }: BannerProps) => {
@@ -21,6 +24,7 @@ export const Banner = ({ variant = "base", ...props }: BannerProps) => {
         styles.banner,
         styles[`${props.direction || "col"}`],
         styles[`variant-${variant}`],
+        Boolean(props.action) && styles.withAction,
       )}
     >
       <div>
@@ -34,7 +38,19 @@ export const Banner = ({ variant = "base", ...props }: BannerProps) => {
           {props.description}
         </Text>
       </div>
-      {props.action}
+      {props.onClose ? (
+        <div className={styles.actions}>
+          {props.action}
+          <Button
+            variant="secondary"
+            leftIcon={<Icon name="close" />}
+            aria-label="Закрыть"
+            onClick={props.onClose}
+          />
+        </div>
+      ) : (
+        props.action
+      )}
     </div>
   );
 };
