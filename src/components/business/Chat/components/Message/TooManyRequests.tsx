@@ -82,7 +82,7 @@ export const TooManyRequests = ({ limit, onClose }: TooManyRequestsProps) => {
           <>
             {resetTime}{" "}
             {proPrice &&
-              `Не ждите — перейдите на тариф Профессиональный за ${proPrice} в месяц`}
+              `В тарифе Профессиональный можно продолжить сейчас за ${proPrice} в месяц`}
           </>
         }
         direction="row"
@@ -90,7 +90,7 @@ export const TooManyRequests = ({ limit, onClose }: TooManyRequestsProps) => {
         action={
           <Button variant="primary" href="/plans" align="center">
             <Text type="s" as="div">
-              Перейти на Профессиональный
+              Попробовать
             </Text>
           </Button>
         }
@@ -106,8 +106,8 @@ export const TooManyRequests = ({ limit, onClose }: TooManyRequestsProps) => {
           {resetTime}{" "}
           {plusPrice &&
             (trialDays
-              ? `Не ждите — попробуйте Плюс: ${trialDays} за ${trialPrice}, затем ${plusPrice} в месяц`
-              : `Не ждите — перейдите на Плюс за ${plusPrice} в месяц`)}
+              ? `В Плюсе можно продолжить сейчас: ${trialDays} за ${trialPrice}, затем ${plusPrice} в месяц`
+              : `В Плюсе можно продолжить сейчас за ${plusPrice} в месяц`)}
         </>
       }
       direction="row"
