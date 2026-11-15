@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import Button from "@/components/ui/Button";
+import Button, { type ButtonVariant } from "@/components/ui/Button";
 import Modal from "@/components/ui/Modal";
 import { Text } from "@/components/ui/Text";
 import { cn } from "@/lib/utils";
@@ -10,6 +10,7 @@ type Props = {
   title: string;
   description: ReactNode;
   cancelText: string;
+  cancelVariant?: ButtonVariant;
   confirmText: string;
   confirmIcon?: ReactNode;
   isConfirming: boolean;
@@ -22,6 +23,7 @@ export const ConfirmModal = ({
   title,
   description,
   cancelText,
+  cancelVariant = "base",
   confirmText,
   confirmIcon,
   isConfirming,
@@ -35,12 +37,18 @@ export const ConfirmModal = ({
       </Text>
 
       <div className={cn(styles.buttons, "mt-4")}>
-        <Button size="m" variant="base" onClick={onClose}>
+        <Button
+          size="m"
+          variant={cancelVariant}
+          align="center"
+          onClick={onClose}
+        >
           {cancelText}
         </Button>
         <Button
           size="m"
           variant="danger"
+          align="center"
           leftIcon={confirmIcon}
           loading={isConfirming}
           onClick={onConfirm}
