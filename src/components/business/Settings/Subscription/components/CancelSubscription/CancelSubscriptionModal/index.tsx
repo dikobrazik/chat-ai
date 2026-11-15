@@ -14,9 +14,10 @@ export const CancelSubscriptionModal = ({ isOpen, onClose }: Props) => {
   return (
     <ConfirmModal
       isOpen={isOpen}
-      title="Отмена подписки"
-      description={`Ваша подписка ${planName} будет отменена, списаний больше не будет. Она останется активной до конца расчётного периода — ${periodEnd}`}
-      cancelText="Вернуться"
+      title={`Отменить ${planName}?`}
+      description={`Подписка действует до ${periodEnd}, после этого модели ${planName} станут недоступны, а создавать можно будет одно изображение в день. История чатов сохранится`}
+      cancelText="Оставить подписку"
+      cancelVariant="primary"
       confirmText="Отменить подписку"
       confirmIcon={<Icon name="close-square" />}
       isConfirming={isCanceling}
