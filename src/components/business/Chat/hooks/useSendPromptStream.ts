@@ -8,7 +8,7 @@ import {
   ERROR_MESSAGE_ID,
   TOO_MANY_REQUESTS_MESSAGE_ID,
 } from "../components/Message/constants";
-import { getLimit, withoutLimitBanner } from "./utils";
+import { getLimit, withoutBanners, withoutLimitBanner } from "./utils";
 
 export const useSendPromptStream = (
   chatId: string,
@@ -109,7 +109,7 @@ export const useSendPromptStream = (
                 isStreaming: false,
                 files: [],
               },
-              ...withoutLimitBanner(prevMessages.slice(1)),
+              ...withoutBanners(prevMessages.slice(1)),
             ]);
           } else {
             setMessages((prevMessages) => [

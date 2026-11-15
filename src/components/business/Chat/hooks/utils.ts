@@ -1,6 +1,7 @@
 import type { AxiosResponse } from "axios";
 import type { Prompt, PromptLimit } from "@/api";
 import {
+  BANNER_MESSAGES,
   ERROR_MESSAGE_ID,
   REGISTER_REMINDER_MESSAGE_ID,
   SYSTEM_MESSAGES,
@@ -72,6 +73,9 @@ export const withoutLimitBanner = (messages: Prompt[]) =>
 
 export const withoutRegisterReminder = (messages: Prompt[]) =>
   messages.filter(({ id }) => id !== REGISTER_REMINDER_MESSAGE_ID);
+
+export const withoutBanners = (messages: Prompt[]) =>
+  messages.filter(({ id }) => !BANNER_MESSAGES.includes(id));
 
 const getUtcDayEnd = () => new Date().setUTCHours(24, 0, 0, 0);
 
