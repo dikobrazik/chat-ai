@@ -38,7 +38,7 @@ export const TooManyRequests = ({ limit, onClose }: TooManyRequestsProps) => {
         action={
           <Button variant="primary" href="/login" align="center">
             <Text type="s" as="div">
-              Зарегистрироваться
+              Войти
             </Text>
           </Button>
         }

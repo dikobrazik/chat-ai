@@ -8,14 +8,14 @@ type RegisterReminderProps = {
 
 export const RegisterReminder = ({ onClose }: RegisterReminderProps) => (
   <Banner
-    title="Спасибо за использование пробной версии"
+    title="Спасибо, что пользуетесь Jonu&nbsp;AI"
     description="Войдите в систему, чтобы использовать историю чатов, создавать изображения и загружать файлы."
     direction="row"
     onClose={onClose}
     action={
       <Button variant="primary" href="/login" align="center">
         <Text type="s" as="div">
-          Зарегистрироваться
+          Войти
         </Text>
       </Button>
     }
