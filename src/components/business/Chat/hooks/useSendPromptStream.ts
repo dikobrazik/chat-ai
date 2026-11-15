@@ -8,10 +8,12 @@ import {
   ERROR_MESSAGE_ID,
   TOO_MANY_REQUESTS_MESSAGE_ID,
 } from "../components/Message/constants";
+import { getLimit, withoutBanners, withoutLimitBanner } from "./utils";
 
 export const useSendPromptStream = (
   chatId: string,
   setMessages: Dispatch<SetStateAction<Prompt[]>>,
+  onComplete: () => void,
 ) => {
   const queryClient = useQueryClient();
   const isSendingRef = useRef(false);
@@ -61,6 +63,7 @@ export const useSendPromptStream = (
             ]);
 
             clearFiles();
+            onComplete();
           } else if (value.type === "delta") {
             setMessages((prevMessages) => [
               {
@@ -92,18 +95,21 @@ export const useSendPromptStream = (
         // забираем их вместо оптимистичной записи в списке чатов
         queryClient.invalidateQueries({ queryKey: CHATS_QUERY_KEY });
       })
-      .catch((error) => {
+      .catch(async (error) => {
         if (isAxiosError(error)) {
           if (error.status === 429) {
+            const limit = await getLimit(error.response);
+
             setMessages((prevMessages) => [
               {
                 id: TOO_MANY_REQUESTS_MESSAGE_ID,
                 text: "",
+                limit,
                 role: "model",
                 isStreaming: false,
                 files: [],
               },
-              ...prevMessages.slice(1),
+              ...withoutBanners(prevMessages.slice(1)),
             ]);
           } else {
             setMessages((prevMessages) => [
@@ -124,8 +130,11 @@ export const useSendPromptStream = (
       });
   };
 
+  const closeLimitBanner = () => setMessages(withoutLimitBanner);
+
   return {
     sendPrompt,
     isPromptSending,
+    closeLimitBanner,
   };
 };
