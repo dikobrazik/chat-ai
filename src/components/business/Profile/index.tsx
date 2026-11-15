@@ -110,11 +110,16 @@ const ProfileMenu = () => {
       <ProfileInfo />
       <div className="flex flex-col gap-2">
         {showUpsell && (
-          <Button align="center" variant="primary" as="a" href="/plans">
-            <Text type="s" style="medium">
-              Открыть полный доступ
-            </Text>
-          </Button>
+          <>
+            <Button align="center" variant="primary" as="a" href="/plans">
+              <Text type="s" style="medium">
+                Открыть полный доступ
+              </Text>
+            </Button>
+            <Button as="a" href="/plans" leftIcon={<Icon name="card" />}>
+              Тарифы
+            </Button>
+          </>
         )}
         <Button
           as="a"
