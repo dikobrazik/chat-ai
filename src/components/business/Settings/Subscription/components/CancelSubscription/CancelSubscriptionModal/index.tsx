@@ -8,13 +8,13 @@ type Props = {
 };
 
 export const CancelSubscriptionModal = ({ isOpen, onClose }: Props) => {
-  const { planName, periodEnd, isCanceling, onCancel } =
+  const { periodEnd, isCanceling, onCancel } =
     useCancelSubscriptionModal(onClose);
 
   return (
     <ConfirmModal
       isOpen={isOpen}
-      title={`Отменить тариф ${planName}?`}
+      title="Отменить подписку?"
       description={`Подписка действует до ${periodEnd}, после этого останутся только модели бесплатного тарифа и одно изображение в день. История чатов сохранится`}
       cancelText="Оставить подписку"
       cancelVariant="primary"

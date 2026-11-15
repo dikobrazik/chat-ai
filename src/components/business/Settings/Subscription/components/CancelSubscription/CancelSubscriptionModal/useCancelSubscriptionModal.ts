@@ -3,7 +3,7 @@ import { useCancelSubscription } from "@/api";
 import { useSubscriptionState } from "../../../hooks/useSubscriptionState";
 
 export const useCancelSubscriptionModal = (onClose: () => void) => {
-  const { planName, periodEnd } = useSubscriptionState();
+  const { periodEnd } = useSubscriptionState();
   const { mutateAsync: cancelSubscription, isPending } =
     useCancelSubscription();
 
@@ -19,5 +19,5 @@ export const useCancelSubscriptionModal = (onClose: () => void) => {
     }
   };
 
-  return { planName, periodEnd, isCanceling: isPending, onCancel };
+  return { periodEnd, isCanceling: isPending, onCancel };
 };
