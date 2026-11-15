@@ -4,7 +4,6 @@ import Button from "../Button";
 import { Icon } from "../Icon";
 import { Text } from "../Text";
 import styles from "./Banner.module.scss";
-import { BANNER_DESCRIPTION_COLOR } from "./constants";
 
 export type BannerVariant = "base" | "promo";
 
@@ -25,16 +24,12 @@ export const Banner = ({ variant = "base", ...props }: BannerProps) => {
         styles[`${props.direction || "col"}`],
         styles[`variant-${variant}`],
         Boolean(props.action) && styles.withAction,
+        Boolean(props.onClose) && styles.closable,
       )}
     >
       <div>
         <Text as="div">{props.title}</Text>
-        <Text
-          type="xs"
-          color={BANNER_DESCRIPTION_COLOR[variant]}
-          as="div"
-          style="regular"
-        >
+        <Text type="xs" className={styles.description} as="div" style="regular">
           {props.description}
         </Text>
       </div>
@@ -42,7 +37,7 @@ export const Banner = ({ variant = "base", ...props }: BannerProps) => {
         <div className={styles.actions}>
           {props.action}
           <Button
-            variant="secondary"
+            variant="empty"
             leftIcon={<Icon name="close" />}
             aria-label="Закрыть"
             onClick={props.onClose}
