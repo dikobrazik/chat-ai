@@ -17,6 +17,7 @@ export const TooManyRequests = ({ limit, onClose }: TooManyRequestsProps) => {
     isLoading,
     currentPlan,
     isTrialLimit,
+    isImageLimit,
     plusPrice,
     proPrice,
     trialDays,
@@ -100,7 +101,11 @@ export const TooManyRequests = ({ limit, onClose }: TooManyRequestsProps) => {
 
   return (
     <Banner
-      title="Вы достигли лимита бесплатного тарифа"
+      title={
+        isImageLimit
+          ? "Вы достигли лимита изображений на сегодня"
+          : "Вы достигли лимита бесплатного тарифа"
+      }
       description={
         <>
           {resetTime}{" "}
