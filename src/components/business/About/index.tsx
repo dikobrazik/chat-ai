@@ -58,7 +58,7 @@ export const About = () => {
         </Text>
 
         <Text type="s" style="regular">
-          support@jonu.ru
+          jonu.ai@yandex.ru
         </Text>
       </div>
     </div>

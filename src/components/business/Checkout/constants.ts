@@ -10,7 +10,7 @@ export type PaymentMethodId =
 
 export const DEFAULT_PAYMENT_METHOD: PaymentMethodId = PAYMENT_METHODS_MAP.tpay;
 
-export const SUPPORT_EMAIL_URL = "mailto:support@jonu.ru";
+export const SUPPORT_EMAIL_URL = "mailto:jonu.ai@yandex.ru";
 
 export const getPeriodLabel = (isSixMonths: boolean) =>
   isSixMonths ? "6 месяцев" : "месяц";
