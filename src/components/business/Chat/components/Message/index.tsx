@@ -33,18 +33,20 @@ const MessageContent = ({
   role,
   message,
   isStreaming,
+  onLimitBannerClose,
 }: {
   id: string;
   role: Prompt["role"];
   message: string;
   isStreaming: boolean;
+  onLimitBannerClose?: () => void;
 }) => {
   const { id: chatId } = useParams();
 
   if (id.startsWith(ERROR_MESSAGE_ID)) {
     return <span>{message}</span>;
   } else if (id === TOO_MANY_REQUESTS_MESSAGE_ID) {
-    return <TooManyRequests />;
+    return <TooManyRequests resetTime={message} onClose={onLimitBannerClose} />;
   } else if (id === WAITING_RESPONSE_MESSAGE_ID) {
     return <ModelTyping />;
   }
@@ -89,7 +91,8 @@ export const Message = ({
   text: message,
   isStreaming,
   isPublicPage = false,
-}: Prompt & { isPublicPage?: boolean }) => {
+  onLimitBannerClose,
+}: Prompt & { isPublicPage?: boolean; onLimitBannerClose?: () => void }) => {
   return (
     <>
       {!(SYSTEM_MESSAGES.includes(id) || id.startsWith(ERROR_MESSAGE_ID)) && (
@@ -113,6 +116,7 @@ export const Message = ({
           role={role}
           message={message}
           isStreaming={Boolean(isStreaming)}
+          onLimitBannerClose={onLimitBannerClose}
         />
       </div>
       <MessageFiles files={files} role={role} />

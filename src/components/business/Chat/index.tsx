@@ -28,7 +28,7 @@ export const Chat = () => {
 
   useResetAttachments(chatId as string);
 
-  const { sendPrompt, isPromptSending } = useSendPromptStream(
+  const { sendPrompt, isPromptSending, closeLimitBanner } = useSendPromptStream(
     chatId as string,
     setMessages,
   );
@@ -103,6 +103,7 @@ export const Chat = () => {
               files={message.files}
               role={message.role}
               isStreaming={message.isStreaming}
+              onLimitBannerClose={closeLimitBanner}
             />
           ))}
         </div>

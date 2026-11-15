@@ -8,6 +8,7 @@ import {
   ERROR_MESSAGE_ID,
   TOO_MANY_REQUESTS_MESSAGE_ID,
 } from "../components/Message/constants";
+import { getLimitResetTime, withoutLimitBanner } from "./utils";
 
 export const useSendPromptStream = (
   chatId: string,
@@ -98,12 +99,12 @@ export const useSendPromptStream = (
             setMessages((prevMessages) => [
               {
                 id: TOO_MANY_REQUESTS_MESSAGE_ID,
-                text: "",
+                text: getLimitResetTime(error.response?.headers),
                 role: "model",
                 isStreaming: false,
                 files: [],
               },
-              ...prevMessages.slice(1),
+              ...withoutLimitBanner(prevMessages.slice(1)),
             ]);
           } else {
             setMessages((prevMessages) => [
@@ -124,8 +125,11 @@ export const useSendPromptStream = (
       });
   };
 
+  const closeLimitBanner = () => setMessages(withoutLimitBanner);
+
   return {
     sendPrompt,
     isPromptSending,
+    closeLimitBanner,
   };
 };
