@@ -16,10 +16,17 @@ import { TableCell } from "./TableCell";
 export const ERROR_MESSAGE_ID = "this-is-error-message";
 export const WAITING_RESPONSE_MESSAGE_ID = "AI is typing...";
 export const TOO_MANY_REQUESTS_MESSAGE_ID = "too-many-requests";
+export const REGISTER_REMINDER_MESSAGE_ID = "register-reminder";
 
 export const SYSTEM_MESSAGES = [
   WAITING_RESPONSE_MESSAGE_ID,
   TOO_MANY_REQUESTS_MESSAGE_ID,
+  REGISTER_REMINDER_MESSAGE_ID,
+];
+
+export const BANNER_MESSAGES = [
+  TOO_MANY_REQUESTS_MESSAGE_ID,
+  REGISTER_REMINDER_MESSAGE_ID,
 ];
 
 export const ACTION_FEEDBACK_DURATION = 3 * 1000;

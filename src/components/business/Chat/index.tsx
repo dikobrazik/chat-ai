@@ -10,6 +10,7 @@ import { Message } from "./components/Message";
 import { WAITING_RESPONSE_MESSAGE_ID } from "./components/Message/constants";
 import { useChat } from "./hooks/useChat";
 import { useChatTitle } from "./hooks/useChatTitle";
+import { useRegisterReminder } from "./hooks/useRegisterReminder";
 import { useResetAttachments } from "./hooks/useResetAttachments";
 import { useSendPromptStream } from "./hooks/useSendPromptStream";
 
@@ -28,9 +29,13 @@ export const Chat = () => {
 
   useResetAttachments(chatId as string);
 
+  const { onPromptComplete, closeRegisterReminder } =
+    useRegisterReminder(setMessages);
+
   const { sendPrompt, isPromptSending, closeLimitBanner } = useSendPromptStream(
     chatId as string,
     setMessages,
+    onPromptComplete,
   );
 
   useEffect(() => {
@@ -105,6 +110,7 @@ export const Chat = () => {
               isStreaming={message.isStreaming}
               limit={message.limit}
               onLimitBannerClose={closeLimitBanner}
+              onRegisterReminderClose={closeRegisterReminder}
             />
           ))}
         </div>

@@ -13,6 +13,7 @@ import { getLimit, withoutLimitBanner } from "./utils";
 export const useSendPromptStream = (
   chatId: string,
   setMessages: Dispatch<SetStateAction<Prompt[]>>,
+  onComplete: () => void,
 ) => {
   const queryClient = useQueryClient();
   const isSendingRef = useRef(false);
@@ -62,6 +63,7 @@ export const useSendPromptStream = (
             ]);
 
             clearFiles();
+            onComplete();
           } else if (value.type === "delta") {
             setMessages((prevMessages) => [
               {

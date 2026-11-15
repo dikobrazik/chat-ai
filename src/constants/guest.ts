@@ -1,0 +1,4 @@
+export const GUEST_PROMPTS_COUNT_LOCAL_STORAGE_KEY = "guestPromptsCount";
+
+export const REGISTER_REMINDER_FIRST_PROMPT = 5;
+export const REGISTER_REMINDER_PROMPT_STEP = 3;

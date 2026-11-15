@@ -6,10 +6,12 @@ import { Streamdown } from "streamdown";
 import type { Prompt, PromptLimit } from "@/api";
 import { cn } from "@/lib/utils";
 import {
+  BANNER_MESSAGES,
   CONTROLS,
   ERROR_MESSAGE_ID,
   LINK_SAFETY,
   MARKDOWN_COMPONENTS,
+  REGISTER_REMINDER_MESSAGE_ID,
   REHYPE_PLUGINS,
   REMARK_PLUGINS_BY_ROLE,
   REMEND_OPTIONS,
@@ -22,6 +24,7 @@ import styles from "./Message.module.scss";
 import { MessageActions } from "./MessageActions";
 import { ModelTyping } from "./ModelTyping";
 import { prepareMarkdown, splitMarkdownIntoBlocks } from "./markdown";
+import { RegisterReminder } from "./RegisterReminder";
 import { TooManyRequests } from "./TooManyRequests";
 import "streamdown/styles.css";
 import "katex/dist/katex.min.css";
@@ -35,6 +38,7 @@ const MessageContent = ({
   isStreaming,
   limit,
   onLimitBannerClose,
+  onRegisterReminderClose,
 }: {
   id: string;
   role: Prompt["role"];
@@ -42,6 +46,7 @@ const MessageContent = ({
   isStreaming: boolean;
   limit?: PromptLimit;
   onLimitBannerClose?: () => void;
+  onRegisterReminderClose?: () => void;
 }) => {
   const { id: chatId } = useParams();
 
@@ -49,6 +54,8 @@ const MessageContent = ({
     return <span>{message}</span>;
   } else if (id === TOO_MANY_REQUESTS_MESSAGE_ID) {
     return <TooManyRequests limit={limit} onClose={onLimitBannerClose} />;
+  } else if (id === REGISTER_REMINDER_MESSAGE_ID) {
+    return <RegisterReminder onClose={onRegisterReminderClose} />;
   } else if (id === WAITING_RESPONSE_MESSAGE_ID) {
     return <ModelTyping />;
   }
@@ -86,6 +93,12 @@ const MessageContent = ({
   );
 };
 
+type MessageProps = Prompt & {
+  isPublicPage?: boolean;
+  onLimitBannerClose?: () => void;
+  onRegisterReminderClose?: () => void;
+};
+
 export const Message = ({
   id,
   role,
@@ -95,7 +108,8 @@ export const Message = ({
   limit,
   isPublicPage = false,
   onLimitBannerClose,
-}: Prompt & { isPublicPage?: boolean; onLimitBannerClose?: () => void }) => {
+  onRegisterReminderClose,
+}: MessageProps) => {
   return (
     <>
       {!(SYSTEM_MESSAGES.includes(id) || id.startsWith(ERROR_MESSAGE_ID)) && (
@@ -111,7 +125,7 @@ export const Message = ({
         id={`prompt-${id}`}
         className={classNames(styles.message, styles[`${role}`], {
           [styles.error]: id.startsWith(ERROR_MESSAGE_ID),
-          [styles.banner]: id === TOO_MANY_REQUESTS_MESSAGE_ID,
+          [styles.banner]: BANNER_MESSAGES.includes(id),
         })}
       >
         <MessageContent
@@ -121,6 +135,7 @@ export const Message = ({
           isStreaming={Boolean(isStreaming)}
           limit={limit}
           onLimitBannerClose={onLimitBannerClose}
+          onRegisterReminderClose={onRegisterReminderClose}
         />
       </div>
       <MessageFiles files={files} role={role} />

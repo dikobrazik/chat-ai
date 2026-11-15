@@ -2,6 +2,7 @@ import type { AxiosResponse } from "axios";
 import type { Prompt, PromptLimit } from "@/api";
 import {
   ERROR_MESSAGE_ID,
+  REGISTER_REMINDER_MESSAGE_ID,
   SYSTEM_MESSAGES,
   TOO_MANY_REQUESTS_MESSAGE_ID,
 } from "../components/Message/constants";
@@ -53,13 +54,24 @@ const isLastExchangeSaved = (messages: Prompt[], prompts: Prompt[]) => {
   );
 };
 
-export const mergeWithServer = (messages: Prompt[], prompts: Prompt[]) =>
+const mergeLastExchange = (messages: Prompt[], prompts: Prompt[]) =>
   isLastExchangeSaved(messages, prompts)
     ? prompts
     : [...messages.slice(0, 2), ...prompts];
 
+export const mergeWithServer = (messages: Prompt[], prompts: Prompt[]) => {
+  const [lastMessage, ...olderMessages] = messages;
+
+  return lastMessage?.id === REGISTER_REMINDER_MESSAGE_ID
+    ? [lastMessage, ...mergeLastExchange(olderMessages, prompts)]
+    : mergeLastExchange(messages, prompts);
+};
+
 export const withoutLimitBanner = (messages: Prompt[]) =>
   messages.filter(({ id }) => id !== TOO_MANY_REQUESTS_MESSAGE_ID);
+
+export const withoutRegisterReminder = (messages: Prompt[]) =>
+  messages.filter(({ id }) => id !== REGISTER_REMINDER_MESSAGE_ID);
 
 const getUtcDayEnd = () => new Date().setUTCHours(24, 0, 0, 0);
 
