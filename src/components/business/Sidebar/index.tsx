@@ -9,6 +9,7 @@ import { Logo } from "@/components/ui/Logo";
 import { Sidebar as UISidebar } from "@/components/ui/Sidebar";
 import { useSidebarState } from "@/components/ui/Sidebar/useSidebarState";
 import { Text } from "@/components/ui/Text";
+import { Tooltip } from "@/components/ui/Tooltip";
 import { cn } from "@/lib/utils";
 import { useAuthContext } from "@/providers/AuthProvider/hooks";
 import { stopPropagation } from "@/utils";
@@ -92,13 +93,15 @@ export const ChatSidebar = ({
           ) : (
             <>
               {showUpsell && (
-                <Button
-                  href="/plans"
-                  variant="primary"
-                  align="center"
-                  aria-label="Открыть полный доступ"
-                  leftIcon={<Icon name="flash-circle" />}
-                />
+                <Tooltip content="Открыть полный доступ" position="right">
+                  <Button
+                    href="/plans"
+                    variant="primary"
+                    align="center"
+                    aria-label="Открыть полный доступ"
+                    leftIcon={<Icon name="flash-circle" />}
+                  />
+                </Tooltip>
               )}
               <Profile collapsed />
             </>

@@ -1,0 +1,18 @@
+.tooltip {
+  z-index: z-index(tooltip);
+  padding: spacing(2) spacing(3);
+  border-radius: spacing(3);
+  color: #FFFFFF;
+  background-color: rgba(0, 0, 0, 0.64);
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.3), 0 6px 10px 4px rgba(0, 0, 0, 0.15);
+  white-space: nowrap;
+  pointer-events: none;
+
+  @media (prefers-color-scheme: dark) {
+    background-color: color-mix(in srgb, var(--background), white 20%);
+  }
+
+  @media (hover: none) {
+    display: none;
+  }
+}
