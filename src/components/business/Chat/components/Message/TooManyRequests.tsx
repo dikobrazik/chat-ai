@@ -31,8 +31,8 @@ export const TooManyRequests = ({ limit, onClose }: TooManyRequestsProps) => {
   if (isGuest) {
     return (
       <Banner
-        title="Вы достигли лимита использования без регистрации"
-        description="Зарегистрируйтесь, чтобы увеличить свой лимит сообщений"
+        title="Вы достигли лимита использования"
+        description="Войдите, чтобы увеличить свой лимит сообщений"
         direction="row"
         onClose={onClose}
         action={

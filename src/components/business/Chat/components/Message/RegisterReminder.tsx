@@ -8,8 +8,8 @@ type RegisterReminderProps = {
 
 export const RegisterReminder = ({ onClose }: RegisterReminderProps) => (
   <Banner
-    title="Хотите больше сообщений?"
-    description="Зарегистрируйтесь бесплатно, чтобы увеличить свой лимит сообщений"
+    title="Спасибо за использование пробной версии"
+    description="Войдите в систему, чтобы использовать историю чатов, создавать изображения и загружать файлы."
     direction="row"
     onClose={onClose}
     action={
