@@ -61,11 +61,12 @@ export const TooManyRequests = ({
   if (currentPlan === PLANS_MAP.plus) {
     return (
       <Banner
-        title="Вы достигли лимита плана Плюс"
+        title="Вы достигли лимита тарифа Плюс"
         description={
           <>
             {resetTime && `Обновится в ${resetTime}. `}
-            {proPrice && `Не ждите — перейдите на Про за ${proPrice} в месяц`}
+            {proPrice &&
+              `Не ждите — перейдите на тариф Профессиональный за ${proPrice} в месяц`}
           </>
         }
         direction="row"
@@ -73,7 +74,7 @@ export const TooManyRequests = ({
         action={
           <Button variant="primary" href="/plans" align="center">
             <Text type="s" as="div">
-              Перейти на Про
+              Перейти на Профессиональный
             </Text>
           </Button>
         }
@@ -83,7 +84,7 @@ export const TooManyRequests = ({
 
   return (
     <Banner
-      title="Вы достигли лимита бесплатного плана"
+      title="Вы достигли лимита бесплатного тарифа"
       description={
         <>
           {resetTime && `Обновится в ${resetTime}. `}
