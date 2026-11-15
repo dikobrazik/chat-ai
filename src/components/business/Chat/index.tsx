@@ -103,6 +103,7 @@ export const Chat = () => {
               files={message.files}
               role={message.role}
               isStreaming={message.isStreaming}
+              limit={message.limit}
               onLimitBannerClose={closeLimitBanner}
             />
           ))}

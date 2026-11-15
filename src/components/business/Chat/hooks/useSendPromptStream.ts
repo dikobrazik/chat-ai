@@ -8,7 +8,7 @@ import {
   ERROR_MESSAGE_ID,
   TOO_MANY_REQUESTS_MESSAGE_ID,
 } from "../components/Message/constants";
-import { getLimitResetTime, withoutLimitBanner } from "./utils";
+import { getLimit, withoutLimitBanner } from "./utils";
 
 export const useSendPromptStream = (
   chatId: string,
@@ -93,13 +93,16 @@ export const useSendPromptStream = (
         // забираем их вместо оптимистичной записи в списке чатов
         queryClient.invalidateQueries({ queryKey: CHATS_QUERY_KEY });
       })
-      .catch((error) => {
+      .catch(async (error) => {
         if (isAxiosError(error)) {
           if (error.status === 429) {
+            const limit = await getLimit(error.response);
+
             setMessages((prevMessages) => [
               {
                 id: TOO_MANY_REQUESTS_MESSAGE_ID,
-                text: getLimitResetTime(error.response?.headers),
+                text: "",
+                limit,
                 role: "model",
                 isStreaming: false,
                 files: [],

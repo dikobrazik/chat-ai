@@ -1,27 +1,31 @@
+import type { PromptLimit } from "@/api";
 import { Banner } from "@/components/ui/Banner";
 import Button from "@/components/ui/Button";
 import { Text } from "@/components/ui/Text";
 import { PLANS_MAP } from "@/constants/plans";
 import { useTooManyRequests } from "./hooks/useTooManyRequests";
+import { LimitResetTime } from "./LimitResetTime";
 
 type TooManyRequestsProps = {
-  resetTime: string;
+  limit?: PromptLimit;
   onClose?: () => void;
 };
 
-export const TooManyRequests = ({
-  resetTime,
-  onClose,
-}: TooManyRequestsProps) => {
+export const TooManyRequests = ({ limit, onClose }: TooManyRequestsProps) => {
   const {
     isGuest,
     isLoading,
     currentPlan,
+    isTrialLimit,
     plusPrice,
     proPrice,
     trialDays,
     trialPrice,
-  } = useTooManyRequests();
+  } = useTooManyRequests(limit);
+
+  const resetTime = limit?.resetAt ? (
+    <LimitResetTime resetAt={limit.resetAt} />
+  ) : null;
 
   if (isGuest) {
     return (
@@ -47,10 +51,22 @@ export const TooManyRequests = ({
     return (
       <Banner
         title="Вы достигли лимита запросов"
+        description={resetTime ?? "Попробуйте отправить сообщение позже"}
+        direction="row"
+        onClose={onClose}
+      />
+    );
+  }
+
+  if (isTrialLimit) {
+    return (
+      <Banner
+        title="Вы достигли дневного лимита пробного периода"
         description={
-          resetTime
-            ? `Обновится в ${resetTime}`
-            : "Попробуйте отправить сообщение позже"
+          <>
+            {resetTime} Дневной лимит действует только в пробном периоде — после
+            оплаты месяца его не будет
+          </>
         }
         direction="row"
         onClose={onClose}
@@ -64,7 +80,7 @@ export const TooManyRequests = ({
         title="Вы достигли лимита тарифа Плюс"
         description={
           <>
-            {resetTime && `Обновится в ${resetTime}. `}
+            {resetTime}{" "}
             {proPrice &&
               `Не ждите — перейдите на тариф Профессиональный за ${proPrice} в месяц`}
           </>
@@ -87,7 +103,7 @@ export const TooManyRequests = ({
       title="Вы достигли лимита бесплатного тарифа"
       description={
         <>
-          {resetTime && `Обновится в ${resetTime}. `}
+          {resetTime}{" "}
           {plusPrice &&
             (trialDays
               ? `Не ждите — попробуйте Плюс: ${trialDays} за ${trialPrice}, затем ${plusPrice} в месяц`

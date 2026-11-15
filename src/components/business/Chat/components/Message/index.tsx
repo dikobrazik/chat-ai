@@ -3,7 +3,7 @@ import { math } from "@streamdown/math";
 import classNames from "classnames";
 import { useParams } from "next/navigation";
 import { Streamdown } from "streamdown";
-import type { Prompt } from "@/api";
+import type { Prompt, PromptLimit } from "@/api";
 import { cn } from "@/lib/utils";
 import {
   CONTROLS,
@@ -33,12 +33,14 @@ const MessageContent = ({
   role,
   message,
   isStreaming,
+  limit,
   onLimitBannerClose,
 }: {
   id: string;
   role: Prompt["role"];
   message: string;
   isStreaming: boolean;
+  limit?: PromptLimit;
   onLimitBannerClose?: () => void;
 }) => {
   const { id: chatId } = useParams();
@@ -46,7 +48,7 @@ const MessageContent = ({
   if (id.startsWith(ERROR_MESSAGE_ID)) {
     return <span>{message}</span>;
   } else if (id === TOO_MANY_REQUESTS_MESSAGE_ID) {
-    return <TooManyRequests resetTime={message} onClose={onLimitBannerClose} />;
+    return <TooManyRequests limit={limit} onClose={onLimitBannerClose} />;
   } else if (id === WAITING_RESPONSE_MESSAGE_ID) {
     return <ModelTyping />;
   }
@@ -90,6 +92,7 @@ export const Message = ({
   files,
   text: message,
   isStreaming,
+  limit,
   isPublicPage = false,
   onLimitBannerClose,
 }: Prompt & { isPublicPage?: boolean; onLimitBannerClose?: () => void }) => {
@@ -116,6 +119,7 @@ export const Message = ({
           role={role}
           message={message}
           isStreaming={Boolean(isStreaming)}
+          limit={limit}
           onLimitBannerClose={onLimitBannerClose}
         />
       </div>

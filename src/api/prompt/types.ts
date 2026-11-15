@@ -5,6 +5,7 @@ export type Prompt = {
   thinking?: string;
   files: PromptFile[];
   role: PromptRole;
+  limit?: PromptLimit;
 };
 
 type PromptFile = {
@@ -15,6 +16,11 @@ type PromptFile = {
 };
 
 type PromptRole = "user" | "model";
+
+export type PromptLimit = {
+  reason: string;
+  resetAt: number | null;
+};
 
 export type SearchResult = {
   id: string;

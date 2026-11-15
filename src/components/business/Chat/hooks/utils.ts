@@ -1,11 +1,16 @@
 import type { AxiosResponse } from "axios";
-import type { Prompt } from "@/api";
-import { formatTime } from "@/utils/format-time";
+import type { Prompt, PromptLimit } from "@/api";
 import {
   ERROR_MESSAGE_ID,
   SYSTEM_MESSAGES,
   TOO_MANY_REQUESTS_MESSAGE_ID,
 } from "../components/Message/constants";
+import {
+  LIMIT_REASON,
+  LIMIT_REASON_BY_RESPONSE,
+  LIMIT_RESPONSE_FIELDS,
+  RETRY_AFTER_HEADERS,
+} from "./constants";
 
 export const createNewChat = (chatId: string, modelId: string) => ({
   id: chatId,
@@ -58,12 +63,34 @@ export const withoutLimitBanner = (messages: Prompt[]) =>
 
 const getUtcDayEnd = () => new Date().setUTCHours(24, 0, 0, 0);
 
-export const getLimitResetTime = (headers?: AxiosResponse["headers"]) => {
+const getHeadersResetAt = (headers?: AxiosResponse["headers"]) => {
   const retryAfter = Number(
-    headers?.["retry-after-prompt"] ?? headers?.["retry-after"],
+    headers?.[RETRY_AFTER_HEADERS.prompt] ??
+      headers?.[RETRY_AFTER_HEADERS.common],
   );
 
-  if (!retryAfter) return "";
+  return retryAfter
+    ? Math.min(Date.now() + retryAfter * 1000, getUtcDayEnd())
+    : null;
+};
 
-  return formatTime(Math.min(Date.now() + retryAfter * 1000, getUtcDayEnd()));
+const readLimitBody = (
+  data: unknown,
+): Promise<Partial<Record<string, string>> | null> =>
+  new Response(data as BodyInit).json().catch(() => null);
+
+export const getLimit = async (
+  response?: AxiosResponse,
+): Promise<PromptLimit> => {
+  const body = await readLimitBody(response?.data);
+  const resetAt = Date.parse(String(body?.[LIMIT_RESPONSE_FIELDS.resetAt]));
+
+  return {
+    reason:
+      LIMIT_REASON_BY_RESPONSE[String(body?.[LIMIT_RESPONSE_FIELDS.reason])] ??
+      LIMIT_REASON.unknown,
+    resetAt: Number.isNaN(resetAt)
+      ? getHeadersResetAt(response?.headers)
+      : resetAt,
+  };
 };
